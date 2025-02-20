@@ -3,8 +3,6 @@
 [![GitHub License](https://img.shields.io/github/license/hjq766/Toolbox)](LICENSE)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fjqnav.top)](https://jqnav.top)
 
-![工具箱界面截图](screenshot.png)
-
 一个基于Web的免费在线工具集合平台，提供多种实用工具，所有计算均在本地完成，保障数据隐私安全。
 
 ## 🌟 核心优势
