@@ -1,20 +1,3 @@
-//百度统计
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?d07c3a564a178264d3c3326f1509bc98";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-
-//引入图标库
-//var head = document.head || document.getElementsByTagName('head')[0];
-//var link = document.createElement('link');
-//link.rel = 'stylesheet';
-//link.type = 'text/css';
-//link.href = 'https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css';
-//head.appendChild(link);
-
 // 动态加载 Iconify 的 JS 文件
 function loadIconifycons() {
     var script = document.createElement('script'); // 创建 script 元素
