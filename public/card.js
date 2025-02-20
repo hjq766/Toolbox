@@ -372,13 +372,7 @@ window.toolCards = {
                 title: 'ICO图标生成',
                 desc: '将您的图片转换为高质量的Windows ICO和macOS ICNS格式图标'
             },
-			{
-                href: 'tools/svg_editor/index.html',
-                icon: 'tabler:file-type-svg',
-                title: 'SVG编辑器',
-                desc: '在线SVG图形编辑工具'
-            },
-			{
+	    {
                 href: 'tools/svg_compress/index.html',
                 icon: 'tabler:file-type-svg',
                 title: 'SVG压缩工具',
