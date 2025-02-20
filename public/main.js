@@ -168,7 +168,6 @@ const header = `
                     <div class="nav-links">
                         ${!window.location.pathname.includes('/tools/') ? `
                             <a href="index.html#tools" class="nav-link">在线工具</a>
-                            <a href="https://jqnav.top" class="nav-link index-nav" target="_blank">设计导航</a>
                         ` : `
                             <a href="../../index.html#tools" class="nav-link">返回首页</a>
                         `}
