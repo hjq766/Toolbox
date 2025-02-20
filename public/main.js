@@ -397,7 +397,7 @@ function insertCommonElements() {
                 <div class="float-menu-popup">
                     <div class="popup-title">有问题 · 联系我</div>
                     <div class="popup-content">
-                        <img src="http://jqnest.top/img/qrcode/wechat_qrcode.webp" alt="微信二维码" class="qr-code">
+                        <img src="#" alt="微信二维码" class="qr-code">
                         <div class="qr-text">扫一扫 · 加微信</div>
                     </div>
                 </div>
@@ -417,10 +417,6 @@ function insertCommonElements() {
             <div class="container">
                 <div class="footer-left">
                     <span>Copyright ${new Date().getFullYear()} Jacket</span>
-                    <span>|</span>
-                    <a href="https://beian.miit.gov.cn" id="beian" target="_blank">粤ICP备2024225759号</a>
-                    <img src="http://jqnest.top/img/beian.png" style="width:12px;margin-right:-5px;margin-left:2px;vertical-align:-1px;">
-                    <a href="https://beian.mps.gov.cn/#/query/webSearch?code=44030002003173" rel="noreferrer" target="_blank">粤公网备44030002003173号</a>
                 </div>
                 <div class="footer-right">
                 ${window.location.pathname === '/index.html' ? '<a href="about.html">关于本站</a>' : ''}
