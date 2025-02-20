@@ -379,7 +379,7 @@ function insertCommonElements() {
                 <div class="float-menu-popup">
                     <div class="popup-title">有问题 · 联系我</div>
                     <div class="popup-content">
-                        <img src="https://gd-hbimg.huaban.com/d4f739487b27e5a7655adb66afbb009632a5aea614162-nYj1B1_fw658webp" alt="微信二维码" class="qr-code">
+                        <img src="https://s3.bmp.ovh/imgs/2025/02/21/cc984adf6bcc7148.png" alt="微信二维码" class="qr-code">
                         <div class="qr-text">扫一扫 · 加微信</div>
                     </div>
                 </div>
