@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>压力单位换算工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>压力单位换算工具</h1>
+                    <p>支持各种压力单位之间的互相转换，包括巴、帕斯卡等单位。</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="unit-grid">
+                    <div class="unit-column">
+                        <h2>基本单位</h2>
+                        <div class="form-group">
+                            <label>巴 (bar)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="bar" step="any" oninput="convertPressure('bar')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>千帕 (kPa)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="kilopascal" step="any" oninput="convertPressure('kilopascal')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>百帕 (hPa)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="hectopascal" step="any" oninput="convertPressure('hectopascal')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>毫巴 (mbar)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="millibar" step="any" oninput="convertPressure('millibar')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>帕斯卡 (Pa = N/m²)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="pascal" step="any" oninput="convertPressure('pascal')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="unit-column">
+                        <h2>大气压单位</h2>
+                        <div class="form-group">
+                            <label>标准大气压 (atm)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="atmosphere" step="any" oninput="convertPressure('atmosphere')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>毫米汞柱 (mmHg = Torr)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="mmhg" step="any" oninput="convertPressure('mmhg')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>英寸汞柱 (inHg)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="inhg" step="any" oninput="convertPressure('inhg')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>毫米水柱 (mmH₂O)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="mmh2o" step="any" oninput="convertPressure('mmh2o')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="unit-column">
+                        <h2>工程单位</h2>
+                        <div class="form-group">
+                            <label>磅力/英尺² (lbf/ft²)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="lbf_ft2" step="any" oninput="convertPressure('lbf_ft2')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>磅力/英寸² (PSI)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="psi" step="any" oninput="convertPressure('psi')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>公斤力/厘米² (kgf/cm²)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="kgf_cm2" step="any" oninput="convertPressure('kgf_cm2')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>公斤力/米² (kgf/m²)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="kgf_m2" step="any" oninput="convertPressure('kgf_m2')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" onclick="resetAll()">重置所有</button>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能简介</h2>
+                    <p>压力单位换算工具支持在线巴(bar)、千帕(kPa)、标准大气压(atm)等单位间的互转互换。</p>
+                    
+                    <h3>支持的单位</h3>
+                    <ul>
+                        <li>基本单位：巴、千帕、百帕、毫巴、帕斯卡</li>
+                        <li>大气压单位：标准大气压、毫米汞柱、英寸汞柱、毫米水柱</li>
+                        <li>工程单位：磅力/平方英尺、磅力/平方英寸、公斤力/平方厘米、公斤力/平方米</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>在任意输入框中输入数值，其他单位会自动转换</li>
+                        <li>支持小数点输入</li>
+                        <li>点击"重置所有"可清空所有输入</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

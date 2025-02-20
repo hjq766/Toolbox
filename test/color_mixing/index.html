@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>颜色混合工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>颜色混合工具</h1>
+                    <p>可视化混合两种或多种颜色，生成新的颜色效果</p>
+                </div>
+            </section>
+            <div class="tool-container">
+                <div class="tool-main">
+                    <div class="color-inputs">
+                        <div class="unit-item">
+                            <label>
+                                <span>选择颜色 1</span>
+                                <input type="color" id="color1" value="#ff0000">
+                            </label>
+                        </div>
+                        <div class="unit-item">
+                            <label>
+                                <span>选择颜色 2</span>
+                                <input type="color" id="color2" value="#00ff00">
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" id="mixColorsBtn">混合颜色</button>
+                    </div>
+                    <div class="result-grid" id="resultGrid">
+                        <div class="color-preview" id="gradientPreview" style="height: 100px; border-radius: 8px;"></div>
+                        <div class="mixed-color-info" id="mixedColorInfo"></div>
+                    </div>
+                </div>
+                <div class="tool-info">
+                    <h2>功能简介</h2>
+                    <p>颜色混合工具支持多种颜色的混合，用户可以选择两种或多种颜色进行混合，实时查看混合效果。</p>
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>支持选择两种或多种颜色进行混合</li>
+                        <li>实时预览混合后的颜色效果</li>
+                        <li>支持复制混合后的颜色值</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

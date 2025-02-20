@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>颜色混合工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>颜色混合工具</h1>
+                    <p>可视化混合两种，生成新的颜色效果</p>
+                </div>
+            </section>
+            <div class="tool-container">
+                    <div class="color-mixer">
+                        <div class="color-inputs">
+                            <div class="color-input-group">
+                                <label>颜色 1</label>
+                                <div class="input-wrapper">
+                                    <div class="color-picker-container">
+                                        <input type="color" class="color-picker" id="color1" value="#FF0000">
+                                    </div>
+                                    <div class="text-inputs">
+                                        <input type="text" class="color-text" id="color1Text" value="#FF0000" placeholder="输入十六进制颜色值">
+                                        <input type="text" id="color1RGB" value="rgb(255, 0, 0)" readonly>
+                                    </div>
+                                </div>
+                                <div class="weight-control">
+                                    <label>权重</label>
+                                    <input type="range" min="0" max="100" value="50" class="weight-slider" id="weight1">
+                                    <span class="weight-value">50%</span>
+                                </div>
+                            </div>
+                            <div class="color-input-group">
+                                <label>颜色 2</label>
+                                <div class="input-wrapper">
+                                    <div class="color-picker-container">
+                                        <input type="color" class="color-picker" id="color2" value="#0000FF">
+                                    </div>
+                                    <div class="text-inputs">
+                                        <input type="text" class="color-text" id="color2Text" value="#0000FF" placeholder="输入十六进制颜色值">
+                                        <input type="text" id="color2RGB" value="rgb(0, 0, 255)" readonly>
+                                    </div>
+                                </div>
+                                <div class="weight-control">
+                                    <label>权重</label>
+                                    <input type="range" min="0" max="100" value="50" class="weight-slider" id="weight2">
+                                    <span class="weight-value">50%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mix-result">
+                            <div class="preview-container">
+                                <div class="color-preview" id="color1Preview">
+                                    <span class="color-value"></span>
+                                </div>
+                                <div class="color-preview" id="mixedPreview">
+                                    <span class="color-value"></span>
+                                </div>
+                                <div class="color-preview" id="color2Preview">
+                                    <span class="color-value"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gradient-section">
+                        <h3>渐变效果</h3>
+                        <div class="gradient-preview" id="gradientPreview"></div>
+                        <div class="gradient-controls">
+                            <div class="gradient-type">
+                                <label>渐变类型</label>
+                                <select id="gradientType">
+                                    <option value="linear">线性渐变</option>
+                                    <option value="radial">径向渐变</option>
+                                </select>
+                            </div>
+                            <div class="gradient-control">
+                                <label>渐变角度</label>
+                                <div class="angle-control">
+                                    <input type="range" min="0" max="360" value="90" class="angle-slider" id="gradientAngle">
+                                    <span class="angle-value" id="angleValue">90°</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gradient-code">
+                            <label>CSS 代码</label>
+                            <div class="code-wrapper">
+                                <input type="text" id="gradientCode" readonly>
+                                <button class="copy-btn" onclick="copyGradient()">
+                                    <span class="iconify" data-icon="tabler:copy"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                <div class="tool-info">
+                    <h2>功能简介</h2>
+                    <p>颜色混合工具支持两种颜色的混合，用户可以选择两种进行混合，实时查看混合效果。</p>
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>支持选择两种颜色进行混合</li>
+                        <li>可调节每种颜色的混合权重</li>
+                        <li>实时预览混合后的颜色效果</li>
+                        <li>支持复制混合后的颜色值</li>
+                        <li>提供多种渐变效果预览和CSS代码</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>使用颜色选择器或直接输入颜色值来选择颜色</li>
+                        <li>通过滑块调节每种颜色的混合权重</li>
+                        <li>实时查看混合效果和渐变预览</li>
+                        <li>可以复制混合颜色值或渐变CSS代码</li>
+                        <li>支持自定义渐变类型和角度</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

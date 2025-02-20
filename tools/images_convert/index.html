@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片转换工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>图片转换工具</h1>
+                    <p>专业的图片格式转换工具，支持多种格式互转、自定义尺寸，让图片处理更简单高效</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 左侧：上传和预览区域 -->
+                    <div>
+                        <!-- 上传区域 -->
+                        <div class="file-upload" id="uploadArea">
+                            <p>点击或拖拽图片到此处上传</p>
+                            <small>支持 JPG、PNG、WebP、GIF、BMP、TIFF 等格式</small><br>
+                            <small>转换时将会保持最高图片质量进行转换</small>
+                            <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+                                </div>
+
+                        <!-- 预览网格 -->
+                        <div class="preview-grid" id="previewGrid"></div>
+                            </div>
+
+                    <!-- 右侧：设置面板 -->
+                    <div class="settings-panel">
+                        <h3>转换设置</h3>
+
+                        <!-- 格式选择 -->
+                                    <div class="form-group">
+                            <label>输出格式</label>
+                            <div class="format-grid">
+                                <div class="format-option active" data-format="jpg">JPG</div>
+                                <div class="format-option" data-format="png">PNG</div>
+                                <div class="format-option" data-format="webp">WebP</div>
+                                <div class="format-option" data-format="gif">GIF</div>
+                                <div class="format-option" data-format="bmp">BMP</div>
+                                <div class="format-option" data-format="tiff">TIFF</div>
+                            </div>
+                        </div>
+
+                        <!-- 尺寸调整 -->
+                        <div class="form-group">
+                            <label>调整尺寸</label>
+                            <div class="size-presets">
+                                <div class="size-preset active" data-preset="original">保持原始尺寸</div>
+                                <div class="size-preset" data-preset="hd">HD (1280×720)</div>
+                                <div class="size-preset" data-preset="fhd">Full HD (1920×1080)</div>
+                                <div class="size-preset" data-preset="4k">4K (3840×2160)</div>
+                                <div class="size-preset" data-preset="square">正方形</div>
+                                <div class="size-preset" data-preset="custom">自定义</div>
+                            </div>
+
+                            <div class="size-inputs" style="display: none;">
+                                <input type="number" id="widthInput" placeholder="宽度" min="1">
+                                <svg class="link-icon active" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M8 12h8M12 8v8M3 12h3M18 12h3" />
+                                            </svg>
+                                <input type="number" id="heightInput" placeholder="高度" min="1">
+                        </div>
+                    </div>
+
+                        <div class="progress-bar" style="display: none;">
+                            <div class="progress"></div>
+                        </div>
+
+                        <button class="btn btn-primary" id="convertBtn" disabled>开始转换</button>
+                        <button class="btn" id="downloadBtn" style="display: none;">批量下载</button>
+
+                        <!-- 工具超链接 -->
+                        <div class="hyper-link-card">
+                            <a href="../images_compress/index.html" class="hyper-link">
+                                <span class="iconify" data-icon="tabler:file-zip" data-inline="false"></span>
+                                需要压缩图片？点击这里
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="tool-info">
+                    <h2>功能介绍</h2>
+                    <p>图片转换工具是一个专业的在线工具，支持多种图片格式的转换和尺寸调整。本工具暂不支持压缩功能。</p>
+                
+                <h3>主要功能</h3>
+                <ul>
+                        <li>支持多种常见图片格式互相转换，包括 JPEG、PNG、GIF、WebP、BMP、TIFF 等</li>
+                        <li>支持灵活调整输出图片尺寸，包括多种预设和自定义尺寸</li>
+                        <li>支持批量上传和处理多张图片，可单独或批量下载</li>
+                        <li>转换前后均可预览图片效果，显示详细的图片信息</li>
+                </ul>
+                
+                <h3>使用说明</h3>
+                <ul>
+                        <li>将图片拖拽到上传区域，或点击选择文件上传</li>
+                        <li>在右侧设置面板选择输出格式和尺寸</li>
+                        <li>点击"开始转换"进行处理</li>
+                        <li>转换完成后可预览效果，支持单张下载或批量打包下载</li>
+                </ul>
+
+                <h3>注意事项</h3>
+                <ul>
+                        <li>所有格式转换均采用最高质量设置，以保证图片清晰度</li>
+                        <li>调整尺寸时默认会保持原始宽高比</li>
+                        <li>批量处理时，所有图片将使用相同的转换设置</li>
+                        <li>PNG 格式会保留透明度，转换为 JPG 格式时透明部分将变为白色背景</li>
+                </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

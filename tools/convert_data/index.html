@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日期格式转换工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>日期格式转换工具</h1>
+                    <p>在线日期格式转换工具，支持时间戳、标准日期、自定义格式的相互转换</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 左侧：输入和格式选择 -->
+                    <div>
+                        <!-- 输入区域 -->
+                        <div class="form-section">
+                            <div class="datetime-inputs">
+                                <div class="form-group">
+                                    <label>选择日期</label>
+                                    <input type="date" id="datePicker">
+                                </div>
+                                <div class="form-group">
+                                    <label>选择时间</label>
+                                    <input type="time" id="timePicker" step="1">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Unix时间戳</label>
+                                <input type="number" id="timestamp" placeholder="请输入10位时间戳">
+                            </div>
+                            <div class="button-group">
+                                <button class="btn btn-primary" onclick="parseInput()">转换</button>
+                                <button class="btn" onclick="setCurrentTime()">当前时间</button>
+                            </div>
+                        </div>
+
+                        <!-- 格式设置 -->
+                        <div class="form-section" style="margin-bottom: 0;">
+                            <div class="form-tabs">
+                                <button class="form-tab active" data-format="common">常用格式</button>
+                                <button class="form-tab" data-format="custom">自定义格式</button>
+                            </div>
+
+                            <!-- 常用格式选项 -->
+                            <div class="format-presets">
+                                <div class="format-grid">
+                                    <button class="format-tab active" data-format="YYYY-MM-DD">
+                                        <span class="format-name">YYYY-MM-DD</span>
+                                        <span class="format-desc">标准日期</span>
+                                    </button>
+                                    <button class="format-tab" data-format="YYYY年MM月DD日">
+                                        <span class="format-name">YYYY年MM月DD日</span>
+                                        <span class="format-desc">中文日期</span>
+                                    </button>
+                                    <button class="format-tab" data-format="YYYY-MM-DD HH:mm:ss">
+                                        <span class="format-name">YYYY-MM-DD HH:mm:ss</span>
+                                        <span class="format-desc">标准日期时间</span>
+                                    </button>
+                                    <button class="format-tab" data-format="MM/DD/YYYY">
+                                        <span class="format-name">MM/DD/YYYY</span>
+                                        <span class="format-desc">美式日期</span>
+                                    </button>
+                                    <button class="format-tab" data-format="DD/MM/YYYY">
+                                        <span class="format-name">DD/MM/YYYY</span>
+                                        <span class="format-desc">欧式日期</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 自定义格式输入 -->
+                            <div class="custom-format" style="display: none;">
+                                <div class="form-group">
+                                    <input type="text" id="customFormat" placeholder="例如：YYYY-MM-DD HH:mm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：转换结果 -->
+                    <div class="result-section">
+                        <h3 class="result-header">
+                            <span>转换结果</span>
+                            <button class="copy-btn" id="copyBtn">复制</button>
+                        </h3>
+                        <div class="result-area">
+                            <div class="result-content" id="resultContent">
+                                <!-- 结果将通过 JavaScript 填充 -->
+                            </div>
+                        </div>
+
+                        <!-- 添加格式示例 -->
+                        <div class="format-examples">
+                            <h4>格式说明</h4>
+                            <div class="example-list">
+                                <div class="example-item">
+                                    <span class="example-key">YYYY</span>
+                                    <span class="example-value">年份，如：2024</span>
+                                </div>
+                                <div class="example-item">
+                                    <span class="example-key">MM</span>
+                                    <span class="example-value">月份，如：03</span>
+                                </div>
+                                <div class="example-item">
+                                    <span class="example-key">DD</span>
+                                    <span class="example-value">日期，如：21</span>
+                                </div>
+                                <div class="example-item">
+                                    <span class="example-key">HH</span>
+                                    <span class="example-value">小时(24小时制)，如：23</span>
+                                </div>
+                                <div class="example-item">
+                                    <span class="example-key">mm</span>
+                                    <span class="example-value">分钟，如：59</span>
+                                </div>
+                                <div class="example-item">
+                                    <span class="example-key">ss</span>
+                                    <span class="example-value">秒钟，如：59</span>
+                                </div>
+                            </div>
+                            <h4>常用格式示例</h4>
+                            <div class="example-list">
+                                <!-- 添加常用格式组合示例 -->
+                                <div class="example-item example-item-full">
+                                    <span class="example-key">YYYY-MM-DD HH:mm:ss</span>
+                                    <span class="example-value">2024-03-21 13:45:30</span>
+                                </div>
+                                <div class="example-item example-item-full">
+                                    <span class="example-key">YYYY年MM月DD日</span>
+                                    <span class="example-value">2024年03月21日</span>
+                                </div>
+                                <div class="example-item example-item-full">
+                                    <span class="example-key">MM/DD/YYYY</span>
+                                    <span class="example-value">03/21/2024</span>
+                                </div>
+                                <div class="example-item example-item-full">
+                                    <span class="example-key">DD/MM/YYYY</span>
+                                    <span class="example-value">01/02/2024</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能介绍</h2>
+                    <p>一款简单易用的日期格式转换工具，可以快速进行各种日期格式的转换，支持时间戳、标准日期、自定义格式等多种格式，适用于开发调试和日常使用。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>支持日期和时间分开选择，更加灵活</li>
+                        <li>时间戳与日期时间的双向转换</li>
+                        <li>提供多种常用日期格式预设</li>
+                        <li>支持自定义日期格式输出</li>
+                        <li>实时更新的当前时间显示</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>选择日期和时间，或直接输入时间戳</li>
+                        <li>点击"当前时间"可快速获取当前时间</li>
+                        <li>在常用格式中选择需要的输出格式</li>
+                        <li>可切换到自定义格式输入自定义模板</li>
+                        <li>点击"复制"按钮可复制转换结果</li>
+                    </ul>
+
+                    <h3>使用场景</h3>
+                    <ul>
+                        <li>日志分析：快速转换日志中的时间戳</li>
+                        <li>接口调试：转换接口返回的各种时间格式</li>
+                        <li>数据处理：统一不同来源的日期格式</li>
+                        <li>日常使用：便捷的日期格式转换工具</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

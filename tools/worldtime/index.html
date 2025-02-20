@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>世界时间 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <div class="tool-container">
+                <section class="tool-page-hero">
+                    <div class="container">
+                        <h1>世界时间</h1>
+                        <p>实时查看世界各地时间</p>
+                    </div>
+                </section>
+
+                <div class="current-time">
+                    <div class="beijing-time">
+                        <h2>北京时间</h2>
+                        <div class="time" id="beijingTime">--:--:--</div>
+                        <div class="date" id="beijingDate">----年--月--日</div>
+                    </div>
+                </div>
+
+                <div class="world-time-grid" id="worldTimeGrid">
+                    <!-- 时区卡片将通过 JavaScript 动态生成 -->
+                </div>
+            </div>
+        </main>
+        <div id="toast" class="toast"></div>
+    </div>
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

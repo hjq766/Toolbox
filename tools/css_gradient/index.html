@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS渐变生成器 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <div id="header"></div>
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>CSS 渐变生成器</h1>
+                    <p>可视化创建和编辑 CSS 渐变效果，支持线性、径向和角向渐变，提供实时预览</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 左侧：控制面板 -->
+                    <div class="control-panel">
+                        <!-- 渐变类型 -->
+                        <div class="panel-section">
+                            <div class="section-header">
+                                <h3>渐变类型</h3>
+                                <label class="switch" id="repeatSwitchWrapper">
+                                    <span class="label">重复</span>
+                                    <input type="checkbox" id="repeatSwitch">
+                                
+
+                                </label>
+                            </div>
+                            <div class="type-grid">
+                                <button class="type-button active" data-type="linear">
+                                    线性
+                                </button>
+                                <button class="type-button" data-type="radial">
+                                    径向
+                                </button>
+                                <button class="type-button" data-type="conic">
+                                    角度
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 渐变参数设置 -->
+                        <div class="panel-section" id="linearSettings">
+                            <h3>渐变方向</h3>
+                            <div class="direction-group">
+                                <button class="shape-tab active" data-direction="to right">
+                                    向右
+                                </button>
+                                <button class="shape-tab" data-direction="to left">
+                                    向左
+                                </button>
+                                <button class="shape-tab" data-direction="to bottom">
+                                    向下
+                                </button>
+                                <button class="shape-tab" data-direction="to top">
+                                    向上
+                                </button>
+                                <button class="shape-tab" data-direction="to bottom right">
+                                    右下
+                                </button>
+                                <button class="shape-tab" data-direction="to bottom left">
+                                    左下
+                                </button>
+                                <button class="shape-tab" data-direction="to top right">
+                                    右上
+                                </button>
+                                <button class="shape-tab" data-direction="to top left">
+                                    左上
+                                </button>
+                                <button class="shape-tab full-width-tab" data-direction="custom">
+                                    自定义角度
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 自定义角度设置 -->
+                        <div class="panel-section" id="customAngle" style="display: none;">
+                            <h3>自定义角度</h3>
+                            <div class="range-with-value">
+                                <input type="range" id="gradientAngle" min="0" max="360" value="90">
+                                <span class="value-display">90°</span>
+                            </div>
+                        </div>
+
+                        <div class="panel-section" id="radialSettings" style="display: none;">
+                            <h3>渐变形状</h3>
+                            <div class="shape-grid">
+                                <button class="shape-tab active" data-shape="circle">
+                                    圆形
+                                </button>
+                                <button class="shape-tab" data-shape="ellipse">
+                                    椭圆
+                                </button>
+                            </div>
+
+                            <!-- 渐变大小控制 -->
+                            <h3 style="margin-top: 16px;">渐变大小</h3>
+                            <div class="range-with-value">
+                                <input type="range" id="radialSize" min="0" max="200" value="100">
+                                <span class="value-display">100%</span>
+                            </div>
+
+                            <!-- 添加位置控制 -->
+                            <h3 style="margin-top: 16px;">渐变位置</h3>
+                            <div class="position-controls">
+                                <div class="position-row">
+                                    <label>水平位置</label>
+                                    <div class="range-with-value">
+                                        <input type="range" id="radialPositionX" min="0" max="100" value="50">
+                                        <span class="value-display">50%</span>
+                                    </div>
+                                </div>
+                                <div class="position-row">
+                                    <label>垂直位置</label>
+                                    <div class="range-with-value">
+                                        <input type="range" id="radialPositionY" min="0" max="100" value="50">
+                                        <span class="value-display">50%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 重复模式下的角度渐变方向 -->
+                        <div class="panel-section" id="repeatingConicSettings" style="display: none;">
+                            <h3>渐变方向</h3>
+                            <div class="direction-group">
+                                <button class="shape-tab" data-direction="to bottom right">
+                                    右下
+                                </button>
+                                <button class="shape-tab" data-direction="to left">
+                                    向左
+                                </button>
+                                <button class="shape-tab" data-direction="to top right">
+                                    右上
+                                </button>
+                                <button class="shape-tab" data-direction="to top">
+                                    向上
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 重复设置 -->
+                        <div class="panel-section" id="repeatingSettings" style="display: none;">
+                            <h3>重复渐变</h3>
+                            <div class="range-with-value">
+                                <input type="range" id="repeatCount" min="1" max="10" value="4">
+                                <span class="value-display">4倍</span>
+                            </div>
+                        </div>
+
+                        <!-- 颜色节点控制 -->
+                        <div class="panel-section">
+                            <h3>渐变色节点</h3>
+                            <div class="color-slider">
+                                <div class="gradient-bar" id="gradientBar"></div>
+                                <div id="colorStops"></div>
+                            </div>
+                            <div class="color-stops-tip">
+                                点击节点修改颜色，拖动调整位置，右键删除（至少保留两个节点）
+                            </div>
+                        </div>
+
+                        <!-- 操作按钮 -->
+                        <div class="btn-group">
+                            <button class="btn btn-primary" id="copyCSS">复制CSS</button>
+                            <button class="btn" id="resetGradient">恢复默认</button>
+                        </div>
+
+                        <!-- 工具超链接 -->
+                        <div class="hyper-link-card">
+                            <a href="../color_gradient/index.html" class="hyper-link">
+                                <span class="iconify" data-icon="tabler:color-swatch" data-inline="false"></span>
+                            点此查看css渐变色彩大全
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：预览区域 -->
+                    <div class="preview-section">
+                        <!-- 渐变预览 -->
+                        <div class="preview-panel">
+                            <div class="gradient-preview" id="gradientPreview"></div>
+                            <div class="css-code">
+                                <div class="css-code-header">
+                                    <span>支持粘贴CSS代码</span>
+                                    <div class="css-code-actions">
+                                        <button class="btn-icon" id="pasteCSS" title="粘贴CSS">
+                                            <span class="iconify" data-icon="tabler:clipboard-copy" data-inline="false"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="css-code-content" contenteditable="true" id="cssOutput" spellcheck="false"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-info">
+                    <h2>工具介绍</h2>
+                    <p>专业的 CSS 渐变效果制作工具，通过直观的可视化界面，轻松创建漂亮的渐变背景。支持多种渐变类型和丰富的自定义选项。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>支持线性、径向和角向三种渐变类型</li>
+                        <li>可视化调整渐变角度、形状和位置</li>
+                        <li>支持多颜色节点和渐变重复</li>
+                        <li>内置多种渐变预设方案</li>
+                        <li>一键复制生成的 CSS 代码</li>
+                        <li>支持导入现有 CSS 渐变代码</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>选择需要的渐变类型（线性/径向/角向）</li>
+                        <li>调整渐变参数（角度、形状、大小等）</li>
+                        <li>在颜色条上添加和编辑渐变色节点</li>
+                        <li>通过拖拽调整节点位置和颜色顺序</li>
+                        <li>使用预设方案快速创建专业渐变效果</li>
+                        <li>复制生成的代码或导入已有渐变</li>
+                    </ul>
+                </div>
+                <div id="toast" class="toast"></div>
+            </div>
+        </main>
+        <div id="footer"></div>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

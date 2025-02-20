@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多宫格切图工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>多宫格切图工具</h1>
+                    <p>简单高效的图片切割工具，支持自定义宫格数量，快速生成等分图片</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 左侧：上传和预览区域 -->
+                    <div>
+                        <!-- 上传区域 -->
+                        <div class="file-upload" id="uploadArea">
+                            <p>点击或拖拽图片到此处上传</p>
+                            <small>支持 JPG、PNG、WebP、GIF、BMP 等常见图片格式</small>
+                            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                        </div>
+
+                        <!-- 图片预览区域 -->
+                        <div class="preview-section" id="previewSection" style="display: none;">
+                            <div class="preview-container">
+                                <div class="image-preview">
+                                    <canvas id="previewCanvas"></canvas>
+                                    <div id="gridLines" class="grid-lines"></div>
+                                </div>
+                                <div class="toolbar">
+                                    <button class="delete-btn" id="deleteImageBtn" title="删除图片">
+                                        <svg viewBox="0 0 24 24" width="16" height="16">
+                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右侧设置面板 -->
+                    <div class="settings-panel">
+                        <h3>切图设置</h3>
+                        
+                        <!-- 快捷选择 -->
+                        <div class="form-group" id="gridSizePresets">
+                            <label>调整尺寸</label>
+                            <div class="size-presets">
+                                <div class="size-preset" data-rows="2" data-cols="2">2x2</div>
+                                <div class="size-preset active" data-rows="3" data-cols="3">3x3</div>
+                                <div class="size-preset" data-rows="3" data-cols="2">3x2</div>
+                                <div class="size-preset" data-rows="4" data-cols="4">4x4</div>
+                                <div class="size-preset" data-rows="5" data-cols="5">5x5</div>
+                                <div class="size-preset" id="customGridBtn">自定义</div>
+                            </div>
+                        </div>
+
+                        <!-- 自定义宫格 -->
+                        <div class="form-group custom-grid-group" style="display: none;">
+                            <div class="grid-inputs">
+                                <input type="number" id="rowsInput" min="1" max="10" placeholder="行数">
+                                <span>×</span>
+                                <input type="number" id="colsInput" min="1" max="10" placeholder="列数">
+                                <button class="btn grid-btn btn-primary" id="confirmCustomGrid">确定</button>
+                            </div>
+                        </div>
+
+                        <!-- 操作按钮 -->
+                        <div class="btn-group">
+                            <button class="btn btn-primary" id="cutImageBtn" disabled>切割并下载</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能介绍</h2>
+                    <div class="info-content">
+                        <h3>主要功能</h3>
+                        <ul>
+                            <li>支持快捷选择常用宫格布局</li>
+                            <li>支持自定义行列数（1-10）的宫格切割</li>
+                            <li>实时预览切割效果</li>
+                            <li>无损切割，保持原图质量</li>
+                            <li>支持批量打包下载切割后的图片</li>
+                        </ul>
+
+                        <h3>使用说明</h3>
+                        <ul>
+                            <li>上传图片后自动显示预览</li>
+                            <li>选择预设宫格或设置自定义行列数</li>
+                            <li>点击"开始切割"进行切割</li>
+                            <li>切割完成后点击"下载切片"获取图片</li>
+                            <li>支持拖拽上传图片</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

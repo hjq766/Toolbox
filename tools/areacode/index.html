@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邮政编码大全 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>邮政编码大全</h1>
+                    <p>支持全国各地区邮政编码查询，提供精确的邮编信息和地区对照</p>
+                </div>
+            </section>
+
+            <!-- 搜索区域 -->
+            <div class="container">
+                <div class="search-container">
+                    <span class="search-icon">
+                        <span class="iconify" data-icon="tabler:search"></span>
+                    </span>
+                    <input type="text" class="search-box" placeholder="搜索省份/城市/地区..." @keyup.enter="search">
+                    <button class="clear-search" v-if="searchTxt">
+                        <span class="iconify" data-icon="tabler:circle-x-filled" data-inline="false"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="tool-container">
+                <div class="container" id="app" v-cloak>
+
+                    <!-- 导航路径 -->
+                    <div class="breadcrumb" v-if="currentProvince">
+                        <span @click="resetSelection">全部省份</span>
+                        <span class="separator">/</span>
+                        <span>{{currentProvince.name}}</span>
+                        <span v-if="currentCity" class="separator">/</span>
+                        <span v-if="currentCity">{{currentCity.name}}</span>
+                    </div>
+
+                    <!-- 区域选择 -->
+                    <div class="region-wrapper">
+                        <!-- 省份列表 -->
+                        <div class="region-list">
+                            <div class="region-item" :class="{active: aIdx==idx}" v-for="(item,idx) in list" @click="sel(idx,0)">
+                                {{item.name}}
+                            </div>
+                        </div>
+
+                        <!-- 城市/区县展示 -->
+                        <div class="region-content" v-if="currentProvince">
+                            <!-- 城市列表 -->
+                            <div class="cities-section" v-if="currentProvince.child">
+                                <div class="cities-grid">
+                                    <div class="city-item" :class="{active: cIdx==idx}" v-for="(item,idx) in currentProvince.child" @click="sel(aIdx,idx)">
+                                        <div class="city-name">{{item.name}}</div>
+                                        <div class="city-code" v-if="item.zipcode">{{item.zipcode}}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 区县列表 -->
+                            <div class="counties-section" v-if="currentCity && currentCity.child">
+                                <div class="section-divider"></div>
+                                <h3 class="section-title">{{currentCity.name}}下辖区县</h3>
+                                <div class="counties-grid">
+                                    <div class="county-item" v-for="item in currentCity.child" @click="copyZipcode(item)">
+                                        <div class="county-name">{{item.name}}</div>
+                                        <div class="county-code">
+                                            {{item.zipcode}}
+                                            <button class="copy-btn">
+                                                <span class="iconify" data-icon="tabler:copy" data-inline="false"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<div class="tool-info">
+					<h2>功能简介</h2>
+					<p>邮政编码查询工具提供全国各地区的邮政编码信息，帮助用户快速查找和确认特定地区的邮编。</p>
+			
+					<h3>主要功能</h3>
+					<ul>
+						<li>支持按地区名称查询邮政编码</li>
+						<li>支持按邮政编码反查地区信息</li>
+						<li>提供省市区三级联动查询</li>
+						<li>包含详细的地区邮编对照信息</li>
+						<li>提供邮政编码分布地图参考</li>
+					</ul>
+			
+					<h3>使用说明</h3>
+					<ul>
+						<li>输入地区名称或邮政编码进行搜索</li>
+						<li>点击省份、城市进行层级选择</li>
+						<li>查看选中地区的详细邮编信息</li>
+						<li>参考邮政编码地图了解编码分布</li>
+					</ul>
+			
+					<h3>注意事项</h3>
+					<ul>
+						<li>搜索关键词需大于2个字符</li>
+						<li>地名请尽量输入完整以获得准确结果</li>
+						<li>邮政编码为6位数字组合</li>
+					</ul>
+				</div>	
+            </div>
+		    
+    </div>
+
+    </div>
+    </main>
+    </div>
+    <script src="../../public/main.js"></script>
+    <script src="data.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

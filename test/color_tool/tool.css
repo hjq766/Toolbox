@@ -1,0 +1,374 @@
+/* 主布局 */
+.tool-main {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+/* 颜色选择器部分 */
+.color-picker-section {
+    background: var(--bg-color);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color-10);
+}
+
+.color-picker-section h3 {
+    margin: 0 0 16px;
+    color: var(--text-color);
+}
+
+.color-wheel-container {
+    width: 100%;
+    aspect-ratio: 1;
+    margin-bottom: 20px;
+}
+
+#colorWheel {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: none;
+}
+
+#colorWheel::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+#colorWheel::-webkit-color-swatch {
+    border: 1px solid var(--border-color-10);
+    border-radius: 8px;
+}
+
+/* 颜色输入组 */
+.color-input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.color-input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--text-color);
+    background: var(--bg-color);
+}
+
+.clear-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.clear-btn:hover {
+    opacity: 1;
+}
+
+.clear-btn svg {
+    fill: var(--text-color);
+}
+
+/* 颜色值显示 */
+.color-values {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.color-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.color-value label {
+    color: var(--text-secondary);
+    min-width: 40px;
+}
+
+.color-value span {
+    font-family: monospace;
+    padding: 4px 8px;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    flex: 1;
+}
+
+.color-value span:hover {
+    background: var(--bg-hover);
+}
+
+/* 功能区域 */
+.color-functions {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.function-section {
+    background: var(--bg-color);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color-10);
+}
+
+.function-section h3 {
+    margin: 0 0 16px;
+    color: var(--text-color);
+}
+
+/* 颜色格式网格 */
+.color-formats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.format-item {
+    padding: 12px;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.format-item:hover {
+    background: var(--bg-color-50);
+}
+
+.format-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.format-value {
+    font-family: monospace;
+    color: var(--text-color);
+}
+
+/* 色阶网格 */
+.color-scale-grid {
+    display: grid;
+    grid-template-columns: repeat(19, 1fr);
+    gap: 2px;
+    height: 40px;
+}
+
+.shade-item {
+    position: relative;
+}
+
+.shade-box {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.shade-item:hover .shade-box {
+    transform: scale(1.2);
+    z-index: 1;
+}
+
+.shade-value,
+.shade-level {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    background: var(--bg-color);
+    padding: 2px 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.shade-value {
+    top: -24px;
+}
+
+.shade-level {
+    bottom: -24px;
+}
+
+.shade-item:hover .shade-value,
+.shade-item:hover .shade-level {
+    opacity: 1;
+}
+
+/* 状态颜色 */
+.semantic-colors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+}
+
+.semantic-color {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.semantic-box {
+    height: 60px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.semantic-box:hover {
+    transform: scale(1.05);
+}
+
+.semantic-label {
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+.semantic-value {
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    margin-top: -4px;
+}
+
+/* 配色方案 */
+.color-schemes {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.scheme-group h4 {
+    margin: 0 0 12px;
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.scheme-colors {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 8px;
+    min-height: 40px; /* 添加最小高度确保空容器也能显示 */
+}
+
+.scheme-color {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.color-box {
+    height: 40px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.color-box:hover {
+    transform: scale(1.05);
+}
+
+.color-name {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+    .tool-main {
+        grid-template-columns: 1fr;
+    }
+    
+    .color-scale-grid {
+        grid-template-columns: repeat(10, 1fr);
+        height: 80px;
+    }
+}
+/* 导出变量样式 */
+.export-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.format-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.copy-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.copy-btn .iconify {
+    width: 16px;
+    height: 16px;
+    color: currentColor;
+
+}
+
+.btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.btn.active:hover {
+    background: var(--primary-color);
+    opacity: 0.9;
+}
+
+.export-preview {
+    position: relative;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 1.1rem;
+    overflow: auto;
+    max-height: 300px;
+
+}
+
+.export-preview::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 2rem;
+    width: 12px;
+    height: 12px;
+    background: var(--bg-secondary);
+    transform: rotate(45deg);
+}
+
+.export-preview pre {
+    margin: 0;
+    font-family: monospace;
+    font-size: 14px;
+    color: var(--code-text);
+    white-space: pre-wrap;
+}

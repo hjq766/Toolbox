@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64编解码工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>Base64编解码工具</h1>
+                    <p>支持文本内容的Base64编码和解码转换</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 输入区域 -->
+                    <div class="code-container">
+                        <div class="code-editor">
+                            <h2>输入文本</h2>
+                            <textarea id="input" class="code-textarea" placeholder="在此输入需要编码或解码的文本"></textarea>
+                        </div>
+                        <div class="code-actions">
+                            <button class="btn" onclick="encode()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M7 15l5-5 5 5"/>
+                                </svg>
+                                编码
+                            </button>
+                            <button class="btn" onclick="decode()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M7 9l5 5 5-5"/>
+                                </svg>
+                                解码
+                            </button>
+                            <button class="btn" onclick="copyInput()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                复制
+                            </button>
+                            <button class="btn" onclick="clearInput()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4V4m4 4V4m-9 3h18"/>
+                                </svg>
+                                清空
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 输出区域 -->
+                    <div class="code-container">
+                        <div class="code-editor">
+                            <h2>输出结果</h2>
+                            <textarea id="output" class="code-textarea" readonly placeholder="这里显示编码或解码的结果"></textarea>
+                        </div>
+                        <div class="code-actions">
+                            <button class="btn" onclick="copyOutput()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                复制
+                            </button>
+                            <button class="btn" onclick="clearOutput()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4V4m4 4V4m-9 3h18"/>
+                                </svg>
+                                清空
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="tool-info">
+                        <h2>功能简介</h2>
+                        <p>Base64编解码工具支持文本内容的Base64编码和解码转换。</p>
+                        
+                        <h3>主要功能</h3>
+                        <ul>
+                            <li>支持文本内容的Base64编码</li>
+                            <li>支持Base64编码的解码</li>
+                            <li>支持复制编码和解码结果</li>
+                            <li>支持UTF-8编码</li>
+                        </ul>
+                        
+                        <h3>使用说明</h3>
+                        <ul>
+                            <li>在输入框中输入需要处理的文本</li>
+                            <li>点击"编码"按钮进行Base64编码</li>
+                            <li>点击"解码"按钮将Base64还原为原文</li>
+                            <li>点击"复制"按钮复制结果</li>
+                        </ul>
+
+                        <h3>注意事项</h3>
+                        <ul>
+                            <li>解码时请确保输入的是有效的Base64编码</li>
+                            <li>Base64编码后的文本会比原文长约33%</li>
+                            <li>支持中文等Unicode字符的编解码</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

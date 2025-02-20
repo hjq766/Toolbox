@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>颜色搭配大全 - 在线工具箱</title>
+	<meta name="description" content="所谓配色,简单来说就是将颜色摆在适当的位置,做一个最好的安排。色彩搭配看似复杂,但并不神秘。既然每种色彩在印象空间中都有自己的位置,那么色彩搭配得到的印象可以用加减法来近似估算。将网页设计中常见的色彩搭配按照色相的顺序归类。" />
+	<link rel="stylesheet" href="../../public/style.css">
+	<style>
+		.tool-main {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+		}
+
+		.tab {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			padding: 20px;
+			background: var(--bg-color-50);
+			border-radius: 12px;
+			border: 1px solid var(--border-color-10);
+		}
+
+		.tab-left {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		.tab-right {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			margin-left: auto;
+		}
+
+		.type {
+			padding: 8px 16px;
+			border-radius: 6px;
+			cursor: pointer;
+			color: var(--text-color);
+			transition: var(--transition);
+		}
+
+		.type.sel {
+			background: var(--primary-color);
+			color: #fff;
+		}
+
+		.refresh {
+			cursor: pointer;
+			padding: 8px 16px;
+			border-radius: 6px;
+			transition: var(--transition);
+		}
+
+		.refresh:hover {
+			background: var(--bg-secondary);
+		}
+
+		.sbox {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			position: relative;
+		}
+
+		.sbox input {
+			width: 200px;
+			padding: 8px 12px;
+			padding-right: 32px;
+			border: 1px solid var(--border-color);
+			border-radius: 6px;
+			font-size: 14px;
+			background: var(--bg-color);
+			color: var(--text-color);
+		}
+
+		.sbox input:focus {
+			outline: 2px solid var(--primary-color);
+			outline-offset: -1px;
+		}
+
+		.sbox .clear-btn {
+			position: absolute;
+			right: 8px;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 16px;
+			height: 16px;
+			cursor: pointer;
+			display: none;
+			opacity: 0.6;
+			color: var(--text-color);
+			transition: var(--transition);
+			background: transparent;
+			border: none;
+			padding: 0;
+		}
+
+		.sbox .clear-btn:hover {
+			opacity: 1;
+		}
+
+		.sbox .clear-btn svg {
+			width: 100%;
+			height: 100%;
+			fill: currentColor;
+		}
+
+		.sbox svg {
+			display: block;
+		}
+
+		#sContent {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			min-width: 200px;
+			width: max-content;
+			max-width: 300px;
+			max-height: 300px;
+			overflow-y: auto;
+			background: var(--bg-color);
+			border: 1px solid var(--border-color);
+			border-radius: 6px;
+			margin-top: 4px;
+			z-index: 1000;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+			display: none;
+		}
+
+		#sContent.show {
+			display: block;
+		}
+
+		#sContent div {
+			padding: 8px 12px;
+			cursor: pointer;
+			transition: var(--transition);
+			color: var(--text-color);
+			display: flex;
+			align-items: center;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		#sContent div:hover {
+			background: var(--bg-color-50);
+		}
+
+		#sContent div span {
+			display: inline-block;
+			width: 16px;
+			height: 16px;
+			border-radius: 4px;
+			margin-right: 8px;
+			flex-shrink: 0;
+		}
+
+		#results {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+			gap: 20px;
+			margin-top: 20px;
+		}
+
+		.box {
+			border-radius: 12px;
+			overflow: hidden;
+			transition: var(--transition);
+		}
+
+		.box:hover {
+			transform: translateY(-4px);
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		}
+
+		.place {
+			padding: 20px;
+			color: #fff;
+			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+			cursor: pointer;
+			transition: var(--transition);
+		}
+
+		.place:hover {
+			filter: brightness(1.1);
+		}
+
+		.color-value {
+			cursor: pointer;
+			padding: 2px 6px;
+			border-radius: 4px;
+			background: rgba(255, 255, 255, 0.2);
+			transition: var(--transition);
+		}
+
+		.color-value:hover {
+			background: rgba(255, 255, 255, 0.3);
+		}
+
+		.color-value:active {
+			background: rgba(255, 255, 255, 0.1);
+		}
+
+		.c4 { height: 80px; }
+		.c3 { height: 70px; }
+		.c2 { height: 60px; }
+		.c1 { height: 50px; }
+
+		.grad {
+			height: 200px;
+			display: flex;
+			align-items: flex-end;
+			padding: 20px;
+			color: #fff;
+			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+			cursor: pointer;
+			transition: var(--transition);
+		}
+
+		.grad:hover {
+			filter: brightness(1.1);
+		}
+
+		.grad:active {
+			filter: brightness(0.95);
+		}
+
+		.end {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 12px;
+			background: var(--bg-color);
+			border-top: 1px solid var(--border-color);
+		}
+
+		.end span {
+			font-size: 14px;
+			color: var(--text-color);
+		}
+
+		@keyframes fadeInOut {
+			0% { opacity: 0; transform: translate(-50%, 20px); }
+			20% { opacity: 1; transform: translate(-50%, 0); }
+			80% { opacity: 1; transform: translate(-50%, 0); }
+			100% { opacity: 0; transform: translate(-50%, -20px); }
+		}
+
+		.foot {
+			display: flex;
+			justify-content: center;
+			margin-top: 40px;
+		}
+
+		.change {
+			padding: 12px 24px;
+			border-radius: 6px;
+			background: var(--bg-color-50);
+			border: 1px solid var(--border-color);
+			color: var(--text-color);
+			cursor: pointer;
+			transition: var(--transition);
+		}
+
+		.change:hover {
+			background: var(--bg-secondary);
+		}
+	</style>
+</head>
+<body>
+	<div class="page-wrapper">
+		<header class="header">
+			<div class="container">
+				<nav class="nav">
+					<div class="nav-left">
+						<a href="../../index.html" class="logo"></a>
+						<div class="nav-links">
+							<a href="../../index.html#tools" class="nav-link">返回首页</a>
+						</div>
+					</div>
+					<button class="theme-toggle" id="themeToggle">
+						<svg class="sun-icon" viewBox="0 0 24 24">
+							<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>
+						</svg>
+						<svg class="moon-icon" viewBox="0 0 24 24" style="display: none;">
+							<path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+						</svg>
+					</button>
+				</nav>
+			</div>
+		</header>
+
+		<main class="main">
+			<section class="tool-page-hero">
+				<div class="container">
+					<h1>颜色搭配大全</h1>
+					<p>成千上万种精选调色板/配色方案/色彩搭配，帮助你找到完美的配色灵感</p>
+				</div>
+			</section>
+
+			<div class="tool-container">
+				<div class="tool-main">
+					<div class="tab">
+						<div class="tab-left">
+							<span class="type sel" data-key="color">色板</span>
+							<span class="type" data-key="gradual">渐变</span>
+							<span class="refresh">刷新</span>
+						</div>
+						<div class="tab-right">
+							<div class="sbox">
+								<input id="sTxt" maxlength="20" placeholder="输入颜色关键词搜索">
+								<div class="clear-btn" onclick="clearSearch()">
+									<svg viewBox="0 0 24 24">
+										<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+									</svg>
+								</div>
+								<div id="sContent"></div>
+							</div>
+						</div>
+					</div>
+					<div id="results"></div>
+				</div>
+			</div>
+		</main>
+
+		<footer class="footer">
+			<div class="container">
+				<span>Copyright © <script>document.write((new Date()).getFullYear());</script> Jacket</span>
+				<!-- 站点备案 -->
+				&nbsp;<span>|</span>&nbsp;
+				<a href="https://beian.miit.gov.cn" id="beian" target="_blank">粤ICP备2024225759号</a>&nbsp;
+				<img src="https://jqnest.top/img/beian.png" style="width:12px;margin-top: 4px;">&nbsp;
+				<a href="https://beian.mps.gov.cn/#/query/webSearch?code=44030002003173" rel="noreferrer" target="_blank">粤公网备44030002003173号</a>
+			</div>
+		</footer>
+	</div>
+
+	<div id="toast" class="toast"></div>
+
+	<script src="../../public/main.js"></script>
+	<script src="color.js"></script>
+	<script id="color" type="text/template">
+		<div class="box">
+			<div class="place c4" style="background: #{c4};">
+				<span>#{t4}: <span class="color-value" onclick="copyAndToast('#{c4}', '颜色值已复制！')">#{c4}</span></span>
+			</div>
+			<div class="place c3" style="background: #{c3};">
+				<span>#{t3}: <span class="color-value" onclick="copyAndToast('#{c3}', '颜色值已复制！')">#{c3}</span></span>
+			</div>
+			<div class="place c2" style="background: #{c2};">
+				<span>#{t2}: <span class="color-value" onclick="copyAndToast('#{c2}', '颜色值已复制！')">#{c2}</span></span>
+			</div>
+			<div class="place c1" style="background: #{c1};">
+				<span>#{t1}: <span class="color-value" onclick="copyAndToast('#{c1}', '颜色值已复制！')">#{c1}</span></span>
+			</div>
+		</div>
+	</script>
+	<script id="gradual" type="text/template">
+		<div class="box">
+			<div class="grad" style="background:#{s};" onclick="copyAndToast('background: #{s};', '渐变代码已复制！')"><span>#{t}</span></div>  
+			<div class="end">
+				<span>#{c}</span>
+			</div>
+		</div>
+	</script>
+	<script>
+		function copyAndToast(text, message) {
+			navigator.clipboard.writeText(text).then(() => {
+				const toast = document.getElementById('toast');
+				toast.textContent = message;
+				toast.style.display = 'block';
+				
+				setTimeout(() => {
+					toast.style.display = 'none';
+				}, 2000);
+			}).catch(err => {
+				console.error('复制失败:', err);
+			});
+		}
+
+		function clearSearch() {
+			const input = document.getElementById('sTxt');
+			input.value = '';
+			document.querySelector('.sbox .clear-btn').style.display = 'none';
+			// 触发input事件，以更新搜索结果
+			input.dispatchEvent(new Event('input'));
+			// 隐藏搜索结果下拉框
+			document.getElementById('sContent').classList.remove('show');
+		}
+
+		// 监听输入框变化，显示/隐藏清空按钮
+		document.getElementById('sTxt').addEventListener('input', function() {
+			const clearBtn = document.querySelector('.sbox .clear-btn');
+			clearBtn.style.display = this.value ? 'block' : 'none';
+		});
+
+		// 监听搜索结果点击
+		document.getElementById('sContent').addEventListener('click', function(e) {
+			if (e.target.closest('div')) {
+				// 当选择了搜索结果时，显示清空按钮
+				const clearBtn = document.querySelector('.sbox .clear-btn');
+				clearBtn.style.display = 'block';
+			}
+		});
+
+		// 页面加载完成后初始化显示
+		document.addEventListener('DOMContentLoaded', function() {
+			// 触发一次色板显示
+			document.querySelector('.type[data-key="color"]').click();
+		});
+	</script>
+</body>
+</html>

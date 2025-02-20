@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>颜色工具箱 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>颜色工具箱</h1>
+                    <p>一站式颜色处理解决方案，为设计师和开发者提供颜色格式转换、调色板生成、智能配色推荐等专业功能</p>
+                </div>
+            </section>
+            
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 左侧：颜色选择器和基础信息 -->
+                    <div class="color-picker-section">
+                        <h3>选择颜色</h3>
+                        <div class="color-wheel-container">
+                            <input type="color" id="colorWheel" value="#3366ff">
+                        </div>
+                        <div class="color-input-group">
+                            <input type="text" id="colorInput" placeholder="输入颜色值，如 #3366ff">
+                            <button class="clear-btn" onclick="clearInput()">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- 颜色值展示 -->
+                        <div class="color-values">
+                            <div class="color-value">
+                                <label>HEX</label>
+                                <span id="hexValue">#2196F3</span>
+                            </div>
+                            <div class="color-value">
+                                <label>RGB</label>
+                                <span id="rgbValue">rgb(33, 150, 243)</span>
+                            </div>
+                            <div class="color-value">
+                                <label>HSL</label>
+                                <span id="hslValue">hsl(207, 90%, 54%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：功能区域 -->
+                    <div class="form-section">
+                        <div class="form-tabs">
+                            <button class="form-tab active" data-tab="scheme">配色方案</button>
+                            <button class="form-tab" data-tab="example">颜色示例</button>
+                            <button class="form-tab" data-tab="reference">色彩参考</button>
+                        </div>
+                        
+                        <!-- 配色方案内容 -->
+                        <div class="tab-content active" id="schemeContent">
+                            <div class="color-functions">
+                                <!-- 保持原有的所有功能区域 -->
+                                <div class="function-section">
+                                    <h3>颜色格式</h3>
+                                    <div id="colorFormats" class="color-formats-grid"></div>
+                                </div>
+
+                                <div class="function-section">
+                                    <h3>色阶生成</h3>
+                                    <div class="color-scale-grid" id="shadesGrid"></div>
+                                </div>
+
+                                <!-- 状态颜色 -->
+                                <div class="function-section">
+                                    <h3>状态颜色</h3>
+                                    <div class="semantic-colors-grid" id="semanticColors"></div>
+                                </div>
+
+                                <!-- 配色方案 -->
+                                <div class="function-section">
+                                    <h3>配色方案</h3>
+                                    <div class="color-schemes">
+                                        <div class="scheme-group">
+                                            <h4>互补色</h4>
+                                            <div id="complementaryColors" class="scheme-colors"></div>
+                                        </div>
+                                        <div class="scheme-group">
+                                            <h4>分裂互补色</h4>
+                                            <div id="splitComplementaryColors" class="scheme-colors"></div>
+                                        </div>
+                                        <div class="scheme-group">
+                                            <h4>类似色</h4>
+                                            <div id="analogousColors" class="scheme-colors"></div>
+                                        </div>
+                                        <div class="scheme-group">
+                                            <h4>三分色</h4>
+                                            <div id="triadicColors" class="scheme-colors"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 在 color-functions 中添加新的功能区域 -->
+                                <div class="function-section">
+                                    <h3>导出变量</h3>
+                                    <div class="export-options">
+                                        <div class="format-buttons">
+                                            <button onclick="exportVariables('css')" class="btn">CSS</button>
+                                            <button onclick="exportVariables('scss')" class="btn">SCSS</button>
+                                            <button onclick="exportVariables('less')" class="btn">LESS</button>
+                                        </div>
+                                        <button onclick="copyExportCode()" class="copy-btn">
+                                            <span class="iconify" data-icon="tabler:copy" data-inline="false"></span>
+                                            复制
+                                        </button>
+                                    </div>
+                                    <div class="export-preview">
+                                        <pre id="exportCode"></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 色彩参考内容 -->
+                        <div class="tab-content" id="referenceContent">
+                            <div class="color-functions">
+                                <div class="reference-grid">
+                                    <!-- 动态生成的颜色组将在这里显示 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 在 referenceContent 后添加 -->
+                        <!-- 颜色示例内容 -->
+                        <div class="tab-content" id="exampleContent">
+                            <div class="color-functions">
+                                <div class="example-grid">
+                                    
+                                    <!-- 特性卡片示例 -->
+                                    <div class="example-section color-card">
+                                        <div class="feature-card">
+                                            <div class="feature-card-circle">
+                                                <span>01</span>
+                                            </div>
+                                            <div class="feature-card-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                    <path d="m24,6.928v13.072h-11.5v3h5v1H6.5v-1h5v-3H0V4.5c0-1.379,1.122-2.5,2.5-2.5h12.98c-.253.295-.54.631-.856,1H2.5c-.827,0-1.5.673-1.5,1.5v14.5h22v-10.993l1-1.079Zm-12.749,3.094C19.058.891,19.093.855,19.11.838c1.118-1.115,2.936-1.113,4.052.002,1.114,1.117,1.114,2.936,0,4.052l-8.185,8.828c-.116,1.826-1.623,3.281-3.478,3.281h-5.59l.097-.582c.043-.257,1.086-6.16,5.244-6.396Zm2.749,3.478c0-1.379-1.122-2.5-2.5-2.5-2.834,0-4.018,3.569-4.378,5h4.378c1.378,0,2.5-1.121,2.5-2.5Zm.814-1.073l2.066-2.229c-.332-1.186-1.371-2.057-2.606-2.172-.641.749-1.261,1.475-1.817,2.125,1.117.321,1.998,1.176,2.357,2.277Zm.208-5.276c1.162.313,2.125,1.134,2.617,2.229l4.803-5.18c.737-.741.737-1.925.012-2.653-.724-.725-1.908-.727-2.637,0-.069.08-2.435,2.846-4.795,5.606Z"/>
+                                                </svg>
+                                            </div>
+                                            <h4 class="color-card-title" style="padding-top: 20px; margin: 0; ">颜色工具箱</h4>
+                                            <p class="color-card-desc" style="max-width: 100%;padding: 0; margin: 0; margin-top: 8px; line-height: 2;">专业的颜色处理工具集，集成多种实用功能，助力设计开发工作流程。支持多种颜色格式转换、智能色阶生成、配色方案推荐等功能，让颜色处理更加便捷高效。</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- 颜色系统示例 -->
+                                    <div class="example-section color-card">
+                                        <form class="color-card-content">
+                                            <h4 class="color-card-title">颜色系统示例</h4>
+                                            <p class="color-card-desc">展示如何在实际产品中运用色彩系统，包括主色、渐变、文本和交互状态等</p>
+                                            
+                                            <div class="switch-tabs">
+                                                <button type="button" class="switch-tab tab--1 active">基础版</button>
+                                                <button type="button" class="switch-tab tab--2">专业版</button>
+                                                <div class="switch-indicator"></div>
+                                            </div>
+                                            
+                                            <div class="feature-list">
+                                                <span>功能特点</span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="iconify" data-icon="tabler:circle-check-filled" data-inline="false"></span>
+                                                        <span>支持多种颜色格式转换与调整</span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="iconify" data-icon="tabler:circle-check-filled" data-inline="false"></span>
+                                                        <span>智能生成配色方案与色阶</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            
+                                            <div class="color-card-footer">
+                                                <div class="version-price">
+                                                    <sup>￥</sup>99<sub><sup>元</sup></sub>
+                                                </div>
+                                                <button type="button" class="action-button">立即升级</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- 色阶可视化示例 -->
+                                    <div class="example-section">
+                                        <h3>色阶可视化</h3>
+                                        <div id="doughnutChart" class="chart"></div>
+                                    </div>
+                                    
+                                    <!-- 状态提示示例 -->
+                                    <div class="example-section">
+                                        <h3>状态提示</h3>
+                                        <div class="example_toast_container">
+                                            <div class="example_toast_cell">
+                                                <div class="example_toast example_toast_success">
+                                                    <span class="iconify" data-icon="tabler:circle-check-filled" data-inline="false"></span>
+                                                    <div class="example_toast_content">
+                                                        <p class="example_toast_type">成功提示</p>
+                                                        <p class="example_toast_message">操作已成功完成，数据已保存。</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="example_toast example_toast_info add-margin">
+                                                    <span class="iconify" data-icon="tabler:info-circle-filled" data-inline="false"></span>
+                                                    <div class="example_toast_content">
+                                                        <p class="example_toast_type">信息提示</p>
+                                                        <p class="example_toast_message">这是一条重要的信息通知。</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="example_toast example_toast_warning add-margin">
+                                                    <span class="iconify" data-icon="tabler:alert-circle-filled" data-inline="false"></span>
+                                                    <div class="example_toast_content">
+                                                        <p class="example_toast_type">警告提示</p>
+                                                        <p class="example_toast_message">请注意，这是一条警告信息。</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="example_toast example_toast_error add-margin">
+                                                    <span class="iconify" data-icon="tabler:circle-x-filled" data-inline="false"></span>
+                                                    <div class="example_toast_content">
+                                                        <p class="example_toast_type">错误提示</p>
+                                                        <p class="example_toast_message">操作失败，请检查后重试。</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 聊天界面示例 -->
+                                    <div class="example-section">
+                                        <h3>聊天界面示例</h3>
+                                        <div class="messages-container">
+                                            <div class="message-box left">
+                                                <p>你好！请问有什么可以帮助你的吗？</p>
+                                            </div>
+                                            <div class="message-box right">
+                                                <p>我想了解一下这个颜色工具的使用方法。</p>
+                                            </div>
+                                            <div class="message-box left">
+                                                <p>当然可以，你可以直接使用颜色选择器，或者输入颜色值来开始。</p>
+                                            </div>
+                                            <div class="message-box right">
+                                                <p>明白了，谢谢！工具界面很直观呢。</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 选择框示例 -->
+                                    <div class="example-section">
+                                        <h3>选择开发语言</h3>
+                                        <label class="radio-option">
+                                            <div class="radio-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                    <path d="M30.713,0.501L71.717,460.42l184.006,51.078l184.515-51.15L481.287,0.501H30.713z M395.754,109.646l-2.567,28.596l-1.128,12.681h-0.187H256h-0.197h-79.599l5.155,57.761h74.444H256h115.723h15.201l-1.377,15.146l-13.255,148.506l-0.849,9.523L256,413.854v0.012l-0.259,0.072l-115.547-32.078l-7.903-88.566h26.098h30.526l4.016,44.986l62.82,16.965l0.052-0.014v-0.006l62.916-16.977l6.542-73.158H256h-0.197H129.771l-13.863-155.444l-1.351-15.131h141.247H256h141.104L395.754,109.646z"/>
+                                                </svg>
+                                            </div>
+                                            <span>HTML</span>
+                                            <input class="radio-input" type="radio" name="dev-lang" value="html" checked>
+                                            <span class="radio-checkmark"></span>
+                                        </label>
+                                        <label class="radio-option">
+                                            <div class="radio-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                    <path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0zm17.09 4.413L5.41 4.41l.213 2.622 10.125.002-.255 2.716h-6.64l.24 2.573h6.182l-.366 3.523-2.91.804-2.956-.81-.188-2.11h-2.61l.29 3.855L12 19.288l5.373-1.53L18.59 4.414z"/>
+                                                </svg>
+                                            </div>
+                                            <span>CSS</span>
+                                            <input class="radio-input" type="radio" name="dev-lang" value="css">
+                                            <span class="radio-checkmark"></span>
+                                        </label>
+                                        <label class="radio-option">
+                                            <div class="radio-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                    <path d="M1.008,0.5C0.438,0.583,0.48,1.27,0.521,1.958c0,169.668,0,339.31,0,508.974c169.364,1.135,340.808,0.162,510.979,0.486c0-170.309,0-340.61,0-510.918C341.342,0.5,171.167,0.5,1.008,0.5z M259.893,452.167c-11.822,11.919-30.478,18.938-53.429,18.938c-37.643,0-58.543-18.34-71.884-43.711c12.842-8.2,25.966-16.122,39.344-23.795c5.456,15.262,23.886,32.42,44.683,21.857c13.183-6.699,11.661-27.01,11.661-49.054c0-45.773,0-98.578,0-139.872c-0.042-0.688-0.083-1.375,0.482-1.458c15.707,0,31.413,0,47.116,0c0,36.788,0,78.402,0,117.529C277.866,395.199,280.91,430.988,259.893,452.167z M470.696,409.917c-2.674,39.884-35.243,61.063-79.17,61.188c-43.062,0.124-70.624-19.013-87.433-48.567c12.085-8.317,25.778-15.017,38.375-22.822c10.08,15.761,27.537,30.91,53.429,28.652c16.131-1.406,34.856-14.555,24.285-34.482c-5.127-9.66-17.516-14.567-28.656-19.425c-35.352-15.424-76.828-29.571-72.861-84.992c1.327-18.514,9.852-31.525,20.889-40.796c11.311-9.5,26.46-15.867,46.629-16.511c36.629-1.173,56.723,15.12,70.429,37.884c-11.664,8.891-24.514,16.608-37.401,24.281c-4.229-12.995-24.644-25.658-41.772-17.969c-7.789,3.493-14.788,13.761-10.684,26.224c3.66,11.115,18.589,17.199,30.599,22.344C433.706,340.486,474.331,355.693,470.696,409.917z"/>
+                                                </svg>
+                                            </div>
+                                            <span>JavaScript</span>
+                                            <input class="radio-input" type="radio" name="dev-lang" value="javascript">
+                                            <span class="radio-checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <!-- 主要按钮示例 -->
+                                    <div class="example-section">
+                                        <h3>主要按钮示例</h3>
+                                        <div class="interactive-examples">
+                                            <button class="primary-button Default">Default</button>
+                                            <button class="primary-button Hover">Hover</button>
+                                            <button class="primary-button Active">Active</button>
+                                            <button class="primary-button Disabled">Disabled</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- 描边按钮示例 -->
+                                    <div class="example-section">
+                                        <h3>描边按钮示例</h3>
+                                        <div class="interactive-examples">
+                                            <button class="outline-button Default">Default</button>
+                                            <button class="outline-button Hover">Hover</button>
+                                            <button class="outline-button Active">Active</button>
+                                            <button class="outline-button Disabled">Disabled</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 工具说明 -->
+                <div class="tool-info">
+                    <h2>工具介绍</h2>
+                    <p>专业的颜色处理工具集，集成多种实用功能，助力设计开发工作流程。支持多种颜色格式转换、智能色阶生成、配色方案推荐等功能，让颜色处理更加便捷高效。</p>
+                    
+                    <h3>核心功能</h3>
+                    <ul>
+                        <li>专业的颜色格式转换（支持 HEX、RGB、RGBA、HSL、HSB、CMYK）</li>
+                        <li>智能色阶生成系统（支持 50-900 级别的颜色梯度）</li>
+                        <li>自动生成语义化状态色（Success、Info、Warning、Danger）</li>
+                        <li>专业配色方案推荐（互补色、分裂互补色、类似色、三分色等）</li>
+                        <li>便捷的颜色变量导出（支持 CSS、SCSS、LESS 格式）</li>
+                        <li>一键复制功能，提升工作效率</li>
+                        <li>深色模式自适应，智能调整色阶顺序</li>
+                        <li>可视化色阶展示，直观理解颜色关系</li>
+                        <li>UI 组件预览，展示颜色在实际场景中的应用</li>
+                    </ul>
+                    
+                    <h3>快速上手</h3>
+                    <ul>
+                        <li>通过颜色选择器可视化选择，或直接输入颜色值</li>
+                        <li>支持多种格式输入：HEX（#FF0000）、RGB（rgb(255,0,0)）、HSL 等</li>
+                        <li>点击任意颜色卡片即可复制对应的颜色值</li>
+                        <li>所有功能实时响应，颜色更新后自动刷新相关内容</li>
+                        <li>切换深色/浅色模式，查看不同主题下的效果</li>
+                        <li>在示例页面中预览颜色在各种 UI 组件中的表现</li>
+                        <li>使用导出功能，一键生成所需格式的颜色变量</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+    <script src="color.js"></script>
+</body>
+</html>

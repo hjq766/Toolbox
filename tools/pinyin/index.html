@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>汉字转拼音工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <div id="header"></div>
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>汉字转拼音工具</h1>
+                    <p>输入汉字，自动转换为拼音。支持多音字、声调显示等功能。</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="options-area">
+                    <h3>转换选项</h3>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="autoConvert">
+                            <label for="autoConvert">实时转换</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="toneOption" checked>
+                            <label for="toneOption">显示声调</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="firstLetterOption">
+                            <label for="firstLetterOption">只显示首字母</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="upperCaseOption">
+                            <label for="upperCaseOption">大写输出</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="conversion-area">
+                    <div class="input-group">
+                        <div class="title-area">
+                            <h2>输入汉字</h2>
+                            <div class="char-count">字数：<span id="charCount">0</span></div>
+                        </div>
+                        <textarea id="inputText" placeholder="请输入需要转换的汉字"></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <h2>转换结果</h2>
+                        <div id="result" class="result-area"></div>
+                        <div class="loading" id="loadingIndicator" style="display: none;">转换中...</div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="convertToPinyin()">转换拼音</button>
+                    <button class="btn" onclick="copyResult()">复制结果</button>
+                    <button class="btn" onclick="resetForm()">重置内容</button>
+                </div>
+
+                <div id="copyFeedback" class="copy-feedback" style="display: none;">
+                    已复制到剪贴板
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能简介</h2>
+                    <p>汉字转拼音工具可以将中文字符转换为对应的拼音，支持多种转换选项。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>支持批量汉字转拼音</li>
+                        <li>可选择是否显示声调</li>
+                        <li>支持首字母模式</li> 
+                        <li>支持大写输出</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>输入需要转换的汉字</li>
+                        <li>选择所需的转换选项</li>
+                        <li>点击"转换拼音"按钮进行转换</li>
+                        <li>点击"复制结果"可以快速复制转换结果</li>
+                    </ul>
+                </div>
+            </div>
+            <div id="toast" class="toast"></div>
+        </main>
+        <div id="footer"></div>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="pinyin_dict.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

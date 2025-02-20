@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英文大小写转换工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <div id="header"></div>
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>英文大小写转换工具</h1>
+                    <p>支持英文文本的大小写转换，以及各种格式的转换</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <div class="input-group">
+                        <div class="title-area">
+                            <h2>输入文本</h2>
+                            <span class="char-count">0 个字符</span>
+                        </div>
+                        <textarea id="source" placeholder="请输入需要转换的文本，或拖放文本文件到这里..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <div class="title-area">
+                            <h2>转换结果</h2>
+                            <span class="current-mode"></span>
+                        </div>
+                        <textarea id="result" readonly></textarea>
+                    </div>
+                </div>
+
+                <div class="tabs-section">
+                    <div class="form-tabs">
+                        <button class="form-tab active" data-tab="transform">大小写转换</button>
+                        <button class="form-tab" data-tab="format">格式转换</button>
+                    </div>
+
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="transform-panel">
+                            <div class="transform-grid">
+                                <div class="transform-card" onclick="transform('uppercase')" data-type="uppercase">
+                                    <div class="card-header">
+                                        <h3 class="card-title">全大写</h3>
+                                        <span class="shortcut">Ctrl/⌘ + U</span>
+                                    </div>
+                                    <div class="example">
+                                        <div class="example-text">
+                                            <span>hello world</span>
+                                            <span class="iconify" data-icon="tabler:arrow-narrow-right" data-inline="false"></span>
+                                            <span>HELLO WORLD</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="transform-card" onclick="transform('lowercase')" data-type="lowercase">
+                                    <div class="card-header">
+                                        <h3 class="card-title">全小写</h3>
+                                        <span class="shortcut">Ctrl/⌘ + L</span>
+                                    </div>
+                                    <div class="example">
+                                        <div class="example-text">
+                                            <span>HELLO WORLD</span>
+                                            <span class="iconify" data-icon="tabler:arrow-narrow-right" data-inline="false"></span>
+                                            <span>hello world</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="transform-card" onclick="transform('capitalize')" data-type="capitalize">
+                                    <div class="card-header">
+                                        <h3 class="card-title">单词首字母大写</h3>
+                                    </div>
+                                    <div class="example">
+                                        <div class="example-text">
+                                            <span>hello world</span>
+                                            <span class="iconify" data-icon="tabler:arrow-narrow-right" data-inline="false"></span>
+                                            <span>Hello World</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="transform-card" onclick="transform('sentenceCase')" data-type="sentenceCase">
+                                    <div class="card-header">
+                                        <h3 class="card-title">句首字母大写</h3>
+                                    </div>
+                                    <div class="example">
+                                        <div class="example-text">
+                                            <span>hello. world. test</span>
+                                            <span class="iconify" data-icon="tabler:arrow-narrow-right" data-inline="false"></span>
+                                            <span>Hello. World. Test</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="transform-card" onclick="transform('lineFirstUpper')" data-type="lineFirstUpper">
+                                    <div class="card-header">
+                                        <h3 class="card-title">行首字母大写</h3>
+                                    </div>
+                                    <div class="example">
+                                        <div class="example-text">
+                                            <span>hello↵world</span>
+                                            <span class="iconify" data-icon="tabler:arrow-narrow-right" data-inline="false"></span>
+                                            <span>Hello↵World</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="format-panel">
+                            <div class="format-grid">
+                                <div class="format-card" onclick="transform('spaceToUnderscore')">
+                                    <div class="card-header">
+                                        <h3 class="format-title">空格转下划线</h3>
+                                    </div>
+                                    <div class="format-example">
+                                        <span>hello world</span>
+                                        <span class="iconify" data-icon="tabler:arrow-narrow-right" data-inline="false"></span>
+                                        <span>hello_world</span>
+                                    </div>
+                                </div>
+
+                                <div class="format-card" onclick="transform('underscoreToSpace')">
+                                    <div class="card-header">
+                                        <h3 class="format-title">下划线转空格</h3>
+                                    </div>
+                                    <div class="format-example">
+                                        <span>hello_world</span>
+                                        <span class="iconify" data-icon="tabler:arrow-narrow-right" data-inline="false"></span>
+                                        <span>hello world</span>
+                                    </div>
+                                </div>
+
+                                <div class="format-card" onclick="transform('underscoreToDash')">
+                                    <div class="card-header">
+                                        <h3 class="format-title">下划线转中横线</h3>
+                                    </div>
+                                    <div class="format-example">
+                                        <span>hello_world</span>
+                                        <span class="iconify" data-icon="tabler:arrow-narrow-right" data-inline="false"></span>
+                                        <span>hello-world</span>
+                                    </div>
+                                </div>
+
+                                <div class="format-card" onclick="transform('dashToUnderscore')">
+                                    <div class="card-header">
+                                        <h3 class="format-title">中横线转下划线</h3>
+                                    </div>
+                                    <div class="format-example">
+                                        <span>hello-world</span>
+                                        <span class="iconify" data-icon="tabler:arrow-narrow-right" data-inline="false"></span>
+                                        <span>hello_world</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group mt-20">
+                    <button class="btn btn-primary" onclick="copyResult()">复制结果</button>
+                    <button class="btn" onclick="reset()">清空内容</button>
+                </div>
+
+                <div class="history-section">
+                    <div class="title-area">
+                        <h3>历史记录</h3>
+                        <button class="text-btn" onclick="clearHistory()">清空历史</button>
+                    </div>
+                    <div class="history-list">
+                        <div class="history-empty">暂无历史记录</div>
+                    </div>
+                </div>
+
+                <div class="tool-info container">
+                    <h2>功能简介</h2>
+                    <p>这是一个功能强大的英文文本格式转换工具，支持多种常用的转换功能。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>全大写/小写转换：快速将英文文本转换为全大写或全小写</li>
+                        <li>首字母大写：支持单词首字母、句首字母、行首字母的大写转换</li>
+                        <li>格式转换：支持空格、下划线、中横线、小数点等符号的相互转换</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>在输入框中粘贴或输入需要转换的英文文本，也可以直接拖放文本文件</li>
+                        <li>点击相应的转换按钮即可在结果框中看到转换后的文本</li>
+                        <li>支持快捷键：<kbd>Ctrl/⌘ + U</kbd> = 全大写，<kbd>Ctrl/⌘ + L</kbd> = 全小写</li>
+                        <li>支持实时预览：输入文本时自动应用上次使用的转换方式</li>
+                    </ul>
+                    
+                    <h3>注意事项</h3>
+                    <ul>
+                        <li>转换结果会自动保存到历史记录中，方便后续使用</li>
+                        <li>清空按钮会同时清除输入文本和转换结果</li>
+                        <li>每个转换按钮都有示例提示，鼠标悬停即可查看</li>
+                    </ul>
+                </div>
+            </div>
+            <div id="toast" class="toast"></div>
+        </main>
+        <div id="footer"></div>
+    </div>
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

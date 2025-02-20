@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本分析器 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+    <link rel="stylesheet" href="tool.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main-content">
+            <!-- 工具页面标题 -->
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>文本分析器</h1>
+                    <p>拖拽文件、选择文件或直接粘贴文本内容，即可分析文本信息</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 保留原有的功能结构，只调整样式 -->
+                    <div class="file-upload" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                        <input type="file" id="fileInput" accept=".txt,.js,.html,.css,.json,.md,.py,.java,.cpp,.c,.php">
+                        <div>点击或拖拽文件到此处</div>
+                        <div>支持 .txt、.js、.html、.css、.json、.md、.py、.java、.cpp、.c、.php 等文件</div>
+                    </div>
+
+                    <div class="stats-container">
+                        <div class="stats-section">
+                            <div class="stats-section-title">基本信息</div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="fileType">-</div>
+                                    <div class="stat-label">文件类型</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="size">0 B</div>
+                                    <div class="stat-label">文件大小</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="lines">0</div>
+                                    <div class="stat-label">总行数</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="nonEmptyLines">0</div>
+                                    <div class="stat-label">有效行数</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="maxLineLength">0</div>
+                                    <div class="stat-label">最大行长度</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="chars">0</div>
+                                    <div class="stat-label">字符数</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stats-section">
+                            <div class="stats-section-title">内容分析</div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="chinese">0</div>
+                                    <div class="stat-label">中文字数</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="english">0</div>
+                                    <div class="stat-label">英文字母</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="numbers">0</div>
+                                    <div class="stat-label">数值个数</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="spaces">0</div>
+                                    <div class="stat-label">空格数量</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="punctuation">0</div>
+                                    <div class="stat-label">标点符号</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="url">0</div>
+                                    <div class="stat-label">URL链接</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-area">
+                        <h3>文本内容</h3>
+                        <textarea id="content" class="code-textarea" placeholder="在此输入或粘贴文本内容..."></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn" onclick="clearContent()">清空内容</button>
+                        <button class="btn" onclick="removeEmptyLines()">删除空行</button>
+                        <button class="btn btn-primary" onclick="downloadTxt()">下载文本</button>
+                    </div>
+                </div>
+                <div class="tool-info">
+                    <h2>工具说明</h2>
+                    <p>文本分析器是一个功能强大的在线文本统计和分析工具，支持多种文件格式和分析维度。</p>
+                    
+                    <h4>主要功能</h4>
+                    <ul>
+                        <li>支持文件拖拽上传和直接粘贴文本内容</li>
+                        <li>支持多种文件格式：TXT、JavaScript、HTML、CSS、JSON、Markdown、Python、Java、C++、C、PHP</li>
+                        <li>提供丰富的文本统计指标：
+                            <ul>
+                                <li>基本信息：文件类型、大小、总行数、字符数、有效行数、最大行长度</li>
+                                <li>内容分析：中文字数、英文字母数、数值个数、空格数量、标点符号、URL链接</li>
+                            </ul>
+                        </li>
+                        <li>实用的文本处理功能：
+                            <ul>
+                                <li>一键删除空行</li>
+                                <li>导出处理后的文本</li>
+                                <li>实时统计更新</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h4>使用说明</h4>
+                    <ul>
+                        <li>通过拖拽文件、点击上传或直接粘贴文本到输入框</li>
+                        <li>工具会自动分析文本并显示各项统计数据</li>
+                        <li>可以使用底部按钮进行文本处理和导出</li>
+                        <li>所有统计数据会随文本内容的变化实时更新</li>
+                    </ul>
+
+                    <h4>注意事项</h4>
+                    <ul>
+                        <li>文本分析完全在浏览器本地进行，不会上传到服务器</li>
+                        <li>对于大文件，建议分段处理以获得更好的性能</li>
+                        <li>URL统计仅支持标准的http/https链接格式</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

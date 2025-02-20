@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字节单位换算器 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main-content">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>字节单位换算器</h1>
+                    <p>快速进行各种数据存储单位之间的转换</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main" style="width: 100%; max-width: none;">
+                        <div class="unit-item" data-unit="b">
+                            <label>
+                                <span>比特 (bit)</span>
+                                <input type="number" placeholder="输入比特值" step="any">
+                            </label>
+                        </div>
+                        <div class="unit-item" data-unit="B">
+                            <label>
+                                <span>字节 (byte)</span>
+                                <input type="number" placeholder="输入字节值" step="any">
+                            </label>
+                        </div>
+                        <div class="unit-item" data-unit="KB">
+                            <label>
+                                <span>千字节 (KB)</span>
+                                <input type="number" placeholder="输入KB值" step="any">
+                            </label>
+                        </div>
+                        <div class="unit-item" data-unit="MB">
+                            <label>
+                                <span>兆字节 (MB)</span>
+                                <input type="number" placeholder="输入MB值" step="any">
+                            </label>
+                        </div>
+                        <div class="unit-item" data-unit="GB">
+                            <label>
+                                <span>吉字节 (GB)</span>
+                                <input type="number" placeholder="输入GB值" step="any">
+                            </label>
+                        </div>
+                        <div class="unit-item" data-unit="TB">
+                            <label>
+                                <span>太字节 (TB)</span>
+                                <input type="number" placeholder="输入TB值" step="any">
+                            </label>
+                        </div>
+                        <div class="unit-item" data-unit="PB">
+                            <label>
+                                <span>拍字节 (PB)</span>
+                                <input type="number" placeholder="输入PB值" step="any">
+                            </label>
+                        </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn" onclick="resetValues()">重置数据</button>
+                </div>
+                <div class="tool-info">
+                    <h2>功能简介</h2>
+                    <p>字节单位换算器提供快速、准确的数据存储单位转换功能，支持从比特(bit)到拍字节(PB)的各种单位互换。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>支持多种数据存储单位的转换</li>
+                        <li>实时自动计算换算结果</li>
+                        <li>支持高精度计算</li>
+                        <li>包含从bit到PB的完整单位体系</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>在任意单位输入框中输入数值</li>
+                        <li>其他单位的换算结果会自动计算</li>
+                        <li>支持小数点和科学计数法</li>
+                        <li>点击重置按钮清空所有数值</li>
+                    </ul>
+
+                    <h3>注意事项</h3>
+                    <ul>
+                        <li>换算基于1024进制（1KB = 1024B）</li>
+                        <li>输入支持科学计数法（如：1e6）</li>
+                        <li>结果保留适当的小数位数</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

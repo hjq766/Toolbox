@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>颜色工具集 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>颜色工具集</h1>
+                    <p>一站式颜色转换与配色工具，支持多种格式转换、智能配色方案生成和专业色彩参考</p>
+                </div>
+            </section>
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 颜色输入区域 -->
+                    <div class="color-input-section">
+                        <div class="color-input-group">
+                            <input type="color" class="color-picker" value="#2196F3">
+                            <div class="input-wrapper">
+                                <input type="text" id="colorInput" placeholder="输入颜色值，例如 #2196F3" value="#2196F3">
+                                <button class="clear-input-btn">
+                                    <svg viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 功能标签页 -->
+                    <div class="tabs">
+                        <div class="tab-headers">
+                            <button class="tab-header active" data-tab="convert">颜色转换</button>
+                            <button class="tab-header" data-tab="palette">调色方案</button>
+                            <button class="tab-header" data-tab="reference">色彩参考</button>
+                        </div>
+
+                        <!-- 颜色转换面板 -->
+                        <div class="tab-panel active" data-tab="convert">
+                            <div class="result-grid"></div>
+                        </div>
+
+                        <!-- 调色方案面板 -->
+                        <div class="tab-panel" data-tab="palette">
+                            <!-- 主色梯度 -->
+                            <div class="color-scales-container">
+                                <div class="color-scale">
+                                    <div class="color-scale-title">Primary 梯度</div>
+                                    <div class="color-scale-grid" id="shadesGrid"></div>
+                                </div>
+                            </div>
+
+                            <div class="palette-section">
+                                <!-- 互补色方案 -->
+                                <div class="palette-group">
+                                    <div class="palette-title">互补色方案</div>
+                                    <div class="palette-colors" id="complementaryScheme"></div>
+                                </div>
+
+                                <!-- 三分色方案 -->
+                                <div class="palette-group">
+                                    <div class="palette-title">三分色方案</div>
+                                    <div class="palette-colors" id="triadicScheme"></div>
+                                </div>
+
+                                <!-- 分裂互补色方案 -->
+                                <div class="palette-group">
+                                    <div class="palette-title">分裂互补色方案</div>
+                                    <div class="palette-colors" id="splitComplementaryScheme"></div>
+                                </div>
+
+                                <!-- 类似色方案 -->
+                                <div class="palette-group">
+                                    <div class="palette-title">类似色方案</div>
+                                    <div class="palette-colors" id="analogousScheme"></div>
+                                </div>
+
+                                <!-- 四分色方案 -->
+                                <div class="palette-group">
+                                    <div class="palette-title">四分色方案</div>
+                                    <div class="palette-colors" id="tetradicScheme"></div>
+                                </div>
+                            </div>
+
+                            <!-- 状态颜色 -->
+                            <div class="semantic-colors">
+                                <h3>状态颜色</h3>
+                                <div class="color-grid">
+                                    <div class="semantic-color">
+                                        <div class="color-box" id="successColor"></div>
+                                        <span class="color-label">Success</span>
+                                        <span class="color-hex" id="successHex"></span>
+                                    </div>
+                                    <div class="semantic-color">
+                                        <div class="color-box" id="infoColor"></div>
+                                        <span class="color-label">Info</span>
+                                        <span class="color-hex" id="infoHex"></span>
+                                    </div>
+                                    <div class="semantic-color">
+                                        <div class="color-box" id="warningColor"></div>
+                                        <span class="color-label">Warning</span>
+                                        <span class="color-hex" id="warningHex"></span>
+                                    </div>
+                                    <div class="semantic-color">
+                                        <div class="color-box" id="dangerColor"></div>
+                                        <span class="color-label">Danger</span>
+                                        <span class="color-hex" id="dangerHex"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 导出选项 -->
+                            <div class="export-options">
+                                <h3>导出配置</h3>
+                                <div class="export-buttons">
+                                    <button class="btn" data-format="css">导出 CSS 变量</button>
+                                    <button class="btn" data-format="scss">导出 SCSS 变量</button>
+                                    <button class="btn" data-format="less">导出 LESS 变量</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 色彩参考面板 -->
+                        <div class="tab-panel" data-tab="reference">
+                            <div class="color-reference"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 工具说明 -->
+                <div class="tool-info">
+                    <h2>功能说明</h2>
+                    <p>这是一个功能强大的颜色工具集，可以帮助您进行颜色格式转换、生成配色方案、查看色彩参考等。</p>
+                    <ul>
+                        <li>支持 HEX、RGB、HSL、HSB/HSV、CMYK 等多种颜色格式的转换</li>
+                        <li>提供互补色、三分色、类似色等多种配色方案</li>
+                        <li>包含状态颜色生成和颜色梯度生成</li>
+                        <li>提供专业的色彩参考库</li>
+                        <li>支持导出 CSS、SCSS、LESS 变量</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.6.0/dist/tinycolor-min.js"></script>
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

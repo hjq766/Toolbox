@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>颜色值转换工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="color.css">
+
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>颜色值转换工具</h1>
+                    <p>一站式颜色转换与配色工具，支持 HEX、RGB、HSL 等多种格式互转，提供系统配色方案和专业色彩参考库</p>
+                </div>
+            </section>
+            <div class="tool-container">
+                <div class="tool-main">
+                    <div class="unit-item">
+                        <label>
+                            <span>颜色值</span>
+                            <div class="color-input-group">
+                                
+                                <div class="input-wrapper">
+                                    <input type="text" id="input_color" placeholder="输入颜色值，例如 #000000" value="#2196F3">
+                                    <button class="clear-input-btn" onclick="clearInput()">
+                                        <svg viewBox="0 0 24 24" width="16" height="16">
+                                            <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </label>
+                        <button class="btn btn-primary" onclick="convert()">转换</button>
+                    </div>
+
+                    <div class="result-grid" id="result_grid"></div>
+
+                    <div class="color-palette-section">
+                        <h2 class="section-title">配色方案</h2>
+                        
+                        <!-- 系统色板和梯度 -->
+                        <div class="color-scales-container">
+                            <div class="color-scale">
+                                <div class="color-scale-title">Primary 梯度</div>
+                                <div id="primary_shades" class="color-scale-blocks"></div>
+                                <div class="color-scale-numbers">
+                                    <span>100</span>
+                                    <span>200</span>
+                                    <span>300</span>
+                                    <span>400</span>
+                                    <span>500</span>
+                                    <span>600</span>
+                                    <span>700</span>
+                                    <span>800</span>
+                                    <span>900</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 其他配色方案（互补色、类似色等） -->
+                        <div class="palette-grid" id="palette_grid">
+                            <div class="palette-row">
+                                <h3>互补色系</h3>
+                                <div class="shade-grid" id="complementary_colors"></div>
+                            </div>
+                            <div class="palette-row">
+                                <h3>类似色系</h3>
+                                <div class="shade-grid" id="analogous_colors"></div>
+                            </div>
+                            <div class="palette-row">
+                                <h3>三分色系</h3>
+                                <div class="shade-grid" id="triadic_colors"></div>
+                            </div>
+                            <div class="palette-row">
+                                <h3>分裂互补色系</h3>
+                                <div class="shade-grid" id="split_complementary_colors"></div>
+                            </div>
+                            <div class="palette-row">
+                                <h3>四分色系</h3>
+                                <div class="shade-grid" id="tetradic_colors"></div>
+                            </div>
+                            <div class="palette-row">
+                                <h3>单色系</h3>
+                                <div class="shade-grid" id="monochromatic_colors"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="color-reference-toggle">
+                        <button class="btn" onclick="toggleColorReference()">
+                            <span class="iconify" data-icon="tabler:color-swatch" data-inline="false" style="margin-right:4px;font-size:16px;"></span>
+                            查看更多颜色参考
+                        </button>
+                    </div>
+
+                    <div class="color-library-drawer" id="colorLibrary">
+                        <div class="drawer-header">
+                            <h2 class="section-title">色彩参考库</h2>
+                            <button class="close-drawer" onclick="toggleColorReference()">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="tools-nav">
+                            <button class="tab-btn active" data-category="basic">基础色系</button>
+                            <button class="tab-btn" data-category="extended">扩展色系</button>
+                        </div>
+                        <div class="drawer-content">
+                            <div id="basicColors" class="tab-content active">
+                                <div class="color-tables" id="basic_color_tables"></div>
+                            </div>
+                            <div id="extendedColors" class="tab-content">
+                                <div class="color-tables" id="extended_color_tables"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="drawer-overlay" id="drawerOverlay" onclick="toggleColorReference()"></div>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能简介</h2>
+                    <p>颜色值转换工具支持多种颜色格式的快速转换，包括 HEX、RGB、RGBA、HSL、HSB、CMYK 等格式的互相转换。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>支持多种颜色格式的互相转换</li>
+                        <li>提供可视化的颜色选择器</li>
+                        <li>生成颜色的系统梯度</li>
+                        <li>提供多种配色方案（互补色、类似色等）</li>
+                        <li>包含丰富的颜色参考库</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>直接使用颜色选择器选择颜色</li>
+                        <li>或在输入框中输入颜色值（支持多种格式）</li>
+                        <li>点击转换按钮获取各种格式的颜色值</li>
+                        <li>点击颜色值可以快速复制</li>
+                        <li>查看更多颜色参考可以打开颜色参考库</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="color.js"></script>
+    <script src="color_convert.js"></script>
+</body>
+</html>

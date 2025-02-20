@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>摩尔斯电码转换器 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>摩尔斯电码转换器</h1>
+                    <p>支持中英文、数字与摩尔斯电码的双向转换，快速准确</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <div class="input-group">
+                        <div class="input-header">
+                            <h3>文本内容</h3>
+                            <div class="input-actions">
+                                <button class="btn" onclick="clearText('text')">
+                                    <span class="iconify" data-icon="tabler:eraser"></span>
+                                    清空
+                                </button>
+                                <button class="btn" onclick="pasteText()">
+                                    <span class="iconify" data-icon="tabler:clipboard"></span>
+                                    粘贴
+                                </button>
+                            </div>
+                        </div>
+                        <textarea id="textInput" placeholder="在此输入文本内容..."></textarea>
+                    </div>
+
+                    <div class="convert-actions">
+                        <button class="btn primary" onclick="convertToMorse()">
+                            <span class="iconify" data-icon="tabler:arrow-down"></span>
+                            转换为摩尔斯电码
+                        </button>
+                        <button class="btn primary" onclick="convertToText()">
+                            <span class="iconify" data-icon="tabler:arrow-up"></span>
+                            转换为文本
+                        </button>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-header">
+                            <h3>摩尔斯电码</h3>
+                            <div class="input-actions">
+                                <button class="btn" onclick="clearText('morse')">
+                                    <span class="iconify" data-icon="tabler:eraser"></span>
+                                    清空
+                                </button>
+                                <button class="btn" onclick="copyMorse()">
+                                    <span class="iconify" data-icon="tabler:copy"></span>
+                                    复制
+                                </button>
+                            </div>
+                        </div>
+                        <textarea id="morseInput" placeholder="在此输入摩尔斯电码..."></textarea>
+                    </div>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能说明</h2>
+                    <p>摩尔斯电码转换器支持将中英文、数字等文本转换为摩尔斯电码，也可以将摩尔斯电码转换回原文本。由于摩尔斯电码本身只支持英文字母，中文字符会先转换为拼音后再进行编码。</p>
+
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>文本转摩尔斯电码：
+                            <ul>
+                                <li>英文和数字：直接转换为对应的摩尔斯电码</li>
+                                <li>中文字符：先转换为拼音，再将拼音转换为摩尔斯电码</li>
+                                <li>例如："你好" → "ni hao" → "-. .. / .... .- --- /"</li>
+                            </ul>
+                        </li>
+                        <li>摩尔斯电码转文本：
+                            <ul>
+                                <li>英文和数字：可以完整还原原文</li>
+                                <li>中文内容：只能还原为拼音形式，无法还原为原中文字符</li>
+                            </ul>
+                        </li>
+                        <li>摩尔斯电码规则：
+                            <ul>
+                                <li>使用 "." 表示点，"-" 表示划</li>
+                                <li>字符之间用空格分隔</li>
+                                <li>单词之间用 "/" 分隔</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h3>支持格式</h3>
+                    <ul>
+                        <li>英文字母（A-Z，不区分大小写）：可完整互转</li>
+                        <li>数字（0-9）：可完整互转</li>
+                        <li>常用标点符号：可完整互转</li>
+                        <li>中文字符：转换为拼音后编码，无法还原为原中文</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="../pinyin/pinyin_dict.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS渐变色合集 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="color.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>CSS渐变色合集</h1>
+                    <p>精选CSS渐变色合集，提供多种风格渐变配色方案，支持一键复制CSS代码</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tools-nav">
+                    <button class="tab-btn active" data-category="all">全部颜色</button>
+                    <button class="tab-btn" data-category="popular">流行渐变</button>
+                    <button class="tab-btn" data-category="modern">现代风格</button>
+                    <button class="tab-btn" data-category="nature">自然风光</button>
+                    <button class="tab-btn" data-category="special">特效渐变</button>
+                    <button class="tab-btn" data-category="light">轻柔色系</button>
+                    <button class="tab-btn" data-category="chinese">中国风</button>
+                    <button class="tab-btn" data-category="retro">复古风</button>
+                    <button class="tab-btn" data-category="dark">暗黑系</button>
+                </div>
+
+                <div id="gradientContainer" class="gradient-grid">
+                    <!-- 渐变色卡片将通过 JS 动态生成 -->
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能简介</h2>
+                    <p>CSS渐变色合集工具提供精选的渐变色配色方案，帮助开发者和设计师快速找到合适的渐变配色。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>提供多种风格的渐变色配色</li>
+                        <li>支持一键复制CSS代码</li>
+                        <li>包含流行品牌配色参考</li>
+                        <li>提供深色和浅色系列</li>
+                        <li>所有渐变色支持实时预览</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>点击顶部分类切换不同风格</li>
+                        <li>鼠标悬停可预览效果</li>
+                        <li>点击复制按钮获取CSS代码</li>
+                        <li>点击渐变色块可直接复制</li>
+                        <li>代码可直接用于CSS背景属性</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="color.js"></script>
+    <script src="gradient.js"></script>
+</body>
+</html>

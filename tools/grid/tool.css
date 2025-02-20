@@ -1,0 +1,810 @@
+/* 主布局 */
+.tool-main {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
+}
+
+/* 控制面板 */
+.control-panel {
+    position: sticky;
+    top: 24px;
+    padding: 0;
+}
+
+.panel-section {
+    margin-bottom: 16px;
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color-10);
+    border-radius: 0 0 12px 12px;
+    padding: 20px;
+}
+
+.panel-section:first-child {
+    margin-top: 0;
+}
+
+.panel-section:last-child {
+    margin-bottom: 0;
+}
+
+.panel-section h3 {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 表单组件样式 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+/* 输入框带单位 */
+.input-with-unit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0 12px;
+}
+
+.input-with-unit input {
+    width: 100%;
+    height: 40px;
+    border: none;
+    background: none;
+    color: var(--text-color);
+}
+
+.input-with-unit input:focus {
+    outline: none;
+}
+
+.input-with-unit:focus-within {
+    border-color: var(--primary-color);
+}
+
+.unit {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* 带按钮的输入框 */
+.input-with-buttons {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.input-with-buttons input {
+    width: 50px;
+    height: 32px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.input-with-buttons input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* 滑块和数值显示 */
+.range-with-value {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.range-with-value input[type="range"] {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--border-color);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.range-with-value input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.value-display {
+    min-width: 45px;
+    text-align: right;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* 网格选项 */
+.option-grid {
+    display: grid;
+    gap: 8px;
+}
+
+.option-grid.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.grid-option {
+    height: 40px;
+    padding: 0 12px;
+    white-space: nowrap;
+    font-size: 13px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.grid-option:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.grid-option.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* 提示文本 */
+.hint-text {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-bottom: 16px;
+    padding: 8px 12px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+.hint-text .iconify {
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+/* 代码预览区域 */
+.code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.code-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+pre {
+    margin: 0;
+    padding: 12px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+code {
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+/* 预览面板 */
+.preview-panel {
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color-10);
+    border-radius: 12px;
+    overflow: hidden;
+}
+/* 设备视图切换 */
+.form-tabs {
+    display: flex;
+    gap: 8px;
+    background: var(--bg-color-50);
+    border-top: 1px solid var(--border-color); /* 上边框 */
+    border-left: 1px solid var(--border-color); /* 左边框 */
+    border-right: 1px solid var(--border-color); /* 右边框 */
+    border-bottom: none; /* 不显示底部边框 */
+    border-radius: 12px 12px 0 0;
+    padding: 16px;
+}
+
+.form-tab {
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-tab:hover {
+    background: var(--bg-color-80);
+}
+
+.form-tab.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+    .tool-main {
+        grid-template-columns: 1fr;
+    }
+    
+    .control-panel {
+        position: static;
+    }
+    
+    .form-tabs {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (min-width: 769px) {
+    .tool-main {
+        grid-template-columns: 360px 1fr;
+    }
+}
+
+/* 网格设置的行列输入组 */
+.grid-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* 加减按钮样式优化 */
+.btn.btn-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+}
+
+.btn.btn-icon:hover {
+    background: var(--bg-color-80);
+    border-color: var(--primary-color);
+}
+
+/* 确保单元格设置区域的grid-inputs样式正确应用 */
+.panel-section .grid-inputs {
+    margin-bottom: 0; /* 移除底部间距，因为这是最后的元素 */
+}
+
+/* 调整form-group在grid-inputs中的样式 */
+.grid-inputs .form-group {
+    margin-bottom: 0; /* 移除底部间距，因为已经有grid gap了 */
+}
+
+/* 删除这些不再需要的样式 */
+.code-preview,
+.export-actions {
+    display: none;
+}
+
+/* 预览面板标签页 */
+.preview-content {
+    display: none;
+    padding: 24px;
+}
+
+.preview-content.active {
+    display: block;
+}
+
+/* 推荐布局区域 */
+.recommend-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.recommend-header h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.recommend-header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.recommend-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 布局方案卡片 */
+.plan-item {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 8px;
+}
+
+.plan-item:last-child {
+    margin-bottom: 0;
+}
+
+.plan-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.plan-title {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.plan-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.plan-preview {
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.plan-grid {
+    width: 100%;
+    height: 120px;
+    display: grid;
+    gap: inherit;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.plan-cell {
+    background: var(--primary-color-10);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    height: 100%;
+    min-width: 0;
+}
+
+.plan-info {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg-color-50);
+    border-radius: 8px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.info-value {
+    font-size: 15px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.plan-description {
+    margin-top: 16px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.grid-preview {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    gap: inherit;
+}
+
+/* 修改左右边距可视化样式 */
+.grid-preview::before,
+.grid-preview::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: var(--side-margin);
+    background: rgba(255, 149, 0, 0.1);
+    border: 1px dashed #ff9500;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.grid-preview::before {
+    left: 0;
+}
+
+.grid-preview::after {
+    right: 0;
+}
+
+.grid-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    transition: max-width 0.3s ease;
+    background-color: var(--bg-color-50);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.preview-cell {
+    background: var(--primary-color-10);
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+}
+
+/* 设备预览控制 */
+.preview-controls {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.device-tabs {
+    display: flex;
+    gap: 8px;
+    background: var(--bg-color);
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.device-tab {
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.device-tab:hover {
+    background: var(--bg-color-80);
+}
+
+.device-tab.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* 网格预览样式 */
+.grid-cell {
+    background: var(--primary-color-10);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    transition: var(--transition);
+}
+
+.grid-cell:hover {
+    border-color: var(--primary-color);
+}
+
+/* 移除单元格选中相关样式 */
+.grid-cell.selected {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* 移除确认按钮样式 */
+.confirm-span-btn {
+    display: none;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .recommend-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 开关样式 */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+}
+
+.toggle-switch input {
+    display: none;
+}
+
+.switch-label {
+    display: flex;
+    align-items: center;
+    width: 160px;
+    height: 32px;
+    background: var(--bg-color-80);
+    border-radius: 16px;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    padding: 0 4px;
+}
+
+.switch-label::after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 24px;
+    background: var(--primary-color);
+    border-radius: 12px;
+    left: 4px;
+    transition: 0.3s;
+}
+
+.switch-text {
+    flex: 1;
+    text-align: center;
+    color: var(--text-color);
+    font-size: 14px;
+    z-index: 1;
+    transition: 0.3s;
+}
+
+input:checked + .switch-label::after {
+    left: 76px;
+}
+
+input:checked + .switch-label .switch-text:first-child {
+    color: var(--text-color-80);
+}
+
+input:not(:checked) + .switch-label .switch-text:last-child {
+    color: var(--text-color-80);
+}
+
+/* 调整生成按钮样式 */
+#generatePlans {
+    width: 100%;
+    margin-top: 16px;
+}
+
+/* 分段控制器样式 */
+.segmented-control {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 3px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.segmented-control input {
+    display: none;
+}
+
+.segments-container {
+    display: flex;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.segment {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: var(--text-color-80);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    user-select: none;
+    height: 100%;
+    line-height: 2.3;
+}
+
+.segments-container::before {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background: var(--bg-color);
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    left: 0;
+    top: 0;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+}
+
+#customMode:checked ~ .segments-container::before {
+    transform: translateX(100%);
+}
+
+
+.segment:hover {
+    color: var(--text-color);
+}
+
+/* 修改预览容器样式 */
+.preview-container {
+    min-height: 300px; /* 减小最小高度 */
+    display: flex;
+    flex-direction: column; /* 改为纵向布局 */
+    gap: 24px;
+}
+
+/* 添加网格预览信息样式 */
+.grid-preview-wrapper {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.grid-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px; /* 与其他模块的间距一致 */
+}
+
+.grid-preview-title {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+
+.grid-preview-subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.grid-info {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg-color-50);
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.grid-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.info-value {
+    font-size: 15px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/* 设备列表样式 */
+.device-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border-radius: 8px;
+}
+
+.device-group h4 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.device-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.device-card {
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.device-card:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.device-card.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.preview-actions {
+    display: flex;
+    justify-content: flex-end;
+}

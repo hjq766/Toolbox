@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>功率单位换算工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>功率单位换算工具</h1>
+                    <p>支持各种功率单位之间的互相转换，包括瓦特、马力等单位。</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="unit-grid">
+                    <div class="unit-column">
+                        <h2>基本单位</h2>
+                        <div class="form-group">
+                            <label>瓦特 (W)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="watt" step="any" oninput="convertPower('watt')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>千瓦 (kW)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="kilowatt" step="any" oninput="convertPower('kilowatt')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>焦耳/秒 (J/s)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="jps" step="any" oninput="convertPower('jps')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>牛顿·米/秒 (N·m/s)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="nms" step="any" oninput="convertPower('nms')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="unit-column">
+                        <h2>马力单位</h2>
+                        <div class="form-group">
+                            <label>英制马力 (HP)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="horsepower" step="any" oninput="convertPower('horsepower')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>米制马力 (PS)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="metric_horsepower" step="any" oninput="convertPower('metric_horsepower')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>公斤·米/秒 (kg·m/s)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="kgms" step="any" oninput="convertPower('kgms')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="unit-column">
+                        <h2>热功率单位</h2>
+                        <div class="form-group">
+                            <label>千卡/秒 (kcal/s)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="kcalps" step="any" oninput="convertPower('kcalps')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>英热单位/秒 (BTU/s)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="btups" step="any" oninput="convertPower('btups')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>英尺·磅/秒 (ft·lb/s)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="ftlbps" step="any" oninput="convertPower('ftlbps')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" onclick="resetAll()">重置所有</button>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能简介</h2>
+                    <p>功率单位换算工具支持在线瓦特(W)、千瓦(kW)、马力(HP)等单位间的互转互换。</p>
+                    
+                    <h3>支持的单位</h3>
+                    <ul>
+                        <li>基本单位：瓦特、千瓦、焦耳/秒、牛顿·米/秒</li>
+                        <li>马力单位：英制马力、米制马力、公斤·米/秒</li>
+                        <li>热功率单位：千卡/秒、英热单位/秒、英尺·磅/秒</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>在任意输入框中输入数值，其他单位会自动转换</li>
+                        <li>支持小数点输入</li>
+                        <li>点击"重置所有"可清空所有输入</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

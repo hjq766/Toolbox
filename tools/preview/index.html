@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多设备网页预览工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="preview-tool">
+            <div class="preview-header-wrapper">
+                <header class="preview-header">
+                    <input type="url" id="urlInput" placeholder="输入网址（例如：https://www.example.com）" />
+                    <button id="previewBtn" class="btn btn-primary">预览</button>
+                    <button id="qrcodeBtn" class="btn" title="生成二维码">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 11h8V3H3v8zm2-6h4v4H5V5zM3 21h8v-8H3v8zm2-6h4v4H5v-4zM13 3v8h8V3h-8zm6 6h-4V5h4v4zM13 13h2v2h-2zM15 15h2v2h-2zM13 17h2v2h-2zM17 17h2v2h-2zM19 19h2v2h-2zM15 19h2v2h-2zM17 13h2v2h-2zM19 15h2v2h-2z"/>
+                        </svg>
+                    </button>
+                    <div class="device-btns">
+                        <button class="device-btn active" data-device="desktop" title="桌面端">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12z"/>
+                            </svg>
+                        </button>
+                        <button class="device-btn" data-device="laptop" title="笔记本 (1440×900)">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M20 18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
+                            </svg>
+                        </button>
+                        <button class="device-btn" data-device="tablet" title="平板 (768×1024)">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M18.5 0h-14C3.12 0 2 1.12 2 2.5v19C2 22.88 3.12 24 4.5 24h14c1.38 0 2.5-1.12 2.5-2.5v-19C21 1.12 19.88 0 18.5 0zm-7 23c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm7.5-4h-14V3h14v16z"/>
+                            </svg>
+                        </button>
+                        <button class="device-btn" data-device="mobile" title="手机 (390×844)">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5-4h-9V4h9v14z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </header>
+            </div>
+            <div id="qrcodeArea" class="qrcode-area" style="display: none;">
+                <div id="qrcode"></div>
+            </div>
+            <main>
+                <iframe id="previewFrame" src="about:blank"></iframe>
+            </main>
+        </div>
+    </div>
+    <div id="toast" class="toast"></div>
+    <script src="../../public/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

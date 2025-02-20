@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手机号码归属地查询 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main-content">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>手机号码归属地查询</h1>
+                    <p>输入手机号码即可查询归属地信息</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <div class="input-group">
+                        <div class="form-group">
+                            <label for="phoneNumber">手机号码</label>
+                            <input type="tel" id="phoneNumber" placeholder="请输入要查询的手机号码" maxlength="11">
+                        </div>
+
+                        <div class="result-area" id="resultArea">
+                            <div class="form-group">
+                                <label>查询结果</label>
+                                <table class="result-table">
+                                    <tr>
+                                        <td>手机号码</td>
+                                        <td id="number">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>归属地</td>
+                                        <td id="province">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>运营商</td>
+                                        <td id="carrier">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>号段</td>
+                                        <td id="segment">-</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="queryLocation()">查询归属地</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

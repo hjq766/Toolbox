@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG压缩工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.1/svg.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="tool.js" defer></script>
+
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>SVG压缩工具</h1>
+                    <p>SVG矢量图压缩工具，保留编辑功能的同时实现高效压缩</p>
+                </div>
+            </section>
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 左侧：上传和预览区域 -->
+                    <div>
+                        <div class="file-upload" id="uploadArea">
+                            <p>点击或拖拽SVG文件到此处上传</p>
+                            <small>仅支持SVG矢量图格式</small><br>
+                            <small>压缩后保留完整的编辑功能</small>
+                            <input type="file" id="fileInput" multiple accept=".svg">
+                        </div>
+                        <div class="preview-grid" id="previewGrid"></div>
+                    </div>
+                    <div class="settings-panel">
+                        <h3>压缩设置</h3>
+                        <div class="progress-bar" style="display: none;">
+                            <div class="progress"></div>
+                        </div>
+                        <button class="btn btn-primary" id="convertBtn" disabled>开始压缩</button>
+                        <button class="btn btn-primary" id="downloadBtn" style="display: none;">批量下载</button>
+                    </div>
+                </div>
+                <div class="tool-info">
+                    <h2>功能介绍</h2>
+                    <p>SVG压缩工具是一个可以帮助你快速压缩SVG文件的大小，同时保持完整的编辑功能。</p>
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>高效压缩：快速减少SVG文件的大小，提升加载速度</li>
+                        <li>保留编辑功能：压缩后仍可编辑SVG文件，确保设计灵活性</li>
+                        <li>用户友好界面：简单易用的拖拽上传和实时预览功能</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>将需要压缩的SVG文件拖拽到上传区域</li>
+                        <li>点击"开始压缩"按钮进行处理</li>
+                        <li>压缩完成后，可以下载压缩后的文件</li>
+                    </ul>
+
+                    <h3>注意事项</h3>
+                    <ul>
+                        <li>建议处理前先备份原始SVG文件</li>
+                        <li>压缩效果可能因文件内容而异</li>
+                        <li>确保上传的文件为有效的SVG格式</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../../public/main.js"></script>
+</body>
+</html>

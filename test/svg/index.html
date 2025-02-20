@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG编辑器 - 在线工具</title>
+    <meta name="description" content="在线SVG编辑器,支持绘制基础图形、编辑属性、导出SVG文件等功能">
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../index.html" class="logo">在线工具</a>
+            <nav>
+                <a href="../../index.html">首页</a>
+                <a href="../../about.html">关于</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tool-container">
+            <!-- 工具标题和说明 -->
+            <div class="tool-header">
+                <div class="tool-title">
+                    <h1>SVG编辑器</h1>
+                    <div class="tool-intro">
+                        <p>在线SVG矢量图形编辑器,支持绘制基础图形、编辑属性、导出SVG文件等功能</p>
+                    </div>
+                </div>
+                <div class="tool-options">
+                    <button class="btn" onclick="toggleTheme()">切换主题</button>
+                </div>
+            </div>
+
+            <!-- 工具说明 -->
+            <div class="tool-desc">
+                <h2>功能介绍</h2>
+                <p>SVG编辑器是一个功能强大的在线矢量图形编辑工具,主要功能包括:</p>
+                <ul>
+                    <li>支持绘制矩形、圆形、椭圆、直线、折线、路径等基础图形</li>
+                    <li>支持文本添加和编辑</li>
+                    <li>支持图形的移动、缩放、旋转等基本变换</li>
+                    <li>支持填充颜色、描边颜色、描边宽度、透明度等样式设置</li>
+                    <li>支持图层管理、复制粘贴、撤销重做等编辑功能</li>
+                    <li>支持导出SVG文件</li>
+                </ul>
+                <h2>使用说明</h2>
+                <p>1. 选择左侧工具栏中的绘图工具</p>
+                <p>2. 在画布中拖拽绘制图形</p>
+                <p>3. 使用属性面板调整图形的位置、大小、样式等</p>
+                <p>4. 可以使用快捷键提升操作效率</p>
+            </div>
+
+            <div class="editor-container">
+                <!-- 工具栏 -->
+                <div class="toolbar">
+                    <div class="tool-group">
+                        <button class="tool-btn" data-tool="select" title="选择(V)">
+                            <svg viewBox="0 0 24 24"><path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2 1-3.2-7-4.1 4V2z"/></svg>
+                        </button>
+                        <button class="tool-btn" data-tool="rect" title="矩形(R)">
+                            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                        </button>
+                        <button class="tool-btn" data-tool="circle" title="圆形(C)">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>
+                        </button>
+                        <button class="tool-btn" data-tool="ellipse" title="椭圆(E)">
+                            <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="10" ry="6"/></svg>
+                        </button>
+                        <button class="tool-btn" data-tool="line" title="直线(L)">
+                            <svg viewBox="0 0 24 24"><line x1="5" y1="19" x2="19" y2="5"/></svg>
+                        </button>
+                        <button class="tool-btn" data-tool="polyline" title="折线(P)">
+                            <svg viewBox="0 0 24 24"><polyline points="4,4 8,16 12,8 16,16 20,4"/></svg>
+                        </button>
+                        <button class="tool-btn" data-tool="path" title="路径(A)">
+                            <svg viewBox="0 0 24 24"><path d="M3 20c6-9 9-15 20-15"/></svg>
+                        </button>
+                        <button class="tool-btn" data-tool="text" title="文本(T)">
+                            <svg viewBox="0 0 24 24"><text x="6" y="16" font-size="14">T</text></svg>
+                        </button>
+                    </div>
+
+                    <div class="tool-group">
+                        <input type="color" id="fillColor" title="填充颜色">
+                        <input type="color" id="strokeColor" title="描边颜色">
+                        <input type="number" id="strokeWidth" value="2" min="0" max="20" title="描边宽度">
+                        <select id="strokeStyle" title="描边样式">
+                            <option value="solid">实线</option>
+                            <option value="dashed">虚线</option>
+                            <option value="dotted">点线</option>
+                        </select>
+                    </div>
+
+                    <div class="tool-group">
+                        <button class="btn" id="undoBtn" title="撤销(Ctrl+Z)">撤销</button>
+                        <button class="btn" id="redoBtn" title="重做(Ctrl+Y)">重做</button>
+                        <button class="btn" id="copyBtn" title="复制(Ctrl+C)">复制</button>
+                        <button class="btn" id="pasteBtn" title="粘贴(Ctrl+V)">粘贴</button>
+                        <button class="btn" id="deleteBtn" title="删除(Del)">删除</button>
+                        <button class="btn" id="clearBtn" title="清空">清空</button>
+                        <button class="btn btn-primary" id="exportBtn" title="导出">导出SVG</button>
+                    </div>
+                </div>
+
+                <!-- 编辑区域 -->
+                <div class="canvas-container">
+                    <div class="canvas-tools">
+                        <div class="zoom-controls">
+                            <button class="btn" id="zoomOutBtn" title="缩小">-</button>
+                            <span id="zoomLevel">100%</span>
+                            <button class="btn" id="zoomInBtn" title="放大">+</button>
+                            <button class="btn" id="resetZoomBtn" title="重置缩放">重置</button>
+                        </div>
+                    </div>
+                    <svg id="svgCanvas" width="800" height="600">
+                        <defs>
+                            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#ddd" stroke-width="0.5"/>
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#grid)"/>
+                        <g id="mainGroup"></g>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- 属性面板 -->
+            <div class="properties-panel">
+                <h3>属性设置</h3>
+                <div class="property-group">
+                    <label>位置 X:</label>
+                    <input type="number" id="posX">
+                    <label>位置 Y:</label>
+                    <input type="number" id="posY">
+                </div>
+                <div class="property-group">
+                    <label>宽度:</label>
+                    <input type="number" id="width">
+                    <label>高度:</label>
+                    <input type="number" id="height">
+                </div>
+                <div class="property-group">
+                    <label>旋转:</label>
+                    <input type="number" id="rotation" min="0" max="360">
+                    <label>透明度:</label>
+                    <input type="number" id="opacity" min="0" max="1" step="0.1" value="1">
+                </div>
+            </div>
+
+            <!-- 图层面板 -->
+            <div class="layers-panel">
+                <h3>图层</h3>
+                <div class="layers-list" id="layersList">
+                    <!-- 图层列表将通过JS动态生成 -->
+                </div>
+            </div>
+
+            <!-- 工具提示 -->
+            <div class="tool-tips">
+                <h2>使用技巧</h2>
+                <ul>
+                    <li>按住Shift键绘制正方形、正圆或水平/垂直线</li>
+                    <li>使用图层面板调整图形的层级关系</li>
+                    <li>使用键盘方向键微调选中图形的位置</li>
+                    <li>双击文本可以进行编辑</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面底部 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Copyright © 2024 在线工具. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="../../about.html">关于</a>
+                <a href="../../privacy.html">隐私政策</a>
+                <a href="../../contact.html">联系我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 快捷键提示 -->
+    <div id="shortcutHelp" class="shortcut-help">
+        <h3>快捷键</h3>
+        <ul>
+            <li><kbd>V</kbd> - 选择工具</li>
+            <li><kbd>R</kbd> - 矩形工具</li>
+            <li><kbd>C</kbd> - 圆形工具</li>
+            <li><kbd>E</kbd> - 椭圆工具</li>
+            <li><kbd>L</kbd> - 直线工具</li>
+            <li><kbd>P</kbd> - 折线工具</li>
+            <li><kbd>A</kbd> - 路径工具</li>
+            <li><kbd>T</kbd> - 文本工具</li>
+            <li><kbd>Ctrl</kbd> + <kbd>Z</kbd> - 撤销</li>
+            <li><kbd>Ctrl</kbd> + <kbd>Y</kbd> - 重做</li>
+            <li><kbd>Ctrl</kbd> + <kbd>C</kbd> - 复制</li>
+            <li><kbd>Ctrl</kbd> + <kbd>V</kbd> - 粘贴</li>
+            <li><kbd>Delete</kbd> - 删除选中</li>
+        </ul>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <script src="tool.js"></script>
+</body>
+</html>

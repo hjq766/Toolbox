@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二维码生成器 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>二维码生成器</h1>
+                    <p>快速生成自定义二维码，支持调整大小、颜色和容错级别</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <div>
+                        <!-- 内容设置 -->
+                        <div class="form-section">
+                            <div class="form-tabs">
+                                <button class="form-tab" :class="{active: set.type === 'text'}" @click="set.type = 'text'">文本</button>
+                                <button class="form-tab" :class="{active: set.type === 'url'}" @click="set.type = 'url'">网址</button>
+                                <button class="form-tab" :class="{active: set.type === 'email'}" @click="set.type = 'email'">邮箱</button>
+                                <button class="form-tab" :class="{active: set.type === 'contact'}" @click="set.type = 'contact'">联系人</button>
+                                <button class="form-tab" :class="{active: set.type === 'wifi'}" @click="set.type = 'wifi'">WiFi</button>
+                            </div>
+
+                            <!-- 文本内容 -->
+                            <div v-if="set.type === 'text'">
+                                <div class="form-group">
+                                    <label>文本内容</label>
+                                    <textarea v-model="set.input" placeholder="请输入需要生成二维码的文本内容"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- 网址 -->
+                            <div v-if="set.type === 'url'">
+                                <div class="form-group">
+                                    <label>网址</label>
+                                    <input type="url" v-model="set.input" placeholder="请输入网址，例如：https://example.com">
+                                </div>
+                            </div>
+
+                            <!-- 邮箱 -->
+                            <div v-if="set.type === 'email'">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>收件人邮箱</label>
+                                        <input type="email" v-model="set.email.to" placeholder="请输入收件人邮箱">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>主题</label>
+                                        <input type="text" v-model="set.email.subject" placeholder="邮件主题">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>内容</label>
+                                    <textarea v-model="set.email.body" placeholder="邮件内容"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- 联系人 -->
+                            <div v-if="set.type === 'contact'">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>姓名</label>
+                                        <input type="text" v-model="set.contact.name" placeholder="联系人姓名">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>手机</label>
+                                        <input type="tel" v-model="set.contact.phone" placeholder="手机号码">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>邮箱</label>
+                                        <input type="email" v-model="set.contact.email" placeholder="电子邮箱">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>公司</label>
+                                        <input type="text" v-model="set.contact.company" placeholder="公司名称">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>地址</label>
+                                    <input type="text" v-model="set.contact.address" placeholder="详细地址">
+                                </div>
+                            </div>
+
+                            <!-- WiFi -->
+                            <div v-if="set.type === 'wifi'">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>网络名称 (SSID)</label>
+                                        <input type="text" v-model="set.wifi.ssid" placeholder="WiFi名称">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>密码</label>
+                                        <input type="text" v-model="set.wifi.password" placeholder="WiFi密码">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>加密类型</label>
+                                        <select v-model="set.wifi.encryption">
+                                            <option value="WPA">WPA/WPA2</option>
+                                            <option value="WEP">WEP</option>
+                                            <option value="nopass">无密码</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>是否隐藏</label>
+                                        <select v-model="set.wifi.hidden">
+                                            <option :value="false">否</option>
+                                            <option :value="true">是</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 通用设置 -->
+                        <div class="form-section">
+                            <div class="form-tabs">
+                                <button class="form-tab" :class="{active: activeTab === 'style'}" @click="activeTab = 'style'">样式设置</button>
+                                <button class="form-tab" :class="{active: activeTab === 'color'}" @click="activeTab = 'color'">颜色设置</button>
+                                <button class="form-tab" :class="{active: activeTab === 'logo'}" @click="activeTab = 'logo'">Logo设置</button>
+                            </div>
+
+                            <!-- 样式设置 -->
+                            <div v-show="activeTab === 'style'">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>大小（像素）</label>
+                                        <input type="number" v-model="set.width" min="128" max="1024" step="32">
+                                </div>
+                                <div class="form-group">
+                                    <label>容错级别</label>
+                                    <select v-model="set.errorCorrectionLevel">
+                                            <option value="L">低 (7%)</option>
+                                            <option value="M">中 (15%)</option>
+                                            <option value="Q">较高 (25%)</option>
+                                            <option value="H">高 (30%)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>点阵大小（0-1）</label>
+                                        <input type="number" v-model="set.dotScale" min="0" max="1" step="0.1">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 颜色设置 -->
+                            <div v-show="activeTab === 'color'">
+                                <div class="form-grid">
+                                <div class="form-group">
+                                    <label>前景色（{{set.color.dark}}）</label>
+                                    <input type="color" v-model="set.color.dark">
+                                </div>
+                                <div class="form-group">
+                                    <label>背景色（{{set.color.light}}）</label>
+                                    <input type="color" v-model="set.color.light">
+                                </div>
+                                </div>
+                            </div>
+
+                            <!-- Logo设置 -->
+                            <div v-show="activeTab === 'logo'">
+                                <div class="form-group">
+                                    <label>Logo图片</label>
+                                    <div style="position: relative;">
+                                        <input type="file" @change="handleLogoUpload" accept="image/*" style="width: 100%; padding-right: 40px;">
+                                        <button v-if="set.logo" 
+                                                @click="removeLogo" 
+                                                style="position: absolute; right: 4px; top: 50%; transform: translateY(-50%); padding: 6px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center;"
+                                                onmouseover="this.style.background='var(--bg-color-50)'; this.style.borderColor='var(--primary-color)'; this.style.color='var(--primary-color)'"
+                                                onmouseout="this.style.background='var(--bg-color)'; this.style.borderColor='var(--border-color)'; this.style.color='var(--text-color)'">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                                                <path d="M18 6L6 18M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <small style="display: block; margin-top: 4px; color: var(--text-secondary);">支持jpg、png等常见图片格式，建议使用正方形图片</small>
+                                </div>
+                                <div class="form-grid" v-if="set.logo">
+                                    <div class="form-group">
+                                        <label>Logo大小（像素）</label>
+                                        <input type="number" v-model="set.logoWidth" :max="Math.floor(set.width * 0.25)" min="32" step="8" placeholder="建议不超过二维码尺寸的1/4">
+                                        <small style="display: block; margin-top: 4px; color: var(--text-secondary);">为确保可扫描性，不要超过二维码尺寸的25%</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Logo边框</label>
+                                        <select v-model="set.logoBackgroundTransparent">
+                                            <option :value="true">透明</option>
+                                            <option :value="false">白色</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>边框圆角（像素）</label>
+                                        <input type="number" v-model="set.logoBorderRadius" min="0" max="30" step="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Logo边距（像素）</label>
+                                        <input type="number" v-model="set.logoPadding" min="0" :max="Math.floor(set.width * 0.05)" step="1">
+                                        <small style="display: block; margin-top: 4px; color: var(--text-secondary);">建议不超过二维码尺寸的5%</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：预览 -->
+                            <div class="preview-section">
+                                <div class="preview-header">
+                                    <h3>预览</h3>
+                            <div class="preview-actions">
+                                <button class="btn" @click="downloadQR" title="下载二维码">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                                    </svg>
+                                    下载
+                                </button>
+                            </div>
+                        </div>
+                        <div class="qrcode-output">
+                            <!-- 二维码将在这里生成 -->
+                        </div>
+                    </div>
+                                </div>
+
+            <div class="tool-info">
+                <h2>功能简介</h2>
+                <p>二维码生成器是一个便捷的在线工具，可以快速将文本、链接等内容转换为二维码图片。</p>
+                
+                <h3>主要功能</h3>
+                <ul>
+                    <li>支持自定义二维码内容</li>
+                    <li>可调整二维码大小和边距</li>
+                    <li>支持设置前景色和背景色</li>
+                        <li>支持添加自定义Logo图片</li>
+                    <li>提供多级容错能力选择</li>
+                    <li>生成高清晰度二维码图片</li>
+                </ul>
+                
+                <h3>使用说明</h3>
+                <ul>
+                    <li>输入需要生成二维码的内容</li>
+                    <li>调整二维码的大小和样式参数</li>
+                        <li>可选择添加Logo图片</li>
+                    <li>点击生成按钮创建二维码</li>
+                    <li>可以右键保存生成的二维码图片</li>
+                </ul>
+
+                <h3>注意事项</h3>
+                <ul>
+                        <li>建议选择合适的容错级别，添加Logo时建议使用较高容错级别</li>
+                    <li>确保前景色和背景色对比度足够</li>
+                        <li>Logo尺寸不宜过大，建议不超过二维码尺寸的1/4</li>
+                    <li>过长的内容可能影响扫描效果</li>
+                </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/awesome-qr@2.1.5-rc.0/dist/awesome-qr.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

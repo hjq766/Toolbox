@@ -1,0 +1,419 @@
+/* 变量定义 */
+:root {
+    --item-size: 54px;
+    --circle-size: 300px;
+    --mobile-circle-size: 240px;
+    --mobile-item-size: 48px;
+}
+
+/* 主要布局 */
+.zodiac-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 32px;
+    align-items: center;
+}
+
+/* 生肖轮盘 */
+.zodiac-wheel {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.zodiac-circle {
+    position: relative;
+    width: var(--circle-size);
+    height: var(--circle-size);
+    border-radius: 50%;
+    background: var(--bg-color);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 生肖图标 */
+/* 生肖图标基础样式 */
+.zodiac-item {
+    --radius: 180px;
+    position: absolute;
+    width: var(--item-size);
+    height: var(--item-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--bg-color);
+    border: 2px solid var(--border-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+    margin: calc(var(--item-size) / -2);
+    top: 50%;
+    left: 50%;
+    cursor: pointer;
+    z-index: 1;
+    font-size: 24px;
+    transform: rotate(var(--angle)) translateX(var(--radius)) rotate(calc(-1 * var(--angle)));
+}
+
+/* 生肖位置 - 基础位置 */
+.zodiac-item:nth-child(1) { --angle: 90deg; }
+.zodiac-item:nth-child(2) { --angle: 120deg; }
+.zodiac-item:nth-child(3) { --angle: 150deg; }
+.zodiac-item:nth-child(4) { --angle: 180deg; }
+.zodiac-item:nth-child(5) { --angle: 210deg; }
+.zodiac-item:nth-child(6) { --angle: 240deg; }
+.zodiac-item:nth-child(7) { --angle: 270deg; }
+.zodiac-item:nth-child(8) { --angle: 300deg; }
+.zodiac-item:nth-child(9) { --angle: 330deg; }
+.zodiac-item:nth-child(10) { --angle: 0deg; }
+.zodiac-item:nth-child(11) { --angle: 30deg; }
+.zodiac-item:nth-child(12) { --angle: 60deg; }
+
+/* 统一的hover和active状态 */
+.zodiac-item:hover,
+.zodiac-item.active {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+    transform: rotate(var(--angle)) translateX(var(--radius)) rotate(calc(-1 * var(--angle))) scale(1.15);
+}
+
+.zodiac-item:hover .zodiac-icon,
+.zodiac-item.active .zodiac-icon {
+    filter: grayscale(0);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .zodiac-item {
+        --radius: 90px;
+    }
+}
+
+/* 提示卡片 */
+.zodiac-tooltip {
+    position: absolute;
+    background: var(--bg-color);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    min-width: 360px;
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+}
+
+.zodiac-tooltip.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 提示卡片头部 */
+.tooltip-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.zodiac-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-color);
+    letter-spacing: 1px;
+}
+
+.wuxing {
+    font-size: 16px;
+    color: var(--primary-color);
+    background: var(--primary-color-10);
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+/* 年份表格 */
+.tooltip-years {
+    float: left;
+    width: 160px;
+    margin-right: 24px;
+}
+
+.tooltip-years table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
+}
+
+.tooltip-years td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tooltip-years td:first-child {
+    color: var(--primary-color);
+    font-weight: 500;
+    background: var(--primary-color-5);
+}
+
+.tooltip-years tr:last-child td {
+    border-bottom: none;
+}
+
+/* 性格描述 */
+.personality {
+    color: var(--text-color);
+    line-height: 1.8;
+    font-size: 15px;
+    margin: 0 0 12px 184px;
+    white-space: pre-line;
+}
+
+.personality1 {
+    margin: 0 0 12px 0px;
+}
+
+/* 相配关系 */
+.compatibility {
+    margin: 0 0 0 184px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.compatibility > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.compatibility span:first-child {
+    color: var(--text-color-secondary);
+    min-width: 42px;
+    font-size: 14px;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .zodiac-tooltip {
+        position: fixed;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: calc(100vw - 32px);
+        max-height: calc(100vh - 32px);
+        overflow-y: auto;
+        min-width: unset;
+        padding: 20px;
+    }
+
+    .tooltip-years {
+        float: none;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .personality,
+    .compatibility {
+        margin-left: 0;
+    }
+}
+
+/* 查询区域样式 */
+.query-section {
+    padding: 24px;
+    background: var(--bg-color-50);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+/* 查询选项卡 */
+.query-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.tab-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.tab-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* 查询输入框 */
+.query-content input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+.query-content input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* 结果卡片样式 */
+.result-card {
+    max-width: 600px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px auto;
+}
+
+/* 标题区域 */
+.result-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.year-number {
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.zodiac-name {
+    font-size: 24px;
+    color: var(--text-color);
+}
+
+/* 内容区域 */
+.result-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.result-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* 相配生肖部分 */
+.compatibility-section {
+    display: grid;
+    gap: 8px;
+}
+
+.compatibility-row {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    align-items: center;
+}
+
+.compatibility-type.best { color: var(--green-color); }
+.compatibility-type.good { color: var(--primary-color); }
+.compatibility-type.bad { color: var(--red-color) }
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .result-card {
+        padding: 16px;
+        margin: 16px;
+    }
+
+    .result-item,
+    .compatibility-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+
+    .result-label {
+        color: var(--text-secondary);
+        margin-bottom: 4px;
+    }
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-label {
+    color: var(--text-secondary);
+    margin-right: 12px;
+}
+
+/* 生肖年份卡片 */
+.zodiac-years-card {
+    margin-top: 24px;
+    padding: 20px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.zodiac-years-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.selected-zodiac-icon {
+    font-size: 24px;
+}
+
+.selected-zodiac-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.zodiac-years-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.zodiac-year-item {
+    padding: 6px 12px;
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.zodiac-year-age {
+    color: var(--text-secondary);
+    font-size: 12px;
+}

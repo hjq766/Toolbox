@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片色板提取工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>图片取色工具</h1>
+                    <p>专业的图片取色工具，支持自动提取主色调、手动取色、选框取色，让配色更简单高效</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 左侧：上传和预览区域 -->
+                    <div>
+                        <!-- 上传区域 -->
+                        <div class="file-upload" id="uploadArea">
+                            <p>点击或拖拽图片到此处上传</p>
+                            <small>支持 JPG、PNG、WebP、GIF、BMP 等常见图片格式</small>
+                            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                        </div>
+
+                        <!-- 图片预览区域 -->
+                        <div class="preview-container" id="previewSection" style="display: none;">
+                            <!-- 工具栏 -->
+                            <div class="toolbar">
+                                <div class="tool-buttons">
+                                    <button class="tool-btn" id="manualColorBtn" title="手动取色">
+                                        <svg viewBox="0 0 24 24" width="16" height="16">
+                                            <path d="M20.71 5.63l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-3.12 3.12-1.93-1.91-1.41 1.41 1.42 1.42L3 16.25V21h4.75l8.92-8.92 1.42 1.42 1.41-1.41-1.92-1.92 3.12-3.12c.4-.4.4-1.03.01-1.42zM6.92 19L5 17.08l8.06-8.06 1.92 1.92L6.92 19z"/>
+                                        </svg>
+                                    </button>
+                                    <button class="tool-btn" id="selectionColorBtn" title="选框取色">
+                                        <svg viewBox="0 0 24 24" width="16" height="16">
+                                            <path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm16 14H5V5h14v14zm-4-4h-8v-2h8v2z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <button class="delete-btn" id="deleteImageBtn" title="删除图片">
+                                    <svg viewBox="0 0 24 24" width="16" height="16">
+                                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <div class="image-preview" id="imagePreview">
+                                <canvas id="previewCanvas"></canvas>
+                                <div id="selectionBox" class="selection-box"></div>
+                            </div>
+                        </div>
+
+                        <!-- 颜色展示区域 -->
+                        <div class="colors-section" id="colorsSection" style="display: none;">
+                            <div class="section-header">
+                                <h3>提取的颜色</h3>
+                                <div class="colors-actions">
+                                    <button class="btn btn-text" id="clearColors">清空色板</button>
+                                </div>
+                            </div>
+                            <div class="color-grid" id="colorList"></div>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：设置面板 -->
+                    <div class="settings-panel">
+                        <h3>取色设置</h3>
+
+                       <!-- 颜色提取设置 -->
+                       <div class="form-group">
+                        <label>取色数量</label>
+                        <div class="color-count-options">
+                            <button class="count-option" data-count="3">3色</button>
+                            <button class="count-option active" data-count="5">5色</button>
+                            <button class="count-option" data-count="8">8色</button>
+                            <button class="count-option" data-count="10">10色</button>
+                        </div>
+                    </div>
+
+                    <!-- 颜色排序 -->
+                    <div class="form-group">
+                        <label>颜色排序</label>
+                        <div class="color-sort-options">
+                            <button class="sort-option active" data-sort="default">默认</button>
+                            <button class="sort-option" data-sort="brightness">亮度</button>
+                            <button class="sort-option" data-sort="hue">色相</button>
+                            <button class="sort-option" data-sort="saturation">饱和度</button>
+                        </div>
+                    </div>
+
+                    <!-- 颜色格式 -->
+                    <div class="form-group">
+                        <label>颜色格式</label>
+                        <div class="color-format-options">
+                            <button class="format-option active" data-format="hex">HEX</button>
+                            <button class="format-option" data-format="rgb">RGB</button>
+                            <button class="format-option" data-format="hsl">HSL</button>
+                        </div>
+                    </div>
+
+                        <!-- 导出选项 -->
+                        <div class="form-group">
+                            <label>导出选项</label>
+                            <div class="export-buttons">
+                                <button id="exportImage" class="btn btn-primary">导出为图片</button>
+                                <button id="exportJson" class="btn">导出为 JSON</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能介绍</h2>
+                    <div class="info-content">
+                        <h3>主要功能</h3>
+                        <ul>
+                            <li>自动提取图片主色调</li>
+                            <li>支持3/5/8/10色等多种取色数量</li>
+                            <li>支持手动点击取色，可添加多个颜色</li>
+                            <li>支持选框范围取色，提取区域主色调</li>
+                            <li>支持导出颜色板为图片或JSON格式</li>
+                        </ul>
+
+                        <h3>使用说明</h3>
+                        <ul>
+                            <li>上传图片后自动提取默认数量的颜色</li>
+                            <li>使用左上角工具进行手动取色或选框取色</li>
+                            <li>点击颜色卡片可复制颜色值</li>
+                            <li>点击颜色卡片右上角可删除该颜色</li>
+                            <li>可使用清空按钮重置所有颜色</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="toast" class="toast"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

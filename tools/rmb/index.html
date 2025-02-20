@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人民币大写转换工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>人民币大写转换工具</h1>
+                    <p>将数字金额转换为人民币大写形式，支持快捷金额和复制功能。</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="unit-grid">
+                    <div class="unit-column">
+                        <h2>金额输入</h2>
+                        <div class="form-group">
+                            <label for="Digits">小写金额：</label>
+                            <input type="text" id="Digits" placeholder="请输入数字金额" oninput="convertAmount()">
+                        </div>
+                        <div class="form-group">
+                            <label>快捷金额：</label>
+                            <div class="quick-amounts">
+                                <button class="btn" onclick="setAmount(100)">¥100</button>
+                                <button class="btn" onclick="setAmount(1000)">¥1,000</button>
+                                <button class="btn" onclick="setAmount(10000)">¥10,000</button>
+                                <button class="btn" onclick="setAmount(100000)">¥100,000</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="unit-column">
+                        <h2>转换结果</h2>
+                        <div class="form-group">
+                            <label for="Result">大写金额：</label>
+                            <input type="text" id="Result" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group" style="margin-top: 24px;">
+                    <button class="btn btn-primary" onclick="copyResult()">复制结果</button>
+                    <button class="btn" onclick="resetForm()">重置内容</button>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能说明</h2>
+                    <p>人民币大写转换工具可以将数字金额快速转换为规范的中文大写形式。</p>
+
+                    <h3>人民币金额用到的中文大写汉字</h3>
+                    <p>零、壹、贰、叁、肆、伍、陆、柒、捌、玖、拾、佰、仟、万、亿</p>
+
+                    <h3>人民币常识</h3>
+                    <p>人民币（缩写为RMB）是我国大陆地区的法定货币，尽管每个人几乎天天都要接触到人民币或者支票，但是人民币大写如何写是困扰很多人的问题。尽管生活中看起来极其熟悉而又简单的东西，但发现其实并不会写。人民币在ISO 4217简称为CNY（China Yuan），常用简写为RMB（Ren Min Bi）；人民币货币的符号是" ￥"（'Y'+'='），读音为"YUAN"。人民币按照材料的自然属性划分，有金属币（亦称硬币）、 纸币（亦称钞票）。无论纸币、硬币均等价流通，至今已发行了五套人民币。</p>
+
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>直接输入数字金额或使用快捷金额按钮</li>
+                        <li>点击"转换金额"进行转换</li>
+                        <li>可以使用"复制结果"快速复制转换后的大写金额</li>
+                        <li>使用"重置内容"清空所有输入</li>
+                    </ul>
+
+                    <h3>注意事项</h3>
+                    <ul>
+                        <li>金额上限为999,999,999,999.99元</li>
+                        <li>支持最多两位小数的金额输入</li>
+                        <li>输入金额时不需要输入货币符号"¥"</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

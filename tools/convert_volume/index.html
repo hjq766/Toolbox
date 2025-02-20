@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体积单位换算工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>体积单位换算工具</h1>
+                    <p>支持各种体积单位之间的互相转换，包括公制、市制和英制单位。</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="unit-grid">
+                    <div class="unit-column">
+                        <h2>公制单位</h2>
+                        <div class="form-group">
+                            <label>立方米 (m³)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="cubicm" step="any" oninput="convertVolume('cubicm')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>立方分米 (dm³)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="cubicdm" step="any" oninput="convertVolume('cubicdm')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>立方厘米 (cm³)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="cubiccm" step="any" oninput="convertVolume('cubiccm')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>立方毫米 (mm³)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="cubicmm" step="any" oninput="convertVolume('cubicmm')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>公石 (hl)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="hl" step="any" oninput="convertVolume('hl')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>升 (l)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="l" step="any" oninput="convertVolume('l')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>分升 (dl)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="dl" step="any" oninput="convertVolume('dl')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>厘升 (cl)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="cl" step="any" oninput="convertVolume('cl')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>毫升 (ml)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="ml" step="any" oninput="convertVolume('ml')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="unit-column">
+                        <h2>市制单位</h2>
+                        <div class="form-group">
+                            <label>石：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="shi" step="any" oninput="convertVolume('shi')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>斛：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="hu" step="any" oninput="convertVolume('hu')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>斗：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="dou" step="any" oninput="convertVolume('dou')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>升：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="sheng" step="any" oninput="convertVolume('sheng')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>合：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="he" step="any" oninput="convertVolume('he')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>勺：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="shao" step="any" oninput="convertVolume('shao')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>撮：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="cuo" step="any" oninput="convertVolume('cuo')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>抄：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="chao" step="any" oninput="convertVolume('chao')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>圭：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="gui" step="any" oninput="convertVolume('gui')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>撂：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="liao" step="any" oninput="convertVolume('liao')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="unit-column">
+                        <h2>英制单位</h2>
+                        <div class="form-group">
+                            <label>立方码 (cu yd)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="cubicyd" step="any" oninput="convertVolume('cubicyd')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>立方英尺 (cu ft)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="cubicft" step="any" oninput="convertVolume('cubicft')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>立方英寸 (cu in)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="cubicin" step="any" oninput="convertVolume('cubicin')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>英制加仑 (UK gal)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="ukgallon" step="any" oninput="convertVolume('ukgallon')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>英制夸脱 (UK qt)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="ukquart" step="any" oninput="convertVolume('ukquart')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>英制品脱 (UK pt)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="ukpint" step="any" oninput="convertVolume('ukpint')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>英制盎司 (UK fl oz)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="ukfloz" step="any" oninput="convertVolume('ukfloz')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="unit-column">
+                        <h2>美制单位</h2>
+                        <div class="form-group">
+                            <label>美制加仑 (US gal)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="usgallon" step="any" oninput="convertVolume('usgallon')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>美制夸脱 (US qt)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="usquart" step="any" oninput="convertVolume('usquart')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>美制品脱 (US pt)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="uspint" step="any" oninput="convertVolume('uspint')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>美制杯 (US cup)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="uscup" step="any" oninput="convertVolume('uscup')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>美制液量盎司 (US fl oz)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="usfloz" step="any" oninput="convertVolume('usfloz')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>美制汤匙 (US tbsp)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="ustbsp" step="any" oninput="convertVolume('ustbsp')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>美制茶匙 (US tsp)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="ustsp" step="any" oninput="convertVolume('ustsp')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" onclick="resetAll()">重置所有</button>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能简介</h2>
+                    <p>体积单位换算工具支持在线立方米(m³)、升(l)、加仑(gal)等单位间的互转互换。</p>
+                    
+                    <h3>支持的单位</h3>
+                    <ul>
+                        <li>公制：立方米、立方分米、立方厘米、立方毫米、公石、升、分升、厘升、毫升</li>
+                        <li>市制：石、斛、斗、升、合、勺、撮、抄、圭、撂</li>
+                        <li>英制：立方码、立方英尺、立方英寸、英制加仑、英制夸脱、英制品脱、英制液量盎司</li>
+                        <li>美制：美制加仑、美制夸脱、美制品脱、美制杯、美制液量盎司、美制汤匙、美制茶匙</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>在任意输入框中输入数值，其他单位会自动转换</li>
+                        <li>支持小数点输入</li>
+                        <li>点击"重置所有"可清空所有输入</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

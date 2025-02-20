@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML/JavaScript 转换工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+
+        <main class="main-content">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>HTML/JavaScript 转换工具</h1>
+                    <p>快速转换 HTML 和 JavaScript 代码，支持编码解码和格式化功能</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="file-upload" id="dropZone">
+                    <input type="file" id="fileInput" accept=".html,.htm" onchange="handleFileUpload(event)">
+                    <p>点击或拖拽HTML文件到此处上传</p>
+                    <small>支持 .html, .htm 格式</small>
+                </div>
+                <div class="options-area">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="useCreateElement" checked>
+                        <label for="useCreateElement">使用createElement方法</label>
+                    </div>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="minifyOutput">
+                        <label for="minifyOutput">压缩输出</label>
+                    </div>
+                </div>
+                
+                <div class="tool-main">
+                    <div class="input-group">
+                        <h2>HTML代码</h2>
+                        <textarea id="input" placeholder="请输入HTML代码..."></textarea>
+                        <button class="copy-btn" onclick="copyInput()">复制</button>
+                    </div>
+
+                    <div class="output-group">
+                        <h2>JavaScript代码</h2>
+                        <textarea id="output" readonly placeholder="转换后的结果将显示在这里..."></textarea>
+                        <button class="copy-btn" onclick="copyOutput()">复制</button>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="convertToJS()">转换代码</button>
+                        <button class="btn" onclick="exportJS()">导出文件</button>
+                        <button class="btn" onclick="clearInput()">清空</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html> 

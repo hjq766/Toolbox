@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重量单位换算工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>重量单位换算工具</h1>
+                    <p>支持各种重量单位之间的互相转换，包括公制、市制、金衡制和常衡制单位。</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="unit-grid">
+                    <!-- 公制单位 -->
+                    <div class="unit-column">
+                        <h2>公制单位</h2>
+                        <div class="form-group">
+                            <label>吨 (t)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="ton" step="any" oninput="convertWeight('ton')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>公斤 (kg)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="kg" step="any" oninput="convertWeight('kg')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>克 (g)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="g" step="any" oninput="convertWeight('g')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>毫克 (mg)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="mg" step="any" oninput="convertWeight('mg')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 市制单位 -->
+                    <div class="unit-column">
+                        <h2>市制单位</h2>
+                        <div class="form-group">
+                            <label>市斤：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="jin" step="any" oninput="convertWeight('jin')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>担：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="dan" step="any" oninput="convertWeight('dan')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>两：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="liang" step="any" oninput="convertWeight('liang')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>钱：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="qian" step="any" oninput="convertWeight('qian')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 常衡制单位 -->
+                    <div class="unit-column">
+                        <h2>常衡制单位</h2>
+                        <div class="form-group">
+                            <label>英制长吨：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="long_ton" step="any" oninput="convertWeight('long_ton')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>美制短吨：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="short_ton" step="any" oninput="convertWeight('short_ton')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>英担 (cwt)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="long_hundredweight" step="any" oninput="convertWeight('long_hundredweight')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>美担 (cwt)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="short_hundredweight" step="any" oninput="convertWeight('short_hundredweight')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>英石：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="stone" step="any" oninput="convertWeight('stone')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>磅 (lb)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="pound" step="any" oninput="convertWeight('pound')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>盎司 (oz)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="ounce" step="any" oninput="convertWeight('ounce')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 金衡制单位 -->
+                    <div class="unit-column">
+                        <h2>金衡制单位</h2>
+                        <div class="form-group">
+                            <label>金衡磅 (lb t)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="troy_pound" step="any" oninput="convertWeight('troy_pound')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>金衡盎司 (oz t)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="troy_ounce" step="any" oninput="convertWeight('troy_ounce')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>英钱 (dwt)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="pennyweight" step="any" oninput="convertWeight('pennyweight')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>金衡格令：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="troy_grain" step="any" oninput="convertWeight('troy_grain')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" onclick="resetAll()">重置所有</button>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能简介</h2>
+                    <p>重量单位换算工具支持在线吨(t)、公斤(kg)、克(g)、市斤等单位间的互转互换。</p>
+                    
+                    <h3>支持的单位</h3>
+                    <ul>
+                        <li>公制：吨、公斤、克、毫克</li>
+                        <li>市制：市斤、担、两、钱</li>
+                        <li>常衡制：英制长吨、美制短吨、英担、美担、英石、磅、盎司</li>
+                        <li>金衡制：金衡磅、金衡盎司、英钱、金衡格令</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>在任意输入框中输入数值，其他单位会自动转换</li>
+                        <li>支持小数点输入</li>
+                        <li>点击"重置所有"可清空所有输入</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

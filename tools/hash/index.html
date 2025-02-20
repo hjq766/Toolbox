@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哈希计算工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main-content">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>哈希计算工具</h1>
+                    <p>支持多种哈希算法，可计算文本和文件的哈希值</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 左侧：输入和设置 -->
+                    <div>
+                        <!-- 内容设置 -->
+                        <div class="form-section">
+                            <div class="form-tabs">
+                                <button class="form-tab active" onclick="switchTab('text')">文本哈希</button>
+                                <button class="form-tab" onclick="switchTab('file')">文件哈希</button>
+                            </div>
+
+                            <!-- 文本哈希部分 -->
+                            <div id="textHash" class="tab-content active">
+                                <div class="form-group">
+                                    <label>文本内容</label>
+                                    <textarea id="hashText" placeholder="请输入需要计算哈希的文本..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>密钥（可选，用于HMAC）</label>
+                                    <textarea id="hashKey" placeholder="如需计算HMAC，请输入密钥..."></textarea>
+                                </div>
+                                <button class="btn btn-primary" onclick="calculateTextHash()">计算哈希值</button>
+                            </div>
+
+                            <!-- 文件哈希部分 -->
+                            <div id="fileHash" class="tab-content" style="display: none;">
+                                <div class="file-upload" id="dropZone">
+                                    <input type="file" id="fileInput" multiple>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                                    </svg>
+                                    <p>拖拽文件到此处或点击选择文件</p>
+                                    <small>支持同时选择多个文件</small>
+                                </div>
+
+                                <div class="options-area">
+                                    <div class="checkbox-wrapper">
+                                        <input type="checkbox" id="md5" checked>
+                                        <label for="md5">MD5</label>
+                                    </div>
+                                    <div class="checkbox-wrapper">
+                                        <input type="checkbox" id="sha1" checked>
+                                        <label for="sha1">SHA1</label>
+                                    </div>
+                                    <div class="checkbox-wrapper">
+                                        <input type="checkbox" id="sha256" >
+                                        <label for="sha256">SHA256</label>
+                                    </div>
+                                    <div class="checkbox-wrapper">
+                                        <input type="checkbox" id="sha512">
+                                        <label for="sha512">SHA512</label>
+                                    </div>
+                                    <div class="checkbox-wrapper">
+                                        <input type="checkbox" id="sha3">
+                                        <label for="sha3">SHA3</label>
+                                    </div>
+                                    <div class="checkbox-wrapper">
+                                        <input type="checkbox" id="ripemd160">
+                                        <label for="ripemd160">RIPEMD160</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 结果显示 -->
+                    <div class="form-section" id="resultSection" style="display: none;">
+                        <div class="preview-header">
+                            <h3>计算结果</h3>
+                        </div>
+                        <div id="resultTable" class="result-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 150px;">算法</th>
+                                        <th>哈希值</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能说明</h2>
+                    <p>哈希计算工具支持多种哈希算法，可以计算文本和文件的哈希值。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>支持文本和文件两种计算模式</li>
+                        <li>支持多种哈希算法：MD5、SHA1、SHA256等</li>
+                        <li>支持HMAC计算（文本模式）</li>
+                        <li>支持批量文件处理</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>文本模式：直接输入文本内容，可选填密钥计算HMAC</li>
+                        <li>文件模式：拖拽或选择文件，可同时处理多个文件</li>
+                        <li>选择需要的哈希算法</li>
+                        <li>点击计算按钮获取结果</li>
+                    </ul>
+
+                    <h3>注意事项</h3>
+                    <ul>
+                        <li>所有计算均在本地完成，不会上传服务器</li>
+                        <li>大文件处理可能需要较长时间</li>
+                        <li>建议对重要文件的哈希值进行备份</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

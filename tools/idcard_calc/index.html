@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>身份证号码年龄计算 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+	<link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main-content">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>身份证号码年龄计算</h1>
+                    <p>请输入身份证号码（每行一个）或导入文件，支持批量计算年龄</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                        <input type="file" id="fileInput" accept=".txt,.csv,.xlsx,.xls" onchange="handleFileUpload(event)" style="display: none">
+                    <p>点击或拖拽文件到此处上传</p>
+					<small>支持 .txt, .csv, .xlsx, .xls 格式</small>
+                </div>
+
+                    <div class="input-group">
+                        <textarea id="idInput" placeholder="请输入身份证号码，每行一个..."></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="calculateAges()">计算年龄</button>
+                </div>
+
+                    <div class="result-title" style="display: none;">
+                        <span>计算结果</span>
+                        <button class="btn" onclick="exportToExcel()" id="exportBtn" style="display: none;">
+                            导出Excel
+                        </button>
+                    </div>
+
+                <div id="resultArea"></div>
+                </div>
+
+                <div class="tool-info">
+                    <h2>使用说明</h2>
+                    <p>1. 支持单个或批量身份证号码计算</p>
+                    <p>2. 导入方式：</p>
+                    <ul>
+                        <li>直接输入：在文本框中输入身份证号码，每行一个</li>
+                        <li>文件导入：支持txt、csv、Excel文件格式</li>
+                        <li>拖拽导入：直接将文件拖拽到上传区域</li>
+                    </ul>
+                    <p>3. 计算结果包含：</p>
+                    <ul>
+                        <li>年龄、性别、出生日期</li>
+                        <li>所属地区信息</li>
+                        <li>生肖和星座</li>
+                        <li>号码验证结果</li>
+                    </ul>
+                    <p>4. 导出功能：</p>
+                    <ul>
+                        <li>支持将计算结果导出为Excel文件</li>
+                        <li>导出文件包含所有计算信息</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="static/area.js"></script>
+    <script src="../../public/main.js"></script>
+    <script src="static/main.js"></script>
+</body>
+</html>

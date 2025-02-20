@@ -1,0 +1,79 @@
+.tool-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.file-upload {
+    margin-bottom: 20px;
+}
+
+/* 按钮组放在底部 */
+.button-group {
+    grid-column: 1 / -1;
+    order: 1;
+}
+
+.btn {
+    margin-left: 12px;
+}
+
+.input-group,
+.output-group {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group textarea,
+.output-group textarea {
+    flex: 1;
+    min-height: 400px;
+}
+
+.input-group .copy-btn,
+.output-group .copy-btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.input-group .copy-btn:hover,
+.output-group .copy-btn:hover {
+    background: var(--bg-secondary);
+}
+
+/* 三等分按钮样式 */
+.tool-main .button-group .btn {
+    min-width: 32%;
+    /* 三个按钮时的宽度 */
+    flex: 1;
+    /* 允许按钮平均分配空间 */
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+    .tool-main {
+        grid-template-columns: 1fr;
+    }
+
+    /* 小屏幕下按钮可以考虑堆叠显示 */
+    .tool-main .button-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .tool-main .button-group .btn {
+        width: 100%;
+        min-width: unset;
+    }
+}

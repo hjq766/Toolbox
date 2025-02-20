@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid 生成器 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>CSS Grid 生成器</h1>
+                    <p>可视化创建和调整 CSS Grid 布局，支持智能布局推荐</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 左侧：设置面板 -->
+                    <div class="control-panel">
+                        <!-- 智能布局推荐 -->
+                        <div class="panel-section">
+                            <h3>智能布局推荐</h3>
+                            <div class="form-group">
+                                <label>容器宽度</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="containerWidth" value="1200" min="300" max="3000">
+                                    <span class="unit">px</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>期望列数</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="desiredCols" value="3" min="1" max="12">
+                                    <span class="unit">列</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>布局模式</label>
+                                <div class="segmented-control">
+                                    <input type="radio" name="layoutMode" id="preferenceMode" checked>
+                                    <input type="radio" name="layoutMode" id="customMode">
+                                    <div class="segments-container">
+                                        <label for="preferenceMode" class="segment">
+                                            布局偏好
+                                        </label>
+                                        <label for="customMode" class="segment">
+                                            自定义间距
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 布局偏好选项 -->
+                            <div class="form-group" id="preferenceOptions">
+                                <div class="option-grid grid-3">
+                                    <div class="grid-option active" data-type="balanced">
+                                        <span class="iconify" data-icon="tabler:layout-grid"></span>
+                                        均衡布局
+                                    </div>
+                                    <div class="grid-option" data-type="compact">
+                                        <span class="iconify" data-icon="tabler:layout-grid-add"></span>
+                                        紧凑布局
+                                    </div>
+                                    <div class="grid-option" data-type="spacious">
+                                        <span class="iconify" data-icon="tabler:layout-distribute-horizontal"></span>
+                                        宽松布局
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 自定义间距输入框，默认隐藏 -->
+                            <div class="form-group" id="customGapInput" style="display: none;">
+                                <label>自定义间距</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="customGap" value="16" min="0" max="100">
+                                    <span class="unit">px</span>
+                                </div>
+                            </div>
+                            <!-- 左右边距输入框，默认隐藏 -->
+                            <div class="form-group" id="customSideMarginInput" style="display: none;">
+                                <label>左右边距</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="customSideMargin" value="20" min="0" max="100">
+                                    <span class="unit">px</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" id="generatePlans">生成布局方案</button>
+                        </div>
+
+                        <!-- 网格设置 -->
+                        <div class="panel-section">
+                            <h3>网格设置</h3>
+                            <div class="grid-inputs">
+                                <div class="form-group">
+                                    <label>列数</label>
+                                    <div class="input-with-buttons">
+                                        <button class="btn btn-icon" data-action="decrease-cols">-</button>
+                                        <input type="number" id="colCount" min="1" max="12" value="3">
+                                        <button class="btn btn-icon" data-action="increase-cols">+</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>行数</label>
+                                    <div class="input-with-buttons">
+                                        <button class="btn btn-icon" data-action="decrease-rows">-</button>
+                                        <input type="number" id="rowCount" min="1" max="12" value="1">
+                                        <button class="btn btn-icon" data-action="increase-rows">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-inputs" style="margin-top: 16px;">
+                                <div class="form-group">
+                                    <label>左右边距</label>
+                                    <div class="input-with-buttons">
+                                        <button class="btn btn-icon" data-action="decrease-margin">-</button>
+                                        <input type="number" id="gridSideMargin" min="0" max="100" value="16">
+                                        <button class="btn btn-icon" data-action="increase-margin">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 16px;">
+                                <label>列间距</label>
+                                <div class="range-with-value">
+                                    <input type="range" id="colGap" min="0" max="50" value="20">
+                                    <span class="value-display">20px</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>行间距</label>
+                                <div class="range-with-value">
+                                    <input type="range" id="rowGap" min="0" max="50" value="20">
+                                    <span class="value-display">20px</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 单元格设置 -->
+                        <div class="panel-section">
+                            <h3>单元格设置</h3>
+                            <div class="hint-text">
+                                <span class="iconify" data-icon="tabler:click"></span>
+                                点击网格中的单元格进行设置
+                            </div>
+                            <div class="grid-inputs">
+                                <div class="form-group">
+                                    <label>列跨度</label>
+                                    <div class="input-with-buttons">
+                                        <button class="btn btn-icon" data-action="decrease-col-span">-</button>
+                                        <input type="number" id="colSpan" min="1" max="12" value="1">
+                                        <button class="btn btn-icon" data-action="increase-col-span">+</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>行跨度</label>
+                                    <div class="input-with-buttons">
+                                        <button class="btn btn-icon" data-action="decrease-row-span">-</button>
+                                        <input type="number" id="rowSpan" min="1" max="12" value="1">
+                                        <button class="btn btn-icon" data-action="increase-row-span">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 导出设置 -->
+                        <div class="panel-section">
+                            <div class="code-header">
+                                <h3>生成的代码</h3>
+                                <button class="btn btn-icon" id="copyCode" title="复制代码">
+                                    <span class="iconify" data-icon="tabler:copy"></span>
+                                </button>
+                            </div>
+                            <pre><code id="cssCode"></code></pre>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：预览区域 -->
+                    <div class="preview-panel">
+                        <div class="preview-header">
+                            <div class="form-tabs">
+                                <button class="form-tab active" data-tab="recommend">
+                                    智能推荐
+                                </button>
+                                <button class="form-tab" data-tab="preview">
+                                    网格预览
+                                </button>
+                            </div>
+                            <div class="preview-actions">
+                                <button class="btn" id="exportImage">
+                                    <span class="iconify" data-icon="tabler:download"></span>
+                                    导出预览图
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 智能推荐内容 -->
+                        <div class="preview-content active" data-tab="recommend">
+                            <div class="recommend-header">
+                                <h3>推荐布局方案</h3>
+                                <p>根据您的设置，为您推荐以下网格布局方案</p>
+                            </div>
+                            <div class="recommend-grid" id="planList">
+                                <!-- 方案将通过JS动态生成 -->
+                            </div>
+                        </div>
+
+                        <!-- 网格预览内容 -->
+                        <div class="preview-content" data-tab="preview">
+                            <div class="preview-controls">
+                                <div class="device-list">
+                                    <div class="device-group">
+                                        <h4>桌面端</h4>
+                                        <div class="device-cards">
+                                            <button class="device-card active" data-view="desktop" data-width="1920">1920px</button>
+                                            <button class="device-card" data-view="laptop" data-width="1440">1440px</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="device-group">
+                                        <h4>平板端</h4>
+                                        <div class="device-cards">
+                                            <button class="device-card" data-view="tablet" data-width="1024">iPad Pro 12.9</button>
+                                            <button class="device-card" data-view="tablet" data-width="834">iPad Pro 11</button>
+                                            <button class="device-card" data-view="tablet" data-width="744">iPad Mini</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="device-group">
+                                        <h4>移动端</h4>
+                                        <div class="device-cards">
+                                            <button class="device-card" data-view="mobile" data-width="440">iPhone 16 Pro Max</button>
+                                            <button class="device-card" data-view="mobile" data-width="402">iPhone 16 Pro</button>
+                                            <button class="device-card" data-view="mobile" data-width="430">iPhone 14/15 Pro Max</button>
+                                            <button class="device-card" data-view="mobile" data-width="393">iPhone 14/15/16</button>
+                                            <button class="device-card" data-view="mobile" data-width="390">iPhone 13/14</button>
+                                            <button class="device-card" data-view="mobile" data-width="375">iPhone 13 Mini</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="preview-container" data-view="desktop">
+                                <div class="grid-preview-wrapper">
+                                    <div class="grid-preview-header">
+                                        <h3 class="grid-preview-title">网格预览</h3>
+                                        <p class="grid-preview-subtitle">当前网格布局的实时预览效果</p>
+                                    </div>
+                                    <div class="grid-container" id="gridPreview"></div>
+                                    <div class="grid-info">
+                                        <div class="grid-info-item">
+                                            <span class="info-label">设备宽度</span>
+                                            <span class="info-value" id="previewDeviceWidth">1920px</span>
+                                        </div>
+                                        <div class="grid-info-item">
+                                            <span class="info-label">列数</span>
+                                            <span class="info-value" id="previewColCount">3列</span>
+                                        </div>
+                                        <div class="grid-info-item">
+                                            <span class="info-label">列间距</span>
+                                            <span class="info-value" id="previewColGap">16px</span>
+                                        </div>
+                                        <div class="grid-info-item">
+                                            <span class="info-label">左右边距</span>
+                                            <span class="info-value" id="previewSideMargin">16px</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能介绍</h2>
+                    <p>CSS Grid 生成器是一个可视化的网格布局工具，支持智能布局推荐和实时预览。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>智能布局推荐，快速生成最佳网格方案</li>
+                        <li>可视化调整网格行列数和间距</li>
+                        <li>支持单元格合并和调整</li>
+                        <li>实时生成 CSS 代码</li>
+                        <li>响应式预览效果</li>
+                        <li>支持导出预览图</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>设置容器宽度和期望列数，获取智能布局推荐</li>
+                        <li>使用网格设置调整具体的行列数和间距</li>
+                        <li>点击单元格可以调整其跨度</li>
+                        <li>实时查看生成的 CSS 代码</li>
+                        <li>可以切换不同设备尺寸预览效果</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 先加载第三方库 -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <!-- 然后加载我们的脚本 -->
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

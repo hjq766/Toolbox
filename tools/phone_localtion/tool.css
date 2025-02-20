@@ -1,0 +1,85 @@
+/* 工具特有样式 */
+.tool-main {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 800px;
+    margin: 0 auto;
+    gap: 20px;
+}
+
+.result-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: var(--bg-color);
+    border-radius: 6px;
+}
+
+.result-table td {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.result-table td:first-child {
+    width: 120px;
+    background: var(--bg-color-50);
+    font-weight: 500;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    padding: 0px 24px 0;
+    width: calc(100% + 48px);
+    margin-top: 8px;
+    margin-left: -24px;
+    margin-bottom: -24px;
+}
+
+.form-group input {
+    height: 48px;
+}
+
+.tool-main .button-group .btn {
+    min-width: 32%;
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .result-table td:first-child {
+        width: 100px;
+    }
+
+    .tool-main .button-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .tool-main .button-group .btn {
+        width: 100%;
+        min-width: unset;
+    }
+}
+
+.result-area {
+    display: none; /* 默认隐藏 */
+    margin-top: 20px;
+	margin-bottom:20px;
+}
+
+.result-area.show {
+    display: block; /* 查询后显示 */
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} 

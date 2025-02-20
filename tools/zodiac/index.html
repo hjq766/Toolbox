@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>十二生肖查询工具 - 在线工具箱</title>
+    <meta name="description" content="在线查询生肖年份对应关系，支持公历年份查询生肖，还可以查看生肖性格特征、运势等详细信息" />
+    <meta name="keywords" content="生肖查询,十二生肖,生肖年份,属相查询,生肖性格" />
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>十二生肖查询工具</h1>
+                    <p>快速查询年份对应的生肖，了解生肖文化与性格特征</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="zodiac-main">
+                    <!-- 生肖图表展示区 -->
+                    <div class="zodiac-wheel">
+                        <div class="zodiac-circle">
+                            <div class="zodiac-item" data-zodiac="鼠"><span class="zodiac-icon">🐀</span></div>
+                            <div class="zodiac-item" data-zodiac="牛"><span class="zodiac-icon">🐂</span></div>
+                            <div class="zodiac-item" data-zodiac="虎"><span class="zodiac-icon">🐅</span></div>
+                            <div class="zodiac-item" data-zodiac="兔"><span class="zodiac-icon">🐇</span></div>
+                            <div class="zodiac-item" data-zodiac="龙"><span class="zodiac-icon">🐉</span></div>
+                            <div class="zodiac-item" data-zodiac="蛇"><span class="zodiac-icon">🐍</span></div>
+                            <div class="zodiac-item" data-zodiac="马"><span class="zodiac-icon">🐎</span></div>
+                            <div class="zodiac-item" data-zodiac="羊"><span class="zodiac-icon">🐑</span></div>
+                            <div class="zodiac-item" data-zodiac="猴"><span class="zodiac-icon">🐒</span></div>
+                            <div class="zodiac-item" data-zodiac="鸡"><span class="zodiac-icon">🐓</span></div>
+                            <div class="zodiac-item" data-zodiac="狗"><span class="zodiac-icon">🐕</span></div>
+                            <div class="zodiac-item" data-zodiac="猪"><span class="zodiac-icon">🐖</span></div>
+                        </div>
+                    </div>
+
+                    <!-- 查询和结果区域 -->
+                    <div class="right-section">
+                        <!-- 查询区域 -->
+                        <div class="query-section">
+                            <div class="query-tabs">
+                                <button class="tab-btn active" data-tab="year">按年份查询</button>
+                                <button class="tab-btn" data-tab="age">按年龄查询</button>
+                            </div>
+                            
+                            <div class="query-content" id="yearQuery">
+                                <input type="number" id="yearInput" placeholder="请输入年份(1900-2100)" />
+                                <button class="btn btn-primary" onclick="queryZodiac()">查询</button>
+                            </div>
+                            
+                            <div class="query-content" id="ageQuery" style="display: none;">
+                                <input type="number" id="ageInput" placeholder="请输入年龄" />
+                                <button class="btn btn-primary" onclick="queryByAge()">查询</button>
+                            </div>
+                        </div>
+                
+                        <!-- 添加结果展示区域 -->
+                        <div id="resultSection" class="result-section" style="display: none;">
+                            <div class="result-card">
+                                <div class="result-header">
+                                    <span class="year-number"></span>
+                                    <span class="zodiac-name"></span>
+                                </div>
+                                <div class="result-content">
+                                    <div class="result-item">
+                                        <span class="result-label">五行：</span>
+                                        <span class="wuxing"></span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">性格：</span>
+                                        <span class="personality personality1"></span>
+                                    </div>
+                                    <div class="result-item compatibility-section">
+                                        <span class="result-label">相配生肖：</span>
+                                        <div class="compatibility-details">
+                                            <div class="compatibility-row">
+                                                <span class="compatibility-type best">最佳：</span>
+                                                <span class="best-match"></span>
+                                            </div>
+                                            <div class="compatibility-row">
+                                                <span class="compatibility-type good">较好：</span>
+                                                <span class="good-match"></span>
+                                            </div>
+                                            <div class="compatibility-row">
+                                                <span class="compatibility-type bad">较差：</span>
+                                                <span class="bad-match"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能简介</h2>
+                    <p>生肖年份查询工具可以帮助您快速查询任意年份对应的生肖，并了解相关的文化特征。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>年份生肖查询</li>
+                        <li>生肖五行属性</li>
+                        <li>性格特征解析</li>
+                        <li>生肖相配分析</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>直接输入想要查询的公历年份</li>
+                        <li>点击查询按钮获取结果</li>
+                        <li>查看详细的生肖信息和文化特征</li>
+                    </ul>
+
+                    <h3>十二生肖顺序</h3>
+                    <p>鼠、牛、虎、兔、龙、蛇、马、羊、猴、鸡、狗、猪</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

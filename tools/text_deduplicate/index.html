@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本去重工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main-content">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>文本去重工具</h1>
+                    <p>快速去除文本中的重复内容，支持多种去重模式</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 统计信息 -->
+                    <div class="stats-container">
+                        <div class="stats-section">
+                            <div class="stats-section-title">原文本信息</div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="originalLines">0</div>
+                                    <div class="stat-label">总行数</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="originalChars">0</div>
+                                    <div class="stat-label">字符数</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="originalWords">0</div>
+                                    <div class="stat-label">单词数</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stats-section">
+                            <div class="stats-section-title">去重后信息</div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="uniqueLines">0</div>
+                                    <div class="stat-label">去重后行数</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="uniqueChars">0</div>
+                                    <div class="stat-label">字符数</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="duplicateCount">0</div>
+                                    <div class="stat-label">重复项数</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 去重选项 -->
+                    <div class="options-area">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="ignoreCase" checked>
+                            <label for="ignoreCase">忽略大小写</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="ignorePunctuation">
+                            <label for="ignorePunctuation">忽略标点符号</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="ignoreSpaces" checked>
+                            <label for="ignoreSpaces">忽略空格</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="trimLines" checked>
+                            <label for="trimLines">去除首尾空格</label>
+                        </div>
+                    </div>
+
+                    <!-- 文本区域 -->
+                    <div class="text-area-container">
+                        <div class="text-section">
+                            <h3>原文本</h3>
+                            <textarea id="sourceText" placeholder="在此输入或粘贴需要去重的文本..."></textarea>
+                        </div>
+                        <div class="text-section">
+                            <h3>
+                                去重结果
+                                <button class="copy-btn" onclick="copyResult()">复制</button>
+                            </h3>
+                            <textarea id="resultText" readonly placeholder="去重后的文本将显示在这里..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 按钮组 -->
+                    <div class="button-group">
+                        <button class="btn" onclick="clearText()">
+                            清空内容
+                        </button>
+                        <button class="btn btn-primary" onclick="deduplicate()">
+                            执行去重
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能说明</h2>
+                    <p>文本去重工具可以帮助你快速去除文本中的重复内容，支持多种去重模式和选项。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>按行去重：每行作为一个单位进行去重</li>
+                        <li>多种去重模式：支持忽略大小写、标点符号等</li>
+                        <li>实时统计：显示原文本和去重后的各项统计数据</li>
+                        <li>灵活配置：可自定义去重规则和选项</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>将需要去重的文本粘贴到左侧输入框</li>
+                        <li>选择合适的去重选项</li>
+                        <li>点击"执行去重"按钮进行处理</li>
+                        <li>去重后的结果将显示在右侧</li>
+                        <li>可以直接复制去重后的结果</li>
+                    </ul>
+
+                    <h3>注意事项</h3>
+                    <ul>
+                        <li>建议处理前先备份原始文本</li>
+                        <li>去重是按行处理的，每行视为一个独立单位</li>
+                        <li>选项的组合会影响去重的结果</li>
+                        <li>支持处理大量文本，但可能会影响性能</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

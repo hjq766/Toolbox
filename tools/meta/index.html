@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta标签生成工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main-content">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>Meta标签生成工具</h1>
+                    <p>用于生成网页Meta标签，包括title、description、keywords等基本信息</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <form id="metaForm" class="input-group">
+                        <div class="form-group">
+                            <label for="title">网页标题 (Title)</label>
+                            <input type="text" id="title" placeholder="请输入网页标题">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">网页描述 (Description)</label>
+                            <input type="text" id="description" placeholder="请输入网页描述">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="keywords">关键词 (Keywords)</label>
+                            <input type="text" id="keywords" placeholder="网页关键词,用逗号分隔">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="author">作者 (Author)</label>
+                            <input type="text" id="author" placeholder="网页作者">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="language">语言 (Language)</label>
+                            <input type="text" id="language" value="zh-cn" placeholder="网页语言">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="copyright">版权信息 (Copyright)</label>
+                            <input type="text" id="copyright" placeholder="网页版权信息">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="robots">机器人向导 (Robots)</label>
+                            <select id="robots">
+                                <option value="all">默认</option>
+                                <option value="index,follow">允许搜索引擎索引页面和跟踪链接</option>
+                                <option value="noindex,nofollow">禁止搜索引擎索引页面和跟踪链接</option>
+                                <option value="index">允许搜索引擎索引整个页面</option>
+                                <option value="noindex">禁止搜索引擎索引整个页面</option>
+                                <option value="follow">允许搜索引擎跟踪页面上的链接</option>
+                                <option value="nofollow">不允许搜索引擎跟踪页面上的链接</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="viewport">自适应 (Viewport)</label>
+                            <select id="viewport">
+                                <option value="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">PC和手机端自适应</option>
+                                <option>适应PC端</option>
+                                <option value="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">适应手机端</option>
+                            </select>
+                        </div>
+                    </form>
+
+                    <div class="output-group">
+                        <h2>生成结果</h2>
+                        <textarea id="result" readonly></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="generateMeta()">生成Meta标签</button>
+                        <button class="btn" onclick="copyResult()">复制结果</button>
+                        <button class="btn" onclick="resetForm()">重置表单</button>
+                    </div>
+                </div>
+
+                <div class="tool-info">
+                    <h2>Meta标签说明</h2>
+                    
+                    <h3>什么是Meta标签？</h3>
+                    <p>Meta标签是HTML文档的元数据，它们用于描述网页的各种属性和信息。这些信息虽然不会直接显示在页面上，但对搜索引擎优化(SEO)和网页显示都非常重要。</p>
+                    
+                    <h3>常用Meta标签说明</h3>
+                    <p><span>title：</span>网页标题，是搜索引擎最看重的内容之一，建议控制在10-30个字符。</p>
+                    <p><span>description：</span>网页描述，用于搜索引擎结果页面的网页预览，建议控制在200个字符以内。</p>
+                    <p><span>keywords：</span>网页关键词，用逗号分隔，帮助搜索引擎了解网页的主题。</p>
+                    <p><span>robots：</span>告诉搜索引擎如何抓取和索引页面内容。</p>
+                    <p><span>viewport：</span>用于移动端页面的显示控制，设置页面的缩放和显示方式。</p>
+                    
+                    <h3>Meta标签的重要性</h3>
+                    <p>1. 提升搜索引擎优化(SEO)效果</p>
+                    <p>2. 控制网页在各种设备上的显示方式</p>
+                    <p>3. 提供网页的基本信息和属性</p>
+                    <p>4. 影响搜索引擎对网页的收录方式</p>
+                    
+                    <h3>使用建议</h3>
+                    <p>1. 确保title和description的内容准确描述页面内容</p>
+                    <p>2. keywords使用准确的关键词，避免堆砌</p>
+                    <p>3. viewport设置要考虑移动端用户体验</p>
+                    <p>4. robots根据实际需求合理设置，避免误伤搜索引擎收录</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

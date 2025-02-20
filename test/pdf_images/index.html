@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF转图片工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+    <!-- PDF.js 库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+    <!-- JSZip 库用于打包下载 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <main class="main-content">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>PDF转图片工具</h1>
+                    <p>将PDF文档转换为高清图片，支持多页PDF批量转换和打包下载</p>
+                </div>
+            </section>
+
+            <div class="container">
+                <!-- 上传区域 -->
+                <div class="file-upload" id="uploadArea">
+                    <input type="file" id="fileInput" accept=".pdf" style="display: none;">
+                    <div class="upload-content">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path fill="none" stroke="currentColor" stroke-width="2" 
+                                  d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17">
+                            </path>
+                        </svg>
+                        <h3>点击或拖拽PDF文件到此处</h3>
+                        <p class="upload-tip">支持单个PDF文件，最大100MB</p>
+                    </div>
+                </div>
+
+                <!-- PDF信息面板 -->
+                <div id="pdfInfo" class="pdf-info" style="display: none;">
+                    <div class="info-header">
+                        <div class="file-details">
+                            <h3 id="fileName">文件名称</h3>
+                            <div class="file-meta">
+                                <span id="pageCount">0页</span>
+                                <span class="dot">•</span>
+                                <span id="fileSize">0MB</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="downloadBtn">
+                            <svg viewBox="0 0 24 24" width="16" height="16">
+                                <path fill="none" stroke="currentColor" stroke-width="2" 
+                                      d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17">
+                                </path>
+                            </svg>
+                            导出图片压缩包
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 预览区域 -->
+                <div id="previewArea" class="preview-area" style="display: none;">
+                    <div class="preview-tip">提示：可以右键单张图片进行另存为操作</div>
+                    <div id="pageContainer" class="page-container"></div>
+                </div>
+
+                <!-- 工具说明 -->
+                <div class="tool-info">
+                    <h2>功能说明</h2>
+                    <p>PDF转图片工具可以将PDF文档的每一页转换为高清图片，支持批量导出和打包下载。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>支持多页PDF文档转换</li>
+                        <li>生成高清晰度PNG格式图片</li>
+                        <li>支持在线预览转换效果</li>
+                        <li>一键打包下载所有图片</li>
+                        <li>支持单页图片另存为</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>将PDF文件拖拽到上传区域或点击选择文件</li>
+                        <li>等待文件加载和转换完成</li>
+                        <li>预览转换效果，确认清晰度</li>
+                        <li>点击"导出图片压缩包"下载所有图片</li>
+                        <li>也可以右键单独保存某一页的图片</li>
+                    </ul>
+
+                    <h3>注意事项</h3>
+                    <ul>
+                        <li>为保证转换质量，建议上传清晰的PDF文件</li>
+                        <li>文件大小限制为100MB</li>
+                        <li>转换后的图片为PNG格式，保证最佳质量</li>
+                        <li>转换大文件可能需要一定时间，请耐心等待</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

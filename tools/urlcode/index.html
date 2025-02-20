@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL编码转换工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>URL编码转换工具</h1>
+                    <p>快速进行URL编码与解码，支持批量转换，实时预览</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 左侧输入区 -->
+                    <div class="input-panel">
+                        <div class="panel-header">
+                            <h2>输入内容</h2>
+                            <div class="panel-actions">
+                                <button class="action-btn" onclick="pasteFromClipboard()">
+                                    粘贴
+                                </button>
+                                <button class="action-btn" onclick="clearInput('source')">
+                                    清空
+                                </button>
+                            </div>
+                        </div>
+                        <div class="input-area">
+                            <textarea 
+                                id="source" 
+                                placeholder="在此输入URL或编码内容..."
+                                oninput="handleInput(this.value)"
+                            ></textarea>
+                            <div class="input-stats">
+                                <span id="charCount">0 个字符</span>
+                                <span id="lineCount">0 行</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 中间操作区 -->
+                    <div class="action-panel">
+                        <button class="btn encode" onclick="convertToHex()">
+                            <span class="iconify" data-icon="tabler:arrow-right"></span>
+                            编码
+                        </button>
+                        <button class="btn decode" onclick="convertFromHex()">
+                            <span class="iconify" data-icon="tabler:arrow-left"></span>
+                            解码
+                        </button>
+                        <button class="btn swap" onclick="swapContent()">
+                            <span class="iconify" data-icon="tabler:switch"></span>
+                            交换
+                        </button>
+                    </div>
+
+                    <!-- 右侧结果区 -->
+                    <div class="output-panel">
+                        <div class="panel-header">
+                            <h2>转换结果</h2>
+                            <div class="panel-actions">
+                                <button class="action-btn" onclick="copyResult()">
+                                    复制
+                                </button>
+                            </div>
+                        </div>
+                        <div class="output-area">
+                            <textarea id="result" readonly></textarea>
+                            <div class="output-stats">
+                                <span id="resultCharCount">0 个字符</span>
+                                <span id="resultLineCount">0 行</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 工具说明 -->
+                <div class="tool-info">
+                    <h2>关于工具</h2>
+                    <p>URL编码转换工具支持将URL地址转换为十六进制编码格式，也可以将编码内容解码为原始URL。</p>
+                    
+                    <h3>主要特点</h3>
+                    <ul>
+                        <li>支持批量转换，一次处理多个URL</li>
+                        <li>实时字符统计，直观显示内容长度</li>
+                        <li>智能识别URL协议，自动保留http/https前缀</li>
+                        <li>支持快捷键操作，提高使用效率</li>
+                        <li>可导出转换结果，支持多种格式</li>
+                    </ul>
+                    
+                    <h3>快捷键</h3>
+                    <div class="shortcut-list">
+                        <div class="shortcut-item">
+                            <kbd>Ctrl</kbd> + <kbd>Enter</kbd>
+                            <span>快速编码</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>
+                            <span>快速解码</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl</kbd> + <kbd>C</kbd>
+                            <span>复制结果</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

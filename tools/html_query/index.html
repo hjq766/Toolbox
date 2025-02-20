@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML特殊符号对照表 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>HTML特殊符号对照表</h1>
+                    <p>点击符号即可复制，支持搜索符号和描述</p>
+                            </div>
+            </section>
+
+            <div class="container">
+                <div class="search-container">
+                    <input type="text" class="search-box" id="searchInput" placeholder="搜索符号、描述或实体..." oninput="searchSymbols(this.value)">
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="tools-nav" id="categoryTabs">
+                    <!-- 分类标签页将通过 JS 动态生成 -->
+                </div>
+                <div id="symbolContent"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="./data.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>
+    

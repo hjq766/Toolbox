@@ -1,0 +1,597 @@
+/* 主布局 */
+.tool-main {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
+}
+
+/* 控制面板 */
+.control-panel {
+    position: sticky;
+    top: 24px;
+}
+
+/* 面板区块 */
+.panel-section {
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color-10);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.panel-section:last-child {
+    margin-bottom: 0;
+}
+
+.panel-section h3 {
+    margin: 0 0 16px 0;
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+/* 面板头部布局 */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-header h3 {
+    margin: 0;
+}
+
+/* 开关按钮样式 */
+.switch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.switch .label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.switch input[type="checkbox"] {
+    position: relative;
+    width: 36px;
+    height: 20px;
+    margin: 0;
+    appearance: none;
+    background: var(--border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.switch input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.switch input[type="checkbox"]:checked {
+    background: var(--primary-color);
+}
+
+.switch input[type="checkbox"]:checked::before {
+    left: 18px;
+}
+
+.switch input[type="checkbox"]:hover {
+    opacity: 0.8;
+}
+
+/* 类型和形状选项卡 */
+.type-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 8px;
+}
+
+.type-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    min-width: 80px;
+    height: 40px;
+}
+
+.type-button:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.type-button.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+/* 方向控制 */
+.direction-group {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+/* 方向按钮 */
+.shape-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+/* 自定义角度按钮 */
+.full-width-tab {
+    grid-column: 1 / -1;
+    margin-top: 8px;
+    padding: 12px 0;
+    height: 40px;
+}
+
+/* 图标样式 */
+.shape-tab .icon {
+    width: 16px;
+    height: 16px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+/* 按钮悬停和激活状态 */
+.shape-tab:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.shape-tab.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+/* 角度控制 */
+.range-with-value {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.range-with-value input[type="range"] {
+    flex: 1;
+}
+
+.value-display {
+    min-width: 48px;
+    text-align: right;
+    color: var(--text-secondary);
+}
+
+/* 颜色滑块区域 */
+.color-slider {
+    position: relative;
+    height: 24px;
+    background: var(--bg-color);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    user-select: none;
+}
+
+.gradient-bar {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+#colorStops {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.color-stop {
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    border: 2px solid white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+    pointer-events: auto;
+    user-select: none;
+    z-index: 1;
+}
+
+.color-stop.selected {
+    transform: translate(-50%, -50%) scale(1.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+.color-stop:hover::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background: inherit;
+    border: 2px solid white;
+    border-radius: 50%;
+    margin-bottom: 8px;
+    pointer-events: none;
+    z-index: 3;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.color-stop:hover,
+.color-stop.active {
+    transform: translate(-50%, -50%) scale(1.2);
+    z-index: 2;
+}
+
+/* 修改颜色选择器样式 */
+.color-stop input[type="color"] {
+    position: absolute;
+    opacity: 0;  /* 隐藏原生颜色选择器 */
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    cursor: pointer;
+    left: 0;
+    top: 0;
+}
+
+/* 移除之前的悬停相关样式 */
+.color-stop:hover input[type="color"] {
+    opacity: 0;  /* 保持隐藏 */
+}
+
+/* 移除上方色块相关的样式 */
+.color-stop.active input[type="color"] {
+    opacity: 0;  /* 保持隐藏 */
+}
+
+/* 预览区域 */
+.preview-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.preview-panel {
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color-10);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.gradient-preview {
+    width: 100%;
+    height: 470px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+/* CSS代码显示 */
+.css-code {
+    background: var(--bg-color);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.css-code span {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.css-code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 4px;
+    background: var(--bg-color-50);
+    border-radius: 6px 6px 0 0;
+}
+
+.css-code-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.css-code-content {
+    padding: 16px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-break: break-all;
+    min-height: 24px;
+    outline: none;
+    background: var(--bg-color);
+    border-radius: 0 0 6px 6px;
+}
+
+.css-code-content:focus {
+    background: var(--bg-color-80);
+    border-radius: 0 0 6px 6px;
+}
+
+/* 按钮样式 */
+.btn-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.btn-icon {
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 4px;
+    background: var(--bg-color);
+}
+
+.btn-icon .iconify {
+    font-size: 14px;
+}
+
+.btn-icon:hover {
+    background: var(--bg-color-80);
+}
+
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .tool-main {
+        grid-template-columns: 1fr;
+    }
+
+    .control-panel {
+        position: static;
+    }
+
+    .gradient-preview {
+        height: 200px;
+    }
+    
+}
+
+/* 形状网格布局 */
+.shape-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+/* 形状按钮样式 */
+.shape-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    min-width: 60px;
+}
+
+.shape-tab:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.shape-tab.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+/* 颜色节点提示文本样式 */
+.color-stops-tip {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+/* 颜色选择器弹出层 */
+.color-picker-popup {
+    position: fixed;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: none;
+    min-width: 200px;
+    overflow: hidden;
+}
+
+.color-picker-popup.active {
+    display: block;
+    animation: popup-fade 0.2s ease-out;
+}
+
+.picker-header {
+    padding: 8px 12px;
+    background: var(--bg-color-50);
+    border-bottom: 1px solid var(--border-color-10);
+}
+
+.picker-header span {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.picker-content {
+    padding: 12px;
+}
+
+.color-picker-popup .color-input {
+    width: 100%;
+    height: 36px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    padding: 2px;
+}
+
+.alpha-control {
+    margin-top: 8px;
+}
+
+.alpha-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.alpha-slider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+}
+
+.alpha-slider input[type="range"] {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: linear-gradient(to right, var(--header-bg-80), var(--primary-color));
+    border-radius: 3px;
+}
+
+.alpha-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid var(--primary-color);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 添加 Firefox 的滑块样式 */
+.alpha-slider input[type="range"]::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid var(--primary-color);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 添加 Edge 的滑块样式 */
+.alpha-slider input[type="range"]::-ms-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid var(--primary-color);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.alpha-value {
+    min-width: 40px;
+    text-align: right;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+@keyframes popup-fade {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 位置控制样式 */
+.position-controls {
+    margin-top: 10px;
+}
+
+.position-row {
+    margin-bottom: 12px;
+}
+
+.position-row label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* 添加链接样式 */
+.panel-section a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: var(--text-color);
+
+}
+
+.panel-section a::after {
+    content: '→';
+    margin-left: 8px;
+    transition: transform 0.2s;
+}
+
+.panel-section a:hover::after {
+    transform: translateX(4px);
+}

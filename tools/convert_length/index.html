@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>长度单位换算工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>长度单位换算工具</h1>
+                    <p>支持各种长度单位之间的互相转换，包括公制、市制和英制单位。</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="unit-grid">
+                    <div class="unit-column">
+                        <h2>公制单位</h2>
+                        <div class="form-group">
+                            <label>千米 (km)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="km" step="any" oninput="convertLength('km')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>米 (m)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="m" step="any" oninput="convertLength('m')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>分米 (dm)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="dm" step="any" oninput="convertLength('dm')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>厘米 (cm)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="cm" step="any" oninput="convertLength('cm')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>毫米 (mm)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="mm" step="any" oninput="convertLength('mm')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>微米 (μm)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="um" step="any" oninput="convertLength('um')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="unit-column">
+                        <h2>市制单位</h2>
+                        <div class="form-group">
+                            <label>里：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="li" step="any" oninput="convertLength('li')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>丈：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="zhang" step="any" oninput="convertLength('zhang')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>尺：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="chi" step="any" oninput="convertLength('chi')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>寸：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="cun" step="any" oninput="convertLength('cun')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>分：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="fen" step="any" oninput="convertLength('fen')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>厘：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="li_small" step="any" oninput="convertLength('li_small')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="unit-column">
+                        <h2>英制单位</h2>
+                        <div class="form-group">
+                            <label>海里 (nmi)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="nmi" step="any" oninput="convertLength('nmi')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>英寻：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="fathom" step="any" oninput="convertLength('fathom')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>英里 (mi)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="mile" step="any" oninput="convertLength('mile')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>弗隆 (fur)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="furlong" step="any" oninput="convertLength('furlong')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>码 (yd)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="yard" step="any" oninput="convertLength('yard')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>英尺 (ft)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="ft" step="any" oninput="convertLength('ft')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>英寸 (in)：</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="inch" step="any" oninput="convertLength('inch')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" onclick="resetAll()">重置所有</button>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能简介</h2>
+                    <p>长度单位换算工具支持在线公里(km)、米(m)、分米(dm)等单位间的互转互换。</p>
+                    
+                    <h3>支持的单位</h3>
+                    <ul>
+                        <li>公制：千米、米、分米、厘米、毫米、微米</li>
+                        <li>市制：里、丈、尺、寸、分、厘</li>
+                        <li>英制：海里、英寻、英里、弗隆、码、英尺、英寸</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>在任意输入框中输入数值，其他单位会自动转换</li>
+                        <li>支持小数点输入</li>
+                        <li>点击"重置所有"可清空所有输入</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast" id="toast"></div>
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

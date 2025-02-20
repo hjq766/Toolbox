@@ -1,0 +1,248 @@
+/* 工具特有样式 */
+.tool-main {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 16px;
+    /* 控制所有元素之间的统一间距 */
+}
+
+/* 结果表格样式 */
+.result-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    background: var(--bg-color);
+    border-radius: 6px;
+    overflow: hidden;
+    table-layout: fixed;
+    /* 添加固定列宽 */
+}
+
+/* 设置每列的固定宽度 */
+.result-table th:nth-child(1) {
+    width: 60px;
+}
+
+/* 序号 */
+.result-table th:nth-child(2) {
+    width: 180px;
+}
+
+/* 身份证号码 */
+.result-table th:nth-child(3) {
+    width: 80px;
+}
+
+/* 验证结果 */
+.result-table th:nth-child(4) {
+    width: 160px;
+}
+
+/* 地区 */
+.result-table th:nth-child(5) {
+    width: 100px;
+}
+
+/* 出生日期 */
+.result-table th:nth-child(6) {
+    width: 60px;
+}
+
+/* 性别 */
+.result-table th:nth-child(7) {
+    width: 60px;
+}
+
+/* 年龄 */
+.result-table th:nth-child(8) {
+    width: 60px;
+}
+
+/* 生肖 */
+.result-table th:nth-child(9) {
+    width: 80px;
+}
+
+/* 星座 */
+
+/* 处理单元格内容溢出 */
+.result-table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.result-table th,
+.result-table td {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.result-table th {
+    background: var(--bg-color-50);
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.result-table td {
+    color: var(--text-color);
+}
+
+/* 验证结果样式 */
+.valid {
+    color: #4caf50;
+}
+
+.invalid {
+    color: #f44336;
+}
+
+/* 性别样式 */
+.gender-male {
+    color: #2196f3;
+}
+
+.gender-female {
+    color: #e91e63;
+}
+
+/* 分页控件样式 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.pagination-controls button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.pagination-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-controls button:not(:disabled):hover {
+    background: var(--bg-color-50);
+}
+
+.page-info {
+    color: var(--text-secondary);
+}
+
+/* 按钮组样式 */
+.button-group {
+    display: flex;
+    width: 100%;
+    margin: 0;
+    /* 移除默认边距 */
+}
+
+.button-group .btn {
+    flex: 1;
+    padding: 12px 24px;
+    font-size: 16px;
+}
+
+/* 结果区域标题 */
+.result-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    /* 移除所有边距 */
+    padding: 0;
+}
+
+.result-title span {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+/* 在身份证计算工具中覆盖特定的 textarea 样式 */
+.tool-container .tool-main .input-group textarea {
+    min-height: 300px !important;
+    max-height: none !important;
+    flex: none !important;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    resize: vertical;
+}
+
+/* 修改 input-group 的间距 */
+.tool-main .input-group {
+    margin-bottom: 0;
+    /* 覆盖通用样式的 margin-bottom */
+}
+
+/* 文件上传区域和输入框之间的间距由 tool-main 的 gap 控制 */
+.tool-main {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 20px;
+    /* 统一控制各元素之间的间距 */
+}
+
+/* 移除 input-group 的 margin-bottom，因为间距已由 tool-main 的 gap 控制 */
+.input-group {
+    margin-bottom: 0;
+}
+
+/* 结果区域样式 */
+#resultArea {
+    width: 100%;
+    overflow-x: auto;
+    margin: 0;
+    /* 移除默认边距 */
+}
+
+/* 当结果区域为空时完全隐藏 */
+#resultArea:empty {
+    margin: 0;
+    display: none;
+}
+
+/* 表格本身不需要外边距 */
+.result-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-color);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.result-table th,
+.result-table td {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.result-table th {
+    background: var(--bg-color-50);
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.result-table td {
+    color: var(--text-color);
+}

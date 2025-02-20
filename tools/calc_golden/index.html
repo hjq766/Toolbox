@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黄金比例计算器 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>黄金比例计算器</h1>
+                    <p>快速计算黄金分割比例(1:1.618)及其他常用设计比例，帮助您创造和谐的视觉效果</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 计算器区域 -->
+                    <div class="calculator-section">
+                        <div class="size-inputs">
+                            <div class="input-section">
+                                <label>总长度</label>
+                                <div class="size-input">
+                                    <input type="number" id="bar-total" value="1920">
+                                    <span class="unit">px</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 面板区域 -->
+                    <div class="tool-panels">
+                        <!-- 左侧面板 -->
+                        <div class="left-panels">
+                            <!-- 比例类型 -->
+                            <div class="panel-section ratio-presets">
+                                <h3>比例类型</h3>
+                                
+                                <!-- 黄金比例系列 -->
+                                <div class="ratio-category">
+                                    <h4 class="category-title">黄金比例系列</h4>
+                                    <div class="ratio-tabs">
+                                        <button class="ratio-tab active" data-ratio="1.618">
+                                            <span class="ratio-name">1:1.618</span>
+                                            <span class="ratio-desc">黄金比例</span>
+                                        </button>
+                                        <button class="ratio-tab" data-ratio="0.618">
+                                            <span class="ratio-name">1:0.618</span>
+                                            <span class="ratio-desc">黄金分割</span>
+                                        </button>
+                                        <button class="ratio-tab" data-ratio="2.618">
+                                            <span class="ratio-name">1:2.618</span>
+                                            <span class="ratio-desc">白银比例</span>
+                                        </button>
+                                        <button class="ratio-tab" data-ratio="0.382">
+                                            <span class="ratio-name">1:0.382</span>
+                                            <span class="ratio-desc">白银分割</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 数学比例系列 -->
+                                <div class="ratio-category">
+                                    <h4 class="category-title">数学比例系列</h4>
+                                    <div class="ratio-tabs">
+                                        <button class="ratio-tab" data-ratio="1.414">
+                                            <span class="ratio-name">1:1.414</span>
+                                            <span class="ratio-desc">√2比例</span>
+                                        </button>
+                                        <button class="ratio-tab" data-ratio="1.732">
+                                            <span class="ratio-name">1:1.732</span>
+                                            <span class="ratio-desc">√3比例</span>
+                                        </button>
+                                        <button class="ratio-tab" data-ratio="2.414">
+                                            <span class="ratio-name">1:2.414</span>
+                                            <span class="ratio-desc">白金比例</span>
+                                        </button>
+                                        <button class="ratio-tab" data-ratio="2">
+                                            <span class="ratio-name">2:1</span>
+                                            <span class="ratio-desc">双平方</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 常用比例 -->
+                                <div class="ratio-category">
+                                    <h4 class="category-title">常用比例</h4>
+                                    <div class="ratio-tabs">
+                                        <button class="ratio-tab" data-ratio="1.778">
+                                            <span class="ratio-name">16:9</span>
+                                            <span class="ratio-desc">标准宽屏</span>
+                                        </button>
+                                        <button class="ratio-tab" data-ratio="1.333">
+                                            <span class="ratio-name">4:3</span>
+                                            <span class="ratio-desc">传统屏幕</span>
+                                        </button>
+                                        <button class="ratio-tab" data-ratio="1.5">
+                                            <span class="ratio-name">3:2</span>
+                                            <span class="ratio-desc">全画幅</span>
+                                        </button>
+                                        <button class="ratio-tab" data-ratio="1">
+                                            <span class="ratio-name">1:1</span>
+                                            <span class="ratio-desc">正方形</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 计算结果 -->
+                            <div class="panel-section ratio-details">
+                                <h3>计算结果</h3>
+                                <div class="details-grid">
+                                    <div class="detail-item">
+                                        <div class="detail-content">
+                                            <div class="detail-main">
+                                                <span class="detail-label">长段</span>
+                                                <span class="detail-value" id="bar-long">1186</span>
+                                            </div>
+                                            <span class="detail-desc">0.618 × 总长度</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-content">
+                                            <div class="detail-main">
+                                                <span class="detail-label">短段</span>
+                                                <span class="detail-value" id="bar-short">734</span>
+                                            </div>
+                                            <span class="detail-desc">0.382 × 总长度</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 预览区域 -->
+                        <div class="panel-section preview-panel">
+                            <h3>预览效果</h3>
+                            <div class="preview-area">
+                                <div class="ratio-preview-wrapper">
+                                    <div class="bar-preview">
+                                        <div class="bar-l"></div>
+                                        <div class="bar-r"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 功能介绍部分 -->
+                <div class="tool-info">
+                    <h2>功能介绍</h2>
+                    <p>黄金比例计算器是一个专业的设计辅助工具，可以帮助您快速计算黄金分割比例及其他常用设计比例，让您的设计作品更具美感和专业性。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>支持任意尺寸的黄金比例计算</li>
+                        <li>提供多种经典设计比例预设</li>
+                        <li>直观的实时预览效果</li>
+                        <li>包含正向和反向的比例计算</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>输入总长度，自动计算对应的分割尺寸</li>
+                        <li>选择不同的比例类型，快速切换计算方式</li>
+                        <li>通过预览区直观查看分割效果</li>
+                        <li>结果区显示详细的计算数值</li>
+                    </ul>
+                    
+                    <h3>应用场景</h3>
+                    <ul>
+                        <li>网页设计和UI布局</li>
+                        <li>平面设计和版式设计</li>
+                        <li>建筑设计和空间规划</li>
+                        <li>摄影构图和图片裁剪</li>
+                        <li>产品设计和包装设计</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

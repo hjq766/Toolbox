@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宽高比换算工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>宽高比换算工具</h1>
+                    <p>快速计算和调整宽高比例，支持多种常用比例预设</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 主操作区域 -->
+                    <div class="calculator-section">
+                        <!-- 尺寸输入 -->
+                        <div class="size-inputs">
+                            <div class="input-section">
+                                <label>宽度</label>
+                                <div class="size-input">
+                                    <input type="number" id="width" value="1920" min="1">
+                                    <span class="unit">px</span>
+                                </div>
+                            </div>
+                            <div class="size-separator">×</div>
+                            <div class="input-section">
+                                <label>高度</label>
+                                <div class="size-input">
+                                    <input type="number" id="height" value="1080" min="1">
+                                    <span class="unit">px</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 比例信息 -->
+                        <div class="ratio-info">
+                            <div class="info-item">
+                                <span class="info-label">当前比例</span>
+                                <span class="info-value" id="currentRatioDisplay">16:9</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">宽高比值</span>
+                                <span class="info-value" id="ratioValueDisplay">1.778</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 预设和预览区域 -->
+                    <div class="tool-panels">
+                        <!-- 左侧面板 -->
+                        <div class="left-panels">
+                            <!-- 比例预设 -->
+                            <div class="panel-section ratio-presets">
+                                <h3>常用比例</h3>
+                                <div class="ratio-tabs">
+                                    <!-- 显示器/视频比例 -->
+                                    <button class="ratio-tab active" data-ratio="16:9">
+                                        <span class="ratio-name">16:9</span>
+                                        <span class="ratio-desc">标准屏幕</span>
+                                    </button>
+                                    <button class="ratio-tab" data-ratio="21:9">
+                                        <span class="ratio-name">21:9</span>
+                                        <span class="ratio-desc">超宽屏</span>
+                                    </button>
+                                    
+                                    <!-- 移动设备比例（竖屏） -->
+                                    <button class="ratio-tab" data-ratio="9:19.5">
+                                        <span class="ratio-name">9:19.5</span>
+                                        <span class="ratio-desc">iPhone</span>
+                                    </button>
+                                    <button class="ratio-tab" data-ratio="9:20">
+                                        <span class="ratio-name">9:20</span>
+                                        <span class="ratio-desc">安卓</span>
+                                    </button>
+                                    
+                                    <!-- 平板设备比例 -->
+                                    <button class="ratio-tab" data-ratio="3:4">
+                                        <span class="ratio-name">3:4</span>
+                                        <span class="ratio-desc">iPad</span>
+                                    </button>
+                                    
+                                    <!-- 传统比例 -->
+                                    <button class="ratio-tab" data-ratio="4:3">
+                                        <span class="ratio-name">4:3</span>
+                                        <span class="ratio-desc">传统屏幕</span>
+                                    </button>
+                                    <button class="ratio-tab" data-ratio="3:2">
+                                        <span class="ratio-name">3:2</span>
+                                        <span class="ratio-desc">全画幅</span>
+                                    </button>
+                                    
+                                    <!-- 社交媒体比例 -->
+                                    <button class="ratio-tab" data-ratio="1:1">
+                                        <span class="ratio-name">1:1</span>
+                                        <span class="ratio-desc">方形</span>
+                                    </button>
+                                    <button class="ratio-tab" data-ratio="9:16">
+                                        <span class="ratio-name">9:16</span>
+                                        <span class="ratio-desc">短视频</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 当前比例信息 -->
+                            <div class="panel-section ratio-details">
+                                <h3>当前比例详情</h3>
+                                <div class="details-grid">
+                                    <div class="detail-item">
+                                        <div class="detail-content">
+                                            <div class="detail-main">
+                                                <span class="detail-label">简化比例</span>
+                                            </div>
+                                            <div class="detail-main">
+                                                <span class="detail-value" id="currentRatio">4:3</span>
+                                            </div>
+                                            <span class="detail-desc">最简分数形式</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-content">
+                                            <div class="detail-main">
+                                                <span class="detail-label">比值</span>
+                                            </div>
+                                            <div class="detail-main">
+                                                <span class="detail-value" id="ratioValue">1.333</span>
+                                            </div>
+                                            <span class="detail-desc">宽度 ÷ 高度</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 预览区域 -->
+                        <div class="panel-section preview-panel">
+                            <h3>预览效果</h3>
+                            <div class="preview-area">
+                                <div class="ratio-preview-wrapper">
+                                    <div class="ratio-preview">
+                                        <div class="preview-box"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能介绍</h2>
+                    <p>宽高比换算工具可以帮助您快速计算和调整图像、视频或设计稿的宽高比例，方便进行尺寸转换和比例调整。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li>支持输入任意宽高值，自动计算比例</li>
+                        <li>提供常用比例预设（16:9、4:3、1:1等）</li>
+                        <li>实时显示简化比例和宽高比值</li>
+                        <li>可视化预览当前比例效果</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>直接输入宽度或高度，系统会自动计算对应值</li>
+                        <li>点击常用比例按钮，快速切换到预设比例</li>
+                        <li>右侧实时预览当前比例的可视化效果</li>
+                        <li>底部显示当前比例的详细信息</li>
+                    </ul>
+                    
+                    <h3>使用场景</h3>
+                    <ul>
+                        <li>设计师调整图片或设计稿尺寸</li>
+                        <li>视频制作时计算不同分辨率</li>
+                        <li>开发人员计算屏幕适配比例</li>
+                        <li>摄影爱好者进行照片裁剪</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <script src="../../public/main.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>
