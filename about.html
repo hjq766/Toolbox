@@ -1,85 +1,165 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>关于我们 - 在线工具箱</title>
-    <link rel="stylesheet" href="./public/style.css?=20250118">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>关于本站 · jqnest 工具箱</title>
+  <meta name="description" content="关于 在线工具箱">
+  <link rel="stylesheet" href="./public/styles/tokens.css">
+  <link rel="stylesheet" href="./public/styles/themes.css">
+  <link rel="stylesheet" href="./public/styles/base.css">
+  <link rel="stylesheet" href="./public/styles/layout.css">
+  <link rel="stylesheet" href="./public/styles/components.css">
+  <link rel="stylesheet" href="./public/styles/utilities.css">
+  <style>
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-4); }
+    .feature-card {
+      padding: var(--space-4); border-radius: var(--radius-lg);
+      background: var(--bg-surface); border: 1px solid var(--border-base);
+      transition: transform var(--dur-base) var(--ease-emph), border-color var(--dur-base), box-shadow var(--dur-base);
+    }
+    .feature-card:hover { transform: translateY(-2px); border-color: var(--color-brand); box-shadow: var(--shadow-md); }
+    .feature-card .fc-icon {
+      width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+      border-radius: var(--radius-md); background: var(--color-brand-soft); color: var(--color-brand);
+      font-size: 20px; margin-bottom: var(--space-3);
+    }
+    .feature-card h3 { font-size: var(--text-md); font-weight: 700; margin-bottom: var(--space-1); }
+    .feature-card p { font-size: var(--text-sm); color: var(--fg-muted); line-height: 1.6; margin: 0; }
+
+    .section-title {
+      font-size: var(--text-lg); font-weight: 700; margin-bottom: var(--space-4);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-title::before {
+      content: ""; width: 4px; height: 18px;
+      background: var(--color-brand); border-radius: 2px; flex-shrink: 0;
+    }
+
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); align-items: stretch; }
+    .contact-card { padding: var(--space-4); border-radius: var(--radius-lg); background: var(--bg-surface); border: 1px solid var(--border-base); transition: border-color var(--dur-base), box-shadow var(--dur-base); }
+    .contact-card:hover { border-color: var(--color-brand); box-shadow: var(--shadow-sm); }
+    .contact-card h3 { font-size: var(--text-md); font-weight: 700; margin-bottom: var(--space-3); }
+    .contact-card a { color: var(--color-brand); text-decoration: none; }
+    .contact-card a:hover { text-decoration: underline; }
+    .contact-row { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm); color: var(--fg-base); margin-bottom: var(--space-2); }
+    .contact-row:last-child { margin-bottom: 0; }
+    .contact-row i { width: 16px; height: 16px; color: var(--fg-muted); flex-shrink: 0; }
+
+    @media (max-width: 640px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
-<body>
-    <div class="page-wrapper">
-        <main class="main-content">
-            <section class="tool-page-hero">
-                <div class="container">
-                    <h1>关于本站</h1>
-                    <p>在线工具箱 - 让工作更简单，让生活更轻松</p>
-                </div>
-            </section>
+<body data-page="about" data-base-path="./">
+  <div class="page-shell"><main class="page-main"><div class="container" style="max-width:860px">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
 
-            <div class="container">
-                <div class="about-section">
-                    <h2>项目介绍</h2>
-                    <p>在线工具箱是一个免费的在线工具集合平台，致力于为用户提供简单、易用、高效的在线工具。无需安装任何软件，只需要一个浏览器即可使用。</p>
-                    <p>本站由 Cursor 和 Windsurf（AI助手）编写代码，建议使用 Chrome、Firefox 等现代浏览器访问。所有工具均在本地运行，保护您的数据安全。</p>
-                    <p>建议使用电脑网页端访问，移动端无法保证正常浏览和使用。由于纯静态页面算法的限制，某些功能在特定场景下可能存在性能或效果上的限制。</p>
-                </div>
-
-                <div class="about-section">
-                    <h2>核心特点</h2>
-                    <div class="feature-list">
-                        <div class="feature-item">
-                            <h3>完全免费</h3>
-                            <p>所有工具完全免费使用，没有任何限制和广告</p>
-                        </div>
-                        <div class="feature-item">
-                            <h3>无需登录</h3>
-                            <p>所有工具即开即用，无需注册和登录</p>
-                        </div>
-                        <div class="feature-item">
-                            <h3>简单易用</h3>
-                            <p>界面直观，操作简单，新手也能快速上手</p>
-                        </div>
-                        <div class="feature-item">
-                            <h3>本地运行</h3>
-                            <p>所有计算和处理都在本地完成，保护您的数据安全</p>
-                        </div>
-                        <div class="feature-item">
-                            <h3>持续更新</h3>
-                            <p>不定期添加新工具，优化现有功能</p>
-                        </div>
-                        <div class="feature-item">
-                            <h3>纯原生技术</h3>
-                            <p>使用原生HTML/CSS/JS开发，无需任何框架，加载更快更稳定</p>
-                        </div>
-                        <div class="feature-item">
-                            <h3>AI驱动开发</h3>
-                            <p>由 Cursor 和 Windsurf 进行开发，并持续优化</p>
-                        </div>
-                        <div class="feature-item">
-                            <h3><span style="color: var(--red-color);">0</span></h3>
-                            <span>工具数量</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="about-section">
-                    <h2>联系我</h2>
-                    <div class="contact-info">
-                        <div class="contact-left">
-                            <p>邮箱：<a href="mailto:j.d@jqnest.top">j.d@jqnest.top</a></p>
-							<br>
-                            <p>Designer设计师导航：<a href="https://jqnav.top" target="_blank">https://jqnav.top</a></p>
-                            
-                        </div>
-                        <div class="contact-right">
-                            <img src="https://s3.bmp.ovh/imgs/2025/02/21/cc984adf6bcc7148.png" alt="微信公众号" class="qrcode">
-                        </div>
-                    </div>
-                </div>
+        <!-- 特色 -->
+        <div>
+          <h2 class="section-title">为什么选择我</h2>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <div class="fc-icon"><i data-lucide="shield-check"></i></div>
+              <h3>尊重隐私</h3>
+              <p>所有处理都在浏览器本地完成，不经过任何服务器，不收集任何数据。</p>
             </div>
-        </main>
+            <div class="feature-card">
+              <div class="fc-icon"><i data-lucide="zap"></i></div>
+              <h3>即开即用</h3>
+              <p>无需注册、无需登录、无需安装，打开浏览器就能使用。</p>
+            </div>
+            <div class="feature-card">
+              <div class="fc-icon"><i data-lucide="palette"></i></div>
+              <h3>统一设计</h3>
+              <p>全站统一设计系统与组件库，统一使用 Lucide 图标库，深色/浅色主题随心切换。</p>
+            </div>
+            <div class="feature-card">
+              <div class="fc-icon"><i data-lucide="smartphone"></i></div>
+              <h3>多端适配</h3>
+              <p>桌面端优先，同时兼顾平板与移动设备的基本可用性。</p>
+            </div>
+            <div class="feature-card">
+              <div class="fc-icon"><i data-lucide="rocket"></i></div>
+              <h3>轻量极速</h3>
+              <p>纯原生 HTML/CSS/JS，无重型框架依赖，弱机型也能流畅使用。</p>
+            </div>
+            <div class="feature-card">
+              <div class="fc-icon"><i data-lucide="sparkles"></i></div>
+              <h3>AI 驱动</h3>
+              <p>借助 Windsurf + Cursor 等 AI 工具进行开发，高效迭代、持续优化。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 项目数据 -->
+        <div>
+          <h2 class="section-title">项目数据</h2>
+          <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
+            <div class="stat">
+              <div class="stat-value" data-stat-tools>--</div>
+              <div class="stat-label">在线工具</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">0</div>
+              <div class="stat-label">后端依赖</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">100%</div>
+              <div class="stat-label">浏览器运行</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 注意事项 -->
+        <div>
+          <h2 class="section-title">注意事项</h2>
+          <div style="padding:var(--space-4);border-radius:var(--radius-lg);background:var(--bg-surface);border:1px solid var(--border-base);font-size:var(--text-sm);color:var(--fg-muted);line-height:1.8">
+            本项目主要借助 AI 编程工具辅助开发，未经全面系统测试，可能存在代码结构欠优化、异常处理不完善、隐藏逻辑错误或浏览器兼容性等问题。如遇 Bug 欢迎通过邮件或
+            <a href="https://github.com/hjq766/Toolbox/issues" target="_blank" style="color:var(--color-brand)">GitHub Issues</a> 反馈，感谢理解与支持！
+          </div>
+        </div>
+
+        <!-- 联系 -->
+        <div id="feedback">
+          <h2 class="section-title">联系与反馈</h2>
+          <div class="contact-grid">
+            <div class="contact-card">
+              <h3>联系方式</h3>
+              <div class="contact-row"><i data-lucide="mail"></i><a href="mailto:jieqi.yellow@gmail.com">jieqi.yellow@gmail.com</a></div>
+              <div class="contact-row"><i data-lucide="compass"></i><a href="https://jqnav.top" target="_blank">极趣导航</a></div>
+              <div class="contact-row"><i data-lucide="globe"></i><a href="https://jqnest.top" target="_blank">个人主页</a></div>
+              <div class="contact-row"><svg class="lucide" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg><a href="https://github.com/hjq766/Toolbox" target="_blank">GitHub</a></div>
+            </div>
+            <div class="contact-card">
+              <h3>参与改进</h3>
+              <div class="contact-row"><i data-lucide="message-circle"></i><span>发现 Bug 或有功能建议，欢迎反馈</span></div>
+              <div class="contact-row"><i data-lucide="lightbulb"></i><span>新工具需求可通过邮件提交</span></div>
+              <div class="contact-row"><svg class="lucide" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg><a href="https://github.com/hjq766/Toolbox/issues" target="_blank">也可在 GitHub Issues 提交</a></div>
+              <div class="contact-row"><i data-lucide="heart"></i><span>纯爱好项目，持续迭代中</span></div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
     </div>
-    <script src="./public/card.js?=20250118"></script>
-    <script src="./public/main.js?=20250118"></script>
+  </div></main></div>
+
+  <script type="module" src="./public/scripts/core/app-init.js"></script>
+  <script type="module">
+    import { mountPageHeader } from './public/scripts/components/page-header.js';
+    import { readyTools } from './public/scripts/data/tools.js';
+    const el = document.querySelector('[data-stat-tools]');
+    if (el) el.textContent = readyTools().length + '+';
+    mountPageHeader({
+      title: '关于 在线工具箱',
+      desc: '我是 Jacket，一枚野路子出身的设计师。这里是我日常顺手开发的小工具集合 —— 完全免费、无需注册、纯前端运行，所有处理都在浏览器本地完成，不上传任何数据，希望能帮到你。',
+      eyebrow: '关于',
+      backHref: './index.html',
+    });
+  </script>
 </body>
 </html>

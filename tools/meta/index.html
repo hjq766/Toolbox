@@ -1,120 +1,105 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta标签生成工具 - 在线工具箱</title>
-    <link rel="stylesheet" href="../../public/style.css">
-    <link rel="stylesheet" href="tool.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meta 生成器 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <style>
+    .meta-output{display:flex;flex-direction:column;min-height:520px}
+    .meta-output .CodeMirror{flex:1}
+    .meta-output textarea{flex:1;resize:none}
+  </style>
 </head>
-<body>
-    <div class="page-wrapper">
-        <main class="main-content">
-            <section class="tool-page-hero">
-                <div class="container">
-                    <h1>Meta标签生成工具</h1>
-                    <p>用于生成网页Meta标签，包括title、description、keywords等基本信息</p>
+<body data-page="tool" data-base-path="../../" data-tool-slug="meta">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:300px">
+          <!-- 左：实时代码输出 -->
+          <div class="meta-output">
+            <textarea class="textarea u-mono" data-result readonly placeholder="填写右侧字段，代码实时生成…" style="font-size:var(--text-sm)"></textarea>
+          </div>
+
+          <!-- 右：侧栏 -->
+          <aside>
+            <div class="panel">
+              <h3 class="panel-title">基础信息</h3>
+              <div class="u-col u-gap-3">
+                <div class="field">
+                  <label class="field-label" for="m-title">Title 网页标题</label>
+                  <input class="input" id="m-title" data-field="title" placeholder="10–30 个字符最佳" autocomplete="off">
                 </div>
-            </section>
-
-            <div class="tool-container">
-                <div class="tool-main">
-                    <form id="metaForm" class="input-group">
-                        <div class="form-group">
-                            <label for="title">网页标题 (Title)</label>
-                            <input type="text" id="title" placeholder="请输入网页标题">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="description">网页描述 (Description)</label>
-                            <input type="text" id="description" placeholder="请输入网页描述">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="keywords">关键词 (Keywords)</label>
-                            <input type="text" id="keywords" placeholder="网页关键词,用逗号分隔">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="author">作者 (Author)</label>
-                            <input type="text" id="author" placeholder="网页作者">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="language">语言 (Language)</label>
-                            <input type="text" id="language" value="zh-cn" placeholder="网页语言">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="copyright">版权信息 (Copyright)</label>
-                            <input type="text" id="copyright" placeholder="网页版权信息">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="robots">机器人向导 (Robots)</label>
-                            <select id="robots">
-                                <option value="all">默认</option>
-                                <option value="index,follow">允许搜索引擎索引页面和跟踪链接</option>
-                                <option value="noindex,nofollow">禁止搜索引擎索引页面和跟踪链接</option>
-                                <option value="index">允许搜索引擎索引整个页面</option>
-                                <option value="noindex">禁止搜索引擎索引整个页面</option>
-                                <option value="follow">允许搜索引擎跟踪页面上的链接</option>
-                                <option value="nofollow">不允许搜索引擎跟踪页面上的链接</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="viewport">自适应 (Viewport)</label>
-                            <select id="viewport">
-                                <option value="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">PC和手机端自适应</option>
-                                <option>适应PC端</option>
-                                <option value="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">适应手机端</option>
-                            </select>
-                        </div>
-                    </form>
-
-                    <div class="output-group">
-                        <h2>生成结果</h2>
-                        <textarea id="result" readonly></textarea>
-                    </div>
-
-                    <div class="button-group">
-                        <button class="btn btn-primary" onclick="generateMeta()">生成Meta标签</button>
-                        <button class="btn" onclick="copyResult()">复制结果</button>
-                        <button class="btn" onclick="resetForm()">重置表单</button>
-                    </div>
+                <div class="field">
+                  <label class="field-label" for="m-desc">Description 描述</label>
+                  <textarea class="textarea" id="m-desc" data-field="description" placeholder="建议 200 字符内" style="min-height:68px"></textarea>
                 </div>
-
-                <div class="tool-info">
-                    <h2>Meta标签说明</h2>
-                    
-                    <h3>什么是Meta标签？</h3>
-                    <p>Meta标签是HTML文档的元数据，它们用于描述网页的各种属性和信息。这些信息虽然不会直接显示在页面上，但对搜索引擎优化(SEO)和网页显示都非常重要。</p>
-                    
-                    <h3>常用Meta标签说明</h3>
-                    <p><span>title：</span>网页标题，是搜索引擎最看重的内容之一，建议控制在10-30个字符。</p>
-                    <p><span>description：</span>网页描述，用于搜索引擎结果页面的网页预览，建议控制在200个字符以内。</p>
-                    <p><span>keywords：</span>网页关键词，用逗号分隔，帮助搜索引擎了解网页的主题。</p>
-                    <p><span>robots：</span>告诉搜索引擎如何抓取和索引页面内容。</p>
-                    <p><span>viewport：</span>用于移动端页面的显示控制，设置页面的缩放和显示方式。</p>
-                    
-                    <h3>Meta标签的重要性</h3>
-                    <p>1. 提升搜索引擎优化(SEO)效果</p>
-                    <p>2. 控制网页在各种设备上的显示方式</p>
-                    <p>3. 提供网页的基本信息和属性</p>
-                    <p>4. 影响搜索引擎对网页的收录方式</p>
-                    
-                    <h3>使用建议</h3>
-                    <p>1. 确保title和description的内容准确描述页面内容</p>
-                    <p>2. keywords使用准确的关键词，避免堆砌</p>
-                    <p>3. viewport设置要考虑移动端用户体验</p>
-                    <p>4. robots根据实际需求合理设置，避免误伤搜索引擎收录</p>
+                <div class="field">
+                  <label class="field-label" for="m-keywords">Keywords 关键词</label>
+                  <input class="input" id="m-keywords" data-field="keywords" placeholder="逗号分隔" autocomplete="off">
                 </div>
+                <div class="field">
+                  <label class="field-label" for="m-author">Author 作者</label>
+                  <input class="input" id="m-author" data-field="author" placeholder="可留空" autocomplete="off">
+                </div>
+                <div class="field">
+                  <label class="field-label" for="m-copyright">Copyright 版权</label>
+                  <input class="input" id="m-copyright" data-field="copyright" placeholder="可留空" autocomplete="off">
+                </div>
+                <div class="field">
+                  <label class="field-label" for="m-language">Language 语言</label>
+                  <input class="input" id="m-language" data-field="language" value="zh-CN" autocomplete="off">
+                </div>
+              </div>
             </div>
-        </main>
-    </div>
 
-    <script src="../../public/main.js"></script>
-    <script src="tool.js"></script>
+            <div class="panel">
+              <h3 class="panel-title">搜索引擎 / 适配</h3>
+              <div class="u-col u-gap-3">
+                <div class="field">
+                  <label class="field-label" for="m-robots">Robots</label>
+                  <select class="select" id="m-robots" data-field="robots">
+                    <option value="">默认（不输出）</option>
+                    <option value="index,follow">index,follow</option>
+                    <option value="noindex,nofollow">noindex,nofollow</option>
+                    <option value="index">index</option>
+                    <option value="noindex">noindex</option>
+                    <option value="follow">follow</option>
+                    <option value="nofollow">nofollow</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label class="field-label" for="m-viewport">Viewport</label>
+                  <select class="select" id="m-viewport" data-field="viewport">
+                    <option value="responsive">PC + 移动自适应</option>
+                    <option value="mobile">仅移动端</option>
+                    <option value="none">不输出</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="act-group">
+                <button class="btn is-primary" type="button" data-action="copy"><i data-lucide="copy"></i> 复制代码</button>
+                <button class="btn is-ghost" type="button" data-action="reset">重置</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
 </body>
 </html>

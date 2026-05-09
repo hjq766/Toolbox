@@ -1,50 +1,82 @@
-# 在线工具箱 - 免费实用的工具集合
+# jqnest 工具箱 · v2
 
-[![Website](https://img.shields.io/website?url=http://tools.jqnest.top)](http://tools.jqnest.top)
+全新模块化重构版本，与旧版 (根目录 `index.html` / `public` / `tools`) 并行存在、互不影响。
 
-一个基于Web的免费在线工具集合平台，提供多种实用工具，所有计算均在本地完成，保障数据隐私安全。
+## 文档导航
 
-## 🌟 核心优势
+- 📘 **开发规范（强制性）**：[`docs/DEVELOPMENT.md`](./docs/DEVELOPMENT.md)
+  - 设计 Token、组件清单、新增工具步骤、禁止事项、自查清单 —— **开发前必读**
+- 📄 规划参考：上级目录 `../Refactoring.md`
 
-- 🛡️ **隐私保护** - 所有操作本地完成，不上传任何数据
-- 🆓 **完全免费** - 无广告、无付费墙、无使用限制
-- 🚀 **即开即用** - 无需注册登录，打开浏览器即可使用
-- 📱 **响应式设计** - 适配电脑和移动端浏览器
+## 本地运行
 
-## 🔍 功能特性
+**必须通过 HTTP 服务器**，不能 `file://` 打开（ES Modules 协议限制）。
 
-- **智能搜索** 🔍
-  - 支持工具名称/功能关键词搜索
-  - 实时显示搜索结果
-  - 清空搜索快捷按钮
+```bash
+# 任选其一
+cd v2 && python3 -m http.server 5173
+npx http-server v2 -p 5173 -c-1
+# 或 VSCode Live Server 扩展：右键 v2/index.html → Open with Live Server
+```
 
-- **工具展示** 🗂️
-  - 分类展示所有工具
-  - 显示工具基础信息
-  - 空状态友好提示
+然后浏览器访问 `http://localhost:5173/`。
 
-- **用户体验** 💻
-  - SVG图标优化加载性能
-  - CSS变量支持主题切换
-  - 移动端触控优化
+## 项目形态
 
-## 📜 开源协议
-本项目采用 [MIT License](LICENSE)，欢迎自由使用和二次开发。
+### 首页：工作台
 
-## ⚠️ 注意事项
+左侧边栏（品牌 / 搜索 / 分类导航）+ 右画布（卡片浏览 / iframe 工具）。Hash 路由：
 
-**特别说明：** 本项目代码存在以下特点，请知悉：
+- `http://localhost:5173/` → 全部工具卡片视图
+- `http://localhost:5173/#/tool/<slug>` → 打开某个工具
+- `http://localhost:5173/#/page/about` → 关于页
 
-- 🧩 **AI生成代码**  
-  全部代码由 [Cursor](https://cursor.sh)、[Windsurf](https://codeium.com/windsurf)、[Trae](https://www.trae.ai/) 等AI编程工具生成，可能存在以下问题：
-  - 代码结构不够优化
-  - 存在冗余或重复代码
-  - 变量命名不规范
-  - 异常处理不完善
+每个工具**仍可独立访问**，形态完整：
 
-- 🚧 **质量风险**  
-  由于AI生成代码的特性：
-  - 不排除存在隐藏的逻辑错误
-  - 部分功能实现方式可能非最优解
-  - 代码可维护性较低
-  - 可能存在兼容性问题
+```
+http://localhost:5173/tools/hex_convert/index.html
+```
+
+嵌入模式自动降级：iframe 内隐藏 site-header / dock / 标准返回按钮，主题跨 frame 同步。
+
+### 目录速览
+
+```
+v2/
+├─ index.html                  工作台首页
+├─ about.html                  关于页
+├─ docs/DEVELOPMENT.md         ★ 开发规范
+├─ public/
+│   ├─ styles/                 tokens → themes → base → layout → components → utilities → pages/
+│   └─ scripts/
+│       ├─ core/               app-init / theme / perf-mode / shell / tool-page
+│       ├─ components/         page-header / toast / dock / unit-converter
+│       ├─ utils/              dom / clipboard / download
+│       ├─ data/tools.js       ★ 工具注册表（唯一数据源）
+│       └─ pages/home.js       首页逻辑
+└─ tools/
+    ├─ _template.html          复制即可开始写新工具
+    └─ <slug>/index.html + page.js + [tool.css]
+```
+
+## 已上线工具（见 `public/scripts/data/tools.js`）
+
+**开发工具**：hex_convert · urlcode · rand_password · hash · meta · grid_layout · html_preview · web_preview
+**文本工具**：text_size · text_deduplicate
+**计算换算**：convert_length · convert_weight · convert_temp
+
+## 新增工具
+
+参照 [`docs/DEVELOPMENT.md`](./docs/DEVELOPMENT.md) 第"[新增一个工具的完整步骤](./docs/DEVELOPMENT.md#新增一个工具的完整步骤)"一节。
+
+## 核心原则
+
+1. **Token + 全局组件一次到位**：颜色、字号、间距、按钮、输入、面板全站共用一套。
+2. **页面 header 统一渲染**：`mountPageHeader()` / `mountToolHeader()` 是唯一入口。
+3. **MPA + 模块化**：每个工具是独立 HTML + ES Module，天然可独立部署。
+4. **性能降级**：`<html data-performance="low">` 一键关动画/阴影。
+5. **可搜索、可分享、可独立**：Hash 路由 + 独立 URL + 跨 frame 主题同步。
+
+## 旧资源
+
+根目录仍有 v1 代码，继续服务旧链接。v2 自 2026-04 起成为主分支。

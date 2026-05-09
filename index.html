@@ -1,59 +1,108 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>在线工具箱 - 免费实用的在线工具集合</title>
-    <link rel="stylesheet" href="public/style.css?=202501118">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jqnest 工具箱 · 免费在线工具集合</title>
+  <meta name="description" content="jqnest 工具箱：开发、文本、换算、图片、查询等常用在线工具，免费、纯前端、尊重隐私。">
+  <link rel="icon" type="image/webp" href="./public/favicon.webp">
+  <link rel="stylesheet" href="./public/styles/tokens.css">
+  <link rel="stylesheet" href="./public/styles/themes.css">
+  <link rel="stylesheet" href="./public/styles/base.css">
+  <link rel="stylesheet" href="./public/styles/layout.css">
+  <link rel="stylesheet" href="./public/styles/components.css">
+  <link rel="stylesheet" href="./public/styles/utilities.css">
+  <link rel="stylesheet" href="./public/styles/pages/home.css">
 </head>
-<body>
-    <div class="page-wrapper">
+<body class="workspace-body" data-page="home" data-base-path="./" data-shell="none">
 
-        <main class="main-content">
-            <section class="hero">
-                <div class="container">
-                    <h1>在线工具箱</h1>
-                    <p>简单实用的在线工具集合，助您提高工作效率</p>
+  <div class="workspace" data-workspace>
+    <!-- 左侧：工具导航 -->
+    <aside class="ws-sidebar" aria-label="工具导航">
+      <div class="ws-brand">
+        <img class="logo-mark" src="./public/favicon.webp" alt="logo" width="28" height="28">
+        <div>
+          <div>极趣导航-在线工具箱</div>
+          <div class="brand-meta">免费在线工具集合</div>
+        </div>
+      </div>
+
+      <div class="ws-search">
+        <label class="search-shell" for="toolSearch">
+          <i data-lucide="search" class="search-icon" aria-hidden="true"></i>
+          <input id="toolSearch" type="search" class="search-box" placeholder="搜索工具…" autocomplete="off" data-tool-search>
+          <button type="button" class="clear-search is-hidden" data-clear-search aria-label="清空搜索">
+            <i data-lucide="x" style="width:16px;height:16px"></i>
+          </button>
+        </label>
+      </div>
+
+      <nav class="ws-nav" data-tool-cats aria-label="分类导航"></nav>
+
+      <div class="ws-sidebar-footer">
+        <span>© Jacket</span>
+        <div style="display:flex;align-items:center;gap:4px">
+          <a href="old/index.html" title="回到旧版" style="font-size:var(--text-xs);color:var(--fg-muted);text-decoration:none">返回旧版</a>
+          <a class="icon-btn" href="#/page/about" title="关于" aria-label="关于">
+            <i data-lucide="info" style="width:16px;height:16px"></i>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 右侧：顶栏 + 工具画布 -->
+    <section class="ws-main">
+      <header class="ws-topbar">
+        <button class="ws-burger" type="button" data-burger aria-label="菜单">
+          <i data-lucide="menu" style="width:20px;height:20px"></i>
+        </button>
+        <button class="ws-back icon-btn" type="button" data-action="back" title="返回首页" aria-label="返回首页" hidden>
+          <i data-lucide="chevron-left" style="width:18px;height:18px"></i>
+        </button>
+        <div class="ws-crumb" data-crumb>
+          <span class="crumb-cat">首页</span>
+          <span class="crumb-title">选择工具开始使用</span>
+        </div>
+        <span class="ws-hitokoto u-truncate" data-hitokoto title="点击换一句"></span>
+        <div class="ws-actions" data-actions>
+          <button class="icon-btn" type="button" data-toggle-theme title="切换主题" aria-label="切换主题">
+            <i data-lucide="moon" style="width:16px;height:16px"></i>
+          </button>
+          <button class="icon-btn" type="button" data-action="reload" title="刷新当前工具" aria-label="刷新" hidden>
+            <i data-lucide="refresh-cw"></i>
+          </button>
+          <a class="icon-btn" data-action="open" title="在新窗口打开" aria-label="在新窗口打开" target="_blank" rel="noopener" hidden>
+            <i data-lucide="external-link"></i>
+          </a>
+          <button class="icon-btn" type="button" data-action="home" title="回到首页" aria-label="回到首页" hidden>
+            <i data-lucide="home"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="ws-canvas">
+        <!-- 默认工具浏览视图：与工具页/关于页共用 .container + .tool-layout 结构 -->
+        <div class="ws-welcome" data-welcome>
+          <div class="container">
+            <div class="tool-layout">
+              <header data-welcome-header></header>
+              <div class="tool-body">
+                <div class="empty-panel is-hidden" data-empty>
+                  <h3>未找到相关工具</h3>
+                  <p>换个关键词试试。</p>
                 </div>
-            </section>
-
-            <div class="search-container">
-                <input type="text" 
-                       class="search-box" 
-                       id="toolSearch" 
-                       placeholder="搜索工具..."
-                       autocomplete="off">
-                <button class="clear-search" id="clearSearch" title="清空搜索">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
-                    </svg>
-                </button>
-                <svg class="search-icon" viewBox="0 0 24 24">
-                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-                </svg>
+                <div data-welcome-groups></div>
+              </div>
             </div>
+          </div>
+        </div>
 
-            <!-- 添加空状态提示 -->
-            <section id="tools" class="tools-section">
-                <div class="container">
-                    <div class="empty-state" id="emptyState">
-                        <img src="public/images/empty.svg" alt="未找到相关工具">
-                        <h3>未找到相关工具</h3>
-                        <p>试试其他关键词，或者浏览下方的工具列表</p>
-                    </div>
+        <iframe class="ws-frame" data-tool-frame title="工具内容" referrerpolicy="same-origin"></iframe>
+      </div>
+    </section>
+  </div>
 
-                    <div class="tools-nav">
-                    </div>
-
-                    <div class="tools-container">
-
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-    <script src="public/main.js?=202501118"></script>
-    <script src="public/card.js?=202501118"></script>
+  <script type="module" src="./public/scripts/core/app-init.js"></script>
+  <script type="module" src="./public/scripts/pages/home.js"></script>
 </body>
 </html>

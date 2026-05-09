@@ -1,238 +1,184 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS渐变生成器 - 在线工具箱</title>
-    <link rel="stylesheet" href="../../public/style.css">
-    <link rel="stylesheet" href="tool.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS 渐变生成 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <style>
+    /* ---- 预览区 ---- */
+    .cg-preview{width:100%;aspect-ratio:16/9;border-radius:var(--radius-md);border:1px solid var(--border-base);transition:background .15s}
+    /* ---- 渐变条 + 色标 ---- */
+    .cg-bar-wrap{position:relative;margin-top:var(--space-4)}
+    .cg-bar{height:28px;border-radius:var(--radius-sm);cursor:pointer;user-select:none}
+    .cg-stop{position:absolute;top:-4px;width:16px;height:36px;border:2px solid var(--fg-invert);border-radius:var(--radius-sm);cursor:grab;box-shadow:0 1px 4px rgba(0,0,0,.3);transform:translateX(-50%);z-index:2;transition:box-shadow .1s}
+    .cg-stop:hover,.cg-stop.is-active{box-shadow:0 0 0 2px var(--color-brand),0 1px 4px rgba(0,0,0,.3)}
+    /* ---- CSS 输出区 ---- */
+    .cg-css{font-family:var(--font-mono);font-size:var(--text-xs);padding:var(--space-3);background:var(--bg-surface-2);border:1px solid var(--border-base);border-radius:var(--radius-md);word-break:break-all;min-height:40px;outline:none}
+    .cg-css:focus{border-color:var(--color-brand)}
+    /* ---- 方向网格 ---- */
+    .cg-dir{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-1)}
+    .cg-dir button{padding:var(--space-2);border:1px solid var(--border-base);border-radius:var(--radius-sm);background:var(--bg-surface-2);cursor:pointer;font-size:var(--text-xs);transition:background .1s,color .1s;text-align:center}
+    .cg-dir button.is-active{background:var(--color-brand);color:var(--fg-invert);border-color:var(--color-brand)}
+    .cg-dir-full{grid-column:1/-1}
+    /* ---- 色标编辑器色块 ---- */
+    .cg-color-pick{width:40px;height:32px;border:1px solid var(--border-base);border-radius:var(--radius-sm);cursor:pointer;padding:0}
+    /* ---- 精选渐变 ---- */
+    .cg-preset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:var(--space-3);max-height:320px;overflow-y:auto}
+    .cg-preset-card{position:relative;height:100px;border-radius:var(--radius-md);cursor:pointer;overflow:hidden;box-shadow:var(--shadow-xs);transition:transform .2s,box-shadow .2s}
+    .cg-preset-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+    .cg-preset-card.is-active{box-shadow:inset 0 0 0 3px var(--color-brand),var(--shadow-md)}
+    .cg-preset-name{position:absolute;bottom:0;left:0;right:0;padding:var(--space-1) var(--space-2);background:rgba(0,0,0,.25);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--fg-invert);font-size:var(--text-xs);text-align:center;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.3)}
+  </style>
 </head>
-<body>
-    <div class="page-wrapper">
-        <div id="header"></div>
-        <main class="main">
-            <section class="tool-page-hero">
-                <div class="container">
-                    <h1>CSS 渐变生成器</h1>
-                    <p>可视化创建和编辑 CSS 渐变效果，支持线性、径向和角向渐变，提供实时预览</p>
-                </div>
-            </section>
+<body data-page="tool" data-base-path="../../" data-tool-slug="css_gradient">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
 
-            <div class="tool-container">
-                <div class="tool-main">
-                    <!-- 左侧：控制面板 -->
-                    <div class="control-panel">
-                        <!-- 渐变类型 -->
-                        <div class="panel-section">
-                            <div class="section-header">
-                                <h3>渐变类型</h3>
-                                <label class="switch" id="repeatSwitchWrapper">
-                                    <span class="label">重复</span>
-                                    <input type="checkbox" id="repeatSwitch">
-                                
+        <div class="grid grid-sidebar-r" style="--sidebar-w:300px">
+          <!-- 左：预览 + 色标 + 输出 -->
+          <div>
+            <div class="cg-preview" data-preview></div>
 
-                                </label>
-                            </div>
-                            <div class="type-grid">
-                                <button class="type-button active" data-type="linear">
-                                    线性
-                                </button>
-                                <button class="type-button" data-type="radial">
-                                    径向
-                                </button>
-                                <button class="type-button" data-type="conic">
-                                    角度
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- 渐变参数设置 -->
-                        <div class="panel-section" id="linearSettings">
-                            <h3>渐变方向</h3>
-                            <div class="direction-group">
-                                <button class="shape-tab active" data-direction="to right">
-                                    向右
-                                </button>
-                                <button class="shape-tab" data-direction="to left">
-                                    向左
-                                </button>
-                                <button class="shape-tab" data-direction="to bottom">
-                                    向下
-                                </button>
-                                <button class="shape-tab" data-direction="to top">
-                                    向上
-                                </button>
-                                <button class="shape-tab" data-direction="to bottom right">
-                                    右下
-                                </button>
-                                <button class="shape-tab" data-direction="to bottom left">
-                                    左下
-                                </button>
-                                <button class="shape-tab" data-direction="to top right">
-                                    右上
-                                </button>
-                                <button class="shape-tab" data-direction="to top left">
-                                    左上
-                                </button>
-                                <button class="shape-tab full-width-tab" data-direction="custom">
-                                    自定义角度
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- 自定义角度设置 -->
-                        <div class="panel-section" id="customAngle" style="display: none;">
-                            <h3>自定义角度</h3>
-                            <div class="range-with-value">
-                                <input type="range" id="gradientAngle" min="0" max="360" value="90">
-                                <span class="value-display">90°</span>
-                            </div>
-                        </div>
-
-                        <div class="panel-section" id="radialSettings" style="display: none;">
-                            <h3>渐变形状</h3>
-                            <div class="shape-grid">
-                                <button class="shape-tab active" data-shape="circle">
-                                    圆形
-                                </button>
-                                <button class="shape-tab" data-shape="ellipse">
-                                    椭圆
-                                </button>
-                            </div>
-
-                            <!-- 渐变大小控制 -->
-                            <h3 style="margin-top: 16px;">渐变大小</h3>
-                            <div class="range-with-value">
-                                <input type="range" id="radialSize" min="0" max="200" value="100">
-                                <span class="value-display">100%</span>
-                            </div>
-
-                            <!-- 添加位置控制 -->
-                            <h3 style="margin-top: 16px;">渐变位置</h3>
-                            <div class="position-controls">
-                                <div class="position-row">
-                                    <label>水平位置</label>
-                                    <div class="range-with-value">
-                                        <input type="range" id="radialPositionX" min="0" max="100" value="50">
-                                        <span class="value-display">50%</span>
-                                    </div>
-                                </div>
-                                <div class="position-row">
-                                    <label>垂直位置</label>
-                                    <div class="range-with-value">
-                                        <input type="range" id="radialPositionY" min="0" max="100" value="50">
-                                        <span class="value-display">50%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 重复模式下的角度渐变方向 -->
-                        <div class="panel-section" id="repeatingConicSettings" style="display: none;">
-                            <h3>渐变方向</h3>
-                            <div class="direction-group">
-                                <button class="shape-tab" data-direction="to bottom right">
-                                    右下
-                                </button>
-                                <button class="shape-tab" data-direction="to left">
-                                    向左
-                                </button>
-                                <button class="shape-tab" data-direction="to top right">
-                                    右上
-                                </button>
-                                <button class="shape-tab" data-direction="to top">
-                                    向上
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- 重复设置 -->
-                        <div class="panel-section" id="repeatingSettings" style="display: none;">
-                            <h3>重复渐变</h3>
-                            <div class="range-with-value">
-                                <input type="range" id="repeatCount" min="1" max="10" value="4">
-                                <span class="value-display">4倍</span>
-                            </div>
-                        </div>
-
-                        <!-- 颜色节点控制 -->
-                        <div class="panel-section">
-                            <h3>渐变色节点</h3>
-                            <div class="color-slider">
-                                <div class="gradient-bar" id="gradientBar"></div>
-                                <div id="colorStops"></div>
-                            </div>
-                            <div class="color-stops-tip">
-                                点击节点修改颜色，拖动调整位置，右键删除（至少保留两个节点）
-                            </div>
-                        </div>
-
-                        <!-- 操作按钮 -->
-                        <div class="btn-group">
-                            <button class="btn btn-primary" id="copyCSS">复制CSS</button>
-                            <button class="btn" id="resetGradient">恢复默认</button>
-                        </div>
-
-                        <!-- 工具超链接 -->
-                        <div class="hyper-link-card">
-                            <a href="../color_gradient/index.html" class="hyper-link">
-                                <span class="iconify" data-icon="tabler:color-swatch" data-inline="false"></span>
-                            点此查看css渐变色彩大全
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- 右侧：预览区域 -->
-                    <div class="preview-section">
-                        <!-- 渐变预览 -->
-                        <div class="preview-panel">
-                            <div class="gradient-preview" id="gradientPreview"></div>
-                            <div class="css-code">
-                                <div class="css-code-header">
-                                    <span>支持粘贴CSS代码</span>
-                                    <div class="css-code-actions">
-                                        <button class="btn-icon" id="pasteCSS" title="粘贴CSS">
-                                            <span class="iconify" data-icon="tabler:clipboard-copy" data-inline="false"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="css-code-content" contenteditable="true" id="cssOutput" spellcheck="false"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tool-info">
-                    <h2>工具介绍</h2>
-                    <p>专业的 CSS 渐变效果制作工具，通过直观的可视化界面，轻松创建漂亮的渐变背景。支持多种渐变类型和丰富的自定义选项。</p>
-                    
-                    <h3>主要功能</h3>
-                    <ul>
-                        <li>支持线性、径向和角向三种渐变类型</li>
-                        <li>可视化调整渐变角度、形状和位置</li>
-                        <li>支持多颜色节点和渐变重复</li>
-                        <li>内置多种渐变预设方案</li>
-                        <li>一键复制生成的 CSS 代码</li>
-                        <li>支持导入现有 CSS 渐变代码</li>
-                    </ul>
-                    
-                    <h3>使用说明</h3>
-                    <ul>
-                        <li>选择需要的渐变类型（线性/径向/角向）</li>
-                        <li>调整渐变参数（角度、形状、大小等）</li>
-                        <li>在颜色条上添加和编辑渐变色节点</li>
-                        <li>通过拖拽调整节点位置和颜色顺序</li>
-                        <li>使用预设方案快速创建专业渐变效果</li>
-                        <li>复制生成的代码或导入已有渐变</li>
-                    </ul>
-                </div>
-                <div id="toast" class="toast"></div>
+            <div class="cg-bar-wrap">
+              <div class="cg-bar" data-bar></div>
+              <div data-stops></div>
             </div>
-        </main>
-        <div id="footer"></div>
-    </div>
+            <p class="hint u-mt-2">点击渐变条添加色标 · 右键删除 · 拖拽移动</p>
 
-    <script src="../../public/main.js"></script>
-    <script src="tool.js"></script>
+            <!-- CSS 输出（支持粘贴） -->
+            <div class="u-mt-4">
+              <div class="cg-css" data-css-out contenteditable="true" spellcheck="false"></div>
+              <div class="u-row u-gap-2 u-mt-2" style="flex-wrap:wrap">
+                <button class="btn is-sm is-primary" data-action="copy-css"><i data-lucide="copy"></i> 复制 CSS</button>
+                <button class="btn is-sm" data-action="copy-svg"><i data-lucide="code"></i> 复制 SVG</button>
+                <button class="btn is-sm" data-action="paste-css"><i data-lucide="clipboard"></i> 粘贴 CSS</button>
+                <button class="btn is-sm is-ghost" data-action="reset"><i data-lucide="refresh-cw"></i> 重置</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右：设置面板 -->
+          <aside>
+            <!-- 渐变类型 -->
+            <div class="panel">
+              <h3 class="panel-title">渐变类型</h3>
+              <div class="tabs" data-type-tabs>
+                <button class="tab-btn is-active" data-type="linear">线性</button>
+                <button class="tab-btn" data-type="radial">径向</button>
+                <button class="tab-btn" data-type="conic">锥形</button>
+              </div>
+              <label class="switch-item u-mt-3">
+                <input type="checkbox" data-repeat>
+                <span>重复</span>
+              </label>
+            </div>
+
+            <!-- 线性/锥形方向 -->
+            <div class="panel" data-linear-settings>
+              <h3 class="panel-title">方向</h3>
+              <div class="cg-dir">
+                <button data-dir="0">向上</button>
+                <button data-dir="45">右上</button>
+                <button data-dir="90" class="is-active">向右</button>
+                <button data-dir="135">右下</button>
+                <button data-dir="180">向下</button>
+                <button data-dir="225">左下</button>
+                <button data-dir="270">向左</button>
+                <button data-dir="315">左上</button>
+              </div>
+              <div class="field u-mt-3">
+                <label class="field-label">自定义角度</label>
+                <div class="range-row">
+                  <input type="range" data-angle min="0" max="360" value="90">
+                  <span class="val" data-angle-val>90°</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 径向设置 -->
+            <div class="panel" data-radial-settings hidden>
+              <h3 class="panel-title">径向设置</h3>
+              <div class="tabs u-mb-3" data-shape-tabs>
+                <button class="tab-btn is-active" data-shape="circle">圆形</button>
+                <button class="tab-btn" data-shape="ellipse">椭圆</button>
+              </div>
+              <div class="field">
+                <label class="field-label">大小</label>
+                <div class="range-row">
+                  <input type="range" data-radial-size min="10" max="200" value="100">
+                  <span class="val" data-radial-size-val>100%</span>
+                </div>
+              </div>
+              <div class="field u-mt-2">
+                <label class="field-label">位置 X</label>
+                <div class="range-row">
+                  <input type="range" data-pos-x min="0" max="100" value="50">
+                  <span class="val" data-pos-x-val>50%</span>
+                </div>
+              </div>
+              <div class="field u-mt-2">
+                <label class="field-label">位置 Y</label>
+                <div class="range-row">
+                  <input type="range" data-pos-y min="0" max="100" value="50">
+                  <span class="val" data-pos-y-val>50%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 重复设置 -->
+            <div class="panel" data-repeat-settings hidden>
+              <h3 class="panel-title">重复次数</h3>
+              <div class="range-row">
+                <input type="range" data-repeat-count min="2" max="20" value="4">
+                <span class="val" data-repeat-val>4</span>
+              </div>
+            </div>
+
+            <!-- 当前色标编辑 -->
+            <div class="panel" data-stop-editor hidden>
+              <h3 class="panel-title">色标编辑</h3>
+              <div class="u-row u-gap-2 u-center">
+                <input type="color" class="cg-color-pick" data-stop-color>
+                <input class="input" data-stop-hex style="flex:1">
+              </div>
+              <div class="field u-mt-2">
+                <label class="field-label">透明度</label>
+                <div class="range-row">
+                  <input type="range" data-stop-alpha min="0" max="100" value="100">
+                  <span class="val" data-stop-alpha-val>100%</span>
+                </div>
+              </div>
+              <div class="field u-mt-2">
+                <label class="field-label">位置</label>
+                <div class="range-row">
+                  <input type="range" data-stop-pos min="0" max="100" value="0">
+                  <span class="val" data-stop-pos-val>0%</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <!-- 精选渐变（全宽） -->
+        <div class="panel u-mt-4" data-presets>
+          <h3 class="panel-title">精选渐变样式</h3>
+          <div class="tabs u-mb-3" data-preset-tabs></div>
+          <div class="cg-preset-grid" data-preset-grid></div>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
 </body>
 </html>

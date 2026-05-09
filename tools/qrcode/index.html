@@ -1,272 +1,140 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>二维码生成器 - 在线工具箱</title>
-    <link rel="stylesheet" href="../../public/style.css">
-    <link rel="stylesheet" href="tool.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>二维码生成 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <style>
+    .qr-canvas-wrap{display:flex;align-items:center;justify-content:center;min-height:280px;padding:var(--space-4)}
+    .qr-canvas-wrap canvas{border-radius:var(--radius-md);image-rendering:pixelated}
+    .qr-canvas-wrap .qr-placeholder{color:var(--fg-muted);font-size:var(--text-sm)}
+    .style-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-2)}
+    .style-grid .btn.active{background:var(--color-brand);color:#fff;border-color:var(--color-brand)}
+  </style>
+  <script src="../../public/vendor/qrcode.min.js" defer></script>
 </head>
-<body>
-    <div class="page-wrapper">
-        <main class="main">
-            <section class="tool-page-hero">
-                <div class="container">
-                    <h1>二维码生成器</h1>
-                    <p>快速生成自定义二维码，支持调整大小、颜色和容错级别</p>
+<body data-page="tool" data-base-path="../../" data-tool-slug="qrcode">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:340px">
+          <!-- 左：输入 + 预览 -->
+          <div class="u-col u-gap-3">
+            <div class="panel">
+              <h3 class="panel-title">内容</h3>
+              <div class="tabs u-mb-3" data-type-tabs>
+                <button class="tab-btn is-active" type="button" data-type="text">文本/链接</button>
+                <button class="tab-btn" type="button" data-type="wifi">Wi-Fi</button>
+                <button class="tab-btn" type="button" data-type="email">邮件</button>
+                <button class="tab-btn" type="button" data-type="contact">名片</button>
+              </div>
+              <div data-pane="text">
+                <textarea class="textarea u-mono" data-content rows="3" placeholder="输入文本或链接…"></textarea>
+              </div>
+              <div data-pane="wifi" hidden>
+                <div class="grid grid-3 u-gap-2">
+                  <div class="field"><label class="field-label">网络名称</label><input class="input" data-wifi-ssid placeholder="SSID"></div>
+                  <div class="field"><label class="field-label">密码</label><input class="input" data-wifi-pwd placeholder="密码" type="password"></div>
+                  <div class="field"><label class="field-label">加密</label><select class="select" data-wifi-enc><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">无密码</option></select></div>
                 </div>
-            </section>
-
-            <div class="tool-container">
-                <div class="tool-main">
-                    <div>
-                        <!-- 内容设置 -->
-                        <div class="form-section">
-                            <div class="form-tabs">
-                                <button class="form-tab" :class="{active: set.type === 'text'}" @click="set.type = 'text'">文本</button>
-                                <button class="form-tab" :class="{active: set.type === 'url'}" @click="set.type = 'url'">网址</button>
-                                <button class="form-tab" :class="{active: set.type === 'email'}" @click="set.type = 'email'">邮箱</button>
-                                <button class="form-tab" :class="{active: set.type === 'contact'}" @click="set.type = 'contact'">联系人</button>
-                                <button class="form-tab" :class="{active: set.type === 'wifi'}" @click="set.type = 'wifi'">WiFi</button>
-                            </div>
-
-                            <!-- 文本内容 -->
-                            <div v-if="set.type === 'text'">
-                                <div class="form-group">
-                                    <label>文本内容</label>
-                                    <textarea v-model="set.input" placeholder="请输入需要生成二维码的文本内容"></textarea>
-                                </div>
-                            </div>
-
-                            <!-- 网址 -->
-                            <div v-if="set.type === 'url'">
-                                <div class="form-group">
-                                    <label>网址</label>
-                                    <input type="url" v-model="set.input" placeholder="请输入网址，例如：https://example.com">
-                                </div>
-                            </div>
-
-                            <!-- 邮箱 -->
-                            <div v-if="set.type === 'email'">
-                                <div class="form-grid">
-                                    <div class="form-group">
-                                        <label>收件人邮箱</label>
-                                        <input type="email" v-model="set.email.to" placeholder="请输入收件人邮箱">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>主题</label>
-                                        <input type="text" v-model="set.email.subject" placeholder="邮件主题">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>内容</label>
-                                    <textarea v-model="set.email.body" placeholder="邮件内容"></textarea>
-                                </div>
-                            </div>
-
-                            <!-- 联系人 -->
-                            <div v-if="set.type === 'contact'">
-                                <div class="form-grid">
-                                    <div class="form-group">
-                                        <label>姓名</label>
-                                        <input type="text" v-model="set.contact.name" placeholder="联系人姓名">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>手机</label>
-                                        <input type="tel" v-model="set.contact.phone" placeholder="手机号码">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>邮箱</label>
-                                        <input type="email" v-model="set.contact.email" placeholder="电子邮箱">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>公司</label>
-                                        <input type="text" v-model="set.contact.company" placeholder="公司名称">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>地址</label>
-                                    <input type="text" v-model="set.contact.address" placeholder="详细地址">
-                                </div>
-                            </div>
-
-                            <!-- WiFi -->
-                            <div v-if="set.type === 'wifi'">
-                                <div class="form-grid">
-                                    <div class="form-group">
-                                        <label>网络名称 (SSID)</label>
-                                        <input type="text" v-model="set.wifi.ssid" placeholder="WiFi名称">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>密码</label>
-                                        <input type="text" v-model="set.wifi.password" placeholder="WiFi密码">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>加密类型</label>
-                                        <select v-model="set.wifi.encryption">
-                                            <option value="WPA">WPA/WPA2</option>
-                                            <option value="WEP">WEP</option>
-                                            <option value="nopass">无密码</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>是否隐藏</label>
-                                        <select v-model="set.wifi.hidden">
-                                            <option :value="false">否</option>
-                                            <option :value="true">是</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 通用设置 -->
-                        <div class="form-section">
-                            <div class="form-tabs">
-                                <button class="form-tab" :class="{active: activeTab === 'style'}" @click="activeTab = 'style'">样式设置</button>
-                                <button class="form-tab" :class="{active: activeTab === 'color'}" @click="activeTab = 'color'">颜色设置</button>
-                                <button class="form-tab" :class="{active: activeTab === 'logo'}" @click="activeTab = 'logo'">Logo设置</button>
-                            </div>
-
-                            <!-- 样式设置 -->
-                            <div v-show="activeTab === 'style'">
-                                <div class="form-grid">
-                                    <div class="form-group">
-                                        <label>大小（像素）</label>
-                                        <input type="number" v-model="set.width" min="128" max="1024" step="32">
-                                </div>
-                                <div class="form-group">
-                                    <label>容错级别</label>
-                                    <select v-model="set.errorCorrectionLevel">
-                                            <option value="L">低 (7%)</option>
-                                            <option value="M">中 (15%)</option>
-                                            <option value="Q">较高 (25%)</option>
-                                            <option value="H">高 (30%)</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>点阵大小（0-1）</label>
-                                        <input type="number" v-model="set.dotScale" min="0" max="1" step="0.1">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 颜色设置 -->
-                            <div v-show="activeTab === 'color'">
-                                <div class="form-grid">
-                                <div class="form-group">
-                                    <label>前景色（{{set.color.dark}}）</label>
-                                    <input type="color" v-model="set.color.dark">
-                                </div>
-                                <div class="form-group">
-                                    <label>背景色（{{set.color.light}}）</label>
-                                    <input type="color" v-model="set.color.light">
-                                </div>
-                                </div>
-                            </div>
-
-                            <!-- Logo设置 -->
-                            <div v-show="activeTab === 'logo'">
-                                <div class="form-group">
-                                    <label>Logo图片</label>
-                                    <div style="position: relative;">
-                                        <input type="file" @change="handleLogoUpload" accept="image/*" style="width: 100%; padding-right: 40px;">
-                                        <button v-if="set.logo" 
-                                                @click="removeLogo" 
-                                                style="position: absolute; right: 4px; top: 50%; transform: translateY(-50%); padding: 6px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center;"
-                                                onmouseover="this.style.background='var(--bg-color-50)'; this.style.borderColor='var(--primary-color)'; this.style.color='var(--primary-color)'"
-                                                onmouseout="this.style.background='var(--bg-color)'; this.style.borderColor='var(--border-color)'; this.style.color='var(--text-color)'">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
-                                                <path d="M18 6L6 18M6 6l12 12"/>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <small style="display: block; margin-top: 4px; color: var(--text-secondary);">支持jpg、png等常见图片格式，建议使用正方形图片</small>
-                                </div>
-                                <div class="form-grid" v-if="set.logo">
-                                    <div class="form-group">
-                                        <label>Logo大小（像素）</label>
-                                        <input type="number" v-model="set.logoWidth" :max="Math.floor(set.width * 0.25)" min="32" step="8" placeholder="建议不超过二维码尺寸的1/4">
-                                        <small style="display: block; margin-top: 4px; color: var(--text-secondary);">为确保可扫描性，不要超过二维码尺寸的25%</small>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Logo边框</label>
-                                        <select v-model="set.logoBackgroundTransparent">
-                                            <option :value="true">透明</option>
-                                            <option :value="false">白色</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>边框圆角（像素）</label>
-                                        <input type="number" v-model="set.logoBorderRadius" min="0" max="30" step="1">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Logo边距（像素）</label>
-                                        <input type="number" v-model="set.logoPadding" min="0" :max="Math.floor(set.width * 0.05)" step="1">
-                                        <small style="display: block; margin-top: 4px; color: var(--text-secondary);">建议不超过二维码尺寸的5%</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 右侧：预览 -->
-                            <div class="preview-section">
-                                <div class="preview-header">
-                                    <h3>预览</h3>
-                            <div class="preview-actions">
-                                <button class="btn" @click="downloadQR" title="下载二维码">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                                    </svg>
-                                    下载
-                                </button>
-                            </div>
-                        </div>
-                        <div class="qrcode-output">
-                            <!-- 二维码将在这里生成 -->
-                        </div>
-                    </div>
-                                </div>
-
-            <div class="tool-info">
-                <h2>功能简介</h2>
-                <p>二维码生成器是一个便捷的在线工具，可以快速将文本、链接等内容转换为二维码图片。</p>
-                
-                <h3>主要功能</h3>
-                <ul>
-                    <li>支持自定义二维码内容</li>
-                    <li>可调整二维码大小和边距</li>
-                    <li>支持设置前景色和背景色</li>
-                        <li>支持添加自定义Logo图片</li>
-                    <li>提供多级容错能力选择</li>
-                    <li>生成高清晰度二维码图片</li>
-                </ul>
-                
-                <h3>使用说明</h3>
-                <ul>
-                    <li>输入需要生成二维码的内容</li>
-                    <li>调整二维码的大小和样式参数</li>
-                        <li>可选择添加Logo图片</li>
-                    <li>点击生成按钮创建二维码</li>
-                    <li>可以右键保存生成的二维码图片</li>
-                </ul>
-
-                <h3>注意事项</h3>
-                <ul>
-                        <li>建议选择合适的容错级别，添加Logo时建议使用较高容错级别</li>
-                    <li>确保前景色和背景色对比度足够</li>
-                        <li>Logo尺寸不宜过大，建议不超过二维码尺寸的1/4</li>
-                    <li>过长的内容可能影响扫描效果</li>
-                </ul>
+              </div>
+              <div data-pane="email" hidden>
+                <div class="grid grid-2 u-gap-2 u-mb-2">
+                  <div class="field"><label class="field-label">收件人</label><input class="input" data-email-to placeholder="收件人邮箱"></div>
+                  <div class="field"><label class="field-label">主题</label><input class="input" data-email-sub placeholder="邮件主题"></div>
                 </div>
+                <div class="field"><label class="field-label">正文</label><textarea class="textarea" data-email-body rows="2" placeholder="邮件正文"></textarea></div>
+              </div>
+              <div data-pane="contact" hidden>
+                <div class="grid grid-3 u-gap-2 u-mb-2">
+                  <div class="field"><label class="field-label">姓名</label><input class="input" data-ct-name placeholder="姓名"></div>
+                  <div class="field"><label class="field-label">电话</label><input class="input" data-ct-phone placeholder="电话"></div>
+                  <div class="field"><label class="field-label">邮箱</label><input class="input" data-ct-email placeholder="邮箱"></div>
+                </div>
+                <div class="grid grid-2 u-gap-2">
+                  <div class="field"><label class="field-label">公司</label><input class="input" data-ct-org placeholder="公司"></div>
+                  <div class="field"><label class="field-label">地址</label><input class="input" data-ct-addr placeholder="地址"></div>
+                </div>
+              </div>
             </div>
-        </main>
-    </div>
 
-    <script src="../../public/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/awesome-qr@2.1.5-rc.0/dist/awesome-qr.js"></script>
-    <script src="tool.js"></script>
+            <div class="panel">
+              <div class="qr-canvas-wrap" data-qr-output>
+                <span class="qr-placeholder">输入内容后自动生成</span>
+              </div>
+              <div class="u-row u-gap-2 u-mt-3" style="justify-content:center">
+                <button class="btn is-primary" type="button" data-action="download-png"><i data-lucide="download"></i> PNG</button>
+                <button class="btn" type="button" data-action="download-svg"><i data-lucide="file-code"></i> SVG</button>
+                <button class="btn is-ghost" type="button" data-action="reset"><i data-lucide="refresh-cw"></i> 重置</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右：样式设置 -->
+          <aside>
+            <div class="panel">
+              <h3 class="panel-title">样式</h3>
+              <div class="field u-mb-2"><label class="field-label">码点形状</label>
+                <div class="style-grid" data-dot-style>
+                  <button class="btn is-sm active" type="button" data-val="square">方形</button>
+                  <button class="btn is-sm" type="button" data-val="round">圆点</button>
+                  <button class="btn is-sm" type="button" data-val="diamond">菱形</button>
+                  <button class="btn is-sm" type="button" data-val="star">星形</button>
+                </div>
+              </div>
+              <div class="grid grid-2 u-gap-2">
+                <div class="field"><label class="field-label">尺寸 (px)</label><input class="input" type="number" data-opt="size" value="400" min="100" max="2048" step="50"></div>
+                <div class="field"><label class="field-label">边距</label><input class="input" type="number" data-opt="margin" value="2" min="0" max="10"></div>
+                <div class="field"><label class="field-label">前景色</label><input class="input" type="color" data-opt="fg" value="#000000"></div>
+                <div class="field"><label class="field-label">背景色</label><input class="input" type="color" data-opt="bg" value="#ffffff"></div>
+              </div>
+              <div class="field u-mt-2"><label class="field-label">容错等级</label>
+                <div class="style-grid" data-ec>
+                  <button class="btn is-sm" type="button" data-val="L">L 7%</button>
+                  <button class="btn is-sm" type="button" data-val="M">M 15%</button>
+                  <button class="btn is-sm" type="button" data-val="Q">Q 25%</button>
+                  <button class="btn is-sm active" type="button" data-val="H">H 30%</button>
+                </div>
+              </div>
+              <div class="field u-mt-2"><label class="field-label">码点缩放</label>
+                <div class="range-row">
+                  <input type="range" data-opt="dotScale" min="0.3" max="1" value="0.85" step="0.05">
+                  <span class="val" data-range-val="dotScale">0.85</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">Logo</h3>
+              <div class="u-row u-gap-2 u-mb-2">
+                <button class="btn is-sm" type="button" data-action="pick-logo"><i data-lucide="image"></i> 选择图片</button>
+                <button class="btn is-sm is-ghost" type="button" data-action="remove-logo">移除</button>
+                <input type="file" accept="image/*" hidden data-logo-file>
+              </div>
+              <div class="field"><label class="field-label">Logo 大小 (%)</label>
+                <div class="range-row">
+                  <input type="range" data-opt="logoRatio" min="10" max="30" value="20" step="1">
+                  <span class="val" data-range-val="logoRatio">20%</span>
+                </div>
+              </div>
+              <p class="hint">建议使用正方形图片，容错等级 H</p>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
 </body>
 </html>
