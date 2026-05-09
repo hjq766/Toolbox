@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grid 网格布局生成器 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <style>
+    .gl-plan-mini{display:grid;gap:var(--plan-gap,12px);padding:var(--plan-margin,16px);background:var(--bg-surface-2);border-radius:var(--radius-md);margin:var(--space-2) 0}
+    .gl-plan-cell{background:var(--color-brand-soft);border:1px solid var(--color-brand);border-radius:4px;height:36px}
+    .gl-grid .grid-cell{background:var(--color-brand-soft);border:1px solid var(--color-brand);border-radius:4px;min-height:60px}
+  </style>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="grid_layout">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="tabs u-mb-4" role="tablist">
+          <button class="tab-btn is-active" data-tab="recommend" type="button">栅格系统</button>
+          <button class="tab-btn" data-tab="manual" type="button">网格类型</button>
+        </div>
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:300px">
+          <!-- 左：主内容 -->
+          <div>
+            <div data-view="recommend">
+              <div class="u-col u-gap-3" data-plan-list></div>
+            </div>
+            <div data-view="manual" hidden>
+              <div class="gl-grid" data-grid-preview style="max-width:100%;margin:0 auto"></div>
+              <div class="stat-grid u-mt-4" data-preview-info></div>
+            </div>
+          </div>
+
+          <!-- 右：控制面板 -->
+          <aside>
+            <!-- ===== 栅格系统 ===== -->
+            <div data-section="recommend">
+              <div class="panel">
+                <h3 class="panel-title">基础参数</h3>
+                <div class="field">
+                  <label class="field-label">容器宽度</label>
+                  <div class="input-group">
+                    <input class="input" type="number" data-input="containerWidth" value="1440" min="300" max="3000">
+                    <span class="addon">px</span>
+                  </div>
+                </div>
+                <label class="field-label u-mt-3">列数</label>
+                <div class="opt-row">
+                  <button class="btn" type="button" data-cols="4">4</button>
+                  <button class="btn" type="button" data-cols="6">6</button>
+                  <button class="btn" type="button" data-cols="8">8</button>
+                  <button class="btn is-active" type="button" data-cols="12">12</button>
+                  <button class="btn" type="button" data-cols="16">16</button>
+                  <button class="btn" type="button" data-cols="24">24</button>
+                </div>
+                <div class="input-group u-mt-2">
+                  <button class="addon" type="button" data-step="cols" data-dir="-1">−</button>
+                  <input class="input" type="number" data-input="desiredCols" value="12" min="1" max="36" style="text-align:center">
+                  <button class="addon" type="button" data-step="cols" data-dir="1">+</button>
+                </div>
+              </div>
+
+              <div class="panel">
+                <h3 class="panel-title">边距偏好</h3>
+                <div class="u-col" style="gap:6px">
+                  <label class="opt-card">
+                    <input type="radio" name="marginPref" value="0">
+                    <div><div style="font-weight:600">无边距</div><div class="hint" style="margin:0">满屏布局，最大化内容展示</div></div>
+                  </label>
+                  <label class="opt-card">
+                    <input type="radio" name="marginPref" value="auto" checked>
+                    <div><div style="font-weight:600">有边距</div><div class="hint" style="margin:0">居中布局，自动推导边距</div></div>
+                  </label>
+                  <label class="opt-card">
+                    <input type="radio" name="marginPref" value="custom">
+                    <div><div style="font-weight:600">自定义</div><div class="hint" style="margin:0">精确控制间距与边距</div></div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="panel" data-show="spacing">
+                <h3 class="panel-title">间距风格</h3>
+                <div class="tabs">
+                  <button class="tab" data-style="compact" type="button">紧凑</button>
+                  <button class="tab is-active" data-style="balanced" type="button">均衡</button>
+                  <button class="tab" data-style="spacious" type="button">宽松</button>
+                </div>
+              </div>
+
+              <div class="panel" data-show="custom-params" hidden>
+                <h3 class="panel-title">自定义参数</h3>
+                <div class="field">
+                  <label class="field-label">列间距</label>
+                  <div class="input-group">
+                    <input class="input" type="number" data-input="customGap" value="16" min="0" max="100">
+                    <span class="addon">px</span>
+                  </div>
+                </div>
+                <div class="field u-mt-3">
+                  <label class="field-label">左右边距</label>
+                  <div class="input-group">
+                    <input class="input" type="number" data-input="customSideMargin" value="0" min="0" max="200">
+                    <span class="addon">px</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel">
+                <div class="act-group">
+                  <button class="btn is-primary" type="button" data-action="generate">生成布局方案</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== 网格类型 ===== -->
+            <div data-section="manual" hidden>
+              <div class="panel">
+                <h3 class="panel-title">精细调整</h3>
+                <div class="field">
+                  <label class="field-label">行数</label>
+                  <div class="input-group">
+                    <button class="addon" type="button" data-step="rows" data-dir="-1">−</button>
+                    <input class="input" type="number" data-input="rowCount" min="1" max="36" value="1" style="text-align:center">
+                    <button class="addon" type="button" data-step="rows" data-dir="1">+</button>
+                  </div>
+                </div>
+                <div class="field u-mt-3">
+                  <label class="field-label">左右边距</label>
+                  <div class="input-group">
+                    <button class="addon" type="button" data-step="margin" data-dir="-1">−</button>
+                    <input class="input" type="number" data-input="gridSideMargin" min="0" max="100" value="16" style="text-align:center">
+                    <button class="addon" type="button" data-step="margin" data-dir="1">+</button>
+                  </div>
+                </div>
+                <div class="field u-mt-3">
+                  <label class="field-label">列间距</label>
+                  <div class="input-group">
+                    <button class="addon" type="button" data-step="colGap" data-dir="-1">−</button>
+                    <input class="input" type="number" data-input="colGap" min="0" max="50" value="20" style="text-align:center">
+                    <button class="addon" type="button" data-step="colGap" data-dir="1">+</button>
+                  </div>
+                </div>
+                <div class="field u-mt-3">
+                  <label class="field-label">行间距</label>
+                  <div class="input-group">
+                    <button class="addon" type="button" data-step="rowGap" data-dir="-1">−</button>
+                    <input class="input" type="number" data-input="rowGap" min="0" max="50" value="20" style="text-align:center">
+                    <button class="addon" type="button" data-step="rowGap" data-dir="1">+</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel">
+                <div class="act-group">
+                  <button class="btn is-primary" type="button" data-action="export">导出当前预览图</button>
+                  <button class="btn" type="button" data-action="copyCSS">复制 CSS 代码</button>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

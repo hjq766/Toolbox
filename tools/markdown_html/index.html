@@ -1,99 +1,60 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markdown转HTML工具 - 在线工具箱</title>
-    <link rel="stylesheet" href="../../public/style.css">
-    <link rel="stylesheet" href="tool.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown 转 HTML · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <script src="../../public/vendor/marked.min.js" defer></script>
+  <script src="../../public/vendor/purify.min.js" defer></script>
 </head>
-<body>
-    <div class="page-wrapper">
-        <main class="main">
-            <section class="tool-page-hero">
-                <div class="container">
-                    <h1>Markdown转HTML工具</h1>
-                    <p>支持Markdown代码转换为HTML格式，并提供实时预览功能。</p>
-                </div>
-            </section>
+<body data-page="tool" data-base-path="../../" data-tool-slug="markdown_html">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
 
-            <div class="tool-container">
-                <div class="code-area">
-                    <div class="input-group">
-                        <h2>Markdown代码</h2>
-                        <textarea id="source" style="min-height: 500px;" placeholder="请输入Markdown代码..." oninput="autoConvert()">## 欢迎使用Markdown转换工具
-
-这是一个示例文本，演示基本的**Markdown**语法：
-
-### 列表示例
-- 项目1
-- 项目2
-  - 子项目A
-  - 子项目B
-
-### 引用示例
-> 这是一段引用文本
-> 可以有多行
-
-### 代码示例
-```javascript
-function hello() {
-    console.log("Hello World!");
-}
-```
-
-### 表格示例
-| 表头1 | 表头2 |
-|-------|-------|
-| 内容1 | 内容2 |
-| 内容3 | 内容4 |</textarea>
-                    </div>
-
-                    <div class="input-group">
-                        <div class="code-header">
-                            <h2>HTML代码</h2>
-                            <div class="tab-buttons">
-                                <button class="tab-button active" onclick="switchTab('code')" id="codeTab">代码</button>
-                                <button class="tab-button" onclick="switchTab('preview')" id="previewTab">预览</button>
-                            </div>
-                        </div>
-                        <textarea id="result" style="min-height: 500px;" readonly></textarea>
-                        <div class="preview-box" id="preview" style="display: none;"></div>
-                    </div>
-                </div>
-
-                <div class="btn-group">
-                    <button class="btn" onclick="copyResult()">复制结果</button>
-                    <button class="btn btn-primary" onclick="downloadResult()">导出文件</button>
-                </div>
-
-                <div class="tool-info">
-                    <h2>功能简介</h2>
-                    <p>Markdown转HTML工具可以将Markdown代码转换为对应的HTML格式，支持实时预览功能。</p>
-                    
-                    <h3>主要功能</h3>
-                    <ul>
-                        <li>支持Markdown到HTML的转换</li>
-                        <li>实时预览转换结果</li>
-                        <li>支持代码和预览模式切换</li>
-                        <li>一键复制转换结果</li>
-                    </ul>
-                    
-                    <h3>使用说明</h3>
-                    <ul>
-                        <li>在左侧输入Markdown代码</li>
-                        <li>右侧可以查看转换后的HTML代码</li>
-                        <li>点击"预览"标签可以查看HTML渲染效果</li>
-                        <li>点击"复制结果"可以复制转换后的内容</li>
-                    </ul>
-                </div>
+        <div class="panel">
+          <div class="grid grid-2" style="grid-template-rows:auto 1fr">
+            <!-- 行 1：标签（同一 grid 行，自动等高） -->
+            <div class="u-row" style="align-items:center">
+              <label class="field-label" style="margin:0">Markdown 源码</label>
             </div>
-        </main>
+            <div class="u-row u-between" style="align-items:center">
+              <label class="field-label" style="margin:0">输出</label>
+              <div class="tabs" data-view-tabs>
+                <button class="tab-btn is-active" type="button" data-view="code">HTML 代码</button>
+                <button class="tab-btn" type="button" data-view="preview">渲染预览</button>
+              </div>
+            </div>
+            <!-- 行 2：编辑器（同一 grid 行，顶部完全对齐） -->
+            <div class="cm-embed">
+              <textarea class="textarea u-mono" data-input="src" style="min-height:420px"
+                placeholder="# Hello&#10;&#10;**bold** _italic_ ~~del~~&#10;&#10;- list item"></textarea>
+            </div>
+            <div>
+              <div data-pane="code" class="cm-embed">
+                <textarea class="textarea u-mono" data-output readonly style="min-height:420px"></textarea>
+              </div>
+              <div data-pane="preview" hidden style="min-height:420px;max-height:65vh;padding:var(--space-3);border:1px solid var(--border-base);border-radius:var(--radius-md);overflow:auto;line-height:1.7;font-size:var(--text-sm)"></div>
+            </div>
+          </div>
+          <div class="u-row u-gap-3 u-mt-4">
+            <button class="btn is-primary" type="button" data-action="copy"><i data-lucide="copy"></i> 复制 HTML</button>
+            <button class="btn" type="button" data-action="download"><i data-lucide="download"></i> 导出 .html</button>
+            <button class="btn is-ghost" type="button" data-action="clear">清空</button>
+          </div>
+        </div>
 
-        <script src="../../public/main.js"></script>
-        <script src="tool.js"></script>
+      </div>
     </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
 </body>
 </html>

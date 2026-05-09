@@ -1,113 +1,85 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>热量单位换算工具 - 在线工具箱</title>
-    <link rel="stylesheet" href="../../public/style.css">
-    <link rel="stylesheet" href="tool.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>热量换算 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
 </head>
-<body>
-    <div class="page-wrapper">
-        <main class="main">
-            <section class="tool-page-hero">
-                <div class="container">
-                    <h1>热量单位换算工具</h1>
-                    <p>支持各种热量单位之间的互相转换，包括焦耳、卡路里等单位。</p>
-                </div>
-            </section>
+<body data-page="tool" data-base-path="../../" data-tool-slug="convert_heat">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
 
-            <div class="tool-container">
-                <div class="unit-grid">
-                    <div class="unit-column">
-                        <h2>基本单位</h2>
-                        <div class="form-group">
-                            <label>焦耳 (J)：</label>
-                            <div class="input-wrapper">
-                                <input type="number" id="joule" step="any" oninput="convertHeat('joule')">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>公斤·米 (kg·m)：</label>
-                            <div class="input-wrapper">
-                                <input type="number" id="kgm" step="any" oninput="convertHeat('kgm')">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>千卡 (kcal)：</label>
-                            <div class="input-wrapper">
-                                <input type="number" id="kcal" step="any" oninput="convertHeat('kcal')">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="unit-column">
-                        <h2>功率时间单位</h2>
-                        <div class="form-group">
-                            <label>米制马力·时 (PS·h)：</label>
-                            <div class="input-wrapper">
-                                <input type="number" id="psh" step="any" oninput="convertHeat('psh')">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>英制马力·时 (HP·h)：</label>
-                            <div class="input-wrapper">
-                                <input type="number" id="hph" step="any" oninput="convertHeat('hph')">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>千瓦·时 (kW·h)：</label>
-                            <div class="input-wrapper">
-                                <input type="number" id="kwh" step="any" oninput="convertHeat('kwh')">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="unit-column">
-                        <h2>其他单位</h2>
-                        <div class="form-group">
-                            <label>英热单位 (BTU)：</label>
-                            <div class="input-wrapper">
-                                <input type="number" id="btu" step="any" oninput="convertHeat('btu')">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>英尺·磅 (ft·lb)：</label>
-                            <div class="input-wrapper">
-                                <input type="number" id="ftlb" step="any" oninput="convertHeat('ftlb')">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="btn-group">
-                    <button class="btn" onclick="resetAll()">重置所有</button>
-                </div>
-
-                <div class="tool-info">
-                    <h2>功能简介</h2>
-                    <p>热量单位换算工具支持在线焦耳(J)、公斤·米(kg·m)、千卡(kcal)等单位间的互转互换。</p>
-                    
-                    <h3>支持的单位</h3>
-                    <ul>
-                        <li>基本单位：焦耳、公斤·米、千卡</li>
-                        <li>功率时间单位：米制马力·时、英制马力·时、千瓦·时</li>
-                        <li>其他单位：英热单位、英尺·磅</li>
-                    </ul>
-                    
-                    <h3>使用说明</h3>
-                    <ul>
-                        <li>在任意输入框中输入数值，其他单位会自动转换</li>
-                        <li>支持小数点输入</li>
-                        <li>点击"重置所有"可清空所有输入</li>
-                    </ul>
-                </div>
+        <div class="grid grid-sidebar-r" style="--sidebar-w:260px">
+          <div class="u-col u-gap-4">
+            <div class="panel">
+              <h3 class="panel-title">国际单位</h3>
+              <div class="grid grid-2 u-gap-3">
+                <div class="field"><label class="field-label">焦耳 (J)</label><div class="input-group"><span class="addon">J</span><input class="input u-mono" type="text" data-unit="joule" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">公斤·米 (kg·m)</label><div class="input-group"><span class="addon">kg·m</span><input class="input u-mono" type="text" data-unit="kgm" autocomplete="off"></div></div>
+              </div>
             </div>
-        </main>
-    </div>
+            <div class="panel">
+              <h3 class="panel-title">功率 · 时间</h3>
+              <div class="grid grid-2 u-gap-3">
+                <div class="field"><label class="field-label">千瓦·时 (kW·h)</label><div class="input-group"><span class="addon">kW·h</span><input class="input u-mono" type="text" data-unit="kwh" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">米制马力·时 (PS·h)</label><div class="input-group"><span class="addon">PS·h</span><input class="input u-mono" type="text" data-unit="psh" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">英制马力·时 (HP·h)</label><div class="input-group"><span class="addon">HP·h</span><input class="input u-mono" type="text" data-unit="hph" autocomplete="off"></div></div>
+              </div>
+            </div>
+            <div class="panel">
+              <h3 class="panel-title">热量单位</h3>
+              <div class="grid grid-2 u-gap-3">
+                <div class="field"><label class="field-label">千卡 (kcal)</label><div class="input-group"><span class="addon">kcal</span><input class="input u-mono" type="text" data-unit="kcal" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">英热单位 (BTU)</label><div class="input-group"><span class="addon">BTU</span><input class="input u-mono" type="text" data-unit="btu" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">英尺·磅 (ft·lb)</label><div class="input-group"><span class="addon">ft·lb</span><input class="input u-mono" type="text" data-unit="ftlb" autocomplete="off"></div></div>
+              </div>
+            </div>
+          </div>
 
-    <div class="toast" id="toast"></div>
-    <script src="../../public/main.js"></script>
-    <script src="tool.js"></script>
+          <aside>
+            <div class="panel">
+              <h3 class="panel-title">快速输入</h3>
+              <label class="field-label">选择单位</label>
+              <select class="select u-mb-3" data-quick-unit>
+                <option value="kwh">千瓦·时 (kW·h)</option>
+                <option value="joule">焦耳 (J)</option>
+                <option value="kcal">千卡 (kcal)</option>
+                <option value="btu">英热单位 (BTU)</option>
+              </select>
+              <div class="opt-row">
+                <button class="btn is-sm" data-quick="1">1</button>
+                <button class="btn is-sm" data-quick="10">10</button>
+                <button class="btn is-sm" data-quick="100">100</button>
+                <button class="btn is-sm" data-quick="1000">1000</button>
+              </div>
+            </div>
+            <div class="panel">
+              <h3 class="panel-title">精度</h3>
+              <div class="range-row"><input type="range" min="2" max="10" value="6" data-precision><span class="val" data-precision-val>6 位</span></div>
+            </div>
+            <div class="panel">
+              <div class="act-group">
+                <button class="btn" type="button" data-action="copy-all"><i data-lucide="copy"></i> 复制全部</button>
+                <button class="btn is-ghost" type="button" data-action="reset">重置</button>
+              </div>
+            </div>
+            <div class="panel"><p class="hint">在任意输入框输入数值，其它单位自动换算。</p></div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
 </body>
 </html>

@@ -69,39 +69,58 @@ var calendar = {
       * @return Cn string
       */
     Animals:["\u9f20","\u725b","\u864e","\u5154","\u9f99","\u86c7","\u9a6c","\u7f8a","\u7334","\u9e21","\u72d7","\u732a"],
+
+    /**
+      * 天干对应五行速查表
+      * @Array Of Property
+      * @trans ["木","木","火","火","土","土","金","金","水","水"]
+      * @return Cn string
+      */
+    WuXing:["\u6728","\u6728","\u706b","\u706b","\u571f","\u571f","\u91d1","\u91d1","\u6c34","\u6c34"],
     
     /**
      * 阳历节日
      */
     festival: {
-      '1-1':   {title: '元旦节'},
+      '1-1':   {title: '元旦节', important: true},
+      '1-10':  {title: '中国人民警察节'},
       '2-14':  {title: '情人节'},
-      '5-1':   {title: '劳动节'},
-      '5-4':   {title: '青年节'},
-      '6-1':   {title: '儿童节'},
-      '9-10':  {title: '教师节'},
-      '10-1':  {title: '国庆节'},
-      '12-25': {title: '圣诞节'},
-
-      '3-8':   {title: '妇女节'},
+      '3-8':   {title: '妇女节', important: true},
       '3-12':  {title: '植树节'},
+      '3-14':  {title: '白色情人节'},
+      '3-15':  {title: '消费者权益日'},
       '4-1':   {title: '愚人节'},
+      '4-22':  {title: '地球日'},
+      '5-1':   {title: '劳动节', important: true},
+      '5-4':   {title: '青年节'},
       '5-12':  {title: '护士节'},
-      '7-1':   {title: '建党节'},
-      '8-1':   {title: '建军节'},
+      '6-1':   {title: '儿童节', important: true},
+      '7-1':   {title: '建党节', important: true},
+      '8-1':   {title: '建军节', important: true},
+      '9-10':  {title: '教师节', important: true},
+      '10-1':  {title: '国庆节', important: true},
+      '10-31': {title: '万圣夜'},
+      '11-11': {title: '光棍节'},
       '12-24': {title: '平安夜'},
+      '12-25': {title: '圣诞节'},
     },
 
     /**
      * 农历节日
      */
     lfestival: {
-      '12-30': {title: '除夕'},
-      '1-1':   {title: '春节'},
-      '1-15':  {title: '元宵节'},
-      '5-5':   {title: '端午节'},
-      '8-15':  {title: '中秋节'},
-      '9-9':   {title: '重阳节'},
+      '1-1':   {title: '春节', important: true},
+      '1-15':  {title: '元宵节', important: true},
+      '2-2':   {title: '龙抬头'},
+      '3-3':   {title: '上巳节'},
+      '5-5':   {title: '端午节', important: true},
+      '7-7':   {title: '七夕节', important: true},
+      '7-15':  {title: '中元节'},
+      '8-15':  {title: '中秋节', important: true},
+      '9-9':   {title: '重阳节', important: true},
+      '12-8':  {title: '腊八节'},
+      '12-23': {title: '北方小年', important: true},
+      '12-24': {title: '南方小年', important: true},
     },
 
     /**
@@ -132,6 +151,26 @@ var calendar = {
      */
     setLunarFestival(param={}){
       this.lfestival = param
+    },
+
+    /**
+      * 数字补零
+      * @param n Number
+      * @return String
+      */
+    pad2:function(n) {
+        return n < 10 ? '0' + n : '' + n;
+    },
+
+    /**
+      * 日期格式化为 yyyy-mm-dd
+      * @param y year
+      * @param m month
+      * @param d day
+      * @return String
+      */
+    formatDate:function(y, m, d) {
+        return y + '-' + this.pad2(m) + '-' + this.pad2(d);
     },
 
     /**
@@ -337,6 +376,17 @@ var calendar = {
     },
 
     /**
+      * 传入干支字符串返回对应的天干五行
+      * @param ganZhi 干支字符串（如"甲子"）
+      * @return Cn string （木/火/土/金/水）
+      */
+    toWuXing:function(ganZhi) {
+        var ganChar = ganZhi.charAt(0);
+        var idx = this.Gan.indexOf(ganChar);
+        return idx >= 0 ? this.WuXing[idx] : '';
+    },
+
+    /**
       * 传入公历(!)y年获得该年第n个节气的公历日期
       * @param y公历年(1900-2100)；n二十四节气中的第几个节气(1~24)；从n=1(小寒)算起
       * @return day Number
@@ -414,10 +464,8 @@ var calendar = {
             s = '\u521d\u5341'; break;
         case 20:
             s = '\u4e8c\u5341'; break;
-            break;
         case 30:
             s = '\u4e09\u5341'; break;
-            break;
         default :
             s = this.nStr2[Math.floor(d/10)];
             s += this.nStr1[d%10];
@@ -436,6 +484,36 @@ var calendar = {
     },
 
     /**
+      * 以立春为分界精确判断生肖
+      * @param y 公历年
+      * @param m 公历月
+      * @param d 公历日
+      * @return Cn string
+      */
+    getAnimalByLiChun:function(y, m, d) {
+        var liChunDay = this.getTerm(y, 3);
+        var animalYear = (m > 2 || (m === 2 && d >= liChunDay)) ? y : y - 1;
+        return this.Animals[(animalYear - 4) % 12];
+    },
+
+    /**
+      * 返回某月第n个星期几的日期
+      * @param y 公历年
+      * @param month 公历月(1-12)
+      * @param weekday 星期几(0=周日,1=周一,...,6=周六)
+      * @param n 第几个
+      * @return day Number
+      */
+    nthWeekday:function(y, month, weekday, n) {
+        var first = new Date(y, month - 1, 1);
+        var firstDay = first.getDay();
+        var diff = weekday - firstDay;
+        if(diff < 0) diff += 7;
+        var day = 1 + diff + (n - 1) * 7;
+        return day <= this.solarDays(y, month) ? day : -1;
+    },
+
+    /**
       * 传入阳历年月日获得详细的公历、农历object信息 <=>JSON
       * @param y  solar year
       * @param m  solar month
@@ -447,18 +525,18 @@ var calendar = {
         y = parseInt(y)
         m = parseInt(m)
         d = parseInt(d)
-        //年份限定、上限
-        if(y<1900 || y>2100) {
-            return -1;// undefined转换为数字变为NaN
-        }
-        //公历传参最下限
-        if(y==1900&&m==1&&d<31) {
-            return -1;
-        }
         //未传参  获得当天
         if(!y) {
             var objDate = new Date();
         }else {
+            //年份限定、上限
+            if(y<1900 || y>2100) { return -1; }
+            //月份、日期合法性校验
+            if(m<1 || m>12) { return -1; }
+            if(d<1 || d>this.solarDays(y,m)) { return -1; }
+            //公历传参最下限
+            if(y==1900&&m==1&&d<31) { return -1; }
+
             var objDate = new Date(y,parseInt(m)-1,d)
         }
         var i, leap=0, temp=0;
@@ -556,8 +634,8 @@ var calendar = {
         //该日期所属的星座
         var astro       = this.toAstro(m,d);
 
-        var solarDate = y+'-'+m+'-'+d
-        var lunarDate = year+'-'+month+'-'+day
+        var solarDate = this.formatDate(y,m,d)
+        var lunarDate = this.formatDate(year,month,day)
 
         var festival = this.festival
         var lfestival = this.lfestival
@@ -565,11 +643,54 @@ var calendar = {
         var festivalDate = m+'-'+d
         var lunarFestivalDate = month+'-'+day
 
+        // 阳历节日（静态 + 动态）
+        var solarFestivalObj = festival[festivalDate] || null;
+        var solarFestivalTitle = solarFestivalObj ? solarFestivalObj.title : null;
+        var solarFestivalImportant = solarFestivalObj ? !!solarFestivalObj.important : false;
+
+        // 动态清明节：清明是第7个节气
+        var qingmingDay = this.getTerm(y, 7);
+        if(m == 4 && d == qingmingDay) {
+            solarFestivalTitle = solarFestivalTitle ? solarFestivalTitle + ' 清明节' : '清明节';
+            solarFestivalImportant = true;
+        }
+
+        // 浮动节日：母亲节（5月第2个周日）、父亲节（6月第3个周日）
+        if(m == 5 && d == this.nthWeekday(y, 5, 0, 2)) {
+            solarFestivalTitle = solarFestivalTitle ? solarFestivalTitle + ' 母亲节' : '母亲节';
+            solarFestivalImportant = true;
+        }
+        if(m == 6 && d == this.nthWeekday(y, 6, 0, 3)) {
+            solarFestivalTitle = solarFestivalTitle ? solarFestivalTitle + ' 父亲节' : '父亲节';
+            solarFestivalImportant = true;
+        }
+        if(m == 11 && d == this.nthWeekday(y, 11, 4, 4)) {
+            solarFestivalTitle = solarFestivalTitle ? solarFestivalTitle + ' 感恩节' : '感恩节';
+        }
+
+        // 农历节日（静态 + 动态除夕）
+        var lunarFestivalObj = lfestival[lunarFestivalDate] || null;
+        var lunarFestivalTitle = lunarFestivalObj ? lunarFestivalObj.title : null;
+        var lunarFestivalImportant = lunarFestivalObj ? !!lunarFestivalObj.important : false;
+        if(month == 12) {
+            var leapM = this.leapMonth(year);
+            var isLastMonth = isLeap || leapM != 12;
+            if(isLastMonth) {
+                var lastDay = isLeap ? this.leapDays(year) : this.monthDays(year, 12);
+                if(day == lastDay) {
+                    lunarFestivalTitle = lunarFestivalTitle ? lunarFestivalTitle + ' 除夕' : '除夕';
+                    lunarFestivalImportant = true;
+                }
+            }
+        }
+
         return {
           date: solarDate,
           lunarDate: lunarDate,
-          festival: festival[festivalDate] ? festival[festivalDate].title : null,
-          lunarFestival: lfestival[lunarFestivalDate] ? lfestival[lunarFestivalDate].title : null,
+          festival: solarFestivalTitle,
+          festivalImportant: solarFestivalImportant,
+          lunarFestival: lunarFestivalTitle,
+          lunarFestivalImportant: lunarFestivalImportant,
           'lYear':year,
           'lMonth':month,
           'lDay':day,
@@ -588,7 +709,14 @@ var calendar = {
           'ncWeek':"\u661f\u671f"+cWeek,
           'isTerm':isTerm,
           'Term':Term,
-          'astro':astro
+          'astro':astro,
+          'WuXing':{
+            yearGan: this.toWuXing(gzY),
+            monthGan: this.toWuXing(gzM),
+            dayGan: this.toWuXing(gzD)
+          },
+          'AnimalByLiChun':this.getAnimalByLiChun(y,m,d),
+          'displayText':solarFestivalTitle || lunarFestivalTitle || Term || this.toChinaDay(day)
         };
     },
 
@@ -605,12 +733,15 @@ var calendar = {
         y = parseInt(y)
         m = parseInt(m)
         d = parseInt(d)
+        if(y<1900 || y>2100) {return -1;}
+        if(m<1 || m>12) {return -1;}
+        if(d<1) {return -1;}
         var isLeapMonth = !!isLeapMonth;
         var leapOffset  = 0;
         var leapMonth   = this.leapMonth(y);
         var leapDay     = this.leapDays(y);
         if(isLeapMonth&&(leapMonth!=m)) {return -1;}//传参要求计算该闰月公历 但该年得出的闰月与传参的月份并不同
-        if(y==2100&&m==12&&d>1 || y==1900&&m==1&&d<31) {return -1;}//超出了最大极限值
+        if(y==2100&&m==12&&d>1) {return -1;}//超出了最大极限值
         var day  = this.monthDays(y,m);
         var _day = day;
         //bugFix 2016-9-25
@@ -618,7 +749,7 @@ var calendar = {
         if(isLeapMonth) {
             _day = this.leapDays(y,m);
         }
-        if(y < 1900 || y > 2100 || d > _day) {return -1;}//参数合法性效验
+        if(d > _day) {return -1;}//参数合法性效验
 
         //计算农历的时间差
         var offset = 0;
@@ -647,75 +778,3 @@ var calendar = {
         return this.solar2lunar(cY,cM,cD);
     }
 };
-
-new Vue({
-    el: '#app',
-    data() {
-        return {
-            years: Array.from({ length: 201 }, (_, i) => i + 1900),
-            solar: {
-                year: new Date().getFullYear(),
-                month: new Date().getMonth() + 1,
-                day: new Date().getDate()
-            },
-            lunar: {
-                year: new Date().getFullYear(),
-                month: 1,
-                day: 1,
-                isLeap: false
-            },
-            result: null,
-            today: null,
-            weekDays: ["日", "一", "二", "三", "四", "五", "六"],
-            calendarCells: []
-        };
-    },
-    created() {
-        this.today = calendar.solar2lunar(
-            new Date().getFullYear(),
-            new Date().getMonth() + 1,
-            new Date().getDate()
-        );
-        this.generateCalendar(new Date());
-    },
-    methods: {
-        solar2lunar() {
-            this.result = calendar.solar2lunar(
-                this.solar.year,
-                this.solar.month,
-                this.solar.day
-            );
-        },
-        lunar2solar() {
-            this.result = calendar.lunar2solar(
-                this.lunar.year,
-                this.lunar.month,
-                this.lunar.day,
-                this.lunar.isLeap
-            );
-        },
-        generateCalendar(date) {
-            const year = date.getFullYear();
-            const month = date.getMonth();
-            const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            const cells = [];
-
-            for (let i = 0; i < firstDay; i++) {
-                cells.push({ day: "", lunar: "", festival: "" });
-            }
-
-            for (let day = 1; day <= daysInMonth; day++) {
-                const solarDate = new Date(year, month, day);
-                const lunarInfo = calendar.solar2lunar(year, month + 1, day);
-                cells.push({
-                    day,
-                    lunar: lunarInfo.IDayCn,
-                    festival: lunarInfo.festival || lunarInfo.lunarFestival || ""
-                });
-            }
-
-            this.calendarCells = cells;
-        }
-    }
-});        

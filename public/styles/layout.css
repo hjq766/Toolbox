@@ -1,0 +1,180 @@
+/* 容器与页面外壳 */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding-inline: var(--container-px);
+  position: relative;
+}
+
+.page-shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: var(--z-base);
+}
+
+.page-main {
+  flex: 1;
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
+}
+.is-embedded .page-main { padding-bottom: 70px; }
+
+/* Header */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  background: color-mix(in srgb, var(--bg-page) 82%, transparent);
+  border-bottom: 1px solid transparent;
+  backdrop-filter: saturate(140%) blur(12px);
+  -webkit-backdrop-filter: saturate(140%) blur(12px);
+  transition: border-color var(--dur-base) var(--ease-standard), background var(--dur-base);
+}
+.site-header.is-scrolled {
+  border-bottom-color: var(--border-base);
+  background: color-mix(in srgb, var(--bg-page) 92%, transparent);
+}
+[data-performance="low"] .site-header {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: var(--bg-page);
+}
+.site-header .nav {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+  width: 100%;
+}
+.site-header .nav-left { display: flex; align-items: center; gap: var(--space-6); }
+.site-header .logo {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-weight: 700; color: var(--fg-strong); font-size: var(--text-lg);
+  letter-spacing: -0.01em;
+}
+.site-header .logo-mark {
+  width: 28px; height: 28px;
+  flex-shrink: 0;
+}
+.site-header .nav-links { display: flex; gap: var(--space-1); }
+.site-header .nav-link {
+  padding: 8px 12px; border-radius: var(--radius-md);
+  color: var(--fg-muted); font-size: var(--text-sm);
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.site-header .nav-link:hover { background: var(--bg-surface-2); color: var(--fg-strong); }
+.site-header .nav-link.is-active { color: var(--fg-strong); font-weight: 650; }
+.site-header .nav-right { display: flex; align-items: center; gap: var(--space-1); }
+.nav-icon-btn {
+  width: 36px; height: 36px; border-radius: var(--radius-md);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--fg-muted);
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.nav-icon-btn:hover { background: var(--bg-surface-2); color: var(--fg-strong); }
+.nav-icon-btn i, .nav-icon-btn svg { width: 18px; height: 18px; }
+
+/* Footer */
+.site-footer {
+  padding: var(--space-8) 0 var(--space-10);
+  border-top: 1px solid var(--border-base);
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+  background: var(--bg-page);
+}
+.site-footer .footer-row {
+  display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6);
+  align-items: center; justify-content: space-between;
+}
+.site-footer a { color: var(--fg-muted); }
+.site-footer a:hover { color: var(--fg-strong); }
+
+/* Section & hero */
+.page-section { padding-block: var(--space-8); }
+.page-hero { padding-block: var(--space-12) var(--space-8); }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; font-size: var(--text-xs); font-weight: 600;
+  color: var(--color-brand); background: var(--color-brand-soft);
+  border-radius: var(--radius-pill);
+  margin-bottom: var(--space-4);
+}
+/* 旧 hero-title/hero-copy 的尺寸已由 .tool-header / .welcome-hero / .page-hero 统一定义 */
+
+/* 工具页 / 关于页 / 首页欢迎区 —— 统一的 page title 模块 */
+.tool-layout {
+  display: grid;
+  gap: var(--space-6);
+  padding-block: clamp(20px, 3vw, 40px) var(--space-12);
+}
+.tool-header {
+  display: flex; flex-direction: column;
+  gap: 12px;
+  margin-bottom: var(--space-2);
+}
+.tool-header-top {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-3);
+  /* 保留固定高度：等于"返回按钮"高度（padding 12+6*2 + border），
+     这样首页（无按钮）和工具页（有按钮）的 h1 Y 坐标一致，不会跳动 */
+  min-height: 32px;
+}
+.tool-header .tool-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--fg-muted); font-size: var(--text-sm);
+  padding: 6px 12px 6px 8px; border-radius: var(--radius-md);
+  border: 1px solid var(--border-base);
+  background: var(--bg-surface);
+  margin-left: -6px;
+}
+.tool-header .tool-back:hover { background: var(--bg-surface-2); color: var(--fg-strong); border-color: var(--border-strong); }
+.tool-header h1,
+.tool-header-title,
+.page-hero .hero-title {
+  margin: 0;
+  font-size: clamp(var(--text-2xl), 2.6vw, var(--text-3xl));
+  font-weight: bold;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.tool-header-title {
+  display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;
+}
+.tool-header-title .badge { flex-shrink: 0; }
+.tool-header .tool-subtitle,
+.page-hero .hero-copy {
+  color: var(--fg-muted);
+  font-size: var(--text-md);
+  line-height: 1.6;
+  max-width: 860px;
+  margin: 0;
+}
+.tool-body { display: grid; gap: var(--space-6); min-width: 0; }
+
+/* 响应式 */
+@media (max-width: 640px) {
+  .site-header .nav-links { display: none; }
+  .page-hero { padding-block: var(--space-8) var(--space-6); }
+}
+
+/* =========================================================
+ * Embedded mode (iframe)
+ * 被工作台外壳嵌入时的降级，保证只有内容层展示
+ * ========================================================= */
+html.is-embedded body::before { display: none; }
+html.is-embedded,
+html.is-embedded body { background: transparent; }
+html.is-embedded .site-header,
+html.is-embedded .site-footer,
+html.is-embedded .dock { display: none !important; }
+/* 嵌入模式下：去掉外壳自带的 .page-main 上下间距，让 .tool-layout 成为唯一的垂直节奏源
+   这样工具页 iframe 内的 tool-header 与首页 welcome 的 tool-header 垂直位置完全一致 */
+html.is-embedded .page-main { padding-top: 0; padding-bottom: 0; }
+html.is-embedded .page-shell { min-height: auto; }
+/* 防止工具页内容意外溢出导致水平滚动条 */
+html.is-embedded body { overflow-x: hidden; }
+/* 注意：不要在这里覆盖 .tool-layout 的 padding！首页 welcome 也用 .tool-layout，
+   一旦覆盖就会和首页不对齐。保持唯一定义，首页/工具页/关于页三者共享。 */

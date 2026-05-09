@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown 编辑器 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <script src="../../public/vendor/marked.min.js" defer></script>
+  <script src="../../public/vendor/purify.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="markdown_editor">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:260px">
+          <!-- 左：主编辑区 -->
+          <div>
+            <!-- 工具栏 -->
+            <style>
+              .md-toolbar{display:flex;align-items:center;padding:8px 10px;gap:2px;flex-wrap:wrap}
+              .md-toolbar .t-btn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:none;border-radius:var(--radius-sm);color:var(--fg-muted);cursor:pointer;flex-shrink:0;font-size:16px;transition:background .15s,color .15s}
+              .md-toolbar .t-btn:hover{background:var(--bg-hover);color:var(--fg-base)}
+              .md-toolbar .t-btn.is-active{background:var(--bg-active);color:var(--color-primary)}
+              .md-toolbar .tg{display:inline-flex;gap:2px}
+              .md-toolbar .t-sep{width:1px;height:22px;background:var(--border-subtle);margin:0 6px;flex-shrink:0}
+              .md-toolbar .t-spacer{flex:1 1 0;min-width:8px}
+            </style>
+            <div class="panel" style="padding:0;display:flex;flex-direction:column;min-height:600px">
+              <!-- 工具栏 -->
+              <div class="md-toolbar" style="border-bottom:1px solid var(--border-subtle)">
+                <div class="tg">
+                  <button class="t-btn" type="button" data-action="undo" title="撤销 Ctrl+Z"><i data-lucide="arrow-left"></i></button>
+                  <button class="t-btn" type="button" data-action="redo" title="重做 Ctrl+Y"><i data-lucide="arrow-right"></i></button>
+                </div>
+                <span class="t-sep"></span>
+                <div class="tg">
+                  <button class="t-btn" type="button" data-insert="bold" title="粗体 Ctrl+B"><i data-lucide="bold"></i></button>
+                  <button class="t-btn" type="button" data-insert="italic" title="斜体 Ctrl+I"><i data-lucide="italic"></i></button>
+                  <button class="t-btn" type="button" data-insert="strike" title="删除线"><i data-lucide="strikethrough"></i></button>
+                  <button class="t-btn" type="button" data-insert="code" title="行内代码"><i data-lucide="code"></i></button>
+                </div>
+                <span class="t-sep"></span>
+                <div class="tg">
+                  <button class="t-btn" type="button" data-insert="heading" title="标题 Ctrl+H"><i data-lucide="heading-1"></i></button>
+                  <button class="t-btn" type="button" data-insert="quote" title="引用 Ctrl+Q"><i data-lucide="text-quote"></i></button>
+                  <button class="t-btn" type="button" data-insert="hr" title="分隔线"><i data-lucide="minus"></i></button>
+                </div>
+                <span class="t-sep"></span>
+                <div class="tg">
+                  <button class="t-btn" type="button" data-insert="ul" title="无序列表"><i data-lucide="list-checks"></i></button>
+                  <button class="t-btn" type="button" data-insert="ol" title="有序列表"><i data-lucide="list-ordered"></i></button>
+                  <button class="t-btn" type="button" data-insert="task" title="任务列表"><i data-lucide="check-circle"></i></button>
+                </div>
+                <span class="t-sep"></span>
+                <div class="tg">
+                  <button class="t-btn" type="button" data-modal="link" title="链接 Ctrl+L"><i data-lucide="link"></i></button>
+                  <button class="t-btn" type="button" data-modal="image" title="图片"><i data-lucide="image"></i></button>
+                  <button class="t-btn" type="button" data-modal="table" title="表格"><i data-lucide="table"></i></button>
+                  <button class="t-btn" type="button" data-modal="codeblock" title="代码块"><i data-lucide="terminal"></i></button>
+                </div>
+                <span class="t-spacer"></span>
+                <div class="tg">
+                  <button class="t-btn" type="button" data-view="split" title="分栏模式"><i data-lucide="columns-2"></i></button>
+                  <button class="t-btn" type="button" data-view="edit" title="纯编辑模式"><i data-lucide="pencil"></i></button>
+                  <button class="t-btn" type="button" data-view="preview" title="预览模式"><i data-lucide="eye"></i></button>
+                  <button class="t-btn" type="button" data-action="fullscreen" title="全屏"><i data-lucide="maximize"></i></button>
+                  <button class="t-btn" type="button" data-action="clear" title="清空"><i data-lucide="trash-2"></i></button>
+                </div>
+              </div>
+              <!-- 编辑 + 预览 -->
+              <div data-split style="display:flex;flex:1;min-height:0;overflow:hidden">
+                <div class="cm-embed" style="flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden">
+                  <div style="padding:6px 14px;font-size:12px;color:var(--fg-muted);border-bottom:1px solid var(--border-subtle);background:var(--bg-surface-2)">编辑区</div>
+                  <textarea class="textarea u-mono" data-source spellcheck="false"
+                    placeholder="# 在此编写 Markdown&#10;&#10;支持 **粗体**、*斜体*、~~删除线~~、`代码`、列表、表格等 GFM 语法"
+                    style="flex:1;resize:none;border:none;border-radius:0;font-size:13px;tab-size:2;line-height:1.6;padding:10px 14px"></textarea>
+                  <div style="display:flex;justify-content:space-between;padding:5px 14px;font-size:12px;color:var(--fg-muted);border-top:1px solid var(--border-subtle);background:var(--bg-surface-2)">
+                    <span data-stat-words>字数：0</span>
+                    <span data-stat-cursor>行：1，列：1</span>
+                  </div>
+                </div>
+                <div style="flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;border-left:1px solid var(--border-subtle)">
+                  <div style="padding:6px 14px;font-size:12px;color:var(--fg-muted);border-bottom:1px solid var(--border-subtle);background:var(--bg-surface-2)">预览区</div>
+                  <div data-preview style="flex:1;overflow:auto;padding:20px;line-height:1.7;font-size:14px"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右：侧栏 -->
+          <aside>
+            <div class="panel">
+              <h3 class="panel-title">文件</h3>
+              <div class="act-group">
+                <label class="btn is-block" style="cursor:pointer;text-align:center">
+                  <i data-lucide="folder-open"></i> 打开 .md 文件
+                  <input type="file" accept=".md,.markdown,.txt,text/markdown,text/plain" hidden data-file>
+                </label>
+              </div>
+              <p class="hint">支持拖拽文件到编辑区域，内容自动保存至本地</p>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">导出</h3>
+              <div class="act-group">
+                <button class="btn" type="button" data-action="copy-md"><i data-lucide="copy"></i> 复制 Markdown</button>
+                <button class="btn" type="button" data-action="copy-html"><i data-lucide="copy"></i> 复制 HTML</button>
+                <div class="sep"></div>
+                <button class="btn is-primary" type="button" data-action="dl-md"><i data-lucide="download"></i> 下载 .md</button>
+                <button class="btn" type="button" data-action="dl-html"><i data-lucide="download"></i> 下载 .html</button>
+                <button class="btn" type="button" data-action="dl-pdf"><i data-lucide="file-text"></i> 下载 PDF</button>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="act-group">
+                <button class="btn is-ghost is-block" type="button" data-action="load-example"><i data-lucide="file-text"></i> 载入示例</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+
+  <!-- 链接弹窗 -->
+  <div class="modal-backdrop" data-modal-id="link" hidden>
+    <div class="modal-panel">
+      <div class="modal-header"><h3>插入链接</h3></div>
+      <div class="modal-body">
+        <div class="field"><label class="field-label">链接文字</label><input class="input" data-link-text placeholder="显示的文字"></div>
+        <div class="field u-mt-3"><label class="field-label">链接地址</label><input class="input" data-link-url placeholder="https://"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn is-ghost" type="button" data-modal-close>取消</button>
+        <button class="btn is-primary" type="button" data-modal-ok="link">插入</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 图片弹窗 -->
+  <div class="modal-backdrop" data-modal-id="image" hidden>
+    <div class="modal-panel">
+      <div class="modal-header"><h3>插入图片</h3></div>
+      <div class="modal-body">
+        <div class="field"><label class="field-label">图片描述</label><input class="input" data-img-alt placeholder="图片的替代文字"></div>
+        <div class="field u-mt-3"><label class="field-label">图片地址</label><input class="input" data-img-url placeholder="https://"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn is-ghost" type="button" data-modal-close>取消</button>
+        <button class="btn is-primary" type="button" data-modal-ok="image">插入</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 表格弹窗 -->
+  <div class="modal-backdrop" data-modal-id="table" hidden>
+    <div class="modal-panel">
+      <div class="modal-header"><h3>插入表格</h3></div>
+      <div class="modal-body">
+        <div class="u-row u-gap-3">
+          <div class="field" style="flex:1"><label class="field-label">行数</label><input class="input" type="number" data-tbl-rows value="3" min="1" max="20"></div>
+          <div class="field" style="flex:1"><label class="field-label">列数</label><input class="input" type="number" data-tbl-cols value="3" min="1" max="20"></div>
+        </div>
+        <div class="field u-mt-3">
+          <label class="checkbox"><input type="checkbox" data-tbl-header checked> 包含表头</label>
+        </div>
+        <div class="field u-mt-3">
+          <label class="field-label">对齐方式</label>
+          <div class="opt-row" data-tbl-align>
+            <button class="btn is-sm active" type="button" data-val="left">左对齐</button>
+            <button class="btn is-sm" type="button" data-val="center">居中</button>
+            <button class="btn is-sm" type="button" data-val="right">右对齐</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn is-ghost" type="button" data-modal-close>取消</button>
+        <button class="btn is-primary" type="button" data-modal-ok="table">插入</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 代码块弹窗 -->
+  <div class="modal-backdrop" data-modal-id="codeblock" hidden>
+    <div class="modal-panel">
+      <div class="modal-header"><h3>插入代码块</h3></div>
+      <div class="modal-body">
+        <div class="field">
+          <label class="field-label">编程语言</label>
+          <select class="select" data-cb-lang>
+            <option value="">Plain Text</option>
+            <option value="javascript">JavaScript</option>
+            <option value="typescript">TypeScript</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
+            <option value="go">Go</option>
+            <option value="rust">Rust</option>
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+            <option value="json">JSON</option>
+            <option value="sql">SQL</option>
+            <option value="bash">Bash</option>
+            <option value="yaml">YAML</option>
+          </select>
+        </div>
+        <div class="field u-mt-3">
+          <label class="field-label">代码内容</label>
+          <textarea class="textarea u-mono" data-cb-code rows="6" placeholder="在此输入代码..." style="font-size:13px"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn is-ghost" type="button" data-modal-close>取消</button>
+        <button class="btn is-primary" type="button" data-modal-ok="codeblock">插入</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>
