@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>体积换算 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="convert_volume">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:260px">
+          <div class="u-col u-gap-4">
+            <!-- 公制 -->
+            <div class="panel">
+              <h3 class="panel-title">公制</h3>
+              <div class="grid grid-2 u-gap-3">
+                <div class="field"><label class="field-label">立方米 (m³)</label><div class="input-group"><span class="addon">m³</span><input class="input u-mono" type="text" data-unit="cubicm" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">立方分米 (dm³)</label><div class="input-group"><span class="addon">dm³</span><input class="input u-mono" type="text" data-unit="cubicdm" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">立方厘米 (cm³)</label><div class="input-group"><span class="addon">cm³</span><input class="input u-mono" type="text" data-unit="cubiccm" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">立方毫米 (mm³)</label><div class="input-group"><span class="addon">mm³</span><input class="input u-mono" type="text" data-unit="cubicmm" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">百升 (hL)</label><div class="input-group"><span class="addon">hL</span><input class="input u-mono" type="text" data-unit="hl" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">升 (L)</label><div class="input-group"><span class="addon">L</span><input class="input u-mono" type="text" data-unit="l" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">分升 (dL)</label><div class="input-group"><span class="addon">dL</span><input class="input u-mono" type="text" data-unit="dl" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">厘升 (cL)</label><div class="input-group"><span class="addon">cL</span><input class="input u-mono" type="text" data-unit="cl" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">毫升 (mL)</label><div class="input-group"><span class="addon">mL</span><input class="input u-mono" type="text" data-unit="ml" autocomplete="off"></div></div>
+              </div>
+            </div>
+            <!-- 中国市制 -->
+            <div class="panel">
+              <h3 class="panel-title">中国市制</h3>
+              <div class="grid grid-2 u-gap-3">
+                <div class="field"><label class="field-label">市石</label><div class="input-group"><span class="addon">石</span><input class="input u-mono" type="text" data-unit="shi" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">市斛</label><div class="input-group"><span class="addon">斛</span><input class="input u-mono" type="text" data-unit="hu" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">市斗</label><div class="input-group"><span class="addon">斗</span><input class="input u-mono" type="text" data-unit="dou" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">市升</label><div class="input-group"><span class="addon">升</span><input class="input u-mono" type="text" data-unit="sheng" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">市合</label><div class="input-group"><span class="addon">合</span><input class="input u-mono" type="text" data-unit="he" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">市勺</label><div class="input-group"><span class="addon">勺</span><input class="input u-mono" type="text" data-unit="shao" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">市撮</label><div class="input-group"><span class="addon">撮</span><input class="input u-mono" type="text" data-unit="cuo" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">市抄</label><div class="input-group"><span class="addon">抄</span><input class="input u-mono" type="text" data-unit="chao" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">市圭</label><div class="input-group"><span class="addon">圭</span><input class="input u-mono" type="text" data-unit="gui" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">市撂</label><div class="input-group"><span class="addon">撂</span><input class="input u-mono" type="text" data-unit="liao" autocomplete="off"></div></div>
+              </div>
+            </div>
+            <!-- 英制 -->
+            <div class="panel">
+              <h3 class="panel-title">英制</h3>
+              <div class="grid grid-2 u-gap-3">
+                <div class="field"><label class="field-label">立方码 (yd³)</label><div class="input-group"><span class="addon">yd³</span><input class="input u-mono" type="text" data-unit="cubicyd" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">立方英尺 (ft³)</label><div class="input-group"><span class="addon">ft³</span><input class="input u-mono" type="text" data-unit="cubicft" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">立方英寸 (in³)</label><div class="input-group"><span class="addon">in³</span><input class="input u-mono" type="text" data-unit="cubicin" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">英制加仑 (uk gal)</label><div class="input-group"><span class="addon">uk gal</span><input class="input u-mono" type="text" data-unit="ukgallon" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">英制夸脱 (uk qt)</label><div class="input-group"><span class="addon">uk qt</span><input class="input u-mono" type="text" data-unit="ukquart" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">英制品脱 (uk pt)</label><div class="input-group"><span class="addon">uk pt</span><input class="input u-mono" type="text" data-unit="ukpint" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">英制液盎司 (uk fl oz)</label><div class="input-group"><span class="addon">uk fl oz</span><input class="input u-mono" type="text" data-unit="ukfloz" autocomplete="off"></div></div>
+              </div>
+            </div>
+            <!-- 美制 -->
+            <div class="panel">
+              <h3 class="panel-title">美制</h3>
+              <div class="grid grid-2 u-gap-3">
+                <div class="field"><label class="field-label">美制加仑 (us gal)</label><div class="input-group"><span class="addon">us gal</span><input class="input u-mono" type="text" data-unit="usgallon" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">美制夸脱 (us qt)</label><div class="input-group"><span class="addon">us qt</span><input class="input u-mono" type="text" data-unit="usquart" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">美制品脱 (us pt)</label><div class="input-group"><span class="addon">us pt</span><input class="input u-mono" type="text" data-unit="uspint" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">美制杯 (us cup)</label><div class="input-group"><span class="addon">us cup</span><input class="input u-mono" type="text" data-unit="uscup" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">美制液盎司 (us fl oz)</label><div class="input-group"><span class="addon">us fl oz</span><input class="input u-mono" type="text" data-unit="usfloz" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">美制汤匙 (tbsp)</label><div class="input-group"><span class="addon">tbsp</span><input class="input u-mono" type="text" data-unit="ustbsp" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">美制茶匙 (tsp)</label><div class="input-group"><span class="addon">tsp</span><input class="input u-mono" type="text" data-unit="ustsp" autocomplete="off"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <aside>
+            <div class="panel">
+              <h3 class="panel-title">快速输入</h3>
+              <label class="field-label">选择单位</label>
+              <select class="select u-mb-3" data-quick-unit>
+                <option value="l">升 (L)</option>
+                <option value="ml">毫升 (mL)</option>
+                <option value="cubicm">立方米 (m³)</option>
+                <option value="usgallon">美制加仑</option>
+                <option value="ukgallon">英制加仑</option>
+                <option value="uscup">美制杯</option>
+              </select>
+              <div class="opt-row">
+                <button class="btn is-sm" data-quick="1">1</button>
+                <button class="btn is-sm" data-quick="10">10</button>
+                <button class="btn is-sm" data-quick="100">100</button>
+                <button class="btn is-sm" data-quick="1000">1000</button>
+              </div>
+            </div>
+            <div class="panel">
+              <h3 class="panel-title">精度</h3>
+              <div class="range-row"><input type="range" min="2" max="10" value="6" data-precision><span class="val" data-precision-val>6 位</span></div>
+            </div>
+            <div class="panel">
+              <div class="act-group">
+                <button class="btn" type="button" data-action="copy-all"><i data-lucide="copy"></i> 复制全部</button>
+                <button class="btn is-ghost" type="button" data-action="reset">重置</button>
+              </div>
+            </div>
+            <div class="panel"><p class="hint">公/市/英/美制共 33 个单位互换，在任意框输入即可。</p></div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

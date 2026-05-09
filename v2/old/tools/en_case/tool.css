@@ -1,0 +1,380 @@
+/* 公共样式 */
+.card {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.card:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.example {
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 8px;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    margin-top: auto;
+}
+
+.example-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.example-arrow {
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+/* 输入区域样式 */
+.tool-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.input-group .title-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.input-group .title-area h2 {
+    margin: 0;
+}
+
+.input-group .char-count {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.input-group textarea {
+    flex: 1;
+    width: 100%;
+    min-height: 300px;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    resize: none;
+    background: var(--bg-color);
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Tabs 区域 */
+.tabs-section {
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color-10);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.form-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.form-tab {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+}
+
+.form-tab:hover {
+    background: var(--bg-secondary);
+    color: var(--text-color);
+}
+
+.form-tab.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.tab-content {
+    margin-top: 0;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* 转换卡片 */
+.transform-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.transform-card {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.transform-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.transform-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.transform-card .card-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.transform-card .shortcut {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.transform-card .example {
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 8px;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+}
+
+.transform-card .example-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.transform-card .example-arrow {
+    color: var(--primary-color);
+    font-size: 16px;
+}
+
+/* 格式化卡片 */
+.format-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.format-card {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.format-card:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.format-card .format-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.format-card .format-example {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 12px;
+}
+
+.format-card .format-arrow {
+    color: var(--primary-color);
+    font-size: 16px;
+}
+
+/* 历史记录 */
+.history-section {
+    margin-top: 32px;
+    padding: 24px;
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color-10);
+    border-radius: 12px;
+}
+
+.history-section .title-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.history-section .title-area h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.history-section .text-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.history-section .text-btn:hover {
+    color: var(--primary-color);
+}
+
+.history-section h3 {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.history-item:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.history-text {
+    font-size: 14px;
+    color: var(--text-color);
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.history-info {
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.history-info .transform-type {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.history-item .btn-icon {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.history-item .btn-icon:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.history-empty {
+    text-align: center;
+    padding: 32px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* 工具信息 */
+.tool-info {
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border-color);
+}
+
+
+/* 文字按钮样式 */
+.text-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.text-btn:hover {
+    color: var(--primary-color);
+}

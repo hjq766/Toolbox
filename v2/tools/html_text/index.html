@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML 转文本 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="html_text">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="panel">
+          <label class="panel u-col u-gap-2" data-drop style="border-style:dashed;align-items:center;text-align:center;cursor:pointer;padding:var(--space-6);margin:0">
+            <div class="u-strong">拖拽 .html / .htm 文件到此处，或点击选择</div>
+            <div class="u-muted" style="font-size:var(--text-xs)">加载后会填充到下方的"HTML 源码"文本框</div>
+            <input type="file" accept=".html,.htm,text/html" hidden data-file>
+          </label>
+        </div>
+
+        <div class="panel">
+          <div class="grid grid-2">
+            <div class="field cm-embed" style="grid-template-rows:auto 1fr">
+              <label class="field-label">HTML 源码</label>
+              <textarea class="textarea u-mono" data-input placeholder="<div>Hello <b>World</b></div>" style="min-height:260px"></textarea>
+            </div>
+            <div class="field" style="grid-template-rows:auto 1fr">
+              <label class="field-label">提取结果</label>
+              <textarea class="textarea" data-output readonly placeholder="提取后的纯文本..." style="min-height:260px"></textarea>
+            </div>
+          </div>
+          <div class="u-row u-gap-3 u-mt-4">
+            <button class="btn is-primary" type="button" data-action="extract">提取文本</button>
+            <button class="btn" type="button" data-action="copy">复制结果</button>
+            <button class="btn" type="button" data-action="download">导出 .txt</button>
+            <button class="btn is-ghost" type="button" data-action="clear">清空</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

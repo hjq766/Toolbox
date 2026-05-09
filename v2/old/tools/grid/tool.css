@@ -1,0 +1,1300 @@
+/* 主布局 */
+.tool-main {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
+}
+
+/* 控制面板 */
+.control-panel {
+    position: sticky;
+    top: 24px;
+    padding: 0;
+}
+
+.panel-section {
+    margin-bottom: 16px;
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color-10);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.panel-section:first-child {
+    margin-top: 0;
+}
+
+.panel-section:last-child {
+    margin-bottom: 0;
+}
+
+.panel-section h3 {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 表单组件样式 */
+.form-group {
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+/* 输入框带单位 */
+.input-with-unit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0 12px;
+}
+
+.input-with-unit input {
+    width: 100%;
+    height: 40px;
+    border: none;
+    background: none;
+    color: var(--text-color);
+}
+
+.input-with-unit input:focus {
+    outline: none;
+}
+
+.input-with-unit:focus-within {
+    border-color: var(--primary-color);
+}
+
+.unit {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* 带按钮的输入框 */
+.input-with-buttons {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.input-with-buttons input {
+    width: 50px;
+    height: 32px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.input-with-buttons input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* 滑块和数值显示 */
+.range-with-value {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.range-with-value input[type="range"] {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--border-color);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.range-with-value input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.value-display {
+    min-width: 45px;
+    text-align: right;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* 网格选项 */
+.option-grid {
+    display: grid;
+    gap: 8px;
+}
+
+.option-grid.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.grid-option {
+    height: 40px;
+    padding: 0 12px;
+    white-space: nowrap;
+    font-size: 13px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.grid-option:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.grid-option.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* 提示文本 */
+.hint-text {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-bottom: 16px;
+    padding: 8px 12px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+.hint-text .iconify {
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+/* 代码预览区域 */
+.code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.code-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+pre {
+    margin: 0;
+    padding: 12px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+code {
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+/* 预览面板 */
+.preview-panel {
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color-10);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Tab 导航样式 */
+.tab-navigation {
+    display: flex;
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color);
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 16px 20px;
+    border: none;
+    background: none;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-btn:hover {
+    background: var(--bg-color-80);
+}
+
+.tab-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.tab-btn:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    bottom: 20%;
+    width: 1px;
+    background: var(--border-color);
+}
+
+.tab-btn.active:not(:last-child)::after {
+    display: none;
+}
+
+/* 区块头部 */
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.section-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+    .tool-main {
+        grid-template-columns: 1fr;
+    }
+
+    .control-panel {
+        position: static;
+    }
+
+    .form-tabs {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (min-width: 769px) {
+    .tool-main {
+        grid-template-columns: 360px 1fr;
+    }
+}
+
+/* 网格设置的行列输入组 */
+.grid-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 12px;
+    /* 行间距16px，列间距12px */
+    margin-bottom: 20px;
+}
+
+/* 加减按钮样式优化 */
+.btn.btn-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+}
+
+.btn.btn-icon:hover {
+    background: var(--bg-color-80);
+    border-color: var(--primary-color);
+}
+
+/* 确保单元格设置区域的grid-inputs样式正确应用 */
+.panel-section .grid-inputs {
+    margin-bottom: 0;
+    /* 移除底部间距，因为这是最后的元素 */
+}
+
+/* 调整form-group在grid-inputs中的样式 */
+.grid-inputs .form-group {
+    margin-bottom: 0;
+    /* 移除底部间距，因为已经有grid gap了 */
+}
+
+/* 设备选择器样式 */
+.device-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.device-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.device-group label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+}
+
+.device-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.device-option {
+    padding: 6px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.device-option:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.device-option.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* 导出操作样式 */
+.export-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.export-actions .btn {
+    width: 100%;
+    justify-content: center;
+}
+
+/* 列数快捷选择样式 */
+.col-quick-select {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.col-quick-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 36px;
+    text-align: center;
+}
+
+.col-quick-btn:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.col-quick-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* 边距偏好样式 */
+.margin-preference {
+    margin-bottom: 4px;
+}
+
+.margin-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.margin-option {
+    padding: 16px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.margin-option:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.margin-option.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.margin-preview {
+    width: 40px;
+    height: 24px;
+    border-radius: 4px;
+    position: relative;
+    background: var(--border-color-10);
+}
+
+.margin-preview.no-margin {
+    background: var(--border-color-10);
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.margin-preview.no-margin::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.margin-preview.with-margin {
+    background: var(--border-color-10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+}
+
+.margin-preview.with-margin::after {
+    content: '';
+    width: 24px;
+    height: 16px;
+    background: var(--primary-color-20);
+    border-radius: 2px;
+}
+
+.margin-preview.custom-margin {
+    background: var(--border-color-10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.margin-preview.custom-margin::after {
+    content: '⚙';
+    font-size: 14px;
+    color: var(--primary-color);
+}
+
+.margin-option span {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.margin-option small {
+    font-size: 12px;
+    opacity: 0.8;
+    margin: 0;
+}
+
+.margin-option.active .margin-preview.no-margin {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.margin-option.active .margin-preview.no-margin::after {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.margin-option.active .margin-preview.with-margin {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.margin-option.active .margin-preview.with-margin::after {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.margin-option.active .margin-preview.custom-margin::after {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* 间距风格样式 */
+.spacing-style {
+    margin-bottom: 4px;
+}
+
+.style-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.style-option {
+    padding: 12px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.style-option:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.style-option.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.style-name {
+    font-size: 13px;
+    font-weight: 500;
+
+}
+
+.style-range {
+    font-size: 11px;
+    opacity: 0.8;
+
+}
+
+/* 高级自定义样式 */
+.toggle-advanced {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.toggle-advanced:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.toggle-advanced.active {
+    background: var(--primary-color-10);
+    border-color: var(--primary-color);
+}
+
+.toggle-icon {
+    transition: transform 0.3s ease;
+    font-size: 12px;
+}
+
+.toggle-advanced.active .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.advanced-options {
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin-top: 12px;
+}
+
+/* 简化高级选项样式，移除多余的背景层 */
+.advanced-options .form-group {
+    margin-bottom: 16px;
+}
+
+.advanced-options .form-group:last-child {
+    margin-bottom: 0;
+}
+
+/* 确保高级自定义中的输入框样式正确 */
+.advanced-options .input-with-unit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0 12px;
+    height: 40px;
+    /* 明确设置高度 */
+}
+
+.advanced-options .input-with-unit input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: none;
+    color: var(--text-color);
+    font-size: 14px;
+    /* 确保字体大小合适 */
+    text-align: left;
+    /* 确保文字左对齐 */
+}
+
+.advanced-options .input-with-unit input:focus {
+    outline: none;
+}
+
+.advanced-options .input-with-unit:focus-within {
+    border-color: var(--primary-color);
+}
+
+.advanced-options .unit {
+    color: var(--text-secondary);
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+/* Toast 提示样式 */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--primary-color);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    font-size: 14px;
+}
+
+.toast.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* 预览信息样式 */
+.preview-info {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* 改进的预览内容布局 */
+.preview-content {
+    padding: 24px;
+    min-height: 400px;
+}
+
+.recommend-view,
+.manual-view {
+    width: 100%;
+}
+
+/* 响应式优化 */
+@media (max-width: 1024px) {
+    .device-options {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .device-option {
+        width: 100%;
+        text-align: center;
+    }
+
+    .grid-info {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .view-toggle {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .toggle-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .grid-info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 改进的预览内容布局 */
+.preview-content {
+    padding: 24px;
+    min-height: 400px;
+    display: block;
+    /* 始终显示预览内容容器 */
+}
+
+/* 推荐布局区域 */
+.recommend-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.recommend-header h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.recommend-header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.recommend-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 布局方案卡片 */
+.plan-item {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 8px;
+}
+
+.plan-item:last-child {
+    margin-bottom: 0;
+}
+
+.plan-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.plan-title {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.plan-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.plan-actions .btn {
+    font-size: 13px;
+    padding: 8px 12px;
+    white-space: nowrap;
+}
+
+.btn-secondary {
+    background: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-color-80);
+    border-color: var(--primary-color);
+}
+
+.plan-preview {
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.plan-grid {
+    width: 100%;
+    height: 120px;
+    display: grid;
+    gap: inherit;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.plan-cell {
+    background: var(--primary-color-10);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    height: 100%;
+    min-width: 0;
+}
+
+.plan-info {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg-color-50);
+    border-radius: 8px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.info-value {
+    font-size: 15px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.info-value.perfect-match {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.plan-description {
+    margin-top: 16px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.grid-preview {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    gap: inherit;
+}
+
+/* 修改左右边距可视化样式 */
+.grid-preview::before,
+.grid-preview::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: var(--side-margin);
+    background: rgba(255, 149, 0, 0.1);
+    border: 1px dashed #ff9500;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.grid-preview::before {
+    left: 0;
+}
+
+.grid-preview::after {
+    right: 0;
+}
+
+.grid-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    transition: max-width 0.3s ease;
+    background-color: var(--bg-color-50);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.preview-cell {
+    background: var(--primary-color-10);
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+}
+
+/* 设备预览控制 */
+.preview-controls {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.device-tabs {
+    display: flex;
+    gap: 8px;
+    background: var(--bg-color);
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.device-tab {
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.device-tab:hover {
+    background: var(--bg-color-80);
+}
+
+.device-tab.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* 网格预览样式 */
+.grid-cell {
+    background: var(--primary-color-10);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    transition: var(--transition);
+}
+
+.grid-cell:hover {
+    border-color: var(--primary-color);
+}
+
+/* 移除单元格选中相关样式 */
+.grid-cell.selected {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* 移除确认按钮样式 */
+.confirm-span-btn {
+    display: none;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .recommend-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .plan-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .plan-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* 开关样式 */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+}
+
+.toggle-switch input {
+    display: none;
+}
+
+.switch-label {
+    display: flex;
+    align-items: center;
+    width: 160px;
+    height: 32px;
+    background: var(--bg-color-80);
+    border-radius: 16px;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    padding: 0 4px;
+}
+
+.switch-label::after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 24px;
+    background: var(--primary-color);
+    border-radius: 12px;
+    left: 4px;
+    transition: 0.3s;
+}
+
+.switch-text {
+    flex: 1;
+    text-align: center;
+    color: var(--text-color);
+    font-size: 14px;
+    z-index: 1;
+    transition: 0.3s;
+}
+
+input:checked+.switch-label::after {
+    left: 76px;
+}
+
+input:checked+.switch-label .switch-text:first-child {
+    color: var(--text-color-80);
+}
+
+input:not(:checked)+.switch-label .switch-text:last-child {
+    color: var(--text-color-80);
+}
+
+/* 调整生成按钮样式 */
+#generatePlans {
+    width: 100%;
+    margin-top: 16px;
+}
+
+/* 分段控制器样式 */
+.segmented-control {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 3px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.segmented-control input {
+    display: none;
+}
+
+.segments-container {
+    display: flex;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.segment {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: var(--text-color-80);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    user-select: none;
+    height: 100%;
+    line-height: 2.3;
+}
+
+.segments-container::before {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background: var(--bg-color);
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    left: 0;
+    top: 0;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+}
+
+#customMode:checked~.segments-container::before {
+    transform: translateX(100%);
+}
+
+
+.segment:hover {
+    color: var(--text-color);
+}
+
+/* 修改预览容器样式 */
+.preview-container {
+    min-height: 300px;
+    /* 减小最小高度 */
+    display: flex;
+    flex-direction: column;
+    /* 改为纵向布局 */
+    gap: 24px;
+}
+
+/* 添加网格预览信息样式 */
+.grid-preview-wrapper {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.grid-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    /* 与其他模块的间距一致 */
+}
+
+.grid-preview-title {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+
+.grid-preview-subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.grid-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg-color-50);
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.grid-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.info-value {
+    font-size: 15px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/* 设备列表样式 */
+.device-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border-radius: 8px;
+}
+
+.device-group h4 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.device-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.device-card {
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.device-card:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.device-card.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.preview-actions {
+    display: flex;
+    justify-content: flex-end;
+}

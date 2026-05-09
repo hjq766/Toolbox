@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG 代码编辑 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <style>
+    .editor-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr;gap:var(--space-3);height:clamp(500px,70vh,900px)}
+    .editor-grid>.cm-embed{display:flex;flex-direction:column;overflow:hidden;min-height:0}
+    .preview-box{position:relative;background:var(--bg-surface-2);border:1px solid var(--border-base);border-radius:var(--radius-md);overflow:auto;display:flex;align-items:center;justify-content:center;min-height:0}
+    .preview-box svg{max-width:100%;max-height:100%}
+    .checker-bg{position:absolute;inset:0;opacity:.12;background:repeating-conic-gradient(var(--border-base) 0% 25%,transparent 0% 50%) 0 0/20px 20px;pointer-events:none}
+    .bg-bar{position:absolute;top:var(--space-2);right:var(--space-2);z-index:2;display:flex;gap:2px;background:var(--bg-surface);border-radius:var(--radius-sm);padding:2px;border:1px solid var(--border-subtle);opacity:.55;transition:opacity var(--dur-fast)}
+    .bg-bar:hover{opacity:1}
+    .bg-bar button{border:0;background:none;padding:2px 8px;font-size:11px;cursor:pointer;border-radius:3px;color:var(--fg-muted);transition:all var(--dur-fast)}
+    .bg-bar button.active{background:var(--color-brand-soft);color:var(--color-brand)}
+    .stat-strip{display:flex;gap:var(--space-4);padding:var(--space-2) 0;font-size:var(--text-xs);color:var(--fg-muted)}
+    .el-prop{display:flex;align-items:center;gap:var(--space-2)}
+    .el-prop label{font-size:var(--text-xs);min-width:36px;color:var(--fg-muted)}
+    .el-prop .val{font-size:var(--text-xs);min-width:32px;text-align:right;color:var(--fg-muted)}
+    .color-pick{width:28px;height:22px;border:1px solid var(--border-base);cursor:pointer;border-radius:var(--radius-sm);padding:0}
+    @media(max-width:768px){.editor-grid{grid-template-columns:1fr;height:auto}.editor-grid>.cm-embed,.preview-box{min-height:300px;max-height:50vh}}
+  </style>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="svg_code_editor">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:280px">
+          <!-- 左：编辑器 + 预览 -->
+          <div data-main>
+            <div class="editor-grid">
+              <div class="cm-embed">
+                <textarea class="textarea" data-code spellcheck="false" placeholder="在此粘贴或编写 SVG 代码…"
+                  style="font-family:'SF Mono',Menlo,Monaco,Consolas,monospace;font-size:13px;tab-size:2"></textarea>
+              </div>
+              <div class="preview-box" data-preview>
+                <div class="bg-bar" data-bg-row>
+                  <button class="active" type="button" data-bg="checker" title="棋盘格">棋盘</button>
+                  <button type="button" data-bg="white" title="白色">白</button>
+                  <button type="button" data-bg="dark" title="深色">暗</button>
+                  <button type="button" data-bg="none" title="无">无</button>
+                </div>
+                <div class="checker-bg" data-bg-layer></div>
+                <div style="position:relative;z-index:1;width:100%;height:100%;display:flex;align-items:center;justify-content:center" data-preview-inner></div>
+              </div>
+            </div>
+            <!-- 统计条 -->
+            <div class="stat-strip">
+              <span data-stat-chars></span>
+              <span data-stat-lines></span>
+              <span data-stat-size></span>
+              <span data-stat-dim></span>
+            </div>
+          </div>
+
+          <!-- 右：侧栏 -->
+          <aside>
+            <!-- 文件 + 操作 -->
+            <div class="panel">
+              <h3 class="panel-title">文件</h3>
+              <label class="btn is-block" style="cursor:pointer;text-align:center" data-drop>
+                <i data-lucide="folder-open"></i> 打开 SVG
+                <input type="file" accept=".svg,image/svg+xml" hidden data-file>
+              </label>
+              <div class="opt-row">
+                <button class="btn is-sm is-ghost" type="button" data-action="load-example"><i data-lucide="code"></i> 示例</button>
+                <button class="btn is-sm is-ghost" type="button" data-action="reset"><i data-lucide="undo-2"></i> 恢复</button>
+                <button class="btn is-sm is-ghost" type="button" data-action="clear"><i data-lucide="trash-2"></i> 清空</button>
+              </div>
+              <p class="hint">支持拖拽或粘贴 SVG 文件</p>
+            </div>
+
+            <!-- 代码处理 -->
+            <div class="panel">
+              <h3 class="panel-title">代码处理</h3>
+              <div class="opt-row">
+                <button class="btn is-sm" type="button" data-action="format">格式化</button>
+                <button class="btn is-sm" type="button" data-action="minify">压缩</button>
+              </div>
+              <div class="opt-row">
+                <button class="btn is-sm" type="button" data-action="trim">精确裁剪</button>
+                <button class="btn is-sm" type="button" data-action="trim-safe">安全裁剪</button>
+              </div>
+              <p class="hint">精确裁剪贴合内容，安全裁剪保留 10% 边距</p>
+            </div>
+
+            <!-- 导出 -->
+            <div class="panel">
+              <h3 class="panel-title">导出</h3>
+              <div class="u-row u-gap-2">
+                <button class="btn is-primary" type="button" data-action="dl-svg" style="flex:1"><i data-lucide="download"></i> 下载 SVG</button>
+                <button class="btn is-ghost" type="button" data-action="copy"><i data-lucide="copy"></i> 复制</button>
+              </div>
+              <div class="sep"></div>
+              <div class="u-row u-gap-2">
+                <button class="btn is-block" type="button" data-action="dl-png" style="flex:1"><i data-lucide="image"></i> 导出 PNG</button>
+                <select class="select" data-png-scale style="width:56px">
+                  <option value="1">1x</option>
+                  <option value="2" selected>2x</option>
+                  <option value="3">3x</option>
+                  <option value="4">4x</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 元素编辑（点击 SVG 元素后显示） -->
+            <div class="panel" data-el-panel hidden>
+              <div class="u-row u-between" style="align-items:center">
+                <h3 class="panel-title" style="margin:0;padding:0;border:0"><span data-el-title></span></h3>
+                <button class="btn is-sm is-ghost" type="button" data-el-close><i data-lucide="x"></i></button>
+              </div>
+              <div class="u-col u-gap-2 u-mt-2">
+                <div class="el-prop">
+                  <label>填充</label>
+                  <input type="color" class="color-pick" data-el-fill value="#000000">
+                  <input class="input" data-el-fill-text value="#000000" style="flex:1;font-size:var(--text-xs)">
+                </div>
+                <div class="el-prop">
+                  <label>透明</label>
+                  <input type="range" data-el-fill-opacity min="0" max="100" value="100" style="flex:1">
+                  <span class="val" data-el-fill-opacity-val>100%</span>
+                </div>
+                <div class="el-prop">
+                  <label>描边</label>
+                  <input type="color" class="color-pick" data-el-stroke value="#000000">
+                  <input class="input" data-el-stroke-text value="none" style="flex:1;font-size:var(--text-xs)">
+                </div>
+                <div class="el-prop">
+                  <label>线宽</label>
+                  <input type="range" data-el-stroke-w min="0" max="20" value="1" step="0.5" style="flex:1">
+                  <span class="val" data-el-stroke-w-val>1</span>
+                </div>
+                <div class="el-prop">
+                  <label>线透</label>
+                  <input type="range" data-el-stroke-opacity min="0" max="100" value="100" style="flex:1">
+                  <span class="val" data-el-stroke-opacity-val>100%</span>
+                </div>
+              </div>
+              <p class="hint u-mt-2">点击预览区中的 SVG 图形元素进行编辑</p>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

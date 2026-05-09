@@ -1,0 +1,91 @@
+.code-area {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    min-height: 700px;
+}
+
+.code-box {
+    position: relative;
+    height: 100%;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.input-group textarea {
+    flex: 1;
+    height: auto;
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 1px;
+    background: var(--border-color);
+    padding: 1px;
+    border-radius: 6px;
+}
+
+.tab-button {
+    padding: 6px 12px;
+    border: none;
+    background: var(--bg-color);
+    cursor: pointer;
+    border-radius: 6px;
+    color: var(--text-color);
+}
+
+.tab-button.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.preview-box {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.preview-box img {
+    max-width: 100%;
+}
+
+.preview-box pre {
+    background: var(--bg-secondary);
+    padding: 12px;
+    border-radius: 6px;
+    overflow-x: auto;
+}
+
+.preview-box table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 16px 0;
+}
+
+.preview-box th,
+.preview-box td {
+    border: 1px solid var(--border-color);
+    padding: 8px;
+}
+
+.preview-box blockquote {
+    border-left: 4px solid var(--primary-color);
+    margin: 0;
+    padding-left: 16px;
+    color: var(--text-secondary);
+} 

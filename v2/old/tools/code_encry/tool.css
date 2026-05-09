@@ -1,0 +1,97 @@
+.tool-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.code-container {
+    display: flex;
+    gap: 20px;
+    background: var(--bg-color-50);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid var(--border-color-10);
+}
+
+.code-editor {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.code-editor h2 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-color);
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file-size {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: normal;
+}
+
+.CodeMirror {
+    height: 600px;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.code-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 120px;
+}
+
+.code-actions .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.code-actions .btn svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.error-message {
+    display: none;
+    color: #dc2626;
+    padding: 12px;
+    background: #fee2e2;
+    border-radius: 6px;
+    margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+    .code-container {
+        flex-direction: column;
+    }
+
+    .code-actions {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .code-actions .btn {
+        flex: 1;
+        min-width: 120px;
+    }
+}

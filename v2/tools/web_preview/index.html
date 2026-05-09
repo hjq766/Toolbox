@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多设备网页预览 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="./tool.css">
+  <script src="../../public/vendor/qrcode.min.js" defer></script>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="web_preview">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="panel">
+          <div class="u-row u-gap-3">
+            <div class="input-group u-grow">
+              <span class="addon" aria-hidden="true">URL</span>
+              <input type="url" class="input" data-url placeholder="例如 https://www.example.com">
+            </div>
+            <button class="btn is-primary" type="button" data-preview>预览</button>
+            <button class="btn" type="button" data-qrcode>二维码</button>
+          </div>
+
+          <div class="tabs u-mt-4" role="tablist" aria-label="设备切换">
+            <button class="tab-btn is-active" data-device="desktop" type="button">桌面</button>
+            <button class="tab-btn" data-device="laptop" type="button">笔电</button>
+            <button class="tab-btn" data-device="tablet" type="button">平板</button>
+            <button class="tab-btn" data-device="mobile" type="button">手机</button>
+          </div>
+        </div>
+
+        <div class="panel u-row u-gap-4" data-qr-area hidden>
+          <div id="qrcode" class="wp-qrcode"></div>
+          <p class="u-muted">使用手机相机扫码在移动设备上访问</p>
+        </div>
+
+        <div class="panel preview-stage" data-stage data-device="desktop">
+          <iframe class="preview-frame" data-frame src="about:blank" title="网页预览"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation"
+            referrerpolicy="no-referrer"></iframe>
+          <div class="wp-hint">
+            <p>输入一个 https 网址，按 Enter 或点"预览"</p>
+            <p class="u-muted">若目标站设置了 <code>X-Frame-Options</code> 或 <code>frame-ancestors</code> 会无法嵌入，可用二维码在手机上直接访问。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

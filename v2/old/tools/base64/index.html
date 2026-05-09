@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 编码/解码工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>Base64 编码/解码工具</h1>
+                    <p>支持文本和图片的 Base64 编码转换，提供实时预览功能</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-layout">
+                    <!-- 左侧导航栏 -->
+                    <aside class="sidebar">
+                        <nav class="nav-tabs">
+                            <button class="nav-item active" data-tab="text">
+                                <span class="iconify" data-icon="tabler:photo" data-inline="false"></span>
+                                <span class="nav-label">文本编码</span>
+                            </button>
+                            <button class="nav-item" data-tab="image">
+                                <span class="iconify" data-icon="tabler:text-size" data-inline="false"></span>
+                                <span class="nav-label">图片编码</span>
+                            </button>
+                        </nav>
+                    </aside>
+
+                    <!-- 右侧内容区 -->
+                    <div class="content-area">
+                        <!-- 文本编码模式 -->
+                        <div class="tab-content active" id="text-tab">
+                            <!-- 标题区 -->
+                            <div class="content-header">
+                                <div>
+                                    <h2 class="content-title">文本编码</h2>
+                                    <p class="content-subtitle">支持 Base64 编码与解码，默认 UTF-8</p>
+                                </div>
+                            </div>
+
+                            <!-- 工具栏 -->
+                            <div class="toolbar">
+                                <div class="toolbar-group">
+                                    <label class="toolbar-label">字符集：</label>
+                                    <select class="toolbar-select" id="charset">
+                                        <option value="utf-8">UTF-8</option>
+                                        <option value="gbk">GBK</option>
+                                    </select>
+                                </div>
+                                <div class="toolbar-group">
+                                    <label class="toolbar-label">换行格式：</label>
+                                    <select class="toolbar-select" id="linebreak">
+                                        <option value="none">保持一行</option>
+                                        <option value="76">每76字符换行</option>
+                                    </select>
+                                </div>
+                                <div class="toolbar-group">
+                                    <label class="toolbar-checkbox">
+                                        <input type="checkbox" id="urlsafe">
+                                        <span>URL-safe 模式</span>
+                                        <span class="tooltip-icon" data-tooltip="标准 Base64 包含 +/= 字符，在 URL 中会被转义。URL-safe 模式将 + 改为 -，/ 改为 _，= 去掉，可直接用于 URL 传参">
+                                            <span class="iconify" data-icon="tabler:info-circle" data-inline="false"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- 主内容区（左右两栏）-->
+                            <div class="panes">
+                                <!-- 输入区 -->
+                                <div class="pane">
+                                    <div class="pane-header">
+                                        <h3 class="pane-title">输入文本</h3>
+                                        <span class="pane-info" id="input-count">输入字符数：0</span>
+                                    </div>
+                                    <textarea class="pane-textarea" id="input-text" placeholder="在此输入需要编码或解码的文本..."></textarea>
+                                    <div class="pane-actions">
+                                        <button class="btn btn-primary" onclick="convertText()">
+                                            一键转换
+                                        </button>
+                                        <button class="btn btn-secondary" onclick="encodeText()">编码</button>
+                                        <button class="btn btn-secondary" onclick="decodeText()">解码</button>
+                                        <button class="btn btn-text" onclick="clearAll()">清空</button>
+                                    </div>
+                                </div>
+
+                                <!-- 输出区 -->
+                                <div class="pane">
+                                    <div class="pane-header">
+                                        <h3 class="pane-title">输出结果</h3>
+                                        <div class="pane-stats">
+                                            <span class="pane-info" id="output-count">字符数：0</span>
+                                            <span class="pane-info" id="output-size">大小：0 B</span>
+                                        </div>
+                                    </div>
+                                    <textarea class="pane-textarea" id="output-text" readonly placeholder="这里显示编码或解码的结果..."></textarea>
+                                    <div class="pane-actions">
+                                        <button class="btn btn-primary" onclick="copyOutput()">
+                                            复制结果
+                                        </button>
+                                        <button class="btn btn-secondary" onclick="swapText()">交换到输入</button>
+                                        <button class="btn btn-text" onclick="clearOutput()">清空</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 图片编码模式 -->
+                        <div class="tab-content" id="image-tab">
+                            <!-- 标题区 -->
+                            <div class="content-header">
+                                <div>
+                                    <h2 class="content-title">图片编码</h2>
+                                    <p class="content-subtitle">支持 JPG、PNG、GIF 等常见图片格式</p>
+                                </div>
+                            </div>
+
+                            <!-- 上传区域 -->
+                            <div class="upload-area" id="upload-area">
+                                <input type="file" id="file-input" accept="image/*" style="display: none;">
+                                <p class="upload-text">点击或拖拽图片到此处上传</p>
+                                <p class="upload-hint">支持 JPG、PNG、GIF、WebP 等格式</p>
+                                <div class="file-info" id="file-info" style="display: none;">
+                                    <span class="file-name" id="file-name"></span>
+                                    <span class="file-size" id="file-size"></span>
+                                </div>
+                            </div>
+
+                            <!-- 预览区域 -->
+                            <div class="preview-section" id="preview-section" style="display: none;">
+                                <h3 class="section-title">图片预览</h3>
+                                <div class="image-preview">
+                                    <img id="preview-image" alt="预览图片">
+                                </div>
+                            </div>
+
+                            <!-- Base64 输出区 -->
+                            <div class="output-section">
+                                <div class="pane-header">
+                                    <h3 class="pane-title">Base64 编码结果</h3>
+                                    <div class="pane-stats">
+                                        <span class="pane-info" id="image-output-count">字符数：0</span>
+                                        <span class="pane-info" id="image-output-size">大小：0 B</span>
+                                    </div>
+                                </div>
+                                <textarea class="pane-textarea" id="image-output" placeholder="可以直接粘贴 Base64 编码到这里进行预览..."></textarea>
+                                <div class="pane-actions">
+                                    <button class="btn btn-primary" onclick="copyImageOutput()">
+                                        复制结果
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="decodeImage()">还原预览</button>
+                                    <button class="btn btn-text" onclick="resetImage()">清空</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 工具说明 -->
+                <div class="tool-info">
+                    <h2>功能简介</h2>
+                    <p>Base64 编码转换工具支持文本和图片的 Base64 编码转换，可以快速进行编码、解码和预览。</p>
+                    
+                    <h3>主要功能</h3>
+                    <ul>
+                        <li><strong>文本编码</strong> - 支持文本内容的 Base64 编码与解码</li>
+                        <li><strong>图片编码</strong> - 支持图片转 Base64 编码，可直接用于 CSS 或 HTML</li>
+                        <li><strong>实时预览</strong> - 支持 Base64 编码图片的实时预览</li>
+                        <li><strong>字符集选择</strong> - 支持 UTF-8 和 GBK 字符集</li>
+                        <li><strong>URL-safe 模式</strong> - 支持 URL 安全的 Base64 编码</li>
+                        <li><strong>换行格式</strong> - 支持标准的 76 字符换行格式</li>
+                    </ul>
+                    
+                    <h3>使用说明</h3>
+                    <ul>
+                        <li>在输入框中输入需要处理的文本，点击"编码"或"解码"按钮</li>
+                        <li>使用"一键转换"可自动识别输入内容是原文还是 Base64 编码</li>
+                        <li>图片模式下，上传图片后会自动生成 Base64 编码</li>
+                        <li>可以直接粘贴 Base64 编码到输出框，点击"还原预览"查看图片</li>
+                    </ul>
+
+                    <h3>注意事项</h3>
+                    <ul>
+                        <li>Base64 编码后的文本会比原文长约 33%</li>
+                        <li>大图片转 Base64 会生成很长的字符串，建议小于 1MB</li>
+                        <li>URL-safe 模式会将 + 替换为 -，/ 替换为 _</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../public/main.js"></script>
+    <script src="../../public/dock.js"></script>
+    <script src="tool.js"></script>
+</body>
+</html>

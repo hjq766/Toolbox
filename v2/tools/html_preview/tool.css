@@ -1,0 +1,47 @@
+/* html_preview 独有：编辑器分屏布局 + 编辑器头 */
+.hp-split {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) 1fr;
+  gap: var(--space-3);
+  height: min(78vh, 900px);
+}
+.hp-editors {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: var(--space-2);
+  min-height: 0;
+}
+.hp-editor {
+  display: flex; flex-direction: column;
+  padding: 0; overflow: hidden; min-height: 0;
+}
+.hp-editor .CodeMirror { border: 0; border-radius: 0; }
+.hp-editor-head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px;
+  font-size: var(--text-xs); font-weight: 700;
+  letter-spacing: .02em; text-transform: uppercase;
+  color: var(--fg-muted);
+  background: var(--bg-surface-2);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+.hp-dot { width: 8px; height: 8px; border-radius: 50%; }
+.hp-textarea {
+  flex: 1; min-height: 0; width: 100%;
+  padding: 12px; border: 0; outline: 0; resize: none;
+  font-family: var(--font-mono);
+  font-size: 13px; line-height: 1.55;
+  background: var(--bg-surface); color: var(--fg-base);
+  tab-size: 2;
+}
+.hp-split .preview-stage { height: 100%; }
+
+@media (max-width: 900px) {
+  .hp-split { grid-template-columns: 1fr; height: auto; }
+  .hp-editors { grid-template-rows: auto; }
+  .hp-textarea { min-height: 140px; }
+  .hp-editor .cm-embed .CodeMirror { max-height: 180px; height: auto !important; }
+  .hp-editor .cm-embed .CodeMirror-scroll { max-height: 180px; }
+  .hp-split .preview-stage { height: 60vh; }
+}

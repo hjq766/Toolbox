@@ -1,0 +1,252 @@
+.tool-main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+
+/* 预览区域样式 */
+.preview-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.preview-container {
+    position: relative;
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color-10);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    width: 100%;
+    aspect-ratio: 16/9;
+}
+
+/* 图片预览样式 */
+.image-preview {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-secondary);
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+}
+
+.image-preview canvas {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* 工具栏样式 */
+.toolbar {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 10;
+}
+
+.tool-buttons {
+    display: flex;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 4px;
+    border-radius: 20px;
+}
+
+.tool-btn, .delete-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.tool-btn svg, .delete-btn svg {
+    fill: white;
+}
+
+.tool-btn:hover, .delete-btn:hover {
+    background: var(--bg-color-80);
+}
+
+.tool-btn.active {
+    background: var(--primary-color);
+}
+
+.delete-btn {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+}
+
+/* 颜色展示区域样式 */
+.colors-section {
+    background: var(--bg-color-50);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color-10);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.colors-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 16px;
+}
+
+.color-card {
+    position: relative;
+    background: var(--bg-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.color-card:hover {
+    transform: translateY(-2px);
+}
+
+.color-preview {
+    height: 80px;
+}
+
+.color-info {
+    padding: 12px;
+    background: var(--bg-color);
+}
+
+.color-value {
+    font-family: monospace;
+    color: var(--text-secondary);
+}
+
+.color-delete {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.color-card:hover .color-delete {
+    opacity: 1;
+}
+
+.color-delete svg {
+    width: 12px;
+    height: 12px;
+    fill: white;
+}
+
+/* 设置面板样式 */
+.settings-panel {
+    background: var(--bg-color-50);
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color-10);
+    position: sticky;
+    top: 24px;
+}
+
+.form-group {
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.color-count-options,
+.color-sort-options,
+.color-format-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.count-option,
+.sort-option,
+.format-option {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-color);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    color:var(--text-color);
+}
+
+.count-option:hover,
+.sort-option:hover,
+.format-option:hover {
+    border-color: var(--primary-color);
+    background: var(--bg-secondary);
+}
+
+.count-option.active,
+.sort-option.active,
+.format-option.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.export-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* 提取设置样式 */
+.extract-settings {
+    background: var(--bg-color-50);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color-10);
+}
+
+.setting-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}

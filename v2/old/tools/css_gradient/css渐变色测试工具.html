@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS渐变测试页面</title>
+    <style>
+        .test-container {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .preview-box {
+            width: 300px;
+            height: 300px;
+            border: 1px solid #ccc;
+            margin: 20px auto;
+        }
+        
+        .control-panel {
+            margin: 20px;
+        }
+        
+        textarea {
+            width: 100%;
+            max-width: 500px;
+            height: 100px;
+            margin: 10px 0;
+        }
+        
+        button {
+            padding: 8px 16px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h2>CSS渐变测试</h2>
+        
+        <div class="preview-box" id="previewBox"></div>
+        
+        <div class="control-panel">
+            <p>粘贴CSS代码：</p>
+            <textarea id="cssInput" placeholder="在这里粘贴background-image的CSS代码..."></textarea>
+            <br>
+            <button onclick="applyGradient()">应用渐变</button>
+            <button onclick="resetGradient()">重置</button>
+        </div>
+    </div>
+
+    <script>
+        function applyGradient() {
+            const cssInput = document.getElementById('cssInput').value.trim();
+            const previewBox = document.getElementById('previewBox');
+            
+            try {
+                // 提取渐变部分
+                const gradientMatch = cssInput.match(/background-image:\s*(.+?)(?:;|\s*$)/);
+                if (gradientMatch && gradientMatch[1]) {
+                    previewBox.style.backgroundImage = gradientMatch[1];
+                } else if (cssInput.includes('gradient')) {
+                    // 如果直接粘贴的是渐变代码
+                    previewBox.style.backgroundImage = cssInput;
+                } else {
+                    alert('请输入有效的渐变CSS代码');
+                }
+            } catch (error) {
+                console.error('CSS解析错误:', error);
+                alert('CSS代码格式有误，请检查！');
+            }
+        }
+
+        function resetGradient() {
+            document.getElementById('cssInput').value = '';
+            document.getElementById('previewBox').style.backgroundImage = 'none';
+        }
+    </script>
+</body>
+</html>
+

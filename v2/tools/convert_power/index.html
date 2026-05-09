@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>功率换算 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="convert_power">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:260px">
+          <div class="u-col u-gap-4">
+            <div class="panel">
+              <h3 class="panel-title">国际单位</h3>
+              <div class="grid grid-2 u-gap-3">
+                <div class="field"><label class="field-label">千瓦 (kW)</label><div class="input-group"><span class="addon">kW</span><input class="input u-mono" type="text" data-unit="kilowatt" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">瓦 (W)</label><div class="input-group"><span class="addon">W</span><input class="input u-mono" type="text" data-unit="watt" autocomplete="off"></div></div>
+              </div>
+            </div>
+            <div class="panel">
+              <h3 class="panel-title">马力</h3>
+              <div class="grid grid-2 u-gap-3">
+                <div class="field"><label class="field-label">英制马力 (hp)</label><div class="input-group"><span class="addon">hp</span><input class="input u-mono" type="text" data-unit="horsepower" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">米制马力 (PS)</label><div class="input-group"><span class="addon">PS</span><input class="input u-mono" type="text" data-unit="metric_horsepower" autocomplete="off"></div></div>
+              </div>
+            </div>
+            <div class="panel">
+              <h3 class="panel-title">其他单位</h3>
+              <div class="grid grid-2 u-gap-3">
+                <div class="field"><label class="field-label">公斤·米/秒 (kgm/s)</label><div class="input-group"><span class="addon">kgm/s</span><input class="input u-mono" type="text" data-unit="kgms" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">千卡/秒 (kcal/s)</label><div class="input-group"><span class="addon">kcal/s</span><input class="input u-mono" type="text" data-unit="kcalps" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">英热单位/秒 (BTU/s)</label><div class="input-group"><span class="addon">BTU/s</span><input class="input u-mono" type="text" data-unit="btups" autocomplete="off"></div></div>
+                <div class="field"><label class="field-label">英尺·磅/秒 (ft·lb/s)</label><div class="input-group"><span class="addon">ft·lb/s</span><input class="input u-mono" type="text" data-unit="ftlbps" autocomplete="off"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <aside>
+            <div class="panel">
+              <h3 class="panel-title">快速输入</h3>
+              <label class="field-label">选择单位</label>
+              <select class="select u-mb-3" data-quick-unit>
+                <option value="kilowatt">千瓦 (kW)</option>
+                <option value="watt">瓦 (W)</option>
+                <option value="horsepower">英制马力 (hp)</option>
+                <option value="metric_horsepower">米制马力 (PS)</option>
+              </select>
+              <div class="opt-row">
+                <button class="btn is-sm" data-quick="1">1</button>
+                <button class="btn is-sm" data-quick="10">10</button>
+                <button class="btn is-sm" data-quick="100">100</button>
+                <button class="btn is-sm" data-quick="1000">1000</button>
+              </div>
+            </div>
+            <div class="panel">
+              <h3 class="panel-title">精度</h3>
+              <div class="range-row"><input type="range" min="2" max="10" value="6" data-precision><span class="val" data-precision-val>6 位</span></div>
+            </div>
+            <div class="panel">
+              <div class="act-group">
+                <button class="btn" type="button" data-action="copy-all"><i data-lucide="copy"></i> 复制全部</button>
+                <button class="btn is-ghost" type="button" data-action="reset">重置</button>
+              </div>
+            </div>
+            <div class="panel"><p class="hint">在任意输入框输入数值，其它单位自动换算。</p></div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

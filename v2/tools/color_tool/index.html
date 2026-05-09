@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>颜色工具箱 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="tool.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="color_tool">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <!-- Tabs（在 grid 外，让侧栏顶部与 tab 内容对齐） -->
+        <div class="tabs u-mb-4" role="tablist" data-tabs>
+          <button class="tab-btn is-active" data-tab="formats">格式 / 色阶</button>
+          <button class="tab-btn" data-tab="schemes">配色方案</button>
+          <button class="tab-btn" data-tab="contrast">对比度</button>
+          <button class="tab-btn" data-tab="export">变量导出</button>
+          <button class="tab-btn" data-tab="examples">颜色示例</button>
+        </div>
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:300px">
+          <!-- 左：主内容区 -->
+          <div>
+            <!-- 格式 + 色阶 -->
+            <div data-pane="formats">
+              <div class="panel">
+                <h3 class="panel-title">颜色格式</h3>
+                <div class="u-col u-gap-2" data-format-list></div>
+              </div>
+              <div class="panel">
+                <h3 class="panel-title">色阶</h3>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(48px,1fr));gap:6px" data-shades></div>
+              </div>
+            </div>
+
+            <!-- 配色方案 + 状态色 -->
+            <div data-pane="schemes" hidden>
+              <div class="panel">
+                <h3 class="panel-title">配色方案</h3>
+                <div class="u-col u-gap-3" data-schemes></div>
+              </div>
+              <div class="panel">
+                <h3 class="panel-title">状态色</h3>
+                <div class="u-col u-gap-2" data-semantic></div>
+              </div>
+            </div>
+
+            <!-- WCAG 对比度 + 和谐度 -->
+            <div data-pane="contrast" hidden>
+              <div class="panel">
+                <h3 class="panel-title">WCAG 对比度检测</h3>
+                <div class="grid grid-2 u-mb-3">
+                  <div class="ct-contrast" data-contrast="white">
+                    示例文字
+                    <small>白底 · <span data-cr="white">—</span> · <span data-wcag="white">—</span></small>
+                  </div>
+                  <div class="ct-contrast" data-contrast="black">
+                    示例文字
+                    <small>黑底 · <span data-cr="black">—</span> · <span data-wcag="black">—</span></small>
+                  </div>
+                </div>
+                <div class="u-col u-gap-2" data-contrast-detail></div>
+              </div>
+              <div class="panel">
+                <h3 class="panel-title">色彩和谐度</h3>
+                <div class="u-row u-gap-4" style="align-items:flex-start;flex-wrap:wrap">
+                  <div class="ct-score-ring" data-harmony-score>85<small>和谐度</small></div>
+                  <div style="flex:1;min-width:200px" class="u-col u-gap-3">
+                    <div>
+                      <div class="u-row u-between u-mb-1"><span class="u-muted" style="font-size:var(--text-sm)">色相平衡</span><span style="font-size:var(--text-sm)" data-score="hue">80%</span></div>
+                      <div class="ct-bar"><div class="ct-bar-fill" data-bar="hue" style="width:80%"></div></div>
+                    </div>
+                    <div>
+                      <div class="u-row u-between u-mb-1"><span class="u-muted" style="font-size:var(--text-sm)">饱和度协调</span><span style="font-size:var(--text-sm)" data-score="sat">90%</span></div>
+                      <div class="ct-bar"><div class="ct-bar-fill" data-bar="sat" style="width:90%"></div></div>
+                    </div>
+                    <div>
+                      <div class="u-row u-between u-mb-1"><span class="u-muted" style="font-size:var(--text-sm)">明度对比</span><span style="font-size:var(--text-sm)" data-score="lum">85%</span></div>
+                      <div class="ct-bar"><div class="ct-bar-fill" data-bar="lum" style="width:85%"></div></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="u-col u-gap-1 u-mt-3" style="font-size:var(--text-sm)" data-harmony-tips></div>
+              </div>
+            </div>
+
+            <!-- 变量导出 -->
+            <div data-pane="export" hidden>
+              <div class="panel">
+                <h3 class="panel-title">导出格式</h3>
+                <div class="opt-row u-mb-4">
+                  <button class="btn active" data-fmt="css">CSS</button>
+                  <button class="btn" data-fmt="scss">SCSS</button>
+                  <button class="btn" data-fmt="less">Less</button>
+                  <button class="btn" data-fmt="tailwind">Tailwind</button>
+                </div>
+                <div class="ct-export" data-export-code></div>
+                <div class="u-row u-gap-3 u-mt-3">
+                  <button class="btn" type="button" data-action="copy-export"><i data-lucide="copy"></i> 复制代码</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 颜色示例 -->
+            <div data-pane="examples" hidden>
+              <div class="ct-examples" data-examples></div>
+            </div>
+          </div>
+
+          <!-- 右：选色侧栏 -->
+          <aside>
+            <div class="panel">
+              <h3 class="panel-title">选色</h3>
+              <div class="u-row u-gap-3">
+                <input type="color" data-wheel value="#3b82f6" style="width:48px;height:40px;border:0;cursor:pointer;border-radius:var(--radius-md);flex-shrink:0">
+                <input class="input u-mono" data-color-input value="#3b82f6" placeholder="HEX / RGB / HSL" style="flex:1;min-width:0">
+              </div>
+              <div class="ct-swatch u-mt-3" data-swatch></div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">预设颜色</h3>
+              <div class="u-row u-gap-2" style="flex-wrap:wrap" data-presets></div>
+            </div>
+
+            <div class="panel">
+              <div class="act-group">
+                <button class="btn" type="button" data-action="copy-hex"><i data-lucide="copy"></i> 复制 HEX</button>
+                <button class="btn is-ghost" type="button" data-action="reset">重置</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

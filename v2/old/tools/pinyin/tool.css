@@ -1,0 +1,115 @@
+.conversion-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 20px;
+}
+
+.options-area {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.options-area h3 {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.input-group .title-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.input-group .title-area h2 {
+    margin: 0;
+}
+
+.input-group textarea {
+    flex: 1;
+    min-height: 300px;
+    height: 100%;
+}
+
+.result-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 16px;
+    min-height: 300px;
+    height: 100%;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow-y: auto;
+}
+
+.result-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg-color-50);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.hanzi {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.pinyin {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-secondary);
+}
+
+.copy-feedback {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--success-color);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(20px); }
+    20% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-20px); }
+}
+
+@keyframes toastSlideDown {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}

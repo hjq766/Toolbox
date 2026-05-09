@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>二维码生成 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <style>
+    .qr-canvas-wrap{display:flex;align-items:center;justify-content:center;min-height:280px;padding:var(--space-4)}
+    .qr-canvas-wrap canvas{border-radius:var(--radius-md);image-rendering:pixelated}
+    .qr-canvas-wrap .qr-placeholder{color:var(--fg-muted);font-size:var(--text-sm)}
+    .style-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-2)}
+    .style-grid .btn.active{background:var(--color-brand);color:#fff;border-color:var(--color-brand)}
+  </style>
+  <script src="../../public/vendor/qrcode.min.js" defer></script>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="qrcode">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:340px">
+          <!-- 左：输入 + 预览 -->
+          <div class="u-col u-gap-3">
+            <div class="panel">
+              <h3 class="panel-title">内容</h3>
+              <div class="tabs u-mb-3" data-type-tabs>
+                <button class="tab-btn is-active" type="button" data-type="text">文本/链接</button>
+                <button class="tab-btn" type="button" data-type="wifi">Wi-Fi</button>
+                <button class="tab-btn" type="button" data-type="email">邮件</button>
+                <button class="tab-btn" type="button" data-type="contact">名片</button>
+              </div>
+              <div data-pane="text">
+                <textarea class="textarea u-mono" data-content rows="3" placeholder="输入文本或链接…"></textarea>
+              </div>
+              <div data-pane="wifi" hidden>
+                <div class="grid grid-3 u-gap-2">
+                  <div class="field"><label class="field-label">网络名称</label><input class="input" data-wifi-ssid placeholder="SSID"></div>
+                  <div class="field"><label class="field-label">密码</label><input class="input" data-wifi-pwd placeholder="密码" type="password"></div>
+                  <div class="field"><label class="field-label">加密</label><select class="select" data-wifi-enc><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">无密码</option></select></div>
+                </div>
+              </div>
+              <div data-pane="email" hidden>
+                <div class="grid grid-2 u-gap-2 u-mb-2">
+                  <div class="field"><label class="field-label">收件人</label><input class="input" data-email-to placeholder="收件人邮箱"></div>
+                  <div class="field"><label class="field-label">主题</label><input class="input" data-email-sub placeholder="邮件主题"></div>
+                </div>
+                <div class="field"><label class="field-label">正文</label><textarea class="textarea" data-email-body rows="2" placeholder="邮件正文"></textarea></div>
+              </div>
+              <div data-pane="contact" hidden>
+                <div class="grid grid-3 u-gap-2 u-mb-2">
+                  <div class="field"><label class="field-label">姓名</label><input class="input" data-ct-name placeholder="姓名"></div>
+                  <div class="field"><label class="field-label">电话</label><input class="input" data-ct-phone placeholder="电话"></div>
+                  <div class="field"><label class="field-label">邮箱</label><input class="input" data-ct-email placeholder="邮箱"></div>
+                </div>
+                <div class="grid grid-2 u-gap-2">
+                  <div class="field"><label class="field-label">公司</label><input class="input" data-ct-org placeholder="公司"></div>
+                  <div class="field"><label class="field-label">地址</label><input class="input" data-ct-addr placeholder="地址"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="qr-canvas-wrap" data-qr-output>
+                <span class="qr-placeholder">输入内容后自动生成</span>
+              </div>
+              <div class="u-row u-gap-2 u-mt-3" style="justify-content:center">
+                <button class="btn is-primary" type="button" data-action="download-png"><i data-lucide="download"></i> PNG</button>
+                <button class="btn" type="button" data-action="download-svg"><i data-lucide="file-code"></i> SVG</button>
+                <button class="btn is-ghost" type="button" data-action="reset"><i data-lucide="refresh-cw"></i> 重置</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右：样式设置 -->
+          <aside>
+            <div class="panel">
+              <h3 class="panel-title">样式</h3>
+              <div class="field u-mb-2"><label class="field-label">码点形状</label>
+                <div class="style-grid" data-dot-style>
+                  <button class="btn is-sm active" type="button" data-val="square">方形</button>
+                  <button class="btn is-sm" type="button" data-val="round">圆点</button>
+                  <button class="btn is-sm" type="button" data-val="diamond">菱形</button>
+                  <button class="btn is-sm" type="button" data-val="star">星形</button>
+                </div>
+              </div>
+              <div class="grid grid-2 u-gap-2">
+                <div class="field"><label class="field-label">尺寸 (px)</label><input class="input" type="number" data-opt="size" value="400" min="100" max="2048" step="50"></div>
+                <div class="field"><label class="field-label">边距</label><input class="input" type="number" data-opt="margin" value="2" min="0" max="10"></div>
+                <div class="field"><label class="field-label">前景色</label><input class="input" type="color" data-opt="fg" value="#000000"></div>
+                <div class="field"><label class="field-label">背景色</label><input class="input" type="color" data-opt="bg" value="#ffffff"></div>
+              </div>
+              <div class="field u-mt-2"><label class="field-label">容错等级</label>
+                <div class="style-grid" data-ec>
+                  <button class="btn is-sm" type="button" data-val="L">L 7%</button>
+                  <button class="btn is-sm" type="button" data-val="M">M 15%</button>
+                  <button class="btn is-sm" type="button" data-val="Q">Q 25%</button>
+                  <button class="btn is-sm active" type="button" data-val="H">H 30%</button>
+                </div>
+              </div>
+              <div class="field u-mt-2"><label class="field-label">码点缩放</label>
+                <div class="range-row">
+                  <input type="range" data-opt="dotScale" min="0.3" max="1" value="0.85" step="0.05">
+                  <span class="val" data-range-val="dotScale">0.85</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">Logo</h3>
+              <div class="u-row u-gap-2 u-mb-2">
+                <button class="btn is-sm" type="button" data-action="pick-logo"><i data-lucide="image"></i> 选择图片</button>
+                <button class="btn is-sm is-ghost" type="button" data-action="remove-logo">移除</button>
+                <input type="file" accept="image/*" hidden data-logo-file>
+              </div>
+              <div class="field"><label class="field-label">Logo 大小 (%)</label>
+                <div class="range-row">
+                  <input type="range" data-opt="logoRatio" min="10" max="30" value="20" step="1">
+                  <span class="val" data-range-val="logoRatio">20%</span>
+                </div>
+              </div>
+              <p class="hint">建议使用正方形图片，容错等级 H</p>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

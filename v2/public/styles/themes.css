@@ -1,0 +1,22 @@
+/* 主题初始化背景(与 tokens 配合) */
+html, body { background: var(--bg-page); color: var(--fg-base); }
+
+/* 可选装饰背景：柔和光斑，perf low 下自动取消 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, hsl(var(--brand-h) 80% 70% / 0.15), transparent 60%),
+    radial-gradient(900px 500px at 110% 10%, hsl(200 90% 60% / 0.10), transparent 60%);
+}
+[data-theme="dark"] body::before {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, hsl(var(--brand-h) 80% 50% / 0.22), transparent 60%),
+    radial-gradient(900px 500px at 110% 10%, hsl(200 70% 40% / 0.18), transparent 60%);
+}
+[data-performance="low"] body::before { display: none; }
+
+::selection { background: var(--color-brand); color: var(--fg-invert); }

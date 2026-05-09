@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>摩尔斯电码 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <script src="../../public/vendor/pinyin_dict.js" defer></script>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="text_morse">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="panel">
+          <div class="grid grid-2">
+            <div class="field">
+              <div class="u-row u-between">
+                <label class="field-label" for="text">文本</label>
+                <div class="u-row u-gap-2">
+                  <button class="btn is-sm is-ghost" type="button" data-action="paste-text">粘贴</button>
+                  <button class="btn is-sm is-ghost" type="button" data-action="clear-text">清空</button>
+                </div>
+              </div>
+              <textarea class="textarea" id="text" data-input="text" placeholder="输入中英文字母、数字、常用标点..." style="min-height:220px"></textarea>
+            </div>
+            <div class="field">
+              <div class="u-row u-between">
+                <label class="field-label" for="morse">摩尔斯电码</label>
+                <div class="u-row u-gap-2">
+                  <button class="btn is-sm is-ghost" type="button" data-action="copy-morse">复制</button>
+                  <button class="btn is-sm is-ghost" type="button" data-action="clear-morse">清空</button>
+                </div>
+              </div>
+              <textarea class="textarea u-mono" id="morse" data-input="morse" placeholder=".... . .-.. .-.. ---" style="min-height:220px"></textarea>
+            </div>
+          </div>
+
+          <div class="u-row u-gap-3 u-mt-4">
+            <button class="btn is-primary" type="button" data-action="to-morse">文本 → 摩尔斯 ↓</button>
+            <button class="btn is-primary" type="button" data-action="to-text">摩尔斯 → 文本 ↑</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3 class="panel-title">规则说明</h3>
+          <p class="panel-sub" style="margin-bottom:var(--space-2)">
+            <code>.</code> 表示点，<code>-</code> 表示划；字符之间用空格分隔；单词之间用 <code>/</code> 分隔。
+          </p>
+          <p class="panel-sub" style="margin:0">
+            中文字符会先转为拼音（去声调）再编码：<span class="u-mono">你好 → ni hao → -. .. / .... .- --- /</span>。
+            由于拼音不可逆，<b>摩尔斯反向转文本时中文只会还原成拼音</b>。
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

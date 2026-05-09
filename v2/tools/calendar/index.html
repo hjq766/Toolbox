@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日历查询 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <script src="./calendar.js"></script>
+  <style>
+    /* ---- 月历网格 ---- */
+    .cal { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; text-align: center; font-size: var(--text-sm); }
+    .cal b { font-weight: 600; padding: 6px 0; color: var(--fg-muted); }
+    .cal i { font-style: normal; padding: 6px 2px; border-radius: var(--radius-sm); cursor: pointer; line-height: 1.3; }
+    .cal i:hover { background: var(--bg-surface-2); }
+    .cal i.today { background: var(--color-brand); color: #fff; border-radius: var(--radius-md); }
+    .cal i.sel { outline: 2px solid var(--color-brand); outline-offset: -2px; border-radius: var(--radius-md); }
+    .cal i small { display: block; font-size: 10px; color: var(--fg-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .cal i .f { color: var(--color-danger); }
+    .cal i .fm { color: var(--fg-muted); }
+    .cal i.today small { color: rgba(255,255,255,.8); }
+    .cal i.today .f { color: #fca5a5; }
+    /* ---- 自定义选择器 ---- */
+    .pk { position: relative; flex: 1; }
+    .pk-trigger {
+      display: flex; align-items: center; justify-content: center; gap: var(--space-2);
+      width: 100%; padding: 8px 12px; font-size: var(--text-sm); font-weight: 500;
+      background: var(--bg-surface); border: 1px solid var(--border-base);
+      border-radius: var(--radius-md); cursor: pointer; color: var(--fg-strong);
+      transition: border-color .15s;
+    }
+    .pk-trigger:hover, .pk-trigger.open { border-color: var(--color-brand); }
+    .pk-trigger::after { content: '▾'; font-size: 10px; color: var(--fg-muted); }
+    .pk-drop {
+      position: absolute; top: calc(100% + 4px); left: 50%; transform: translateX(-50%);
+      z-index: 20; background: var(--bg-surface); border: 1px solid var(--border-base);
+      border-radius: var(--radius-md); padding: var(--space-2);
+      box-shadow: 0 8px 24px rgba(0,0,0,.12); max-height: 240px; overflow-y: auto;
+      min-width: max-content; display: none;
+    }
+    .pk-drop.show { display: block; }
+    .pk-grid { display: grid; gap: 2px; }
+    .pk-grid.cols-4 { grid-template-columns: repeat(4,1fr); }
+    .pk-grid.cols-5 { grid-template-columns: repeat(5,1fr); }
+    .pk-grid.cols-7 { grid-template-columns: repeat(7,1fr); }
+    .pk-grid span {
+      display: flex; align-items: center; justify-content: center;
+      padding: 6px 8px; border-radius: var(--radius-sm); cursor: pointer;
+      font-size: var(--text-sm); white-space: nowrap; transition: background .1s;
+    }
+    .pk-grid span:hover { background: var(--bg-surface-2); }
+    .pk-grid span.on { background: var(--color-brand); color: #fff; }
+    .pk-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-2); }
+    .pk-nav button { background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-sm); color: var(--fg-strong); font-size: var(--text-sm); }
+    .pk-nav button:hover { background: var(--bg-surface-2); }
+    .pk-nav strong { font-size: var(--text-sm); }
+  </style>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="calendar">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <!-- 月历 -->
+        <div class="panel">
+          <div class="u-row u-mb-3">
+            <div class="u-row u-gap-2">
+              <button class="btn is-ghost is-sm" data-nav="py" title="上一年">«</button>
+              <button class="btn is-ghost is-sm" data-nav="pm" title="上月">‹</button>
+              <strong data-title></strong>
+              <button class="btn is-ghost is-sm" data-nav="nm" title="下月">›</button>
+              <button class="btn is-ghost is-sm" data-nav="ny" title="下一年">»</button>
+            </div>
+            <button class="btn is-ghost is-sm" data-nav="today">回到今天</button>
+          </div>
+          <div class="cal"><b>日</b><b>一</b><b>二</b><b>三</b><b>四</b><b>五</b><b>六</b></div>
+          <div class="cal" data-body></div>
+        </div>
+
+        <!-- 详情 + 转换 -->
+        <div class="grid grid-2">
+          <div class="panel" data-detail>
+            <h3 class="panel-title">选中日期详情</h3>
+            <div class="field-hint">点击日历中的日期查看详情</div>
+          </div>
+          <div class="panel">
+            <div class="tabs" role="tablist" data-conv-tabs>
+              <button class="tab-btn is-active" type="button" data-tab="s2l">公历 → 农历</button>
+              <button class="tab-btn" type="button" data-tab="l2s">农历 → 公历</button>
+            </div>
+
+            <div class="u-mt-4" data-pane-s2l>
+              <div class="u-row u-gap-2">
+                <div class="pk" data-pk="s2l-y"></div>
+                <div class="pk" data-pk="s2l-m"></div>
+                <div class="pk" data-pk="s2l-d"></div>
+                <button class="btn is-primary" data-action="s2l">转换</button>
+              </div>
+            </div>
+
+            <div class="u-row u-gap-2 u-mt-4" data-pane-l2s hidden>
+              <div class="pk" data-pk="l2s-y"></div>
+              <div class="pk" data-pk="l2s-m"></div>
+              <div class="pk" data-pk="l2s-d"></div>
+              <button class="btn is-primary" data-action="l2s">转换</button>
+            </div>
+
+            <div data-conv-result class="u-mt-3"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

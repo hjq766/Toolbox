@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML 转 Markdown · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <script src="../../public/vendor/turndown.js" defer></script>
+  <script src="../../public/vendor/marked.min.js" defer></script>
+  <script src="../../public/vendor/purify.min.js" defer></script>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="html_markdown">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="panel">
+          <div class="grid grid-2" style="grid-template-rows:auto 1fr">
+            <!-- 行 1：标签（同一 grid 行，自动等高） -->
+            <div class="u-row" style="align-items:center">
+              <label class="field-label" style="margin:0">HTML 源码</label>
+            </div>
+            <div class="u-row u-between" style="align-items:center">
+              <label class="field-label" style="margin:0">输出</label>
+              <div class="tabs" data-view-tabs>
+                <button class="tab-btn is-active" type="button" data-view="code">Markdown 代码</button>
+                <button class="tab-btn" type="button" data-view="preview">渲染预览</button>
+              </div>
+            </div>
+            <!-- 行 2：编辑器（同一 grid 行，顶部完全对齐） -->
+            <div class="cm-embed">
+              <textarea class="textarea u-mono" data-input="src" style="min-height:420px"
+                placeholder="<h1>Hello</h1>&#10;<p><strong>bold</strong> <em>italic</em></p>"></textarea>
+            </div>
+            <div>
+              <div data-pane="code" class="cm-embed">
+                <textarea class="textarea u-mono" data-output readonly style="min-height:420px"></textarea>
+              </div>
+              <div data-pane="preview" hidden style="min-height:420px;max-height:65vh;padding:var(--space-3);border:1px solid var(--border-base);border-radius:var(--radius-md);overflow:auto;line-height:1.7;font-size:var(--text-sm)"></div>
+            </div>
+          </div>
+          <div class="u-row u-gap-3 u-mt-4">
+            <button class="btn is-primary" type="button" data-action="copy"><i data-lucide="copy"></i> 复制 Markdown</button>
+            <button class="btn" type="button" data-action="download"><i data-lucide="download"></i> 导出 .md</button>
+            <button class="btn is-ghost" type="button" data-action="clear">清空</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

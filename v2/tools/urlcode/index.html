@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL 编码 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="urlcode">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+        <div class="panel">
+          <div class="u-row u-between u-mb-4">
+            <div class="tabs" data-mode-nav>
+              <button class="tab-btn is-active" data-mode="component">Component 模式</button>
+              <button class="tab-btn" data-mode="full">完整 URL 模式</button>
+            </div>
+            <label class="checkbox"><input type="checkbox" data-auto checked> 实时同步</label>
+          </div>
+          <div class="grid grid-2">
+            <div class="field">
+              <label class="field-label">原文 / 已解码</label>
+              <textarea class="textarea" data-raw placeholder="在此输入要编码的文本或 URL"></textarea>
+            </div>
+            <div class="field">
+              <label class="field-label">编码结果</label>
+              <textarea class="textarea" data-encoded placeholder="编码后内容"></textarea>
+            </div>
+          </div>
+          <div class="u-row u-gap-3 u-mt-4">
+            <button class="btn is-primary" data-encode>编码 →</button>
+            <button class="btn" data-decode>← 解码</button>
+            <button class="btn is-ghost" data-swap>⇅ 交换</button>
+            <button class="btn is-ghost" data-clear>清空</button>
+            <button class="btn" data-copy-encoded>复制编码结果</button>
+          </div>
+          <p class="field-hint u-mt-4">
+            Component 模式：使用 <code>encodeURIComponent</code>，用于参数值；
+            完整 URL 模式：使用 <code>encodeURI</code>，保留保留字符。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

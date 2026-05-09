@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid 网格布局预览工具 - 在线工具箱</title>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="tool.css?=2025090601">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <main class="main">
+            <section class="tool-page-hero">
+                <div class="container">
+                    <h1>Grid 网格布局生成器</h1>
+                    <p>可视化调整和预览网格布局效果，支持智能布局推荐和实时预览</p>
+                </div>
+            </section>
+
+            <div class="tool-container">
+                <div class="tool-main">
+                    <!-- 左侧：设置面板 -->
+                    <div class="control-panel">
+                        <!-- Tab 导航 -->
+                        <div class="tab-navigation">
+                            <button class="tab-btn active" data-view="recommend">
+                                栅格系统
+                            </button>
+                            <button class="tab-btn" data-view="manual">
+                                网格类型
+                            </button>
+                        </div>
+
+                        <!-- 基础参数 -->
+                        <div class="panel-section" style="border-radius: 0px 0px 12px 12px;">
+                            <div class="section-header">
+                                <h3>基础参数</h3>
+                            </div>
+                            <div class="form-group">
+                                <label>容器宽度</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="containerWidth" value="1440" min="300" max="3000">
+                                    <span class="unit">px</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>列数</label>
+                                <!-- 快捷列数选择 -->
+                                <div class="col-quick-select">
+                                    <button class="col-quick-btn" data-cols="4">4</button>
+                                    <button class="col-quick-btn" data-cols="6">6</button>
+                                    <button class="col-quick-btn" data-cols="8">8</button>
+                                    <button class="col-quick-btn active" data-cols="12">12</button>
+                                    <button class="col-quick-btn" data-cols="16">16</button>
+                                    <button class="col-quick-btn" data-cols="24">24</button>
+                                </div>
+                                <!-- 精确调整 -->
+                                <div class="input-with-buttons">
+                                    自定义：
+                                    <button class="btn btn-icon" data-action="decrease-cols">-</button>
+                                    <input type="number" id="desiredCols" value="12" min="1" max="36">
+                                    <button class="btn btn-icon" data-action="increase-cols">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 智能布局推荐 -->
+                        <div class="panel-section" id="recommendSection">
+                            <div class="section-header">
+                                <h3>布局偏好</h3>
+                            </div>
+
+                            <!-- 边距偏好 -->
+                            <div class="form-group">
+                                <label>边距偏好</label>
+                                <div class="margin-preference">
+                                    <div class="margin-options">
+                                        <button class="margin-option" data-margin="0">
+                                            <div class="margin-preview no-margin"></div>
+                                            <span>无边距</span>
+                                            <small>满屏布局</small>
+                                        </button>
+                                        <button class="margin-option active" data-margin="auto">
+                                            <div class="margin-preview with-margin"></div>
+                                            <span>有边距</span>
+                                            <small>居中布局</small>
+                                        </button>
+                                        <button class="margin-option" data-margin="custom">
+                                            <div class="margin-preview custom-margin"></div>
+                                            <span>自定义</span>
+                                            <small>精确控制</small>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 间距风格 -->
+                            <div class="form-group">
+                                <label>间距风格</label>
+                                <div class="spacing-style">
+                                    <div class="style-options">
+                                        <button class="style-option" data-style="compact">
+                                            <span class="style-name">紧凑</span>
+                                            <span class="style-range">8-12px</span>
+                                        </button>
+                                        <button class="style-option active" data-style="balanced">
+                                            <span class="style-name">均衡</span>
+                                            <span class="style-range">16-24px</span>
+                                        </button>
+                                        <button class="style-option" data-style="spacious">
+                                            <span class="style-name">宽松</span>
+                                            <span class="style-range">28-32px</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 自定义参数 -->
+                            <div class="form-group" id="customOptions" style="display: none;">
+                                <div class="custom-inputs">
+                                    <div class="form-group">
+                                        <label>列间距</label>
+                                        <div class="input-with-unit">
+                                            <input type="number" id="customGap" value="16" min="0" max="100">
+                                            <span class="unit">px</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>左右边距</label>
+                                        <div class="input-with-unit">
+                                            <input type="number" id="customSideMargin" value="0" min="0" max="100">
+                                            <span class="unit">px</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" id="generatePlans">生成布局方案</button>
+                        </div>
+
+                        <!-- 网格类型设置 -->
+                        <div class="panel-section" id="manualSection" style="display: none;">
+                            <div class="section-header">
+                                <h3>精细调整</h3>
+                            </div>
+                            <!-- 第一行：行数 + 左右边距 -->
+                            <div class="grid-inputs">
+                                <div class="form-group">
+                                    <label>行数</label>
+                                    <div class="input-with-buttons">
+                                        <button class="btn btn-icon" data-action="decrease-rows">-</button>
+                                        <input type="number" id="rowCount" min="1" max="36" value="1">
+                                        <button class="btn btn-icon" data-action="increase-rows">+</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>左右边距</label>
+                                    <div class="input-with-buttons">
+                                        <button class="btn btn-icon" data-action="decrease-margin">-</button>
+                                        <input type="number" id="gridSideMargin" min="0" max="100" value="16">
+                                        <button class="btn btn-icon" data-action="increase-margin">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 第二行：列间距 + 行间距 -->
+                            <div class="grid-inputs">
+                                <div class="form-group">
+                                    <label>列间距</label>
+                                    <div class="input-with-buttons">
+                                        <button class="btn btn-icon" data-action="decrease-col-gap">-</button>
+                                        <input type="number" id="colGap" min="0" max="50" value="20">
+                                        <button class="btn btn-icon" data-action="increase-col-gap">+</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>行间距</label>
+                                    <div class="input-with-buttons">
+                                        <button class="btn btn-icon" data-action="decrease-row-gap">-</button>
+                                        <input type="number" id="rowGap" min="0" max="50" value="20">
+                                        <button class="btn btn-icon" data-action="increase-row-gap">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <!-- 导出操作 -->
+                        <div class="panel-section" id="exportSection" style="display: none;">
+                            <div class="export-actions">
+                                <button class="btn btn-primary" id="exportImage">
+                                    导出当前预览图
+                                </button>
+                                <button class="btn" id="copyCSS">
+                                    复制CSS代码
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 注释掉单元格设置部分
+                        <div class="panel-section">
+                            <h3>单元格设置</h3>
+                            <div class="hint-text">
+                                <span class="iconify" data-icon="tabler:click"></span>
+                                点击网格中的单元格进行设置
+                            </div>
+                            <div class="grid-inputs">
+                                <div class="form-group">
+                                    <label>列跨度</label>
+                                    <div class="input-with-buttons">
+                                        <button class="btn btn-icon" data-action="decrease-col-span">-</button>
+                                        <input type="number" id="colSpan" min="1" max="12" value="1">
+                                        <button class="btn btn-icon" data-action="increase-col-span">+</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>行跨度</label>
+                                    <div class="input-with-buttons">
+                                        <button class="btn btn-icon" data-action="decrease-row-span">-</button>
+                                        <input type="number" id="rowSpan" min="1" max="12" value="1">
+                                        <button class="btn btn-icon" data-action="increase-row-span">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+
+                        <!-- 导出设置 -->
+
+                    </div>
+
+                    <!-- 右侧：预览区域 -->
+                    <div class="preview-panel">
+                        <!-- 统一预览区域 -->
+                        <div class="preview-content">
+                            <!-- 智能推荐视图 -->
+                            <div class="recommend-view" id="recommendView">
+                                <div class="recommend-header">
+                                    <h3>推荐布局方案</h3>
+                                    <p>根据您的设置，为您推荐以下网格布局方案</p>
+                                </div>
+                                <div class="recommend-grid" id="planList">
+                                    <!-- 方案将通过JS动态生成 -->
+                                </div>
+                            </div>
+
+                            <!-- 手动调整视图 -->
+                            <div class="manual-view" id="manualView" style="display: none;">
+                                <div class="grid-preview-wrapper">
+                                    <div class="grid-preview-header">
+                                        <h3>网格预览</h3>
+                                        <div class="preview-info">
+                                            <span id="currentContainerInfo">1440px 容器</span>
+                                        </div>
+                                    </div>
+                                    <div class="grid-container" id="gridPreview"></div>
+                                    <div class="grid-info">
+                                        <div class="grid-info-item">
+                                            <span class="info-label">容器宽度</span>
+                                            <span class="info-value" id="previewContainerWidth">1440px</span>
+                                        </div>
+                                        <div class="grid-info-item">
+                                            <span class="info-label">列数</span>
+                                            <span class="info-value" id="previewColCount">12列</span>
+                                        </div>
+                                        <div class="grid-info-item">
+                                            <span class="info-label">列宽</span>
+                                            <span class="info-value" id="previewColWidth">0px</span>
+                                        </div>
+                                        <div class="grid-info-item">
+                                            <span class="info-label">列间距</span>
+                                            <span class="info-value" id="previewColGap">20px</span>
+                                        </div>
+                                        <div class="grid-info-item">
+                                            <span class="info-label">行间距</span>
+                                            <span class="info-value" id="previewRowGap">20px</span>
+                                        </div>
+                                        <div class="grid-info-item">
+                                            <span class="info-label">左右边距</span>
+                                            <span class="info-value" id="previewSideMargin">16px</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-info">
+                    <h2>功能介绍</h2>
+                    <p>Grid 网格布局生成器是一个专业的网格系统设计工具，提供栅格系统和网格类型两种模式，满足不同的布局设计需求。</p>
+
+                    <h3>核心模式</h3>
+                    <ul>
+                        <li><strong>栅格系统模式</strong> - 基于成熟栅格框架的智能布局推荐</li>
+                        <li><strong>网格类型模式</strong> - 自定义网格参数的精细化编辑器</li>
+                    </ul>
+
+                    <h3>栅格系统功能</h3>
+                    <ul>
+                        <li>边距偏好选择：无边距满屏布局 / 有边距居中布局</li>
+                        <li>间距风格选择：紧凑、均衡、宽松三种预设风格</li>
+                        <li>高级自定义：精确控制列间距和左右边距参数</li>
+                        <li>智能方案生成：根据偏好自动生成多个优化方案</li>
+                        <li>一键导出：点击应用方案直接导出布局预览图</li>
+                    </ul>
+
+                    <h3>网格类型功能</h3>
+                    <ul>
+                        <li>列数快捷选择：4/6/8/12/16/24列常用预设 + 精确调整</li>
+                        <li>精细参数控制：行数、列间距、行间距、左右边距</li>
+                        <li>实时预览：参数调整时立即显示网格效果</li>
+                        <li>完整信息显示：容器宽度、列宽、间距等详细数据</li>
+                    </ul>
+
+                    <h3>使用场景</h3>
+                    <ul>
+                        <li><strong>前端开发</strong> - 快速生成响应式网格布局CSS代码</li>
+                        <li><strong>UI设计</strong> - 设计稿网格系统规范制定和验证</li>
+                        <li><strong>产品设计</strong> - 页面布局方案的可视化对比和选择</li>
+                        <li><strong>团队协作</strong> - 统一的网格规范文档和预览图输出</li>
+                    </ul>
+
+                    <h3>快速上手</h3>
+                    <ul>
+                        <li><strong>栅格系统</strong>：设置容器宽度和列数 → 选择边距偏好 → 选择间距风格 → 生成方案 → 应用导出</li>
+                        <li><strong>网格类型</strong>：选择列数预设 → 调整行数和间距参数 → 实时预览效果 → 导出图片或复制CSS</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 先加载第三方库 -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <!-- 然后加载我们的脚本 -->
+    <script src="../../public/main.js"></script>
+    <script src="../../public/dock.js"></script>
+    <script src="tool.js?=2025090601"></script>
+</body>
+
+</html>

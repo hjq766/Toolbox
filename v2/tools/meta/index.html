@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meta 生成器 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <style>
+    .meta-output{display:flex;flex-direction:column;min-height:520px}
+    .meta-output .CodeMirror{flex:1}
+    .meta-output textarea{flex:1;resize:none}
+  </style>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="meta">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:300px">
+          <!-- 左：实时代码输出 -->
+          <div class="meta-output">
+            <textarea class="textarea u-mono" data-result readonly placeholder="填写右侧字段，代码实时生成…" style="font-size:var(--text-sm)"></textarea>
+          </div>
+
+          <!-- 右：侧栏 -->
+          <aside>
+            <div class="panel">
+              <h3 class="panel-title">基础信息</h3>
+              <div class="u-col u-gap-3">
+                <div class="field">
+                  <label class="field-label" for="m-title">Title 网页标题</label>
+                  <input class="input" id="m-title" data-field="title" placeholder="10–30 个字符最佳" autocomplete="off">
+                </div>
+                <div class="field">
+                  <label class="field-label" for="m-desc">Description 描述</label>
+                  <textarea class="textarea" id="m-desc" data-field="description" placeholder="建议 200 字符内" style="min-height:68px"></textarea>
+                </div>
+                <div class="field">
+                  <label class="field-label" for="m-keywords">Keywords 关键词</label>
+                  <input class="input" id="m-keywords" data-field="keywords" placeholder="逗号分隔" autocomplete="off">
+                </div>
+                <div class="field">
+                  <label class="field-label" for="m-author">Author 作者</label>
+                  <input class="input" id="m-author" data-field="author" placeholder="可留空" autocomplete="off">
+                </div>
+                <div class="field">
+                  <label class="field-label" for="m-copyright">Copyright 版权</label>
+                  <input class="input" id="m-copyright" data-field="copyright" placeholder="可留空" autocomplete="off">
+                </div>
+                <div class="field">
+                  <label class="field-label" for="m-language">Language 语言</label>
+                  <input class="input" id="m-language" data-field="language" value="zh-CN" autocomplete="off">
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">搜索引擎 / 适配</h3>
+              <div class="u-col u-gap-3">
+                <div class="field">
+                  <label class="field-label" for="m-robots">Robots</label>
+                  <select class="select" id="m-robots" data-field="robots">
+                    <option value="">默认（不输出）</option>
+                    <option value="index,follow">index,follow</option>
+                    <option value="noindex,nofollow">noindex,nofollow</option>
+                    <option value="index">index</option>
+                    <option value="noindex">noindex</option>
+                    <option value="follow">follow</option>
+                    <option value="nofollow">nofollow</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label class="field-label" for="m-viewport">Viewport</label>
+                  <select class="select" id="m-viewport" data-field="viewport">
+                    <option value="responsive">PC + 移动自适应</option>
+                    <option value="mobile">仅移动端</option>
+                    <option value="none">不输出</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="act-group">
+                <button class="btn is-primary" type="button" data-action="copy"><i data-lucide="copy"></i> 复制代码</button>
+                <button class="btn is-ghost" type="button" data-action="reset">重置</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

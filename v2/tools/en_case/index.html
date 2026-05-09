@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大小写转换 · jqnest 工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="en_case">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="panel">
+          <div class="grid grid-2">
+            <div class="field">
+              <div class="u-row u-between">
+                <label class="field-label" for="src">输入</label>
+                <span class="u-muted" style="font-size:var(--text-xs)" data-char-count>0 字符</span>
+              </div>
+              <textarea class="textarea" id="src" data-input="src" placeholder="粘贴文本，或拖拽 .txt 文件到此处..." style="min-height:220px"></textarea>
+            </div>
+            <div class="field">
+              <div class="u-row u-between">
+                <label class="field-label" for="out">结果</label>
+                <span class="u-muted" style="font-size:var(--text-xs)" data-mode-label></span>
+              </div>
+              <textarea class="textarea" id="out" data-output readonly placeholder="选择下方转换类型后在此显示结果..." style="min-height:220px"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="u-row u-gap-3 u-mb-4">
+            <div class="tabs" role="tablist">
+              <button class="tab-btn is-active" type="button" data-tab="case">大小写</button>
+              <button class="tab-btn" type="button" data-tab="format">格式转换</button>
+            </div>
+          </div>
+
+          <div data-tab-pane="case" class="btn-group">
+            <button class="btn" type="button" data-op="uppercase">全大写  <span class="u-muted" style="margin-left:6px;font-size:var(--text-xs)">⌘U</span></button>
+            <button class="btn" type="button" data-op="lowercase">全小写  <span class="u-muted" style="margin-left:6px;font-size:var(--text-xs)">⌘L</span></button>
+            <button class="btn" type="button" data-op="capitalize">单词首字母</button>
+            <button class="btn" type="button" data-op="sentenceCase">句首字母</button>
+            <button class="btn" type="button" data-op="lineFirstUpper">行首字母</button>
+            <button class="btn" type="button" data-op="camelCase">camelCase</button>
+            <button class="btn" type="button" data-op="pascalCase">PascalCase</button>
+            <button class="btn" type="button" data-op="snakeCase">snake_case</button>
+            <button class="btn" type="button" data-op="kebabCase">kebab-case</button>
+            <button class="btn" type="button" data-op="constantCase">CONSTANT_CASE</button>
+          </div>
+
+          <div data-tab-pane="format" class="btn-group" hidden>
+            <button class="btn" type="button" data-op="spaceToUnderscore">空格 → 下划线</button>
+            <button class="btn" type="button" data-op="underscoreToSpace">下划线 → 空格</button>
+            <button class="btn" type="button" data-op="underscoreToDash">下划线 → 中横线</button>
+            <button class="btn" type="button" data-op="dashToUnderscore">中横线 → 下划线</button>
+            <button class="btn" type="button" data-op="spaceToDash">空格 → 中横线</button>
+            <button class="btn" type="button" data-op="dashToSpace">中横线 → 空格</button>
+          </div>
+
+          <div class="u-row u-gap-3 u-mt-6">
+            <button class="btn is-primary" type="button" data-action="copy">复制结果</button>
+            <button class="btn is-ghost" type="button" data-action="clear">清空</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

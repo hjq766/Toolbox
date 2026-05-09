@@ -1,0 +1,303 @@
+/* 采用与 convert_scale 相同的基础布局样式 */
+.tool-main {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 计算器区域 */
+.calculator-section {
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color-10);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+}
+
+/* 尺寸输入 */
+.size-inputs {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.input-section {
+    flex: 1;
+    max-width: 320px;
+}
+
+.input-section label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.size-input {
+    position: relative;
+}
+
+.size-input input {
+    width: 100%;
+    height: 56px;
+    padding: 0 48px 0 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 24px;
+    font-weight: 500;
+    text-align: center;
+    color: var(--text-color);
+    background: var(--bg-color);
+    transition: all 0.2s ease;
+}
+
+.size-input.focused input {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-color-10);
+}
+
+.size-input .unit {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 14px;
+    pointer-events: none;
+}
+
+/* 面板布局 */
+.tool-panels {
+    display: grid;
+    grid-template-columns: 450px 1fr;
+    gap: 24px;
+}
+
+.left-panels {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 面板通用样式 */
+.panel-section {
+    background: var(--bg-color-50);
+    border: 1px solid var(--border-color-10);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.panel-section h3 {
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+/* 比例类型分类 */
+.ratio-category {
+    margin-bottom: 24px;
+}
+
+.ratio-category:last-child {
+    margin-bottom: 0;
+}
+
+.category-title {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    padding-left: 4px;
+    position: relative;
+}
+
+.category-title::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 12px;
+    background: var(--primary-color);
+    border-radius: 1px;
+}
+
+/* 调整比例按钮网格布局 */
+.ratio-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+/* 调整按钮大小 */
+.ratio-tab {
+    height: 56px;
+    padding: 6px;
+}
+
+.ratio-tab {
+    height: 64px;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+}
+
+.ratio-tab:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-10);
+}
+
+.ratio-tab.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.ratio-name {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.ratio-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.ratio-tab.active .ratio-name,
+.ratio-tab.active .ratio-desc {
+    color: white;
+}
+
+/* 计算结果详情 */
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.detail-item {
+    padding: 8px 12px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.detail-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-main {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+}
+
+.detail-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.detail-value {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.detail-desc {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+/* 预览区域 */
+.preview-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.preview-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+}
+
+.ratio-preview-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+/* 预览条样式 */
+.bar-preview {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.bar-l {
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.3s;
+}
+
+.bar-r {
+    background: var(--primary-color-10);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.3s;
+}
+
+/* 响应式调整 */
+@media (max-width: 1200px) {
+    .ratio-tabs {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .tool-main {
+        padding: 0 16px;
+    }
+    
+    .ratio-tabs {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ratio-category {
+        margin-bottom: 16px;
+    }
+}
