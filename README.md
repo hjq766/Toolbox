@@ -1,6 +1,6 @@
-# jqnest Toolbox
+# 极趣导航-在线工具箱
 
-jqnest Toolbox 是一个面向日常开发、内容处理、图片处理和生活查询的在线工具箱。2.0 版本完成了从零散工具页到统一工作台的重构：所有工具共享同一套设计系统、页面外壳、主题能力和工具注册表，既可以在首页集中搜索使用，也可以作为独立页面直接访问。
+极趣导航-在线工具箱 是一个面向日常开发、内容处理、图片处理和生活查询的在线工具箱。2.0 版本完成了从零散工具页到统一工作台的重构：所有工具共享同一套设计系统、页面外壳、主题能力和工具注册表，既可以在首页集中搜索使用，也可以作为独立页面直接访问。
 
 当前 `main` 分支默认展示 2.0 最新版。
 
@@ -54,82 +54,6 @@ npx http-server . -p 5173 -c-1
 ```text
 http://localhost:5173/
 ```
-
-常用路径：
-
-```text
-http://localhost:5173/                    # 工作台首页
-http://localhost:5173/#/tool/hex_convert  # 工作台内打开指定工具
-http://localhost:5173/tools/hex_convert/  # 独立访问指定工具
-http://localhost:5173/#/page/about        # 关于页
-```
-
-## 项目结构
-
-```text
-.
-├─ index.html                    # 工作台首页
-├─ about.html                    # 关于页
-├─ docs/
-│  └─ DEVELOPMENT.md             # 开发规范
-├─ public/
-│  ├─ styles/                    # tokens / themes / base / layout / components / utilities
-│  ├─ scripts/
-│  │  ├─ core/                   # app-init / theme / shell / tool-page
-│  │  ├─ components/             # page-header / toast / dock / unit-converter
-│  │  ├─ data/tools.js           # 工具注册表
-│  │  ├─ pages/home.js           # 首页逻辑
-│  │  └─ utils/                  # DOM / clipboard / download
-│  └─ vendor/                    # 本地第三方库、字典和数据文件
-├─ tools/
-│  ├─ _shared/                   # 共享侧栏、上传区、预览网格、代码编辑器、水印模块
-│  ├─ _template.html             # 新工具模板
-│  └─ <slug>/                    # 单个工具
-│     ├─ index.html
-│     └─ page.js
-└─ skills/
-   └─ jqnest-tool-builder/       # AI agent 开发 skill、模板和检查脚本
-```
-
-## 开发规范
-
-开发前请先阅读 [`docs/DEVELOPMENT.md`](./docs/DEVELOPMENT.md)。核心规则：
-
-- 所有颜色、字号、间距、圆角、阴影和动效使用 `public/styles/tokens.css` 中的 CSS 变量。
-- 页面头部统一通过 `mountPageHeader()` / `mountToolHeader()` 渲染。
-- 新工具默认复用全局组件，尽量不写 `tool.css`。
-- 工具页必须同时支持独立访问和工作台 iframe 嵌入。
-- 新工具必须注册到 `public/scripts/data/tools.js`。
-- 复制 `tools/_template.html` 或使用 `skills/jqnest-tool-builder` 模板起步。
-
-## 新增工具流程
-
-```bash
-# 1. 复制模板或使用 skill 脚手架
-cp tools/_template.html tools/<slug>/index.html
-
-# 2. 创建业务脚本
-touch tools/<slug>/page.js
-
-# 3. 在 public/scripts/data/tools.js 注册工具
-
-# 4. 本地启动验证
-python3 -m http.server 5173
-```
-
-推荐验证三个入口：
-
-- `http://localhost:5173/tools/<slug>/`
-- `http://localhost:5173/#/tool/<slug>`
-- `http://localhost:5173/` 搜索工具名
-
-## 设计与架构原则
-
-1. **单一数据源**：工具信息集中在 `tools.js`，首页、搜索、分类和工具头部都从这里读取。
-2. **组件优先**：按钮、输入、面板、标签、表格、空状态等优先使用全局组件。
-3. **渐进增强**：工具页保持独立可用，再由工作台提供搜索、导航、主题同步和 iframe 体验。
-4. **少依赖外链**：核心运行依赖尽量落在仓库内，方便离线部署和长期维护。
-5. **可持续迁移**：旧工具逻辑可以保留在 `old/` 中作为参考，新工具统一按 2.0 规范重构。
 
 ## License
 
