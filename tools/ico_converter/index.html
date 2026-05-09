@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图标转图片 · 极趣导航-在线工具箱</title>
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <script src="../../public/vendor/jszip.min.js" defer></script>
+  <style>
+    /* 图层网格 */
+    .layer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:var(--space-3)}
+    .layer-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:var(--space-3);border:1px solid var(--border-base);border-radius:var(--radius);background:var(--bg-surface);text-align:center;cursor:pointer;transition:all .15s;position:relative}
+    .layer-card:hover{border-color:var(--color-brand)}
+    .layer-card.selected{border-color:var(--color-brand);background:rgba(99,102,241,.06)}
+    .layer-card .check{position:absolute;top:6px;right:6px;width:18px;height:18px;border-radius:50%;border:2px solid var(--border-base);background:var(--bg-surface);transition:all .12s;display:flex;align-items:center;justify-content:center}
+    .layer-card.selected .check{border-color:var(--color-brand);background:var(--color-brand)}
+    .layer-card.selected .check::after{content:'';display:block;width:6px;height:6px;border-radius:50%;background:#fff}
+    .lc-preview{display:flex;align-items:center;justify-content:center;min-height:64px}
+    .lc-preview canvas{image-rendering:pixelated;border-radius:var(--radius-sm);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+    .lc-info{font-size:var(--text-xs)}
+    .lc-size{font-weight:700;font-variant-numeric:tabular-nums}
+    .lc-meta{color:var(--fg-muted);font-size:10px;margin-top:1px}
+
+    /* 棋盘格背景 */
+    .checker{background-image:linear-gradient(45deg,var(--bg-surface-2) 25%,transparent 25%),linear-gradient(-45deg,var(--bg-surface-2) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,var(--bg-surface-2) 75%),linear-gradient(-45deg,transparent 75%,var(--bg-surface-2) 75%);background-size:12px 12px;background-position:0 0,0 6px,6px -6px,-6px 0}
+
+    /* 格式按钮 */
+    .fmt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-2)}
+    .fmt-grid .btn{padding:8px 4px;font-size:var(--text-xs);font-weight:var(--font-semibold,600)}
+    .fmt-grid .btn.active{background:var(--color-brand);color:#fff;border-color:var(--color-brand)}
+  </style>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="ico_converter">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:280px">
+          <!-- 左：上传 + 图层列表 -->
+          <div>
+            <label class="panel u-col u-gap-2" data-drop style="border-style:dashed;align-items:center;text-align:center;cursor:pointer;padding:var(--space-8) var(--space-4);margin:0">
+              <i data-lucide="upload" style="font-size:1.8rem;opacity:.35"></i>
+              <div class="u-strong">点击或拖拽图标文件到此处</div>
+              <div class="u-muted" style="font-size:var(--text-xs)">支持 ICO / ICNS 格式 · 支持粘贴上传</div>
+              <input type="file" accept=".ico,.icns,image/x-icon,image/vnd.microsoft.icon" hidden data-file>
+            </label>
+
+            <!-- 文件信息 -->
+            <div class="panel u-mt-3" data-info-panel hidden>
+              <div class="u-row u-between" style="align-items:center">
+                <div>
+                  <span class="u-strong" data-file-name></span>
+                  <span class="u-muted" style="font-size:var(--text-xs);margin-left:var(--space-2)" data-file-size></span>
+                </div>
+                <button class="btn is-sm is-ghost" data-action="re-upload"><i data-lucide="refresh-cw"></i> 重新上传</button>
+              </div>
+            </div>
+
+            <!-- 图层网格 -->
+            <div data-layers-panel hidden class="u-mt-3">
+              <div class="u-row u-between u-mb-2" style="align-items:center">
+                <h3 class="panel-title" style="margin:0;border:none;padding:0">包含的图层</h3>
+                <div class="u-row u-gap-2" style="font-size:var(--text-xs)">
+                  <button class="btn is-sm is-ghost" data-action="select-all">全选</button>
+                  <button class="btn is-sm is-ghost" data-action="select-none">取消全选</button>
+                </div>
+              </div>
+              <div class="layer-grid" data-layer-grid></div>
+            </div>
+          </div>
+
+          <!-- 右：设置 -->
+          <aside>
+            <!-- 输出格式 -->
+            <div class="panel">
+              <h3 class="panel-title">输出格式</h3>
+              <div class="fmt-grid" data-fmt-grid>
+                <button class="btn active" data-fmt="png">PNG</button>
+                <button class="btn" data-fmt="jpg">JPG</button>
+                <button class="btn" data-fmt="webp">WebP</button>
+              </div>
+            </div>
+
+            <!-- 质量（JPG/WebP） -->
+            <div class="panel" data-quality-panel hidden>
+              <h3 class="panel-title">
+                <span>图片质量</span>
+                <span class="val" data-quality-val>92%</span>
+              </h3>
+              <div class="range-row">
+                <input type="range" data-quality min="10" max="100" value="92">
+              </div>
+              <div class="hint u-row u-between"><span>压缩</span><span>高质量</span></div>
+            </div>
+
+            <!-- 缩放 -->
+            <div class="panel">
+              <h3 class="panel-title">缩放倍率</h3>
+              <div class="opt-row" data-scale-row>
+                <button class="btn active" data-scale="1">1x</button>
+                <button class="btn" data-scale="2">2x</button>
+                <button class="btn" data-scale="4">4x</button>
+              </div>
+              <div class="hint u-mt-1">放大低分辨率图层便于查看</div>
+            </div>
+
+            <!-- 操作 -->
+            <div class="panel">
+              <div class="act-group">
+                <button class="btn is-primary" data-action="export" disabled>导出选中图层</button>
+                <button class="btn" data-action="download-zip" hidden><i data-lucide="download"></i> 下载 ZIP</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>
