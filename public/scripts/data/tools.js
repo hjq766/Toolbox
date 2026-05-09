@@ -72,6 +72,7 @@ export const TOOLS = [
   { slug: 'images_color',     title: '图片色板提取', desc: '自动提取主色调 + 手动取色 + 选区取色 + 导出',      category: 'image', icon: 'palette', tags: ['图片','色板','取色','palette'],   status: 'ready' },
   { slug: 'watermark_images', title: '图片水印',     desc: '文字/图片水印 + 单个/铺满模式 + 位置/角度/间距', category: 'image', icon: 'droplet', tags: ['图片','水印','watermark'],        status: 'ready' },
   { slug: 'ico_generator',    title: 'ICO 图标生成', desc: '多平台图标生成（Win/Mac/iOS/Android/Favicon）+ 裁剪 + 圆角 + ICO/ICNS/PNG', category: 'image', icon: 'app-window', tags: ['ICO','ICNS','图标','favicon','icon'], status: 'ready' },
+  { slug: 'ico_converter',    title: '图标转图片',   desc: 'ICO/ICNS 图标解析，提取内部所有图层并导出为 PNG/JPG/WebP', category: 'image', icon: 'image-down', tags: ['ICO','ICNS','图标','转换','提取','icon'], status: 'ready' },
   { slug: 'ps_online',        title: '在线 PS（第三方）',  desc: '在线 Photoshop 图像处理工具（第三方）',  category: 'image', icon: 'brush', tags: ['ps','photoshop','图像','编辑'],  status: 'ready', url: './tools/ps_online/index.html' },
 
   // SVG / PDF
