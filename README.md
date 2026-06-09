@@ -4,14 +4,8 @@ jqnest Toolbox 是一个面向日常开发、内容处理、图片处理和生�
 
 当前 `v2.4.0` 分支包含 105 个可用入口，其中 103 个为标准工具，2 个为第三方整页工具入口。
 
-## 版本下载
 
-- [下载 main 分支](https://github.com/hjq766/Toolbox/archive/refs/heads/main.zip)
-- [下载 v2.4.0](https://github.com/hjq766/Toolbox/archive/refs/heads/v2.4.0.zip)
-- [下载 v2.0](https://github.com/hjq766/Toolbox/archive/refs/tags/v2.0.zip)
-- [下载历史版 v1.0](https://github.com/hjq766/Toolbox/archive/refs/tags/v1.0.zip)
-
-## 2.4.0 亮点
+## 2.0.0 亮点
 
 - **工作台式首页**：左侧品牌、搜索、分类导航，右侧工具卡片与 iframe 工具画布。
 - **105 个可用入口**：覆盖编码开发、CSS 工具、文本处理、代码格式、计算换算、数据图表、图片处理、码制工具、颜色设计、生活查询和网络工具等场景。
