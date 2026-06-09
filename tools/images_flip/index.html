@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>图片翻转 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>图片翻转 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="水平/垂直翻转 + 旋转 90°/180° + 原尺寸下载">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/images_flip/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="图片翻转 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="水平/垂直翻转 + 旋转 90°/180° + 原尺寸下载">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/images_flip/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"图片翻转","url":"https://tools.jqnest.top/tools/images_flip/","description":"水平/垂直翻转 + 旋转 90°/180° + 原尺寸下载","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -15,9 +27,9 @@
     .preview-wrap{position:relative;background:var(--bg-surface-2);border-radius:var(--radius-md);overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:300px}
     .preview-wrap canvas{max-width:100%;max-height:500px;display:block}
     .img-info{display:grid;grid-template-columns:auto 1fr;gap:2px var(--space-3);font-size:var(--text-xs);color:var(--fg-muted);margin-top:var(--space-3)}
-    .img-info dt{font-weight:600;color:var(--fg-default)}
+    .img-info dt{font-weight:600;color:var(--fg-base)}
     .state-tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;font-size:var(--text-xs);border-radius:var(--radius-sm);background:var(--bg-surface-2);color:var(--fg-muted)}
-    .state-tag.is-active{background:var(--color-brand-alpha,rgba(59,130,246,.12));color:var(--color-brand)}
+    .state-tag.is-active{background:color-mix(in srgb,var(--color-brand) 12%,transparent);color:var(--color-brand)}
   </style>
 </head>
 <body data-page="tool" data-base-path="../../" data-tool-slug="images_flip">
@@ -30,10 +42,10 @@
           <!-- 左 -->
           <div>
             <!-- 上传 -->
-            <label class="panel u-col u-gap-2" data-drop style="border-style:dashed;align-items:center;text-align:center;cursor:pointer;padding:var(--space-8) var(--space-4);margin:0">
-              <i data-lucide="upload" style="font-size:1.8rem;opacity:.35"></i>
+            <label class="panel u-col u-gap-2 upload-panel" data-drop>
+              <i data-lucide="upload"></i>
               <div class="u-strong">点击或拖拽图片到此处</div>
-              <div class="u-muted" style="font-size:var(--text-xs)">支持 JPG / PNG / WebP / GIF · 支持粘贴上传</div>
+              <div class="u-muted u-text-xs">支持 JPG / PNG / WebP / GIF · 支持粘贴上传</div>
               <input type="file" accept="image/*" hidden data-file>
             </label>
 
@@ -80,9 +92,11 @@
             <!-- 操作 -->
             <div class="panel">
               <div class="act-group">
-                <button class="btn is-primary" data-action="download" disabled><i data-lucide="download"></i> 下载</button>
-                <button class="btn is-ghost" data-action="reset">重置变换</button>
-                <button class="btn is-ghost" data-action="delete" hidden>删除图片</button>
+                <div class="u-col u-gap-2">
+                  <button class="btn is-primary is-block" data-action="download" disabled>下载</button>
+                  <button class="btn is-ghost is-block" data-action="reset">重置变换</button>
+                </div>
+                <button class="btn is-sm is-ghost" type="button" data-img-delete hidden><i data-lucide="x"></i></button>
               </div>
             </div>
           </aside>

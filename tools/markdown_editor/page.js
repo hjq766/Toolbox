@@ -78,6 +78,7 @@ img{max-width:100%}`;
 /* ============ 2. 状态 ============ */
 
 let currentHTML = '';
+let safeHTML = '';
 let lastContent = '';
 const tableAlign = { v: 'left' };
 
@@ -95,8 +96,13 @@ const statCursor = $('[data-stat-cursor]');
 /* globals marked, DOMPurify */
 marked.setOptions({ breaks: true, gfm: true });
 
+function getContent() {
+  const cm = sourceEl._cm;
+  return cm ? cm.getValue() : sourceEl.value;
+}
+
 function renderPreview() {
-  const content = sourceEl.value;
+  const content = getContent();
   if (content === lastContent) return;
   lastContent = content;
   try {
@@ -104,7 +110,8 @@ function renderPreview() {
   } catch (e) {
     currentHTML = `<p style="color:var(--color-danger)">${e.message}</p>`;
   }
-  previewEl.innerHTML = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(currentHTML) : currentHTML;
+  safeHTML = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(currentHTML) : '';
+  previewEl.innerHTML = safeHTML;
   updateWordCount(content);
 }
 
@@ -121,7 +128,7 @@ function updateCursor() {
 }
 
 function saveLocal() {
-  try { localStorage.setItem(LS_KEY, sourceEl.value); } catch {}
+  try { localStorage.setItem(LS_KEY, getContent()); } catch {}
 }
 const scheduleSave = debounce(saveLocal, 800);
 
@@ -133,11 +140,18 @@ function loadLocal() {
   return null;
 }
 
+function setContent(content) {
+  const cm = sourceEl._cm;
+  if (cm) cm.setValue(content);
+  else sourceEl.value = content;
+  lastContent = null; // 强制下次 renderPreview 重新渲染
+}
+
 function readFile(file) {
   if (!file) return;
   const r = new FileReader();
   r.onload = e => {
-    sourceEl.value = e.target.result;
+    setContent(e.target.result);
     renderPreview();
     scheduleSave();
     showToast('文件已加载');
@@ -217,17 +231,38 @@ function buildHTMLDoc() {
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head><meta charset="UTF-8"><title>Markdown Export</title><style>${EXPORT_CSS}</style></head>
-<body>${currentHTML}</body>
+  <body>${safeHTML}</body>
 </html>`;
 }
 
 /* globals html2pdf */
+async function loadHtml2pdf() {
+  if (typeof html2pdf !== 'undefined') return;
+  await new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
 async function exportPDF() {
-  if (!currentHTML) return showToast('内容为空', { type: 'warn' });
-  if (typeof html2pdf === 'undefined') return showToast('PDF 库加载中，请稍后', { type: 'warn' });
+  if (!safeHTML) return showToast('内容为空', { type: 'warn' });
+  try {
+    showToast('正在生成 PDF…');
+    await loadHtml2pdf();
+  } catch {
+    return showToast('PDF 库加载失败，请检查网络', { type: 'error' });
+  }
   const el = document.createElement('div');
-  el.style.cssText = 'max-width:760px;margin:0 auto;padding:20px;font-family:sans-serif;line-height:1.7;font-size:14px';
-  el.innerHTML = DOMPurify.sanitize(currentHTML);
+  const style = document.createElement('style');
+  style.textContent = EXPORT_CSS;
+  el.appendChild(style);
+  const body = document.createElement('div');
+  body.style.cssText = 'max-width:760px;margin:0 auto;padding:20px;font-family:sans-serif;line-height:1.7;font-size:14px';
+  body.innerHTML = safeHTML;
+  el.appendChild(body);
   document.body.appendChild(el);
   try {
     await html2pdf().from(el).save('document.pdf');
@@ -316,7 +351,7 @@ on($('[data-tbl-align]'), 'click', e => {
   const b = e.target.closest('[data-val]');
   if (!b) return;
   tableAlign.v = b.dataset.val;
-  $$('[data-tbl-align] [data-val]').forEach(x => x.classList.toggle('active', x === b));
+  $$('[data-tbl-align] [data-val]').forEach(x => x.classList.toggle('is-active', x === b));
 });
 
 /* --- 弹窗确认 --- */
@@ -388,23 +423,25 @@ on(document, 'click', e => {
     case 'undo': cm && cm.undo(); break;
     case 'redo': cm && cm.redo(); break;
     case 'copy-md': {
-      if (!sourceEl.value.trim()) return showToast('内容为空', { type: 'warn' });
-      copyText(sourceEl.value).then(ok => showToast(ok ? '已复制 Markdown' : '复制失败', { type: ok ? 'success' : 'error' }));
+      const mdContent = getContent();
+      if (!mdContent.trim()) return showToast('内容为空', { type: 'warn' });
+      copyText(mdContent).then(ok => showToast(ok ? '已复制 Markdown' : '复制失败', { type: ok ? 'success' : 'error' }));
       break;
     }
     case 'copy-html': {
-      if (!currentHTML) return showToast('内容为空', { type: 'warn' });
-      copyText(currentHTML).then(ok => showToast(ok ? '已复制 HTML' : '复制失败', { type: ok ? 'success' : 'error' }));
+      if (!safeHTML) return showToast('内容为空', { type: 'warn' });
+      copyText(safeHTML).then(ok => showToast(ok ? '已复制 HTML' : '复制失败', { type: ok ? 'success' : 'error' }));
       break;
     }
     case 'dl-md': {
-      if (!sourceEl.value.trim()) return showToast('内容为空', { type: 'warn' });
-      downloadText(sourceEl.value, 'document.md', 'text/markdown;charset=utf-8');
+      const mdExport = getContent();
+      if (!mdExport.trim()) return showToast('内容为空', { type: 'warn' });
+      downloadText(mdExport, 'document.md', 'text/markdown;charset=utf-8');
       showToast('已下载 .md');
       break;
     }
     case 'dl-html': {
-      if (!currentHTML) return showToast('内容为空', { type: 'warn' });
+      if (!safeHTML) return showToast('内容为空', { type: 'warn' });
       downloadText(buildHTMLDoc(), 'document.html', 'text/html;charset=utf-8');
       showToast('已下载 .html');
       break;
@@ -415,21 +452,15 @@ on(document, 'click', e => {
     }
     case 'fullscreen': {
       const wrap = splitEl.closest('.panel');
-      const isFs = wrap.style.position === 'fixed';
-      if (isFs) {
-        wrap.style.cssText = 'padding:0;display:flex;flex-direction:column;min-height:600px';
-      } else {
-        wrap.style.cssText = 'padding:0;display:flex;flex-direction:column;position:fixed;inset:0;z-index:9999;height:100vh;border-radius:0;border:none';
-      }
+      const isFs = wrap.classList.toggle('is-fullscreen');
       const ico = btn.querySelector('i, svg');
-      if (ico) { const ni = document.createElement('i'); ni.dataset.lucide = isFs ? 'maximize' : 'minimize'; ico.replaceWith(ni); if (window.refreshIcons) window.refreshIcons(btn); }
+      if (ico) { const ni = document.createElement('i'); ni.dataset.lucide = isFs ? 'minimize' : 'maximize'; ico.replaceWith(ni); if (window.refreshIcons) window.refreshIcons(btn); }
       const cm = sourceEl._cm;
       if (cm) setTimeout(() => cm.refresh(), 50);
       break;
     }
     case 'load-example': {
-      sourceEl.value = EXAMPLE;
-      lastContent = '';
+      setContent(EXAMPLE);
       renderPreview();
       saveLocal();
       showToast('示例已加载');
@@ -437,9 +468,9 @@ on(document, 'click', e => {
     }
     case 'clear': {
       if (!confirm('确定清空编辑器内容吗？此操作不可撤销。')) return;
-      sourceEl.value = '';
+      setContent('');
       currentHTML = '';
-      lastContent = '';
+      safeHTML = '';
       renderPreview();
       saveLocal();
       showToast('已清空');
@@ -466,11 +497,14 @@ on(document, 'keydown', e => {
 
 /* ============ 初始化 ============ */
 
-sourceEl.value = loadLocal() || EXAMPLE;
-lastContent = '';
+/* 初始内容在 createEditor 完成后写入，避免 CM 未就绪时 setValue 失败 */
+const _initContent = loadLocal() || EXAMPLE;
 renderPreview();
 
 createEditor(sourceEl, { mode: 'markdown' }).then(cm => {
+  cm.setValue(_initContent);
+  lastContent = '';
+  renderPreview();
   cm.on('cursorActivity', updateCursor);
   updateCursor();
 });

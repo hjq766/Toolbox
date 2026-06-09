@@ -12,7 +12,7 @@
  *   - textarea._cm 可直接访问 CodeMirror 实例
  */
 
-const CDN = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18';
+const CDN = '../../public/vendor/codemirror';
 let bootPromise = null;
 
 /* ---------- 资源加载 ---------- */
@@ -84,7 +84,10 @@ function boot() {
     ]);
 
     return window.CodeMirror;
-  })();
+  })().catch(error => {
+    bootPromise = null;
+    throw error;
+  });
   return bootPromise;
 }
 

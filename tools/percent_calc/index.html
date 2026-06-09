@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>百分比计算 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="求百分比值、占比、涨跌幅、折扣四种常用计算，输入即得结果">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/percent_calc/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="百分比计算 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="求百分比值、占比、涨跌幅、折扣四种常用计算，输入即得结果">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/percent_calc/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"百分比计算","url":"https://tools.jqnest.top/tools/percent_calc/","description":"求百分比值、占比、涨跌幅、折扣四种常用计算，输入即得结果","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="percent_calc">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <!-- ── 场景选择（chip 组件 + grid 布局，零自定义 CSS） ── -->
+        <div class="grid grid-auto-sm" data-scenes>
+          <button class="chip u-col u-items-start u-pt-3 u-pb-3 u-radius-lg is-active" type="button" data-scene="value">
+            <i data-lucide="percent" class="icon-18 u-muted"></i>
+            <span>X% 是多少？</span>
+            <span class="chip-sub">200 的 15% = ?</span>
+          </button>
+          <button class="chip u-col u-items-start u-pt-3 u-pb-3 u-radius-lg" type="button" data-scene="ratio">
+            <i data-lucide="pie-chart" class="icon-18 u-muted"></i>
+            <span>占多少比例？</span>
+            <span class="chip-sub">30 是 200 的几%？</span>
+          </button>
+          <button class="chip u-col u-items-start u-pt-3 u-pb-3 u-radius-lg" type="button" data-scene="change">
+            <i data-lucide="trending-up" class="icon-18 u-muted"></i>
+            <span>涨跌了多少？</span>
+            <span class="chip-sub">100 → 120，涨了几%？</span>
+          </button>
+          <button class="chip u-col u-items-start u-pt-3 u-pb-3 u-radius-lg" type="button" data-scene="discount">
+            <i data-lucide="tag" class="icon-18 u-muted"></i>
+            <span>打折后多少钱？</span>
+            <span class="chip-sub">299 元打八折 = ?</span>
+          </button>
+        </div>
+
+        <!-- ====== 场景 1：X% 是多少？ ====== -->
+        <div data-panel="value">
+          <div class="panel">
+            <div class="grid grid-2">
+              <div class="field">
+                <label class="field-label">总量 / 基数</label>
+                <input class="input" type="number" placeholder="例：200" data-v-b>
+              </div>
+              <div class="field">
+                <label class="field-label">百分比 (%)</label>
+                <input class="input" type="number" placeholder="例：15" data-v-x>
+              </div>
+            </div>
+          </div>
+          <div class="panel" data-v-result hidden>
+            <div class="grid grid-3" data-v-grid></div>
+          </div>
+        </div>
+
+        <!-- ====== 场景 2：占多少比例？ ====== -->
+        <div data-panel="ratio" hidden>
+          <div class="panel">
+            <div class="grid grid-2">
+              <div class="field">
+                <label class="field-label">部分值 A</label>
+                <input class="input" type="number" placeholder="例：30" data-r-a>
+              </div>
+              <div class="field">
+                <label class="field-label">总量 B</label>
+                <input class="input" type="number" placeholder="例：200" data-r-b>
+              </div>
+            </div>
+          </div>
+          <div class="panel" data-r-result hidden>
+            <div class="grid grid-3" data-r-grid></div>
+          </div>
+        </div>
+
+        <!-- ====== 场景 3：涨跌了多少？ ====== -->
+        <div data-panel="change" hidden>
+          <div class="panel">
+            <div class="grid grid-2">
+              <div class="field">
+                <label class="field-label">原值</label>
+                <input class="input" type="number" placeholder="例：100" data-c-a>
+              </div>
+              <div class="field">
+                <label class="field-label">新值</label>
+                <input class="input" type="number" placeholder="例：120" data-c-b>
+              </div>
+            </div>
+          </div>
+          <div class="panel" data-c-result hidden>
+            <div class="grid grid-3" data-c-grid></div>
+          </div>
+        </div>
+
+        <!-- ====== 场景 4：打折后多少钱？ ====== -->
+        <div data-panel="discount" hidden>
+          <div class="panel">
+            <p class="field-hint u-mb-3">输入任意两项，自动计算第三项</p>
+            <div class="grid grid-3">
+              <div class="field">
+                <label class="field-label">原价</label>
+                <input class="input" type="number" placeholder="例：299" data-d-original min="0">
+              </div>
+              <div class="field">
+                <label class="field-label">折扣率 (%) <span class="badge">80 = 八折</span></label>
+                <input class="input" type="number" placeholder="例：80" data-d-rate min="0" max="100">
+              </div>
+              <div class="field">
+                <label class="field-label">折后价</label>
+                <input class="input" type="number" placeholder="例：239.2" data-d-final min="0">
+              </div>
+            </div>
+            <div class="u-row u-mt-3">
+              <button class="btn is-ghost is-sm" type="button" data-action="discount-reset">重置</button>
+            </div>
+          </div>
+          <div class="panel" data-d-result hidden>
+            <div class="grid grid-3" data-d-grid></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

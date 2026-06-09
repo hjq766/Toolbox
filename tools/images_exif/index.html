@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>EXIF 信息查看 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="读取 JPEG/HEIC/TIFF 等图片 EXIF 元数据，支持 GPS 坐标与 JSON 导出">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/images_exif/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="EXIF 信息查看 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="读取 JPEG/HEIC/TIFF 等图片 EXIF 元数据，支持 GPS 坐标与 JSON 导出">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/images_exif/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"EXIF 信息查看","url":"https://tools.jqnest.top/tools/images_exif/","description":"读取 JPEG/HEIC/TIFF 等图片 EXIF 元数据，支持 GPS 坐标与 JSON 导出","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="images_exif">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <!-- 上传区（初始状态） -->
+        <label class="panel u-col u-gap-2 upload-panel" data-drop>
+          <i data-lucide="upload"></i>
+          <div class="u-strong">点击或拖拽图片到此处</div>
+          <div class="u-muted u-text-xs">支持 JPEG / HEIC / TIFF / AVIF / PNG 等格式</div>
+          <input type="file" accept="image/*,.heic,.heif,.tiff,.tif,.avif" hidden data-file>
+        </label>
+
+        <!-- 结果区（上传后显示） -->
+        <div class="grid grid-sidebar-r" style="--sidebar-w:280px" data-result hidden>
+
+          <!-- 左：EXIF 数据 -->
+          <div class="u-col u-gap-4">
+            <div class="panel empty-panel" data-empty-panel hidden>
+              <h3 data-empty-title>未找到 EXIF 信息</h3>
+              <p data-empty-desc>这张图片可能已经被压缩、截图或平台处理过，元数据已被移除。</p>
+            </div>
+
+            <!-- 拍摄参数概览（卡片式） -->
+            <div class="panel" data-camera-panel hidden>
+              <h3 class="panel-title">拍摄参数</h3>
+              <div class="grid grid-4 u-gap-2" data-camera-stats></div>
+              <div class="u-mt-3" data-camera-detail></div>
+            </div>
+
+            <!-- 基本信息 -->
+            <div class="panel" data-basic-panel hidden>
+              <h3 class="panel-title">基本信息</h3>
+              <div data-basic></div>
+            </div>
+
+            <!-- GPS 信息 -->
+            <div class="panel" data-gps-panel hidden>
+              <h3 class="panel-title">GPS 位置</h3>
+              <div data-gps></div>
+            </div>
+
+            <!-- 全部 EXIF 标签 -->
+            <div class="panel" data-all-panel hidden>
+              <div class="u-row u-between u-mb-2">
+                <h3 class="panel-title u-mb-0">全部 EXIF 标签</h3>
+                <span class="badge" data-tag-count></span>
+              </div>
+              <div data-all></div>
+            </div>
+          </div>
+
+          <!-- 右：侧栏 -->
+          <aside>
+            <div class="panel" data-img-panel>
+              <div class="u-row u-between u-gap-2 u-mb-2 u-items-start">
+                <div class="u-min-0">
+                  <h3 class="panel-title u-mb-0">图片预览</h3>
+                  <div class="panel-sub u-truncate" data-file-info></div>
+                </div>
+                <button class="btn is-sm is-ghost u-no-shrink" type="button" data-img-delete title="移除图片"><i data-lucide="x"></i></button>
+              </div>
+              <img data-img-preview alt="">
+            </div>
+
+            <div class="panel" data-summary-panel hidden>
+              <h3 class="panel-title">文件概览</h3>
+              <div class="output-grid" data-summary></div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">快捷操作</h3>
+              <div class="act-group">
+                <div class="u-col u-gap-2">
+                  <button class="btn is-block" type="button" data-action="copy"><i data-lucide="copy"></i> 复制全部</button>
+                  <button class="btn is-block" type="button" data-action="export-json"><i data-lucide="download"></i> 导出 JSON</button>
+                  <button class="btn is-block" type="button" data-action="copy-gps" hidden><i data-lucide="map-pin"></i> 复制坐标</button>
+                  <a class="btn is-block" data-action="open-map" target="_blank" rel="noopener" hidden><i data-lucide="map"></i> 打开地图</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">隐私提示</h3>
+              <p class="hint" data-privacy-hint>支持 JPEG / HEIC / TIFF / AVIF / PNG。若图片包含 GPS，分享前建议重新导出一份去除位置信息的副本。</p>
+            </div>
+          </aside>
+
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

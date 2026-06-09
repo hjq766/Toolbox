@@ -3,21 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>渐变色卡 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>渐变色卡 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="210 个精选 CSS 渐变，默认灵感抽卡 + 14 类浏览与全库搜索">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/color_gradient/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="渐变色卡 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="210 个精选 CSS 渐变，默认灵感抽卡 + 14 类浏览与全库搜索">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/color_gradient/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"渐变色卡","url":"https://tools.jqnest.top/tools/color_gradient/","description":"210 个精选 CSS 渐变，默认灵感抽卡 + 14 类浏览与全库搜索","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
   <link rel="stylesheet" href="../../public/styles/layout.css">
   <link rel="stylesheet" href="../../public/styles/components.css">
   <link rel="stylesheet" href="../../public/styles/utilities.css">
-  <style>
-    .cg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--space-3)}
-    .cg-card{height:140px;border-radius:var(--radius-md);cursor:pointer;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s}
-    .cg-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
-    .cg-name{position:absolute;bottom:0;left:0;right:0;padding:var(--space-2) var(--space-3);font-size:var(--text-sm);font-weight:600}
-    .cg-code{position:absolute;inset:0;background:rgba(0,0,0,.6);color:#fff;padding:var(--space-3);font-size:11px;font-family:var(--font-mono);display:flex;align-items:center;justify-content:center;text-align:center;word-break:break-all;opacity:0;transition:opacity .15s}
-    .cg-card:hover .cg-code{opacity:1}
-  </style>
+  <link rel="stylesheet" href="../../public/styles/browse.css">
+  <link rel="stylesheet" href="./tool.css">
 </head>
 <body data-page="tool" data-base-path="../../" data-tool-slug="color_gradient">
   <div class="page-shell"><main class="page-main"><div class="container">
@@ -25,14 +31,23 @@
       <header class="tool-header" data-tool-header></header>
       <div class="tool-body">
 
-        <!-- 分类 tabs + 计数 -->
-        <div class="u-row u-between u-mb-4" style="flex-wrap:wrap;gap:var(--space-2)">
-          <div class="tabs" data-cat-tabs></div>
-          <span style="font-size:var(--text-xs);color:var(--fg-muted)" data-count></span>
+        <div class="browse-head">
+          <div class="browse-toolbar">
+            <label class="search-shell">
+              <i data-lucide="search" class="search-icon" aria-hidden="true"></i>
+              <input class="search-box" type="search" data-search placeholder="搜索名称、分类或色值…" autocomplete="off">
+            </label>
+            <div class="browse-toolbar__actions">
+              <button class="btn is-sm is-ghost" type="button" data-action="reshuffle" hidden>
+                <i data-lucide="shuffle" aria-hidden="true"></i> 换一批
+              </button>
+              <span class="browse-toolbar__meta" data-count></span>
+            </div>
+          </div>
+          <div data-tabs role="tablist"></div>
         </div>
 
-        <!-- 卡片网格 -->
-        <div class="cg-grid" data-grid></div>
+        <div class="browse-body cg-grid" data-grid></div>
 
       </div>
     </div>

@@ -5,46 +5,49 @@ import { showToast } from '../../public/scripts/components/toast.js';
 
 mountToolHeader();
 
-const raw = $('[data-raw]');
-const out = $('[data-encoded]');
-const auto = $('[data-auto]');
+const rawEl = $('[data-raw]');
+const outEl = $('[data-encoded]');
 let mode = 'component';
+let _dir = '';  // 'encode' | 'decode' — 防止循环
 
-function encode(str) {
-  return mode === 'full' ? encodeURI(str) : encodeURIComponent(str);
-}
-function decode(str) {
-  try {
-    return mode === 'full' ? decodeURI(str) : decodeURIComponent(str);
-  } catch (e) {
-    showToast('解码失败：输入包含非法编码', { type: 'error' });
-    return '';
-  }
+function enc(str) { return mode === 'full' ? encodeURI(str) : encodeURIComponent(str); }
+function dec(str) {
+  try { return mode === 'full' ? decodeURI(str) : decodeURIComponent(str); }
+  catch { return ''; }
 }
 
-on($('[data-mode-nav]'), 'click', (e) => {
-  const b = e.target.closest('[data-mode]'); if (!b) return;
-  $$('[data-mode-nav] .tab-btn').forEach(x => x.classList.remove('is-active'));
-  b.classList.add('is-active');
-  mode = b.dataset.mode;
-  if (auto.checked && raw.value) out.value = encode(raw.value);
+/* ======== 模式切换 ======== */
+$$('[data-mode]').forEach(btn => on(btn, 'click', () => {
+  mode = btn.dataset.mode;
+  $$('[data-mode]').forEach(b => b.classList.toggle('is-active', b === btn));
+  if (rawEl.value) outEl.value = enc(rawEl.value);
+}));
+
+/* ======== 双向实时 ======== */
+on(rawEl, 'input', () => {
+  if (_dir === 'decode') return;
+  _dir = 'encode';
+  outEl.value = rawEl.value ? enc(rawEl.value) : '';
+  _dir = '';
 });
 
-on(raw, 'input', () => { if (auto.checked) out.value = encode(raw.value); });
-on(out, 'input', () => { if (auto.checked) raw.value = decode(out.value); });
-
-on($('[data-encode]'), 'click', () => { out.value = encode(raw.value); });
-on($('[data-decode]'), 'click', () => { raw.value = decode(out.value); });
-on($('[data-swap]'), 'click', () => {
-  const a = raw.value, b = out.value;
-  raw.value = b; out.value = a;
-});
-on($('[data-clear]'), 'click', () => { raw.value = ''; out.value = ''; raw.focus(); });
-on($('[data-copy-encoded]'), 'click', async () => {
-  const ok = await copyText(out.value);
-  showToast(ok ? '已复制编码结果' : '复制失败', { type: ok ? 'success' : 'error' });
+on(outEl, 'input', () => {
+  if (_dir === 'encode') return;
+  _dir = 'decode';
+  rawEl.value = outEl.value ? dec(outEl.value) : '';
+  _dir = '';
 });
 
-// 示例
-raw.value = 'https://example.com/搜索?q=你好&tag=前端';
-out.value = encode(raw.value);
+/* ======== 复制 ======== */
+on($('[data-action="copy"]'), 'click', async () => {
+  if (!outEl.value) { showToast('结果为空', { type: 'warn' }); return; }
+  const ok = await copyText(outEl.value);
+  showToast(ok ? '已复制' : '复制失败', { type: ok ? 'success' : 'error' });
+});
+
+/* ======== 清空 ======== */
+on($('[data-action="clear"]'), 'click', () => { rawEl.value = ''; outEl.value = ''; });
+
+/* ======== 示例 ======== */
+rawEl.value = 'https://example.com/搜索?q=你好&tag=前端';
+outEl.value = enc(rawEl.value);

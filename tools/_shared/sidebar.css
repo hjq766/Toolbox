@@ -3,11 +3,25 @@
    引用方式：<link rel="stylesheet" href="../_shared/sidebar.css">
    ================================================================ */
 
+/* ---------- CSS 工具预设演示色 ---------- */
+:root {
+  --demo-purple: hsl(280 72% 62%);
+}
+
 /* ---------- 侧栏容器 ---------- */
 aside {
   position: sticky;
   top: var(--space-4);
   align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+aside.is-inactive {
+  opacity: 0.4;
+  pointer-events: none;
+  user-select: none;
 }
 
 /* ---------- 设置面板 ---------- */
@@ -34,6 +48,29 @@ aside .panel-title {
   gap: var(--space-2);
 }
 
+/* ---------- 数量输入组 (.qty-group) ---------- */
+/* 标准结构: label + input + .opt-row 快捷按钮                 */
+/* <div class="qty-group">                                     */
+/*   <label class="field-label">数量</label>                   */
+/*   <input class="input" ...>                                 */
+/*   <div class="opt-row"> <button>N</button> ... </div>       */
+/* </div>                                                      */
+.qty-group {
+  display: flex;
+  flex-direction: column;
+}
+.qty-group .field-label {
+  margin-bottom: 6px;
+}
+.qty-group .input,
+.qty-group .select {
+  margin-bottom: 8px;
+}
+.qty-group .opt-row {
+  margin-top: 0;       /* 由 input/select 的 margin-bottom 控制间距 */
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+}
+
 /* ---------- 选项按钮组 (.opt-row / .preset-row) ---------- */
 .opt-row,
 .preset-row {
@@ -50,18 +87,18 @@ aside .panel-title {
 }
 .opt-row .btn,
 .preset-row .btn {
-  padding: 10px 16px;
+  padding: 8px 10px;
   font-size: var(--text-sm);
   border-radius: var(--radius-md);
   background: var(--bg-surface-2);
   border: 1px solid transparent;
-  color: var(--fg-default);
+  color: var(--fg-base);
   transition: all .15s;
   cursor: pointer;
 }
 .opt-row .btn:hover,
 .preset-row .btn:hover {
-  background: var(--bg-surface-3, var(--bg-surface-2));
+  background: var(--bg-surface-2);
   border-color: var(--border-base);
 }
 .opt-row .btn.active,
@@ -74,40 +111,12 @@ aside .panel-title {
   box-shadow: 0 2px 8px rgba(var(--color-brand-rgb, 99,102,241), .25);
 }
 
-/* ---------- Tabs 切换组 ---------- */
-aside .tabs {
-  display: flex;
-  gap: 0;
-  background: var(--bg-surface-2);
-  border-radius: var(--radius-md);
-  padding: 3px;
-}
-aside .tabs .tab {
-  flex: 1;
-  padding: 7px 0;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  border: none;
-  background: transparent;
-  color: var(--fg-muted);
-  border-radius: calc(var(--radius-md) - 2px);
-  cursor: pointer;
-  transition: all .15s;
-}
-aside .tabs .tab:hover {
-  color: var(--fg-default);
-}
-aside .tabs .tab.is-active {
-  background: var(--bg-surface);
-  color: var(--color-brand);
-  box-shadow: 0 1px 4px rgba(0,0,0,.08);
-}
-
 /* ---------- 滑块行 (range + value) ---------- */
 aside .range-row {
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  min-height: 32px;
 }
 aside .range-row input[type="range"] {
   flex: 1;
@@ -119,6 +128,39 @@ aside .range-row .val {
   min-width: 40px;
   text-align: right;
   font-variant-numeric: tabular-nums;
+}
+
+/* range-row 内的 field-label 不需要下方间距，固定宽度对齐 */
+aside .range-row .field-label,
+aside .u-row .field-label { margin-bottom: 0; }
+aside .range-row .field-label { min-width: 52px; flex-shrink: 0; }
+
+/* ---------- 颜色输入 ---------- */
+aside input[type="color"] {
+  width: 34px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+}
+
+/* ---------- 输出信息网格 ---------- */
+.output-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: var(--space-3);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface-2);
+  color: var(--fg-muted);
+  font-size: var(--text-xs);
+}
+.output-grid strong {
+  display: block;
+  color: var(--fg-strong);
+  font-size: var(--text-sm);
 }
 
 /* ---------- 单选/复选选项卡 ---------- */
@@ -185,7 +227,7 @@ aside select.input {
   border: 1px solid var(--border-base);
   border-radius: var(--radius-md);
   background: var(--bg-surface);
-  color: var(--fg-default);
+  color: var(--fg-base);
   transition: border-color .15s;
 }
 aside .input:focus,
@@ -214,6 +256,14 @@ aside .act-group .btn {
   width: 100%;
   justify-content: center;
 }
+aside .act-group .u-row {
+  flex-wrap: nowrap;
+}
+aside .act-group .u-row .btn {
+  width: auto;
+  flex: 1;
+  min-width: 0;
+}
 aside .act-group .btn.is-primary {
   padding: 10px;
   font-weight: 700;
@@ -241,6 +291,8 @@ aside .pos-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 4px;
+  max-width: 156px;
+  margin: 0 auto;
 }
 aside .pos-grid .pos-cell {
   aspect-ratio: 1;
@@ -263,9 +315,80 @@ aside .pos-grid .pos-cell.active {
   border-color: var(--color-brand);
 }
 
+/* ---------- 预览画布容器（多工具共用） ---------- */
+.preview-wrap {
+  position: relative;
+  background: var(--bg-surface-2);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--preview-min-h, 300px);
+}
+.preview-wrap canvas {
+  max-width: 100%;
+  max-height: var(--canvas-max-h, 500px);
+  display: block;
+}
+
+/* ---------- 悬浮删除按钮（共享视觉基础） ---------- */
+.remove-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.5);
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s, opacity .15s;
+  line-height: 1;
+}
+.remove-btn:hover { background: rgba(0,0,0,.7); }
+.remove-btn [data-lucide] { width: 14px; height: 14px; }
+
+/* ---------- 预设卡片列表（images_border / images_merge 等） ---------- */
+.preset-list { display: grid; gap: var(--space-2); }
+.preset-card {
+  display: grid;
+  grid-template-columns: var(--preset-thumb, 56px) minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  color: var(--fg-base);
+  text-align: left;
+  cursor: pointer;
+}
+.preset-card:hover { border-color: var(--border-strong); background: var(--bg-surface-2); }
+.preset-card.active,
+.preset-card.is-active { border-color: var(--color-brand); box-shadow: inset 0 0 0 1px var(--color-brand); }
+.preset-card-copy { display: grid; gap: 2px; min-width: 0; }
+.preset-card-copy strong { color: var(--fg-strong); font-size: var(--text-xs); }
+.preset-card-copy span { color: var(--fg-muted); font-size: 11px; line-height: 1.25; }
+
+/* ---------- 折叠示例区（CSS 工具共用） ---------- */
+.tool-details summary {
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--fg-base);
+}
+
 /* ---------- 响应式 ---------- */
 @media (max-width: 768px) {
   aside {
     position: static;
   }
+  aside .panel {
+    padding: var(--space-3) var(--space-4);
+  }
+  .preset-list { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
 }

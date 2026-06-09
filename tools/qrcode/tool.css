@@ -1,0 +1,15 @@
+.qr-canvas-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  padding: var(--space-4);
+}
+.qr-canvas-wrap canvas {
+  border-radius: var(--radius-md);
+  image-rendering: pixelated;
+}
+.qr-canvas-wrap .qr-placeholder {
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+}

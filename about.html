@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>关于本站 · jqnest 工具箱</title>
+  <title>关于本站 · 极趣导航-在线工具箱</title>
   <meta name="description" content="关于 在线工具箱">
   <link rel="stylesheet" href="./public/styles/tokens.css">
   <link rel="stylesheet" href="./public/styles/themes.css">
@@ -11,45 +11,16 @@
   <link rel="stylesheet" href="./public/styles/layout.css">
   <link rel="stylesheet" href="./public/styles/components.css">
   <link rel="stylesheet" href="./public/styles/utilities.css">
-  <style>
-    .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-4); }
-    .feature-card {
-      padding: var(--space-4); border-radius: var(--radius-lg);
-      background: var(--bg-surface); border: 1px solid var(--border-base);
-      transition: transform var(--dur-base) var(--ease-emph), border-color var(--dur-base), box-shadow var(--dur-base);
-    }
-    .feature-card:hover { transform: translateY(-2px); border-color: var(--color-brand); box-shadow: var(--shadow-md); }
-    .feature-card .fc-icon {
-      width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
-      border-radius: var(--radius-md); background: var(--color-brand-soft); color: var(--color-brand);
-      font-size: 20px; margin-bottom: var(--space-3);
-    }
-    .feature-card h3 { font-size: var(--text-md); font-weight: 700; margin-bottom: var(--space-1); }
-    .feature-card p { font-size: var(--text-sm); color: var(--fg-muted); line-height: 1.6; margin: 0; }
-
-    .section-title {
-      font-size: var(--text-lg); font-weight: 700; margin-bottom: var(--space-4);
-      display: flex; align-items: center; gap: 10px;
-    }
-    .section-title::before {
-      content: ""; width: 4px; height: 18px;
-      background: var(--color-brand); border-radius: 2px; flex-shrink: 0;
-    }
-
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); align-items: stretch; }
-    .contact-card { padding: var(--space-4); border-radius: var(--radius-lg); background: var(--bg-surface); border: 1px solid var(--border-base); transition: border-color var(--dur-base), box-shadow var(--dur-base); }
-    .contact-card:hover { border-color: var(--color-brand); box-shadow: var(--shadow-sm); }
-    .contact-card h3 { font-size: var(--text-md); font-weight: 700; margin-bottom: var(--space-3); }
-    .contact-card a { color: var(--color-brand); text-decoration: none; }
-    .contact-card a:hover { text-decoration: underline; }
-    .contact-row { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm); color: var(--fg-base); margin-bottom: var(--space-2); }
-    .contact-row:last-child { margin-bottom: 0; }
-    .contact-row i { width: 16px; height: 16px; color: var(--fg-muted); flex-shrink: 0; }
-
-    @media (max-width: 640px) {
-      .contact-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <link rel="canonical" href="https://tools.jqnest.top/about.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="关于本站 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="关于 极趣导航-在线工具箱：一个免费、纯前端、尊重隐私的在线工具集合。">
+  <meta property="og:url" content="https://tools.jqnest.top/about.html">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <!-- SEO:END -->
 </head>
 <body data-page="about" data-base-path="./">
   <div class="page-shell"><main class="page-main"><div class="container" style="max-width:860px">
@@ -60,36 +31,36 @@
         <!-- 特色 -->
         <div>
           <h2 class="section-title">为什么选择我</h2>
-          <div class="feature-grid">
-            <div class="feature-card">
-              <div class="fc-icon"><i data-lucide="shield-check"></i></div>
-              <h3>尊重隐私</h3>
-              <p>所有处理都在浏览器本地完成，不经过任何服务器，不收集任何数据。</p>
+          <div class="grid grid-auto">
+            <div class="panel">
+              <div class="tool-icon u-mb-3"><i data-lucide="shield-check"></i></div>
+              <h3 class="panel-title">尊重隐私</h3>
+              <p class="panel-sub u-mb-0">所有处理都在浏览器本地完成，不经过任何服务器，不收集任何数据。</p>
             </div>
-            <div class="feature-card">
-              <div class="fc-icon"><i data-lucide="zap"></i></div>
-              <h3>即开即用</h3>
-              <p>无需注册、无需登录、无需安装，打开浏览器就能使用。</p>
+            <div class="panel">
+              <div class="tool-icon u-mb-3"><i data-lucide="zap"></i></div>
+              <h3 class="panel-title">即开即用</h3>
+              <p class="panel-sub u-mb-0">无需注册、无需登录、无需安装，打开浏览器就能使用。</p>
             </div>
-            <div class="feature-card">
-              <div class="fc-icon"><i data-lucide="palette"></i></div>
-              <h3>统一设计</h3>
-              <p>全站统一设计系统与组件库，统一使用 Lucide 图标库，深色/浅色主题随心切换。</p>
+            <div class="panel">
+              <div class="tool-icon u-mb-3"><i data-lucide="palette"></i></div>
+              <h3 class="panel-title">统一设计</h3>
+              <p class="panel-sub u-mb-0">全站统一设计系统与组件库，统一使用 Lucide 图标库，深色/浅色主题随心切换。</p>
             </div>
-            <div class="feature-card">
-              <div class="fc-icon"><i data-lucide="smartphone"></i></div>
-              <h3>多端适配</h3>
-              <p>桌面端优先，同时兼顾平板与移动设备的基本可用性。</p>
+            <div class="panel">
+              <div class="tool-icon u-mb-3"><i data-lucide="smartphone"></i></div>
+              <h3 class="panel-title">多端适配</h3>
+              <p class="panel-sub u-mb-0">桌面端优先，同时兼顾平板与移动设备的基本可用性。</p>
             </div>
-            <div class="feature-card">
-              <div class="fc-icon"><i data-lucide="rocket"></i></div>
-              <h3>轻量极速</h3>
-              <p>纯原生 HTML/CSS/JS，无重型框架依赖，弱机型也能流畅使用。</p>
+            <div class="panel">
+              <div class="tool-icon u-mb-3"><i data-lucide="rocket"></i></div>
+              <h3 class="panel-title">轻量极速</h3>
+              <p class="panel-sub u-mb-0">纯原生 HTML/CSS/JS，无重型框架依赖，弱机型也能流畅使用。</p>
             </div>
-            <div class="feature-card">
-              <div class="fc-icon"><i data-lucide="sparkles"></i></div>
-              <h3>AI 驱动</h3>
-              <p>借助 Windsurf + Cursor 等 AI 工具进行开发，高效迭代、持续优化。</p>
+            <div class="panel">
+              <div class="tool-icon u-mb-3"><i data-lucide="sparkles"></i></div>
+              <h3 class="panel-title">AI 驱动</h3>
+              <p class="panel-sub u-mb-0">借助 Windsurf + Codex + Cursor等 AI 工具开发，高效迭代、持续优化。</p>
             </div>
           </div>
         </div>
@@ -97,52 +68,84 @@
         <!-- 项目数据 -->
         <div>
           <h2 class="section-title">项目数据</h2>
-          <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
-            <div class="stat">
+          <div class="grid grid-4">
+            <div class="panel">
+              <div class="stat-label">已上线工具</div>
               <div class="stat-value" data-stat-tools>--</div>
-              <div class="stat-label">在线工具</div>
             </div>
-            <div class="stat">
-              <div class="stat-value">0</div>
-              <div class="stat-label">后端依赖</div>
+            <div class="panel">
+              <div class="stat-label">工具分类</div>
+              <div class="stat-value" data-stat-categories>--</div>
             </div>
-            <div class="stat">
-              <div class="stat-value">100%</div>
-              <div class="stat-label">浏览器运行</div>
+            <div class="panel">
+              <div class="stat-label">使用门槛</div>
+              <div class="stat-value">完全免费</div>
+            </div>
+            <div class="panel">
+              <div class="stat-label">文件与数据</div>
+              <div class="stat-value">不上传</div>
             </div>
           </div>
+          <p class="field-hint u-text-center u-mt-3 u-mb-0">文件与数据默认在浏览器本地处理，本站不收集、不存储；少数查询类工具会按需请求第三方接口。</p>
+        </div>
+
+        <!-- 开源组件 -->
+        <div id="opensource">
+          <h2 class="section-title">开源组件</h2>
+          <details class="panel details-panel" data-os-details>
+            <summary>
+              <span class="details-panel__title">致谢清单</span>
+              <span class="field-hint u-nowrap" data-os-count></span>
+            </summary>
+            <div class="details-panel__body">
+              <p class="field-hint u-mb-2" style="margin-top:0">通用库集中致谢；许可类型见 <a href="https://github.com/hjq766/Toolbox/blob/main/NOTICE.md" target="_blank" rel="noopener noreferrer">NOTICE.md</a>。外部 API、标准数据与合规说明仍在各工具页。</p>
+              <div data-attributions></div>
+            </div>
+          </details>
         </div>
 
         <!-- 注意事项 -->
         <div>
           <h2 class="section-title">注意事项</h2>
-          <div style="padding:var(--space-4);border-radius:var(--radius-lg);background:var(--bg-surface);border:1px solid var(--border-base);font-size:var(--text-sm);color:var(--fg-muted);line-height:1.8">
-            本项目主要借助 AI 编程工具辅助开发，未经全面系统测试，可能存在代码结构欠优化、异常处理不完善、隐藏逻辑错误或浏览器兼容性等问题。如遇 Bug 欢迎通过邮件或
-            <a href="https://github.com/hjq766/Toolbox/issues" target="_blank" style="color:var(--color-brand)">GitHub Issues</a> 反馈，感谢理解与支持！
+          <div class="panel">
+            <p class="panel-sub u-mb-0" style="line-height:1.8">本项目主要借助 AI 编程工具开发，未经全面系统测试，可能存在代码结构欠优化、异常处理不完善、隐藏逻辑错误或浏览器兼容性等问题。如遇 Bug 欢迎通过邮件或
+            <a href="https://github.com/hjq766/Toolbox/issues" target="_blank">GitHub Issues</a> 反馈，感谢理解与支持！</p>
           </div>
         </div>
 
         <!-- 联系 -->
         <div id="feedback">
           <h2 class="section-title">联系与反馈</h2>
-          <div class="contact-grid">
-            <div class="contact-card">
-              <h3>联系方式</h3>
-              <div class="contact-row"><i data-lucide="mail"></i><a href="mailto:jieqi.yellow@gmail.com">jieqi.yellow@gmail.com</a></div>
-              <div class="contact-row"><i data-lucide="compass"></i><a href="https://jqnav.top" target="_blank">极趣导航</a></div>
-              <div class="contact-row"><i data-lucide="globe"></i><a href="https://jqnest.top" target="_blank">个人主页</a></div>
-              <div class="contact-row"><svg class="lucide" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg><a href="https://github.com/hjq766/Toolbox" target="_blank">GitHub</a></div>
+          <div class="grid grid-2">
+            <div class="panel">
+              <h3 class="panel-title">联系方式</h3>
+              <div class="u-col u-gap-2 u-text-sm">
+                <div class="u-row u-gap-2"><i data-lucide="mail" class="icon-16 u-muted"></i><a href="mailto:jieqi.yellow@gmail.com">jieqi.yellow@gmail.com</a></div>
+                <div class="u-row u-gap-2"><i data-lucide="compass" class="icon-16 u-muted"></i><a href="https://jqnav.top" target="_blank">极趣导航</a></div>
+                <div class="u-row u-gap-2"><i data-lucide="globe" class="icon-16 u-muted"></i><a href="https://jqnest.top" target="_blank">个人主页</a></div>
+                <div class="u-row u-gap-2"><svg class="lucide icon-16 u-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg><a href="https://github.com/hjq766/Toolbox" target="_blank">GitHub</a></div>
+              </div>
             </div>
-            <div class="contact-card">
-              <h3>参与改进</h3>
-              <div class="contact-row"><i data-lucide="message-circle"></i><span>发现 Bug 或有功能建议，欢迎反馈</span></div>
-              <div class="contact-row"><i data-lucide="lightbulb"></i><span>新工具需求可通过邮件提交</span></div>
-              <div class="contact-row"><svg class="lucide" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg><a href="https://github.com/hjq766/Toolbox/issues" target="_blank">也可在 GitHub Issues 提交</a></div>
-              <div class="contact-row"><i data-lucide="heart"></i><span>纯爱好项目，持续迭代中</span></div>
+            <div class="panel">
+              <h3 class="panel-title">参与改进</h3>
+              <div class="u-col u-gap-2 u-text-sm">
+                <div class="u-row u-gap-2"><i data-lucide="message-circle" class="icon-16 u-muted"></i><span>发现 Bug 或有功能建议，欢迎反馈</span></div>
+                <div class="u-row u-gap-2"><i data-lucide="lightbulb" class="icon-16 u-muted"></i><span>新工具需求可通过邮件提交</span></div>
+                <div class="u-row u-gap-2"><svg class="lucide icon-16 u-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg><a href="https://github.com/hjq766/Toolbox/issues" target="_blank">也可在 GitHub Issues 提交</a></div>
+                <div class="u-row u-gap-2"><i data-lucide="heart" class="icon-16 u-muted"></i><span>纯爱好项目，持续迭代中</span></div>
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- 更新日志 -->
+        <div id="changelog">
+          <h2 class="section-title">更新日志</h2>
+          <div class="u-col u-gap-3" data-changelog></div>
+          <div class="u-text-center u-mt-3" data-cl-more hidden>
+            <button class="btn is-sm is-ghost" data-action="show-all">查看全部版本</button>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -151,14 +154,74 @@
   <script type="module" src="./public/scripts/core/app-init.js"></script>
   <script type="module">
     import { mountPageHeader } from './public/scripts/components/page-header.js';
-    import { readyTools } from './public/scripts/data/tools.js';
-    const el = document.querySelector('[data-stat-tools]');
-    if (el) el.textContent = readyTools().length + '+';
+    import { readyTools, CATEGORIES } from './public/scripts/data/tools.js';
+    import { CHANGELOG, publicChangelog } from './public/scripts/data/changelog.js';
+    import { ATTRIBUTION_GROUPS } from './public/scripts/data/attributions.js';
+    const attrEl = document.querySelector('[data-attributions]');
+    const osCountEl = document.querySelector('[data-os-count]');
+    const osDetails = document.querySelector('[data-os-details]');
+    const osTotal = ATTRIBUTION_GROUPS.reduce((n, g) => n + g.items.length, 0);
+    if (osCountEl) osCountEl.textContent = `${osTotal} 项`;
+    if (attrEl) {
+      attrEl.innerHTML = ATTRIBUTION_GROUPS.map(g => `
+        <p class="details-panel__line u-mb-0">
+          <span class="u-strong">${g.title}：</span>${g.items.map((i, idx) => `
+            ${idx ? '<span class="u-muted"> · </span>' : ''}<a href="${i.url}" target="_blank" rel="noopener noreferrer">${i.name}</a>
+          `).join('')}
+        </p>
+      `).join('');
+    }
+    if (osDetails && location.hash === '#opensource') osDetails.open = true;
+
+    const toolEl = document.querySelector('[data-stat-tools]');
+    const catEl = document.querySelector('[data-stat-categories]');
+    if (toolEl) toolEl.textContent = `${readyTools().length} 个`;
+    if (catEl) catEl.textContent = `${CATEGORIES.filter(c => c.id !== 'all' && c.id !== 'recently').length} 类`;
     mountPageHeader({
       title: '关于 在线工具箱',
       desc: '我是 Jacket，一枚野路子出身的设计师。这里是我日常顺手开发的小工具集合 —— 完全免费、无需注册、纯前端运行，所有处理都在浏览器本地完成，不上传任何数据，希望能帮到你。',
       eyebrow: '关于',
       backHref: './index.html',
+    });
+
+    // 更新日志渲染
+    const TAG_LABEL = {
+      tool: '新工具',
+      feat: '新增',
+      improve: '优化',
+      fix: '修复',
+      style: '样式',
+      refactor: '重构',
+      breaking: '变更',
+    };
+    const clEl = document.querySelector('[data-changelog]');
+    const moreBtn = document.querySelector('[data-cl-more]');
+    const SHOW_COUNT = 3;
+    let showAll = false;
+
+    function renderChangelog() {
+      const visible = publicChangelog();
+      const list = showAll ? visible : visible.slice(0, SHOW_COUNT);
+      clEl.innerHTML = list.map(v => `
+        <div class="panel">
+          <div class="cl-head">
+            <span class="cl-ver">${v.version}</span>
+            <span class="cl-date">${v.date}</span>
+          </div>
+          <ul class="cl-list">${v.items.map(i => `
+            <li><span class="cl-tag ${i.type}">${TAG_LABEL[i.type] || i.type}</span>${i.text}</li>
+          `).join('')}</ul>
+        </div>
+      `).join('');
+      if (visible.length > SHOW_COUNT) {
+        moreBtn.hidden = showAll;
+      }
+    }
+    renderChangelog();
+
+    document.querySelector('[data-action="show-all"]')?.addEventListener('click', () => {
+      showAll = true;
+      renderChangelog();
     });
   </script>
 </body>

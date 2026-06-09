@@ -1,0 +1,135 @@
+/*
+ * ico_generator/tool.css — 超过 80 行原因：
+ * ICO 图标生成器包含多平台尺寸选择网格、圆角裁剪预览 Canvas 的外壳样式、
+ * 平台切换标签组，以及多格式导出的预览列表，均为本工具独有。
+ */
+
+/* ===== ICO 生成器专属控件 ===== */
+.sz-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.sz-card {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+  padding: var(--space-2);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  color: var(--fg-base);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--dur-fast), background var(--dur-fast), color var(--dur-fast);
+}
+
+.sz-card:hover {
+  border-color: var(--color-brand);
+}
+
+.sz-card.on {
+  border-color: var(--color-brand);
+  background: color-mix(in srgb, var(--color-brand) 8%, transparent);
+  color: var(--color-brand);
+}
+
+.sz-card strong {
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.sz-card span {
+  overflow: hidden;
+  color: var(--fg-muted);
+  font-size: var(--text-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sz-card.on span {
+  color: color-mix(in srgb, var(--color-brand) 78%, var(--fg-muted));
+}
+
+.src-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-2);
+}
+
+.src-wrap canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 280px;
+}
+
+.crop-box {
+  position: absolute;
+  z-index: 5;
+  display: none;
+  border: 2px dashed var(--color-brand);
+  cursor: move;
+}
+
+.crop-box.vis {
+  display: block;
+}
+
+.c-h {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--bg-surface);
+  border-radius: var(--radius-sm);
+  background: var(--color-brand);
+}
+
+.c-h.nw {
+  top: -5px;
+  left: -5px;
+  cursor: nw-resize;
+}
+
+.c-h.ne {
+  top: -5px;
+  right: -5px;
+  cursor: ne-resize;
+}
+
+.c-h.sw {
+  bottom: -5px;
+  left: -5px;
+  cursor: sw-resize;
+}
+
+.c-h.se {
+  right: -5px;
+  bottom: -5px;
+  cursor: se-resize;
+}
+
+.ii-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--space-16);
+  border-radius: var(--radius-sm);
+}
+
+.ii-preview canvas {
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-xs);
+  image-rendering: pixelated;
+}
+
+.ii-preview.dark-bg {
+  background: var(--bg-inverse);
+}

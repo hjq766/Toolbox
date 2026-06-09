@@ -3,13 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTML 转文本 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>HTML 转文本 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="去除 HTML 标签，提取纯文本">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/html_text/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="HTML 转文本 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="去除 HTML 标签，提取纯文本">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/html_text/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"HTML 转文本","url":"https://tools.jqnest.top/tools/html_text/","description":"去除 HTML 标签，提取纯文本","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
   <link rel="stylesheet" href="../../public/styles/layout.css">
   <link rel="stylesheet" href="../../public/styles/components.css">
   <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <style>
+    .grid-2 > .panel textarea { min-height: 300px; }
+  </style>
 </head>
 <body data-page="tool" data-base-path="../../" data-tool-slug="html_text">
   <div class="page-shell"><main class="page-main"><div class="container">
@@ -17,30 +32,34 @@
       <header class="tool-header" data-tool-header></header>
       <div class="tool-body">
 
-        <div class="panel">
-          <label class="panel u-col u-gap-2" data-drop style="border-style:dashed;align-items:center;text-align:center;cursor:pointer;padding:var(--space-6);margin:0">
-            <div class="u-strong">拖拽 .html / .htm 文件到此处，或点击选择</div>
-            <div class="u-muted" style="font-size:var(--text-xs)">加载后会填充到下方的"HTML 源码"文本框</div>
-            <input type="file" accept=".html,.htm,text/html" hidden data-file>
-          </label>
-        </div>
-
-        <div class="panel">
-          <div class="grid grid-2">
-            <div class="field cm-embed" style="grid-template-rows:auto 1fr">
-              <label class="field-label">HTML 源码</label>
-              <textarea class="textarea u-mono" data-input placeholder="<div>Hello <b>World</b></div>" style="min-height:260px"></textarea>
+        <div class="grid grid-2">
+          <!-- 左：HTML 源码 -->
+          <div class="panel" data-drop>
+            <div class="u-row u-between u-mb-3" style="align-items:center">
+              <h3 class="panel-title" style="margin:0">HTML 源码</h3>
+              <div class="u-row u-gap-1">
+                <button class="btn is-sm is-ghost" data-action="pick-file">选择文件</button>
+                <button class="btn is-sm is-ghost" data-action="sample">示例</button>
+                <button class="btn is-sm is-ghost" data-action="clear">清空</button>
+              </div>
+              <input type="file" accept=".html,.htm,text/html" hidden data-file>
             </div>
-            <div class="field" style="grid-template-rows:auto 1fr">
-              <label class="field-label">提取结果</label>
-              <textarea class="textarea" data-output readonly placeholder="提取后的纯文本..." style="min-height:260px"></textarea>
-            </div>
+            <textarea class="textarea u-mono" data-input placeholder="粘贴 HTML 源码或拖拽 .html 文件到此处，实时提取纯文本"></textarea>
           </div>
-          <div class="u-row u-gap-3 u-mt-4">
-            <button class="btn is-primary" type="button" data-action="extract">提取文本</button>
-            <button class="btn" type="button" data-action="copy">复制结果</button>
-            <button class="btn" type="button" data-action="download">导出 .txt</button>
-            <button class="btn is-ghost" type="button" data-action="clear">清空</button>
+
+          <!-- 右：提取结果 -->
+          <div class="panel">
+            <div class="u-row u-between u-mb-3" style="align-items:center">
+              <div class="u-row u-gap-2" style="align-items:center">
+                <h3 class="panel-title" style="margin:0">提取结果</h3>
+                <span class="u-muted u-text-xs" data-count></span>
+              </div>
+              <div class="u-row u-gap-1">
+                <button class="btn is-sm" data-action="copy">复制</button>
+                <button class="btn is-sm" data-action="download">下载</button>
+              </div>
+            </div>
+            <textarea class="textarea" data-output readonly placeholder="提取后的纯文本..."></textarea>
           </div>
         </div>
 

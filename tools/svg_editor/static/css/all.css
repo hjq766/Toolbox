@@ -3041,6 +3041,13 @@ input[readonly=readonly]:focus {
     transition: color 0.3s ease;
 }
 
+.dock-item .dock-logo-img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    pointer-events: none;
+}
+
 .dock-item:hover .iconify {
     color: #3366FF;
 }

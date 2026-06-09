@@ -54,5 +54,5 @@ const render = debounce(() => {
 on(ta, 'input', render);
 on($('[data-clear]'), 'click', () => { ta.value = ''; ta.focus(); render(); });
 
-ta.value = '欢迎使用 jqnest 文本分析器 Text Analyzer.';
+ta.value = '欢迎使用文本分析器 Text Analyzer.';
 render();

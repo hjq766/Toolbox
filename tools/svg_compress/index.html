@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SVG 压缩 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>SVG 压缩 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="SVG 批量压缩，安全/平衡/激进档位预设，支持文件夹与代码粘贴">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/svg_compress/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="SVG 压缩 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="SVG 批量压缩，安全/平衡/激进档位预设，支持文件夹与代码粘贴">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/svg_compress/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"SVG 压缩","url":"https://tools.jqnest.top/tools/svg_compress/","description":"SVG 批量压缩，安全/平衡/激进档位预设，支持文件夹与代码粘贴","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -13,18 +25,10 @@
   <link rel="stylesheet" href="../_shared/sidebar.css">
   <link rel="stylesheet" href="../_shared/preview-grid.css">
   <style>
-    .svg-thumb{max-width:100%;max-height:100%;color:inherit}
-    .svg-thumb svg{max-width:100%;max-height:120px;display:block}
-    .status-badge{display:inline-flex;align-items:center;gap:var(--space-1);padding:2px 8px;font-size:var(--text-xs);border-radius:var(--radius-sm);font-weight:600}
-    .status-badge.is-pending{background:var(--bg-surface-2);color:var(--fg-muted)}
-    .status-badge.is-processing{background:rgba(var(--color-brand-rgb,59,130,246),.12);color:var(--color-brand)}
-    .status-badge.is-done{background:rgba(34,197,94,.1);color:var(--color-success)}
-    .status-badge.is-fail{background:rgba(239,68,68,.1);color:var(--color-danger,#ef4444)}
-    .summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-3)}
-    .summary-item{text-align:center;padding:var(--space-3);background:var(--bg-surface-2);border-radius:var(--radius-md)}
-    .summary-item .val{font-size:var(--text-lg);font-weight:600;color:var(--fg-default)}
-    .summary-item .val.highlight{color:var(--color-success)}
-    .summary-item .label{font-size:var(--text-xs);color:var(--fg-muted);margin-top:2px}
+    .svg-thumb { max-width: 100%; max-height: 100%; color: inherit; }
+    .svg-thumb svg { max-width: 100%; max-height: 120px; display: block; }
+    .preview-info .info-row .cv.good { font-weight: 700; }
+    .preview-item:has([data-status].is-fail) { border-color: color-mix(in srgb, var(--color-danger) 30%, transparent); }
   </style>
   <script src="../../public/vendor/jszip.min.js" defer></script>
 </head>
@@ -37,19 +41,34 @@
         <div class="grid grid-sidebar-r" style="--sidebar-w:300px">
           <!-- 左：上传 + 预览网格 -->
           <div>
-            <label class="panel u-col u-gap-2" data-drop style="border-style:dashed;align-items:center;text-align:center;cursor:pointer;padding:var(--space-8) var(--space-4);margin:0">
-              <i data-lucide="upload" style="font-size:1.8rem;opacity:.35"></i>
-              <div class="u-strong">点击或拖拽 SVG 文件到此处</div>
-              <div class="u-muted" style="font-size:var(--text-xs)">支持多选批量压缩 · 支持拖拽到网页任意位置上传</div>
+            <label class="panel u-col u-gap-2 upload-panel" data-drop>
+              <i data-lucide="upload"></i>
+              <div class="u-strong">点击、拖拽 SVG 文件或文件夹到此处</div>
+              <div class="u-muted u-text-xs">支持多选批量压缩 · 支持拖拽到网页任意位置上传</div>
               <input type="file" accept=".svg,image/svg+xml" multiple hidden data-file>
+              <input type="file" accept=".svg,image/svg+xml" multiple webkitdirectory hidden data-file-dir>
+              <div class="u-row u-gap-2 u-mt-2">
+                <button class="btn is-sm is-ghost" type="button" data-pick-dir title="选择文件夹，自动递归导入所有 SVG"><i data-lucide="folder-plus"></i> 选择文件夹</button>
+                <button class="btn is-sm is-ghost" type="button" data-no-pick data-action="toggle-paste" title="粘贴单个 SVG 代码进行压缩"><i data-lucide="clipboard"></i> 粘贴代码</button>
+              </div>
             </label>
+
+            <!-- 粘贴区域（默认折叠） -->
+            <div class="panel u-mt-3" data-paste-panel hidden>
+              <h3 class="panel-title">粘贴 SVG 代码</h3>
+              <textarea class="textarea u-mono u-text-xs" data-paste rows="6" placeholder="&lt;svg ...&gt;...&lt;/svg&gt;"></textarea>
+              <div class="u-row u-gap-2 u-mt-2">
+                <input class="input u-grow" data-paste-name placeholder="文件名（可选）" value="pasted.svg">
+                <button class="btn is-sm is-primary" type="button" data-action="add-paste">加入列表</button>
+              </div>
+            </div>
 
             <!-- 进度 -->
             <div data-progress hidden class="u-mt-3">
-              <div style="height:6px;background:var(--bg-surface-2);border-radius:var(--radius-sm);overflow:hidden">
-                <div data-bar style="height:100%;background:var(--color-brand);width:0%;transition:width .15s"></div>
+              <div class="progress">
+                <div class="progress-bar" data-bar></div>
               </div>
-              <div class="u-muted u-mt-1" style="font-size:var(--text-xs)" data-progress-text></div>
+              <div class="u-muted u-text-xs u-mt-1" data-progress-text></div>
             </div>
 
             <!-- 预览网格 -->
@@ -59,23 +78,47 @@
           <!-- 右：设置面板 -->
           <aside>
             <div class="panel">
-              <h3 class="panel-title">压缩选项</h3>
+              <h3 class="panel-title">压缩档位</h3>
+              <div class="opt-row" data-preset-row>
+                <button class="btn is-sm" type="button" data-preset="safe" title="仅移除注释与空白，绝对不影响渲染">安全</button>
+                <button class="btn is-sm is-active" type="button" data-preset="balanced" title="安全 + 移除 metadata、默认值、空 g，数值四舍五入到 3 位小数">平衡 ★</button>
+                <button class="btn is-sm" type="button" data-preset="aggressive" title="在平衡基础上进一步压缩路径 d 数据精度到2位小数，体积更小但可能丢失细微精度">激进</button>
+                <button class="btn is-sm" type="button" data-preset="custom" title="展开所有高级选项手动调整">自定义</button>
+              </div>
+              <p class="hint u-mt-2" data-preset-desc>移除 metadata、默认值、空 g，数值四舍五入到3位小数。<strong>推荐默认使用。</strong></p>
+            </div>
+
+            <div class="panel" data-custom-panel hidden>
+              <h3 class="panel-title">自定义选项</h3>
               <div class="switch-list">
-                <label class="switch-item">
-                  <input type="checkbox" data-opt="comments" checked> 移除注释
-                </label>
-                <label class="switch-item">
-                  <input type="checkbox" data-opt="empty" checked> 移除空属性
-                </label>
-                <label class="switch-item">
-                  <input type="checkbox" data-opt="defaults" checked> 移除默认值
-                </label>
-                <label class="switch-item">
-                  <input type="checkbox" data-opt="whitespace" checked> 压缩空白
-                </label>
-                <label class="switch-item">
-                  <input type="checkbox" data-opt="emptyg" checked> 移除空 &lt;g&gt;
-                </label>
+                <label class="switch-item"><input type="checkbox" data-opt="removeComments" checked> 移除注释</label>
+                <label class="switch-item"><input type="checkbox" data-opt="removeMetadata" checked> 移除 metadata</label>
+                <label class="switch-item"><input type="checkbox" data-opt="removeEmptyAttrs" checked> 移除空属性</label>
+                <label class="switch-item"><input type="checkbox" data-opt="removeDefaults" checked> 移除默认值（黑色填充等）</label>
+                <label class="switch-item"><input type="checkbox" data-opt="removeEmptyGroups" checked> 移除空 &lt;g&gt;</label>
+                <label class="switch-item"><input type="checkbox" data-opt="roundNumbers" checked> 数值四舍五入</label>
+                <label class="switch-item"><input type="checkbox" data-opt="roundPathData"> 路径 d 数据精度压缩</label>
+                <label class="switch-item"><input type="checkbox" data-opt="minifyWhitespace" checked> 压缩空白</label>
+              </div>
+              <div class="field u-mt-3">
+                <label class="label" for="svgNumericPrecision">普通数值精度</label>
+                <select class="select" id="svgNumericPrecision" data-opt-numeric-precision>
+                  <option value="4">保留 4 位小数</option>
+                  <option value="3" selected>保留 3 位小数</option>
+                  <option value="2">保留 2 位小数</option>
+                  <option value="1">保留 1 位小数</option>
+                  <option value="0">取整</option>
+                </select>
+              </div>
+              <div class="field">
+                <label class="label" for="svgPathPrecision">路径数据精度</label>
+                <select class="select" id="svgPathPrecision" data-opt-path-precision>
+                  <option value="4">保留 4 位小数</option>
+                  <option value="3">保留 3 位小数</option>
+                  <option value="2" selected>保留 2 位小数</option>
+                  <option value="1">保留 1 位小数</option>
+                  <option value="0">取整</option>
+                </select>
               </div>
             </div>
 
@@ -104,15 +147,17 @@
 
             <!-- 操作 -->
             <div class="panel">
-              <div class="act-group">
-                <button class="btn is-primary" type="button" data-action="compress" disabled><i data-lucide="minimize-2"></i> 开始压缩</button>
-                <button class="btn" type="button" data-action="download" hidden><i data-lucide="download"></i> 批量下载</button>
-                <button class="btn is-ghost" type="button" data-action="clear" hidden><i data-lucide="trash-2"></i> 清空列表</button>
+              <div class="act-group u-col u-gap-2">
+                <button class="btn is-primary is-block" type="button" data-action="compress" disabled>开始压缩</button>
+                <div class="u-row u-gap-2">
+                  <button class="btn is-block" type="button" data-action="download" hidden>批量下载</button>
+                  <button class="btn is-ghost is-block" type="button" data-action="clear" hidden>清空列表</button>
+                </div>
               </div>
             </div>
 
             <div class="panel">
-              <p class="hint">上传 SVG 文件后勾选压缩选项，点击开始压缩。支持批量处理。</p>
+              <p class="hint">需要精细编辑单个文件？<a href="../svg_code_editor/" class="u-link">打开 SVG 代码编辑器</a></p>
             </div>
           </aside>
         </div>

@@ -1,6 +1,7 @@
 import { mountToolHeader } from '../../public/scripts/core/tool-page.js';
 import { $, $$, on, debounce } from '../../public/scripts/utils/dom.js';
 import { showToast } from '../../public/scripts/components/toast.js';
+import { downloadBlob } from '../../public/scripts/utils/download.js';
 import { createEditor } from '../_shared/code-editor.js';
 
 mountToolHeader();
@@ -10,7 +11,7 @@ const cssInput   = $('[data-editor="css"]');
 const jsInput    = $('[data-editor="js"]');
 const stage      = $('[data-stage]');
 const frame      = $('[data-frame]', stage);
-const deviceBtns = $$('[data-device]');
+const deviceBtns = $$('.tab-btn[data-device]');
 const exportBtns = $$('[data-export]');
 
 const DEFAULT_HTML = `<div class="hero">
@@ -32,7 +33,9 @@ button {
   background: #fff; color: #333; font-weight: 600; cursor: pointer;
 }`;
 const DEFAULT_JS = `document.getElementById('btn').addEventListener('click', () => {
-  alert('Hello from JavaScript!');
+  console.log('Hello from JavaScript!');
+  btn.textContent = '点击成功 ✓';
+  setTimeout(() => { btn.textContent = '点击我'; }, 1500);
 });`;
 
 function buildHTML() {
@@ -61,19 +64,21 @@ function updatePreview() {
 
 function exportHTML() {
   const blob = new Blob([buildHTML()], { type: 'text/html;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'preview.html'; a.click();
-  URL.revokeObjectURL(url);
+  downloadBlob(blob, 'preview.html');
   showToast('HTML 已导出', { type: 'success' });
 }
 
 async function captureCanvas() {
   if (!window.html2canvas) { showToast('html2canvas 尚未加载', { type: 'warn' }); return null; }
   const doc = frame.contentDocument || frame.contentWindow.document;
-  return window.html2canvas(doc.documentElement, {
-    useCORS: true, allowTaint: true, backgroundColor: '#ffffff', logging: false
-  });
+  try {
+    return await window.html2canvas(doc.documentElement, {
+      useCORS: true, allowTaint: true, backgroundColor: '#ffffff', logging: false
+    });
+  } catch {
+    showToast('预览截图生成失败，请检查外部资源', { type: 'error' });
+    return null;
+  }
 }
 
 async function exportImage() {
@@ -129,7 +134,6 @@ if (!htmlInput.value) htmlInput.value = DEFAULT_HTML;
 if (!cssInput.value)  cssInput.value  = DEFAULT_CSS;
 if (!jsInput.value)   jsInput.value   = DEFAULT_JS;
 
-on(frame, 'load', updatePreview);
 updatePreview();
 switchDevice('desktop');
 

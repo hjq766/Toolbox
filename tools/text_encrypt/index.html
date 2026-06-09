@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>文本加密 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="AES / DES / TripleDES / Rabbit 对称加密解密">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/text_encrypt/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="文本加密 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="AES / DES / TripleDES / Rabbit 对称加密解密">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/text_encrypt/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"文本加密","url":"https://tools.jqnest.top/tools/text_encrypt/","description":"AES / DES / TripleDES / Rabbit 对称加密解密","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <script src="../../public/vendor/crypto-js.min.js" defer></script>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="text_encrypt">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <!-- 模式 + 密钥 -->
+        <div class="panel u-mb-3">
+          <div class="u-row u-gap-3" style="flex-wrap:wrap;align-items:center">
+            <div class="tabs">
+              <button class="tab-btn is-active" data-mode="encrypt">加密</button>
+              <button class="tab-btn" data-mode="decrypt">解密</button>
+            </div>
+            <div class="u-row u-gap-2" style="flex:1;min-width:200px;align-items:center">
+              <label style="font-size:var(--text-sm);white-space:nowrap;color:var(--fg-muted)">密钥</label>
+              <input class="input u-mono" type="text" data-key placeholder="输入密钥（AES 加密）" style="flex:1">
+              <button class="btn is-sm is-ghost" data-action="random-key">随机</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 输入 / 输出 -->
+        <div class="grid grid-2">
+          <div class="panel">
+            <div class="u-row u-between u-mb-3" style="align-items:center">
+              <h3 class="panel-title" style="margin:0" data-input-label>明文</h3>
+              <button class="btn is-sm is-ghost" data-action="clear">清空</button>
+            </div>
+            <textarea class="textarea u-mono" data-input placeholder="输入要加密的文本"></textarea>
+          </div>
+          <div class="panel">
+            <div class="u-row u-between u-mb-3" style="align-items:center">
+              <h3 class="panel-title" style="margin:0" data-output-label>密文</h3>
+              <button class="btn is-sm" data-action="copy">复制</button>
+            </div>
+            <textarea class="textarea u-mono" data-output readonly placeholder="加密结果"></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

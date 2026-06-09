@@ -16,7 +16,6 @@ const rowGapEl       = $('[data-input="rowGap"]');
 const planList       = $('[data-plan-list]');
 const gridPreview    = $('[data-grid-preview]');
 const previewInfo    = $('[data-preview-info]');
-const containerInfo  = $('[data-container-info]');
 
 const tabs     = $$('.tool-body > .tabs > .tab-btn');
 const views    = $$('[data-view]');
@@ -149,7 +148,7 @@ function renderPlans() {
             <strong>${esc(p.name)}</strong>
             <div class="u-row u-gap-2">
               <button class="btn is-sm" type="button" data-copy-svg="${i}">复制 SVG</button>
-              <button class="btn is-sm is-primary" type="button" data-apply="${i}">应用方案</button>
+              <button class="btn is-sm is-primary" type="button" data-apply="${i}">导出图片</button>
             </div>
           </div>
           <div class="gl-plan-mini" style="grid-template-columns:repeat(${Math.min(cols,16)},1fr);--plan-gap:${p.gap}px;--plan-margin:${p.sideMargin}px">${cells}</div>
@@ -214,14 +213,9 @@ function copySVG(plan) {
   svg += `\n  <text x="16" y="${h-20}" class="dt">容器: ${width}px | 列数: ${cols} | 列宽: ${cw}px | 间距: ${plan.gap}px | 边距: ${plan.sideMargin}px</text>`;
   svg += `\n</svg>`;
 
-  navigator.clipboard.writeText(svg)
-    .then(() => showToast('SVG 已复制，可直接粘贴到 Figma', { type: 'success' }))
-    .catch(() => {
-      const ta = Object.assign(document.createElement('textarea'), { value: svg });
-      ta.style.cssText = 'position:fixed;left:-9999px';
-      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
-      showToast('SVG 已复制', { type: 'success' });
-    });
+  import('../../public/scripts/utils/clipboard.js').then(({ copyText }) => {
+    copyText(svg).then(ok => showToast(ok ? 'SVG 已复制，可直接粘贴到 Figma' : '复制失败', { type: ok ? 'success' : 'error' }));
+  });
 }
 
 /* ================= 导出方案 PNG ================= */
@@ -269,7 +263,6 @@ function updateGridPreview() {
   gridPreview.innerHTML = Array.from({ length: cols * rows }, () => '<div class="grid-cell"></div>').join('');
 
   const colWidth = Math.max(0, Math.floor((cw - cGap * (cols - 1) - sm * 2) / cols));
-  containerInfo.textContent = `${cw}px 容器`;
   previewInfo.innerHTML = `
     <div class="stat"><div class="stat-label">容器宽度</div><strong>${cw}px</strong></div>
     <div class="stat"><div class="stat-label">列数</div><strong>${cols}列</strong></div>
@@ -331,14 +324,9 @@ function copyCSS() {
     border-radius: 4px;
     padding: 16px;
 }`;
-  navigator.clipboard.writeText(css)
-    .then(() => showToast('CSS 代码已复制', { type: 'success' }))
-    .catch(() => {
-      const ta = Object.assign(document.createElement('textarea'), { value: css });
-      ta.style.cssText = 'position:fixed;left:-9999px';
-      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
-      showToast('CSS 代码已复制', { type: 'success' });
-    });
+  import('../../public/scripts/utils/clipboard.js').then(({ copyText }) => {
+    copyText(css).then(ok => showToast(ok ? 'CSS 代码已复制' : '复制失败', { type: ok ? 'success' : 'error' }));
+  });
 }
 
 /* ================= Stepper 按钮 ================= */
@@ -358,7 +346,6 @@ on(containerWidth, 'input', renderPlans);
 [rowCountEl, colGapEl, rowGapEl, gridSideMargin].forEach(el => on(el, 'input', updateGridPreview));
 
 /* ================= 操作按钮 ================= */
-on($('[data-action="generate"]'), 'click', renderPlans);
 on($('[data-action="export"]'), 'click', exportCurrentGrid);
 on($('[data-action="copyCSS"]'), 'click', copyCSS);
 

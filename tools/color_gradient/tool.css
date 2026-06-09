@@ -1,0 +1,79 @@
+.cg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-3);
+}
+
+.cg-card {
+  position: relative; overflow: hidden;
+  height: 150px; padding: 0; border: 0;
+  border-radius: var(--radius-md);
+  color: var(--fg-invert); text-align: left; cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--dur-fast), box-shadow var(--dur-fast);
+}
+
+.cg-card:hover, .cg-card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.cg-card-shade {
+  position: absolute; inset: 35% 0 0;
+  background: linear-gradient(transparent, color-mix(in srgb, var(--bg-inverse) 72%, transparent));
+}
+
+.cg-meta {
+  position: absolute; inset: auto var(--space-3) var(--space-3);
+  display: flex; align-items: flex-end;
+  justify-content: space-between; gap: var(--space-2);
+}
+
+.cg-name, .cg-category { display: block; }
+.cg-name { font-size: var(--text-sm); }
+.cg-category { margin-top: var(--space-1); font-size: var(--text-xs); opacity: 0.76; }
+
+.cg-code {
+  position: absolute; inset: var(--space-3) var(--space-3) auto;
+  display: -webkit-box; overflow: hidden;
+  -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3;
+  padding: 0; border-radius: 0; background: none;
+  color: var(--fg-invert); font: 11px/1.45 var(--font-mono);
+  white-space: normal; word-break: break-all;
+  opacity: 0; transform: translateY(-4px);
+  text-shadow: 0 1px 6px color-mix(in srgb, var(--bg-inverse) 55%, transparent);
+  transition: opacity var(--dur-fast), transform var(--dur-fast);
+}
+
+.cg-card:hover .cg-code, .cg-card:focus-visible .cg-code {
+  opacity: 0.92; transform: translateY(0);
+}
+
+/* 浅色卡需要独立衬底，避免渐变预设上的名称与 CSS 代码失去对比度。 */
+.cg-card.is-light {
+  color: var(--fg-strong);
+  border: 1px solid color-mix(in srgb, var(--border-base) 65%, transparent);
+}
+
+.cg-card.is-light .cg-card-shade {
+  inset: 18% 0 0;
+  background: linear-gradient(transparent, color-mix(in srgb, var(--bg-inverse) 28%, transparent) 55%, color-mix(in srgb, var(--bg-inverse) 52%, transparent));
+}
+
+.cg-card.is-light .cg-category { opacity: 0.72; }
+.cg-card.is-light .cg-code { color: var(--fg-strong); text-shadow: none; }
+
+.cg-card.is-light::before {
+  content: ''; position: absolute; inset: 0 0 50%;
+  border-radius: inherit; pointer-events: none;
+  background: linear-gradient(color-mix(in srgb, var(--bg-surface) 72%, transparent), transparent);
+  opacity: 0; transition: opacity var(--dur-fast);
+}
+
+.cg-card.is-light:hover::before, .cg-card.is-light:focus-visible::before { opacity: 1; }
+.cg-grid > .empty { grid-column: 1 / -1; }
+
+@media (max-width: 640px) {
+  .cg-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cg-card { height: 130px; }
+}

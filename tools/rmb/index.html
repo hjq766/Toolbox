@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>人民币大写 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>人民币大写 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="数字金额转中文大写金额">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/rmb/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="人民币大写 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="数字金额转中文大写金额">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/rmb/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"人民币大写","url":"https://tools.jqnest.top/tools/rmb/","description":"数字金额转中文大写金额","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -11,6 +23,17 @@
   <link rel="stylesheet" href="../../public/styles/components.css">
   <link rel="stylesheet" href="../../public/styles/utilities.css">
   <link rel="stylesheet" href="../_shared/sidebar.css">
+  <style>
+    .rmb-input      { font-size: var(--text-lg); }
+    .rmb-hint       { font-size: 11px; color: var(--fg-muted); line-height: 1.4; margin-bottom: var(--space-2); }
+    .rmb-sep        { height: 1px; background: var(--border-base); margin: var(--space-4) 0; }
+    .rmb-main       { display: flex; flex-direction: column; }
+    .rmb-hero       { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-3); min-height: 160px; margin-top: var(--space-5); background: var(--bg-surface-2); border-radius: var(--radius-md); border: 1px solid var(--border-subtle); padding: var(--space-6) var(--space-5); }
+    .rmb-hero-label { font-size: var(--text-sm); color: var(--fg-muted); }
+    .rmb-hero-text  { font-size: var(--text-2xl); font-weight: 700; line-height: 1.5; text-align: center; word-break: break-all; color: var(--fg-strong); }
+    .rmb-right      { display: flex; flex-direction: column; }
+    .rmb-hist-area  { max-height: 175px; overflow-y: auto; }
+  </style>
 </head>
 <body data-page="tool" data-base-path="../../" data-tool-slug="rmb">
   <div class="page-shell"><main class="page-main"><div class="container">
@@ -18,30 +41,68 @@
       <header class="tool-header" data-tool-header></header>
       <div class="tool-body">
 
-        <div class="panel">
-          <!-- 输入 -->
-          <div class="input-group">
-            <span class="addon">¥</span>
-            <input class="input u-mono" type="text" data-digits placeholder="0.00" autocomplete="off" style="font-size:var(--text-lg)">
-          </div>
-          <div class="opt-row u-mt-4">
-            <button class="btn is-sm" type="button" data-quick="100">100</button>
-            <button class="btn is-sm" type="button" data-quick="1000">1,000</button>
-            <button class="btn is-sm" type="button" data-quick="10000">1万</button>
-            <button class="btn is-sm" type="button" data-quick="100000">10万</button>
-            <button class="btn is-sm" type="button" data-quick="1000000">100万</button>
+        <div class="grid grid-2">
+
+          <!-- 左：主操作区 -->
+          <div class="panel rmb-main">
+            <div class="input-group">
+              <span class="addon">¥</span>
+              <input class="input rmb-input u-mono" type="text" data-digits placeholder="0.00" autocomplete="off">
+            </div>
+            <div class="opt-row u-mt-4">
+              <button class="btn is-sm" type="button" data-quick="100">100</button>
+              <button class="btn is-sm" type="button" data-quick="1000">1,000</button>
+              <button class="btn is-sm" type="button" data-quick="10000">1万</button>
+              <button class="btn is-sm" type="button" data-quick="100000">10万</button>
+              <button class="btn is-sm" type="button" data-quick="1000000">100万</button>
+              <button class="btn is-sm" type="button" data-quick="10000000">1000万</button>
+              <button class="btn is-sm" type="button" data-quick="100000000">1亿</button>
+            </div>
+
+            <!-- 结果 Hero -->
+            <div class="rmb-hero">
+              <div class="rmb-hero-label" data-fmt>¥ 0.00</div>
+              <div class="rmb-hero-text" data-result>零元整</div>
+            </div>
+
+            <!-- 操作 -->
+            <div class="u-row u-gap-3 u-mt-4">
+              <button class="btn is-primary" type="button" data-action="copy">复制结果</button>
+              <button class="btn is-ghost" type="button" data-action="clear">清空</button>
+            </div>
           </div>
 
-          <!-- 结果 -->
-          <div style="margin-top:var(--space-6);padding:var(--space-5);background:var(--bg-surface-2);border-radius:var(--radius-md);min-height:60px">
-            <div data-result style="font-size:var(--text-xl);font-weight:700;line-height:1.8;word-break:break-all;color:var(--fg-strong)">零元整</div>
+          <!-- 右：合并面板 -->
+          <div class="panel rmb-right">
+
+            <!-- 转换历史 -->
+            <h3 class="panel-title">转换历史<button class="btn is-sm is-ghost" type="button" data-action="clear-history" hidden>清空</button></h3>
+            <div class="rmb-hist-area" data-history>
+              <p class="rmb-hint u-text-center" style="padding:var(--space-2) 0">暂无记录</p>
+            </div>
+
+            <div class="rmb-sep"></div>
+
+            <!-- 书写规范 -->
+            <h3 class="panel-title">书写规范</h3>
+            <div>
+              <p class="rmb-hint">标准数字</p>
+              <div class="u-mono" style="font-size:var(--text-sm);letter-spacing:.05em">零壹贰叁肆伍陆柒捌玖</div>
+            </div>
+            <div class="u-mt-3">
+              <p class="rmb-hint">计量单位</p>
+              <div class="u-mono" style="font-size:var(--text-sm);letter-spacing:.1em">拾 佰 仟 万 亿</div>
+            </div>
+            <div class="rmb-sep"></div>
+            <ul style="margin:0;padding-left:var(--space-4);font-size:var(--text-xs);color:var(--fg-muted);line-height:1.9">
+              <li>金额前加"人民币"字样</li>
+              <li>末位零时用"整"字结尾</li>
+              <li>不留空白，不得涂改</li>
+              <li>可用"¥"或"※"填满空格</li>
+            </ul>
+
           </div>
 
-          <!-- 操作 -->
-          <div class="u-row u-gap-3 u-mt-4">
-            <button class="btn is-primary" type="button" data-action="copy">复制结果</button>
-            <button class="btn is-ghost" type="button" data-action="clear">清空</button>
-          </div>
         </div>
 
       </div>

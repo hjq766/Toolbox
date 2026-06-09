@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>正则表达式测试 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="实时匹配高亮 + 分组捕获 + 常用正则速查库">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/regex_test/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="正则表达式测试 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="实时匹配高亮 + 分组捕获 + 常用正则速查库">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/regex_test/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"正则表达式测试","url":"https://tools.jqnest.top/tools/regex_test/","description":"实时匹配高亮 + 分组捕获 + 常用正则速查库","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <style>
+    .regex-input{display:flex;align-items:center;gap:0;border:1px solid var(--border-base);border-radius:var(--radius-md);background:var(--bg-surface);overflow:hidden;transition:border-color var(--dur-fast),box-shadow var(--dur-fast)}
+    .regex-input:focus-within{border-color:var(--color-brand);box-shadow:var(--shadow-focus)}
+    .regex-input .slash{padding:0 var(--space-2);color:var(--fg-subtle);font-family:var(--font-mono);font-size:var(--text-lg);user-select:none}
+    .regex-input input{flex:1;border:0;background:transparent;padding:var(--space-2) 0;font-family:var(--font-mono);font-size:var(--text-md);color:var(--fg-strong);outline:none}
+    .regex-input .flags{padding:0 var(--space-2);color:var(--fg-muted);font-family:var(--font-mono);font-size:var(--text-md);min-width:36px}
+    .hl-match{background:color-mix(in srgb, var(--color-brand) 25%, transparent);border-radius:2px;outline:1px solid color-mix(in srgb, var(--color-brand) 50%, transparent)}
+    .match-item{display:flex;gap:var(--space-3);font-size:var(--text-sm);padding:var(--space-2) 0;border-bottom:1px dashed var(--border-subtle)}
+    .match-idx{color:var(--fg-subtle);min-width:24px;text-align:right}
+    .match-val{font-family:var(--font-mono);color:var(--fg-strong);word-break:break-all}
+    .match-group{font-size:var(--text-xs);color:var(--fg-muted);margin-left:var(--space-2)}
+    .preset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--space-2)}
+    .preset-card{padding:var(--space-2) var(--space-3);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);cursor:pointer;transition:background var(--dur-fast),border-color var(--dur-fast)}
+    .preset-card:hover{background:var(--bg-surface-2);border-color:var(--border-strong)}
+    .preset-card .pc-name{font-weight:600;font-size:var(--text-sm)}
+    .preset-card .pc-regex{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--fg-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  </style>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="regex_test">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="panel u-mb-3">
+          <!-- 正则输入 -->
+          <div class="field u-mb-3">
+            <label class="field-label">正则表达式</label>
+            <div class="regex-input">
+              <span class="slash">/</span>
+              <input data-input="pattern" placeholder="输入正则表达式" autocomplete="off" spellcheck="false">
+              <span class="slash">/</span>
+              <input class="flags" data-input="flags" value="g" placeholder="g" maxlength="6" style="width:48px">
+            </div>
+          </div>
+          <!-- Flags -->
+          <div class="u-row u-gap-3 u-mb-3" style="flex-wrap:wrap">
+            <label class="checkbox"><input type="checkbox" data-flag="g" checked> g (全局)</label>
+            <label class="checkbox"><input type="checkbox" data-flag="i"> i (忽略大小写)</label>
+            <label class="checkbox"><input type="checkbox" data-flag="m"> m (多行)</label>
+            <label class="checkbox"><input type="checkbox" data-flag="s"> s (dotAll)</label>
+          </div>
+          <!-- 测试文本 -->
+          <div class="field u-mb-3">
+            <label class="field-label">测试文本</label>
+            <div data-highlight-wrap style="position:relative">
+              <textarea class="textarea u-mono" data-input="text" rows="6" placeholder="输入要匹配的文本" spellcheck="false"></textarea>
+            </div>
+          </div>
+          <!-- 错误 -->
+          <div class="field-error u-mb-2" data-error hidden></div>
+          <!-- 匹配统计 -->
+          <div class="u-row u-between u-mb-3">
+            <span class="u-muted" data-match-info>0 个匹配</span>
+            <button class="btn is-sm is-ghost" type="button" data-action="clear">清空</button>
+          </div>
+          <!-- 匹配结果 -->
+          <div data-matches></div>
+        </div>
+
+        <!-- 常用正则 -->
+        <div class="panel">
+          <h3 class="panel-title">常用正则速查</h3>
+          <div class="preset-grid" data-presets></div>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

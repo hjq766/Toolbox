@@ -43,9 +43,9 @@ function addResultRow(algo, value) {
   row.innerHTML = `
     <span class="badge is-brand">${escapeHtml(algo)}</span>
     <span class="u-break u-grow">${escapeHtml(value)}</span>
-    <button class="btn is-sm is-ghost" type="button" data-copy>复制</button>
+    <button class="btn is-sm is-ghost" type="button" data-action="copy">复制</button>
   `;
-  on(row.querySelector('[data-copy]'), 'click', async () => {
+  on(row.querySelector('[data-action="copy"]'), 'click', async () => {
     const ok = await copyText(value);
     showToast(ok ? '已复制' : '复制失败', { type: ok ? 'success' : 'error' });
   });

@@ -1,5 +1,5 @@
 import { mountToolHeader } from '../../public/scripts/core/tool-page.js';
-import { $, on } from '../../public/scripts/utils/dom.js';
+import { $, on, debounce } from '../../public/scripts/utils/dom.js';
 import { copyText } from '../../public/scripts/utils/clipboard.js';
 import { showToast } from '../../public/scripts/components/toast.js';
 import { downloadText } from '../../public/scripts/utils/download.js';
@@ -20,9 +20,9 @@ function esc(str) {
 
 /* ---------- createElement 模式 ---------- */
 function toCreateElement(html, mini) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
+  const doc = new DOMParser().parseFromString(html, 'text/html');
   const lines = [];
+  let seq = 0;
   lines.push('function createHTML() {');
 
   function walk(node, parentVar) {
@@ -32,7 +32,7 @@ function toCreateElement(html, mini) {
       return;
     }
     if (node.nodeType !== 1) return;
-    const v = '_el' + Math.random().toString(36).slice(2, 9);
+    const v = `el${++seq}`;
     lines.push(`  const ${v} = document.createElement("${node.tagName.toLowerCase()}");`);
     for (const a of node.attributes) {
       if (a.name === 'class') lines.push(`  ${v}.className = "${a.value}";`);
@@ -51,23 +51,30 @@ function toCreateElement(html, mini) {
   return mini ? lines.join('') : lines.join('\n');
 }
 
-/* ---------- 字符串模式 ---------- */
-function toString(html, mini) {
-  const clean = html.replace(/>\s+</g, '><').replace(/\s+/g, ' ').trim();
-  const lines = ['function createHTML() {', `  document.write("${esc(clean)}");`, '}'];
-  return mini ? lines.join('') : lines.join('\n');
+/* ---------- innerHTML 模式 ---------- */
+function toInnerHTML(html, mini) {
+  const s = html.trim().replace(/`/g, '\\`').replace(/\${/g, '\\${');
+  if (mini) return `document.getElementById("app").innerHTML=\`${s}\`;`;
+  return `const html = \`
+${s}
+\`;
+
+document.getElementById("app").innerHTML = html;`;
 }
 
-/* ---------- 动作 ---------- */
-on($('[data-action="convert"]'), 'click', () => {
+/* ---------- 实时转换 ---------- */
+function convert() {
   const src = inputEl.value.trim();
-  if (!src) { showToast('请输入 HTML 代码', { type: 'warn' }); return; }
+  if (!src) { outputEl.value = ''; return; }
   try {
-    const result = useCreate.checked ? toCreateElement(src, minify.checked) : toString(src, minify.checked);
-    outputEl.value = result;
-    showToast('转换成功');
-  } catch (e) { showToast('转换失败：' + e.message, { type: 'error' }); }
-});
+    outputEl.value = useCreate.checked ? toCreateElement(src, minify.checked) : toInnerHTML(src, minify.checked);
+  } catch { outputEl.value = ''; }
+}
+
+const debouncedConvert = debounce(convert, 300);
+on(inputEl, 'input', debouncedConvert);
+on(useCreate, 'change', convert);
+on(minify, 'change', convert);
 
 on($('[data-action="copy"]'), 'click', async () => {
   if (!outputEl.value) { showToast('结果为空', { type: 'warn' }); return; }

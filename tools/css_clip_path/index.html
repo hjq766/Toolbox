@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>CSS 裁剪形状 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="可视化生成 clip-path 裁剪形状，支持预设、多边形拖点、圆形/椭圆/内缩与 CSS 导出">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/css_clip_path/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="CSS 裁剪形状 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="可视化生成 clip-path 裁剪形状，支持预设、多边形拖点、圆形/椭圆/内缩与 CSS 导出">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/css_clip_path/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"CSS 裁剪形状","url":"https://tools.jqnest.top/tools/css_clip_path/","description":"可视化生成 clip-path 裁剪形状，支持预设、多边形拖点、圆形/椭圆/内缩与 CSS 导出","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="./tool.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="css_clip_path">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:330px">
+          <section class="u-col u-gap-4">
+            <div class="panel">
+              <div class="u-row u-between u-mb-3">
+                <div>
+                  <h3 class="panel-title">形状预览</h3>
+                  <p class="hint">布局盒子保持矩形，视觉区域由 clip-path 裁剪。</p>
+                </div>
+                <span class="badge" data-type-badge>polygon</span>
+              </div>
+
+              <div class="cp-canvas" data-canvas>
+                <div class="cp-demo-wrap" data-demo-wrap>
+                  <div class="cp-demo" data-demo>
+                    <div class="cp-demo-inner">
+                      <span class="cp-demo-kicker">CSS</span>
+                      <strong>Clip-path</strong>
+                      <span>Shape preview</span>
+                    </div>
+                  </div>
+                </div>
+                <svg class="cp-lines" data-lines viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+                <div class="cp-handles" data-handles></div>
+              </div>
+
+              <div class="summary-grid u-mt-4">
+                <div class="summary-item">
+                  <div class="val" data-point-count>6</div>
+                  <div class="label">控制点</div>
+                </div>
+                <div class="summary-item">
+                  <div class="val" data-shape-label>多边形</div>
+                  <div class="label">形状类型</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="u-row u-between u-mb-3">
+                <h3 class="panel-title">CSS 输出</h3>
+                <div class="u-row u-gap-2">
+                  <button class="btn is-sm is-primary" type="button" data-action="copy-css"><i data-lucide="copy"></i> 复制 CSS</button>
+                  <button class="btn is-sm" type="button" data-action="copy-html"><i data-lucide="code"></i> 复制 HTML</button>
+                </div>
+              </div>
+              <textarea class="textarea u-mono" data-css-output readonly></textarea>
+              <details class="tool-details u-mt-3">
+                <summary>HTML 示例</summary>
+                <textarea class="textarea u-mono u-mt-2" data-html-output readonly></textarea>
+              </details>
+            </div>
+          </section>
+
+          <aside class="u-col u-gap-4">
+            <div class="panel">
+              <h3 class="panel-title">形状类型</h3>
+              <div class="tabs" data-type-tabs>
+                <button class="tab-btn is-active" type="button" data-type="polygon">多边形</button>
+                <button class="tab-btn" type="button" data-type="circle">圆形</button>
+                <button class="tab-btn" type="button" data-type="ellipse">椭圆</button>
+                <button class="tab-btn" type="button" data-type="inset">内缩</button>
+              </div>
+            </div>
+
+            <div class="panel" data-panel="polygon">
+              <div class="u-row u-between u-mb-3">
+                <h3 class="panel-title">常用预设</h3>
+                <button class="btn is-sm is-ghost" type="button" data-action="reset-polygon"><i data-lucide="rotate-ccw"></i> 重置</button>
+              </div>
+              <div class="cp-preset-grid" data-preset-grid></div>
+              <div class="sep u-mt-3 u-mb-3"></div>
+              <div class="u-row u-gap-2">
+                <button class="btn is-sm" type="button" data-action="add-point"><i data-lucide="plus"></i> 加点</button>
+                <button class="btn is-sm" type="button" data-action="delete-point"><i data-lucide="minus"></i> 删点</button>
+                <button class="btn is-sm is-ghost" type="button" data-action="center-points">居中</button>
+              </div>
+              <div class="cp-point-list u-mt-3" data-point-list></div>
+            </div>
+
+            <div class="panel" data-panel="circle" hidden>
+              <h3 class="panel-title">圆形参数</h3>
+              <div class="u-col u-gap-3">
+                <label class="field">
+                  <span class="field-label">半径</span>
+                  <div class="range-row"><input type="range" min="5" max="80" value="42" data-circle="radius"><span class="val" data-val="circle-radius">42%</span></div>
+                </label>
+                <label class="field">
+                  <span class="field-label">中心 X</span>
+                  <div class="range-row"><input type="range" min="0" max="100" value="50" data-circle="x"><span class="val" data-val="circle-x">50%</span></div>
+                </label>
+                <label class="field">
+                  <span class="field-label">中心 Y</span>
+                  <div class="range-row"><input type="range" min="0" max="100" value="50" data-circle="y"><span class="val" data-val="circle-y">50%</span></div>
+                </label>
+              </div>
+            </div>
+
+            <div class="panel" data-panel="ellipse" hidden>
+              <h3 class="panel-title">椭圆参数</h3>
+              <div class="u-col u-gap-3">
+                <label class="field">
+                  <span class="field-label">横向半径</span>
+                  <div class="range-row"><input type="range" min="5" max="90" value="48" data-ellipse="rx"><span class="val" data-val="ellipse-rx">48%</span></div>
+                </label>
+                <label class="field">
+                  <span class="field-label">纵向半径</span>
+                  <div class="range-row"><input type="range" min="5" max="90" value="34" data-ellipse="ry"><span class="val" data-val="ellipse-ry">34%</span></div>
+                </label>
+                <label class="field">
+                  <span class="field-label">中心 X</span>
+                  <div class="range-row"><input type="range" min="0" max="100" value="50" data-ellipse="x"><span class="val" data-val="ellipse-x">50%</span></div>
+                </label>
+                <label class="field">
+                  <span class="field-label">中心 Y</span>
+                  <div class="range-row"><input type="range" min="0" max="100" value="50" data-ellipse="y"><span class="val" data-val="ellipse-y">50%</span></div>
+                </label>
+              </div>
+            </div>
+
+            <div class="panel" data-panel="inset" hidden>
+              <h3 class="panel-title">内缩参数</h3>
+              <div class="u-col u-gap-3">
+                <label class="field">
+                  <span class="field-label">上</span>
+                  <div class="range-row"><input type="range" min="0" max="45" value="8" data-inset="top"><span class="val" data-val="inset-top">8%</span></div>
+                </label>
+                <label class="field">
+                  <span class="field-label">右</span>
+                  <div class="range-row"><input type="range" min="0" max="45" value="8" data-inset="right"><span class="val" data-val="inset-right">8%</span></div>
+                </label>
+                <label class="field">
+                  <span class="field-label">下</span>
+                  <div class="range-row"><input type="range" min="0" max="45" value="8" data-inset="bottom"><span class="val" data-val="inset-bottom">8%</span></div>
+                </label>
+                <label class="field">
+                  <span class="field-label">左</span>
+                  <div class="range-row"><input type="range" min="0" max="45" value="8" data-inset="left"><span class="val" data-val="inset-left">8%</span></div>
+                </label>
+                <label class="field">
+                  <span class="field-label">圆角</span>
+                  <div class="range-row"><input type="range" min="0" max="80" value="24" data-inset="radius"><span class="val" data-val="inset-radius">24px</span></div>
+                </label>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">预览外观</h3>
+              <div class="u-col u-gap-3">
+                <label class="field">
+                  <span class="field-label">示例内容</span>
+                  <select class="select" data-demo-style>
+                    <option value="gradient">渐变卡片</option>
+                    <option value="photo">图片感背景</option>
+                    <option value="solid">纯色块</option>
+                    <option value="label">标签按钮</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span class="field-label">预览尺寸</span>
+                  <div class="range-row"><input type="range" min="42" max="96" value="72" data-preview-size><span class="val" data-val="preview-size">72%</span></div>
+                </label>
+                <label class="switch-item">
+                  <input type="checkbox" checked data-drop-shadow>
+                  <span>导出 drop-shadow 包裹层</span>
+                </label>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

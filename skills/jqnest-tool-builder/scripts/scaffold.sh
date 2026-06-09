@@ -9,7 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SKILL_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(cd "$SKILL_DIR/../.." && pwd)"
 TEMPLATES_DIR="$SKILL_DIR/assets/templates"
-TOOLS_DIR="$PROJECT_ROOT/v2/tools"
+TOOLS_DIR="$PROJECT_ROOT/tools"
 
 # ---------- 参数校验 ----------
 if [[ $# -lt 2 ]]; then
@@ -60,7 +60,7 @@ echo "   index.html  ← 基于 $TYPE 模板"
 echo "   page.js     ← 基于 $TYPE 模板"
 echo ""
 echo "⚠️  接下来你需要:"
-echo "   1. 在 v2/public/scripts/data/tools.js 注册新工具"
+echo "   1. 在 public/scripts/data/tools.js 注册新工具"
 echo "   2. 修改 index.html 中的 <title> 和业务 UI"
 echo "   3. 实现 page.js 中的 TODO 业务逻辑"
 echo "   4. 测试三种访问方式:"

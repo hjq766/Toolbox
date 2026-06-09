@@ -9,7 +9,7 @@ const previewBtn  = $('[data-preview]');
 const qrcodeBtn   = $('[data-qrcode]');
 const stage       = $('[data-stage]');
 const frame       = $('[data-frame]', stage);
-const deviceBtns  = $$('[data-device]');
+const deviceBtns  = $$('.tab-btn[data-device]');
 const qrArea      = $('[data-qr-area]');
 const qrcodeEl    = $('#qrcode');
 
@@ -95,5 +95,3 @@ on(document, 'click', (e) => {
 });
 
 switchDevice('desktop');
-// 初始化时把舞台设成 desktop
-stage.dataset.device = 'desktop';

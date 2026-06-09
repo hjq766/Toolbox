@@ -3,14 +3,11 @@ import { mountToolHeader } from '../../public/scripts/core/tool-page.js';
 import { $, on } from '../../public/scripts/utils/dom.js';
 import { showToast } from '../../public/scripts/components/toast.js';
 import { copyText } from '../../public/scripts/utils/clipboard.js';
+import { hexToRgbArr, rgbToHex as _rgbToHex } from '../../public/scripts/utils/color.js';
 
-// ── 1. 常量 / 工具函数 ──────────────────────────────────────
-function hexToRgb(hex) {
-  hex = hex.replace('#','');
-  if (hex.length===3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-  return [parseInt(hex.slice(0,2),16), parseInt(hex.slice(2,4),16), parseInt(hex.slice(4,6),16)];
-}
-function rgbToHex(r,g,b) { return '#'+[r,g,b].map(x=>Math.round(x).toString(16).padStart(2,'0')).join('').toUpperCase(); }
+// ── 1. 适配器（color_mixing 内部用数组格式和分离参数） ────────
+const hexToRgb = hexToRgbArr;
+const rgbToHex = (r, g, b) => _rgbToHex([r, g, b]);
 
 // ── 2. DOM 引用 ─────────────────────────────────────────────
 const pick1     = $('[data-picker="c1"]');
@@ -71,10 +68,6 @@ on(w2, 'input', () => { wv2.textContent = w2.value+'%'; w1.value = 100-w2.value;
 on(gradType, 'change', updateAll);
 on(gradAngle, 'input', () => { angleVal.textContent = gradAngle.value+'°'; updateAll(); });
 
-on(document, 'click', e => {
-  const b = e.target.closest('[data-copy]');
-  if (b && b.dataset.copy) { copyText(b.dataset.copy); showToast('已复制 ' + b.dataset.copy); }
-});
 on($('[data-action="copy-gradient"]'), 'click', () => {
   copyText($('[data-gradient-code]').value); showToast('CSS 已复制');
 });

@@ -7,7 +7,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-TOOLS_DIR="$PROJECT_ROOT/v2/tools"
+TOOLS_DIR="$PROJECT_ROOT/tools"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -17,77 +17,92 @@ NC='\033[0m'
 ERRORS=0
 WARNINGS=0
 CHECKED=0
+SKIPPED=0
+
+is_external_tool() {
+  local slug="$1"
+  local registry="$PROJECT_ROOT/public/scripts/data/tools.js"
+  [[ -f "$registry" ]] || return 1
+  grep -E "\{ slug: '$slug'[, ]" "$registry" | grep -q 'url:'
+}
 
 check_file() {
   local slug="$1"
   local html="$TOOLS_DIR/$slug/index.html"
 
-  if [[ ! -f "$html" ]]; then
-    echo -e "${RED}❌ $slug: index.html 不存在${NC}"
-    ((ERRORS++))
+  if is_external_tool "$slug"; then
+    echo -e "${YELLOW}  ↷ $slug: 第三方整页工具，跳过标准骨架检查${NC}"
+    ((++SKIPPED))
     return
   fi
 
-  ((CHECKED++))
+  if [[ ! -f "$html" ]]; then
+    echo -e "${RED}❌ $slug: index.html 不存在${NC}"
+    ((++ERRORS))
+    return
+  fi
+
+  ((++CHECKED))
   local issues=0
 
   # 1. data-page="tool"
   if ! grep -q 'data-page="tool"' "$html"; then
     echo -e "${RED}  ❌ $slug: 缺少 data-page=\"tool\"${NC}"
-    ((issues++))
+    ((++issues))
   fi
 
   # 2. data-base-path
   if ! grep -q 'data-base-path=' "$html"; then
     echo -e "${RED}  ❌ $slug: 缺少 data-base-path${NC}"
-    ((issues++))
+    ((++issues))
   fi
 
   # 3. data-tool-slug
   if ! grep -q 'data-tool-slug=' "$html"; then
     echo -e "${RED}  ❌ $slug: 缺少 data-tool-slug${NC}"
-    ((issues++))
+    ((++issues))
   fi
 
   # 4. data-tool-header
   if ! grep -q 'data-tool-header' "$html"; then
     echo -e "${RED}  ❌ $slug: 缺少 data-tool-header${NC}"
-    ((issues++))
+    ((++issues))
   fi
 
   # 5. app-init.js 引入
   if ! grep -q 'app-init.js' "$html"; then
     echo -e "${RED}  ❌ $slug: 未引入 app-init.js${NC}"
-    ((issues++))
+    ((++issues))
   fi
 
   # 6. page.js 引入
   if ! grep -q 'page.js' "$html"; then
     echo -e "${RED}  ❌ $slug: 未引入 page.js${NC}"
-    ((issues++))
+    ((++issues))
   fi
 
   # 7. CSS 引入顺序检查（至少 tokens.css + base.css + components.css）
   if ! grep -q 'tokens.css' "$html"; then
     echo -e "${YELLOW}  ⚠️  $slug: 未引入 tokens.css${NC}"
-    ((WARNINGS++))
+    ((++WARNINGS))
   fi
 
   if ! grep -q 'base.css' "$html"; then
     echo -e "${YELLOW}  ⚠️  $slug: 未引入 base.css${NC}"
-    ((WARNINGS++))
+    ((++WARNINGS))
   fi
 
   # 8. page.js 文件存在
   if [[ ! -f "$TOOLS_DIR/$slug/page.js" ]]; then
     echo -e "${RED}  ❌ $slug: page.js 不存在${NC}"
-    ((issues++))
+    ((++issues))
   fi
 
   if [[ $issues -eq 0 ]]; then
     echo -e "${GREEN}  ✅ $slug: 骨架正常${NC}"
   else
     ((ERRORS += issues))
+    return 0
   fi
 }
 
@@ -112,7 +127,7 @@ fi
 
 echo ""
 echo "=========================================="
-echo "已检查: $CHECKED  错误: $ERRORS  警告: $WARNINGS"
+echo "已检查: $CHECKED  跳过: $SKIPPED  错误: $ERRORS  警告: $WARNINGS"
 if [[ $ERRORS -gt 0 ]]; then
   echo -e "${RED}有 $ERRORS 个错误需要修复${NC}"
   exit 1

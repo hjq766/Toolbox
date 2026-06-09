@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>多宫格切图 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>多宫格切图 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="预设/自定义行列宫格切图，ZIP 批量下载">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/images_cut/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="多宫格切图 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="预设/自定义行列宫格切图，ZIP 批量下载">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/images_cut/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"多宫格切图","url":"https://tools.jqnest.top/tools/images_cut/","description":"预设/自定义行列宫格切图，ZIP 批量下载","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -12,16 +24,6 @@
   <link rel="stylesheet" href="../../public/styles/utilities.css">
   <link rel="stylesheet" href="../_shared/sidebar.css">
   <script src="../../public/vendor/jszip.min.js" defer></script>
-  <style>
-    .preview-wrap{position:relative;background:var(--bg-surface-2);border-radius:var(--radius);overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:300px}
-    .preview-wrap canvas{max-width:100%;max-height:500px;display:block}
-    .grid-overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
-    .custom-group{display:none;margin-top:var(--space-2)}
-    .custom-group.show{display:flex;gap:var(--space-2);align-items:center}
-    .custom-group input{width:56px;padding:4px 6px;border:1px solid var(--border);border-radius:var(--radius-sm);text-align:center;background:var(--bg-surface);color:var(--text);font-size:var(--text-sm)}
-    .preset-row{display:flex;gap:var(--space-1);flex-wrap:wrap}
-    .preset-row .btn.active{background:var(--color-brand);color:#fff}
-  </style>
 </head>
 <body data-page="tool" data-base-path="../../" data-tool-slug="images_cut">
   <div class="page-shell"><main class="page-main"><div class="container">
@@ -33,21 +35,21 @@
           <!-- 左 -->
           <div>
             <!-- 上传 -->
-            <label class="panel u-col u-gap-2" data-drop style="border-style:dashed;align-items:center;text-align:center;cursor:pointer;padding:var(--space-8) var(--space-4);margin:0">
-              <i data-lucide="upload" style="font-size:1.8rem;opacity:.35"></i>
+            <label class="panel u-col u-gap-2 upload-panel" data-drop>
+              <i data-lucide="upload"></i>
               <div class="u-strong">点击或拖拽图片到此处</div>
-              <div class="u-muted" style="font-size:var(--text-xs)">支持 JPG / PNG / WebP / GIF · 支持粘贴上传</div>
+              <div class="u-muted u-text-xs">支持 JPG / PNG / WebP / GIF · 支持粘贴上传</div>
               <input type="file" accept="image/*" hidden data-file>
             </label>
 
             <!-- 预览 -->
             <div class="panel u-mt-3" data-preview hidden>
-              <div class="u-row u-gap-2 u-mb-2" style="justify-content:flex-end">
-                <button class="btn is-sm is-ghost" data-action="delete">删除图片</button>
+              <div class="u-row u-between u-gap-2 u-mb-2">
+                <span class="hint u-mb-0" data-image-info></span>
+                <button class="btn is-sm is-ghost" type="button" data-img-delete title="移除图片"><i data-lucide="x"></i></button>
               </div>
               <div class="preview-wrap">
                 <canvas data-canvas></canvas>
-                <div class="grid-overlay" data-grid-lines></div>
               </div>
             </div>
           </div>
@@ -58,21 +60,52 @@
               <h3 class="panel-title">宫格预设</h3>
               <div class="opt-row" data-presets>
                 <button class="btn is-sm" data-rows="2" data-cols="2">2×2</button>
-                <button class="btn is-sm active" data-rows="3" data-cols="3">3×3</button>
+                <button class="btn is-sm is-active" data-rows="3" data-cols="3">3×3</button>
                 <button class="btn is-sm" data-rows="4" data-cols="4">4×4</button>
+                <button class="btn is-sm" data-rows="1" data-cols="3">三联图</button>
+                <button class="btn is-sm" data-rows="3" data-cols="1">长图三切</button>
                 <button class="btn is-sm" data-rows="2" data-cols="3">2×3</button>
                 <button class="btn is-sm" data-rows="3" data-cols="2">3×2</button>
                 <button class="btn is-sm" data-custom>自定义</button>
               </div>
-              <div class="custom-group" data-custom-group>
-                <span style="font-size:var(--text-sm)">行</span>
-                <input type="number" data-custom-rows value="3" min="1" max="10">
-                <span style="font-size:var(--text-sm)">列</span>
-                <input type="number" data-custom-cols value="3" min="1" max="10">
-                <button class="btn is-sm is-primary" data-action="apply-custom">确定</button>
+              <div class="u-row u-gap-2 u-mt-2" data-custom-group hidden>
+                <div class="input-group u-grow">
+                  <span class="addon">行</span>
+                  <input class="input is-center" type="number" data-custom-rows value="3" min="1" max="10">
+                </div>
+                <div class="input-group u-grow">
+                  <span class="addon">列</span>
+                  <input class="input is-center" type="number" data-custom-cols value="3" min="1" max="10">
+                </div>
               </div>
               <div class="hint">选择切割的行列数，或自定义尺寸</div>
             </div>
+
+            <div class="panel">
+              <h3 class="panel-title">导出设置</h3>
+              <div class="field">
+                <span class="field-label">输出格式</span>
+                <div class="opt-row" data-format-row>
+                  <button class="btn is-sm is-active" data-format="png">PNG</button>
+                  <button class="btn is-sm" data-format="jpg">JPG</button>
+                  <button class="btn is-sm" data-format="webp">WebP</button>
+                </div>
+              </div>
+              <div class="field u-mt-3" data-quality-panel hidden>
+                <div class="u-row u-between">
+                  <span class="field-label">图片质量</span>
+                  <span class="val" data-quality-val>92%</span>
+                </div>
+                <div class="range-row">
+                  <input type="range" data-quality min="10" max="100" value="92">
+                </div>
+              </div>
+              <label class="field u-mt-3">
+                <span class="field-label">文件名前缀</span>
+                <input class="input" data-name-prefix placeholder="默认使用原图文件名">
+              </label>
+            </div>
+
             <div class="panel">
               <div class="act-group">
                 <button class="btn is-primary" data-action="cut" disabled>切割并下载 ZIP</button>

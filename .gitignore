@@ -1,0 +1,15 @@
+.DS_Store
+
+# zhongguose.com 原始导出，仅作 build-cn-colors.mjs 输入，不提交
+tools/color_name/colors.json
+
+# 本地归档、开发文档与部署辅助文件，不进入版本分支
+old/
+docs/
+历史版本/
+待添加/
+PDFWmBatch/
+scripts/
+start.command
+sitemap.xml
+nginx-cache.conf

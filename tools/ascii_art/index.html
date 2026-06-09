@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>ASCII 字符画 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="图片转 ASCII 字符画 + 文字艺术字生成，支持彩色、多密度、多字体">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/ascii_art/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="ASCII 字符画 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="图片转 ASCII 字符画 + 文字艺术字生成，支持彩色、多密度、多字体">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/ascii_art/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"ASCII 字符画","url":"https://tools.jqnest.top/tools/ascii_art/","description":"图片转 ASCII 字符画 + 文字艺术字生成，支持彩色、多密度、多字体","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <style>
+    .ascii-workspace { display: grid; grid-template-columns: 1fr 300px; gap: var(--space-4); align-items: start; }
+    .ascii-output {
+      background: var(--bg-surface-2);
+      border: 1px solid var(--border-base);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      overflow: auto;
+      max-height: 70vh;
+      min-height: 300px;
+    }
+    .ascii-output pre {
+      margin: 0;
+      font-family: monospace;
+      font-size: var(--ascii-font-size, 6px);
+      line-height: 1.1;
+      letter-spacing: 0.05em;
+      white-space: pre;
+      color: var(--fg-base);
+    }
+    .ascii-output pre .ascii-color { display: inline; }
+    .ascii-placeholder {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 300px; color: var(--fg-muted); text-align: center; gap: 12px;
+    }
+    .ascii-placeholder i { font-size: 2.5rem; opacity: .3; }
+    .mode-panel { display: none; }
+    .mode-panel.is-active { display: block; }
+    @media (max-width: 768px) {
+      .ascii-workspace { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="ascii_art">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="ascii-workspace">
+
+          <!-- 左：输出区 -->
+          <div class="ascii-output" data-output>
+            <div class="ascii-placeholder">
+              <i data-lucide="image"></i>
+              <div>上传图片或输入文字生成字符画</div>
+            </div>
+          </div>
+
+          <!-- 右：控制面板 -->
+          <aside>
+            <div class="panel u-col u-gap-3">
+              <div class="tabs" data-tabs style="width:100%">
+                <button class="tab-btn is-active" data-tab="image">图片转字符</button>
+                <button class="tab-btn" data-tab="text">文字字符画</button>
+              </div>
+
+              <!-- 图片模式 -->
+              <div class="mode-panel is-active u-col u-gap-3" data-mode="image">
+                <label class="panel u-col u-gap-2 upload-panel is-comfortable" data-drop>
+                  <i data-lucide="upload" style="font-size:1.5rem;opacity:.35"></i>
+                  <div class="u-strong u-text-sm">点击或拖拽图片</div>
+                  <input type="file" accept="image/*" hidden data-file>
+                </label>
+
+                <div class="range-row">
+                  <label class="field-label">宽度</label>
+                  <input type="range" min="40" max="200" value="100" data-opt="cols">
+                  <span class="val" data-val-cols>100</span>
+                </div>
+
+                <div class="range-row">
+                  <label class="field-label">密度</label>
+                  <input type="range" min="0" max="2" value="1" step="1" data-opt="density">
+                  <span class="val" data-val-density>标准</span>
+                </div>
+
+                <div class="u-row u-gap-3" style="flex-wrap:wrap">
+                  <label class="u-row u-gap-1" style="align-items:center;cursor:pointer;font-size:var(--text-sm)">
+                    <input type="checkbox" data-opt="invert"> 反色
+                  </label>
+                  <label class="u-row u-gap-1" style="align-items:center;cursor:pointer;font-size:var(--text-sm)">
+                    <input type="checkbox" data-opt="color"> 彩色
+                  </label>
+                </div>
+              </div>
+
+              <!-- 文字模式 -->
+              <div class="mode-panel u-col u-gap-3" data-mode="text">
+                <div class="field">
+                  <label class="field-label">输入文字</label>
+                  <input class="input is-sm" type="text" data-text-input placeholder="Hello" value="Hello" maxlength="30">
+                </div>
+
+                <div class="field">
+                  <label class="field-label">字体</label>
+                  <select class="input is-sm" data-font>
+                    <option value="Standard">Standard</option>
+                    <option value="Big">Big</option>
+                    <option value="Slant">Slant</option>
+                    <option value="Small">Small</option>
+                    <option value="Banner">Banner</option>
+                    <option value="Block">Block</option>
+                    <option value="Doom">Doom</option>
+                    <option value="Lean">Lean</option>
+                    <option value="Mini">Mini</option>
+                    <option value="Script">Script</option>
+                    <option value="Shadow">Shadow</option>
+                    <option value="Speed">Speed</option>
+                    <option value="Ivrit">Ivrit</option>
+                    <option value="Ogre">Ogre</option>
+                    <option value="Peaks">Peaks</option>
+                    <option value="Rectangles">Rectangles</option>
+                    <option value="Star Wars">Star Wars</option>
+                    <option value="Thick">Thick</option>
+                    <option value="Thin">Thin</option>
+                    <option value="3-D">3-D</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="sep"></div>
+
+              <div class="act-group">
+                <div class="u-row u-gap-2">
+                  <button class="btn is-primary is-block" data-copy>复制</button>
+                  <button class="btn is-block" data-download>下载 TXT</button>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

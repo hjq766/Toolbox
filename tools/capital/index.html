@@ -3,13 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>世界首都 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>世界首都 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="世界各国首都信息查询，按洲分类">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/capital/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="世界首都 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="世界各国首都信息查询，按洲分类">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/capital/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"世界首都","url":"https://tools.jqnest.top/tools/capital/","description":"世界各国首都信息查询，按洲分类","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
   <link rel="stylesheet" href="../../public/styles/layout.css">
   <link rel="stylesheet" href="../../public/styles/components.css">
   <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../../public/styles/browse.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
   <script src="../../public/vendor/capital_data.js"></script>
   <style>
@@ -24,15 +37,19 @@
       <header class="tool-header" data-tool-header></header>
       <div class="tool-body">
 
-        <div class="panel">
-          <label class="search-shell" style="max-width:460px">
-            <i data-lucide="search" class="search-icon" aria-hidden="true"></i>
-            <input class="search-box" type="search" data-search placeholder="搜索国家、首都、英文名…" autocomplete="off">
-          </label>
+        <div class="browse-head">
+          <div class="browse-toolbar">
+            <label class="search-shell">
+              <i data-lucide="search" class="search-icon" aria-hidden="true"></i>
+              <input class="search-box" type="search" data-search placeholder="搜索国家、首都、英文名…" autocomplete="off">
+            </label>
+            <span class="browse-toolbar__meta" data-status></span>
+          </div>
+          <div data-tabs role="tablist"></div>
         </div>
 
-        <div class="tabs" role="tablist" data-tabs></div>
-        <div data-content class="u-mt-4"></div>
+        <div class="browse-body" data-content></div>
+
         <div class="empty-panel" data-empty hidden>
           <h3>未找到相关结果</h3>
           <p>请尝试其他关键词</p>

@@ -1,0 +1,27 @@
+/* ===== CSS 圆角生成 ===== */
+.br-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 380px;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--border-subtle) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--border-subtle) 55%, transparent) 1px, transparent 1px),
+    var(--bg-surface-2);
+  background-size: 24px 24px;
+}
+
+.br-box {
+  width: 180px;
+  height: 180px;
+  transition: border-radius var(--dur-slow) var(--ease-emph), background var(--dur-base);
+}
+
+
+@media (max-width: 640px) {
+  .br-stage { min-height: 260px; }
+  .br-box   { width: 140px; height: 140px; }
+}

@@ -32,7 +32,7 @@ function updateSize() {
   else if (bytes < 1024 * 1024) sizeEl.textContent = (bytes / 1024).toFixed(2) + ' KB';
   else sizeEl.textContent = (bytes / (1024 * 1024)).toFixed(2) + ' MB';
 }
-on(editorEl, 'input', () => { updateSize(); originalJson = null; });
+on(editorEl, 'input', () => { updateSize(); if (currentFormat === 'json') originalJson = null; });
 
 /* ---------- 拖拽 / 选择文件 ---------- */
 on(fileEl, 'change', e => loadFile(e.target.files[0]));
@@ -46,27 +46,54 @@ function loadFile(f) {
 }
 
 /* ---------- 格式化 / 压缩 / 校验 ---------- */
+function setPreviewTab(fmt) {
+  currentFormat = fmt;
+  $$('[data-preview]').forEach(b => b.classList.toggle('is-active', b.dataset.preview === fmt));
+}
+
+/**
+ * 解析编辑器内容为 JS 对象。
+ * 优先用缓存的 originalJson，否则按 JSON → YAML 顺序自动检测。
+ * CSV 内容无法反向解析，抛出友好提示。
+ */
+function getJson() {
+  if (originalJson) return originalJson;
+  const text = editorEl.value.trim();
+  if (!text) throw new Error('编辑器为空');
+  if (currentFormat === 'csv') throw new Error('CSV 格式无法反向解析，请先切回 JSON 或 YAML 视图');
+  // 先尝试 JSON
+  try { const o = JSON.parse(text); originalJson = o; return o; } catch (_) {}
+  // 再尝试 YAML
+  try {
+    const o = jsyaml.load(text);
+    if (o !== null && typeof o === 'object') { originalJson = o; return o; }
+  } catch (_) {}
+  throw new Error('内容不是有效的 JSON 或 YAML，请检查格式');
+}
+
 on($('[data-action="format"]'), 'click', () => {
   try {
-    const obj = JSON.parse(editorEl.value);
+    const obj = getJson();
     editorEl.value = JSON.stringify(obj, null, 2);
-    originalJson = obj; currentFormat = 'json'; updateSize();
+    originalJson = obj; setPreviewTab('json'); updateSize();
     showToast('格式化成功');
-  } catch (e) { showToast('无效的 JSON：' + e.message, { type: 'error' }); }
+  } catch (e) { showToast('格式化失败：' + e.message, { type: 'error' }); }
 });
 
 on($('[data-action="compress"]'), 'click', () => {
   try {
-    const obj = JSON.parse(editorEl.value);
+    const obj = getJson();
     editorEl.value = JSON.stringify(obj);
-    originalJson = obj; currentFormat = 'json'; updateSize();
+    originalJson = obj; setPreviewTab('json'); updateSize();
     showToast('压缩成功');
-  } catch (e) { showToast('无效的 JSON：' + e.message, { type: 'error' }); }
+  } catch (e) { showToast('压缩失败：' + e.message, { type: 'error' }); }
 });
 
 on($('[data-action="validate"]'), 'click', () => {
-  try { JSON.parse(editorEl.value); showToast('JSON 格式有效 ✓'); }
-  catch (e) { showToast('JSON 格式无效：' + e.message, { type: 'error' }); }
+  try {
+    getJson(); // 复用自动检测逻辑
+    showToast(currentFormat === 'yaml' ? 'YAML 格式有效 ✓' : 'JSON 格式有效 ✓', { type: 'success' });
+  } catch (e) { showToast('格式无效：' + e.message, { type: 'error' }); }
 });
 
 /* ---------- 预览为 JSON / YAML / CSV ---------- */
@@ -89,20 +116,16 @@ function jsonToCSV(data) {
 
 $$('[data-preview]').forEach(btn => on(btn, 'click', () => {
   const fmt = btn.dataset.preview;
+  if (fmt === currentFormat) return; // 已是当前格式，不重复处理
   try {
-    let json = originalJson;
-    if (!json) {
-      json = JSON.parse(editorEl.value);
-      originalJson = json;
-    }
+    const json = getJson(); // 自动检测 JSON / YAML，CSV 会提前报错
     let output;
     if (fmt === 'json')      output = JSON.stringify(json, null, 2);
     else if (fmt === 'yaml') output = jsyaml.dump(json);
     else if (fmt === 'csv')  output = jsonToCSV(json);
     editorEl.value = output;
-    currentFormat = fmt;
+    setPreviewTab(fmt);
     updateSize();
-    $$('[data-preview]').forEach(b => b.classList.toggle('is-active', b === btn));
     showToast(`已切换到 ${fmt.toUpperCase()}`);
   } catch (e) { showToast('转换失败：' + e.message, { type: 'error' }); }
 }));

@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ICO 图标生成 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>ICO 图标生成 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="多平台图标生成（Win/Mac/iOS/Android/Favicon）+ 裁剪 + 圆角 + ICO/ICNS/PNG">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/ico_generator/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="ICO 图标生成 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="多平台图标生成（Win/Mac/iOS/Android/Favicon）+ 裁剪 + 圆角 + ICO/ICNS/PNG">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/ico_generator/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"ICO 图标生成","url":"https://tools.jqnest.top/tools/ico_generator/","description":"多平台图标生成（Win/Mac/iOS/Android/Favicon）+ 裁剪 + 圆角 + ICO/ICNS/PNG","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -11,64 +23,8 @@
   <link rel="stylesheet" href="../../public/styles/components.css">
   <link rel="stylesheet" href="../../public/styles/utilities.css">
   <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="./tool.css">
   <script src="../../public/vendor/jszip.min.js" defer></script>
-  <style>
-    /* 平台卡片 */
-    .plat-row{display:flex;gap:6px;flex-wrap:wrap}
-    .plat-card{padding:7px 14px;border:1px solid var(--border-base);border-radius:var(--radius);font-size:var(--text-sm);font-weight:600;cursor:pointer;background:var(--bg-surface);transition:all .15s}
-    .plat-card:hover{border-color:var(--color-brand)}
-    .plat-card.active{background:var(--color-brand);color:#fff;border-color:var(--color-brand);box-shadow:0 2px 8px rgba(99,102,241,.25)}
-
-    /* 尺寸卡片 */
-    .sz-grid{display:flex;flex-wrap:wrap;gap:6px}
-    .sz-card{padding:6px 10px;border:1px solid var(--border-base);border-radius:var(--radius-sm);font-size:var(--text-xs);cursor:pointer;transition:all .12s;background:var(--bg-surface);text-align:center;min-width:60px}
-    .sz-card:hover{border-color:var(--color-brand)}
-    .sz-card.on{background:rgba(99,102,241,.08);border-color:var(--color-brand);color:var(--color-brand)}
-    .sz-label{font-weight:700;font-variant-numeric:tabular-nums}
-    .sz-desc{font-size:10px;color:var(--fg-muted);margin-top:1px}
-    .sz-card.on .sz-desc{color:var(--color-brand)}
-
-    /* 快捷按钮 */
-    .quick-row{display:flex;gap:4px;flex-wrap:wrap;margin-top:var(--space-2)}
-    .qbtn{padding:4px 10px;font-size:11px;font-weight:600;border:1px solid var(--border-base);border-radius:var(--radius-sm);background:var(--bg-surface-2);cursor:pointer;transition:all .12s}
-    .qbtn:hover{border-color:var(--color-brand);color:var(--color-brand)}
-
-    /* 圆角预设 */
-    .rp-row{display:flex;gap:4px;margin-top:6px}
-    .rp-row button{padding:4px 10px;font-size:11px;font-weight:600;border:1px solid var(--border-base);border-radius:var(--radius-sm);background:var(--bg-surface-2);cursor:pointer;transition:all .12s}
-    .rp-row button:hover{border-color:var(--color-brand)}
-    .rp-row button.active{background:var(--color-brand);color:#fff;border-color:var(--color-brand)}
-
-    /* 格式卡片 */
-    .fmt-grid{display:flex;flex-direction:column;gap:6px}
-    .fmt-card{display:flex;align-items:center;gap:var(--space-2);padding:10px 12px;border:1px solid var(--border-base);border-radius:var(--radius);cursor:pointer;transition:all .15s;background:var(--bg-surface)}
-    .fmt-card:hover{border-color:var(--color-brand)}
-    .fmt-card.checked{border-color:var(--color-brand);background:rgba(99,102,241,.06)}
-    .fmt-card input[type=checkbox]{accent-color:var(--color-brand);width:16px;height:16px;pointer-events:none}
-    .fc-title{font-weight:700;font-size:var(--text-sm)}
-    .fc-desc{font-size:11px;color:var(--fg-muted)}
-
-    /* 源图预览 */
-    .src-wrap{position:relative;background:var(--bg-surface-2);border-radius:var(--radius);overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:200px}
-    .src-wrap canvas{max-width:100%;max-height:280px;display:block}
-
-    /* 裁剪框 */
-    .crop-box{position:absolute;border:2px dashed var(--color-brand);cursor:move;display:none;z-index:5}
-    .crop-box.vis{display:block}
-    .c-h{position:absolute;width:10px;height:10px;background:var(--color-brand);border:1px solid #fff;border-radius:2px}
-    .c-h.nw{top:-5px;left:-5px;cursor:nw-resize}.c-h.ne{top:-5px;right:-5px;cursor:ne-resize}
-    .c-h.sw{bottom:-5px;left:-5px;cursor:sw-resize}.c-h.se{bottom:-5px;right:-5px;cursor:se-resize}
-    .crop-bar{display:flex;gap:var(--space-2);justify-content:center;margin-top:var(--space-2)}
-
-    /* 结果网格 */
-    .icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:var(--space-3)}
-    .icon-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:var(--space-3);border:1px solid var(--border-base);border-radius:var(--radius);background:var(--bg-surface);text-align:center}
-    .ii-preview{display:flex;align-items:center;justify-content:center;min-height:64px}
-    .ii-preview canvas{image-rendering:pixelated;border-radius:var(--radius-sm);box-shadow:0 1px 4px rgba(0,0,0,.08)}
-    .ii-info{font-size:var(--text-xs)}
-    .ii-size{font-weight:700;font-variant-numeric:tabular-nums}
-    .ii-fmt{color:var(--fg-muted);font-size:10px;margin-top:1px}
-  </style>
 </head>
 <body data-page="tool" data-base-path="../../" data-tool-slug="ico_generator">
   <div class="page-shell"><main class="page-main"><div class="container">
@@ -77,23 +33,25 @@
       <div class="tool-body">
 
         <div class="grid grid-sidebar-r" style="--sidebar-w:300px">
-          <!-- 左 -->
           <div>
-            <!-- 上传 -->
-            <label class="panel u-col u-gap-2" data-drop style="border-style:dashed;align-items:center;text-align:center;cursor:pointer;padding:var(--space-8) var(--space-4);margin:0">
-              <i data-lucide="upload" style="font-size:1.8rem;opacity:.35"></i>
+            <label class="panel u-col u-gap-2 upload-panel" data-drop>
+              <i data-lucide="upload"></i>
               <div class="u-strong">点击或拖拽图片到此处</div>
-              <div class="u-muted" style="font-size:var(--text-xs)">支持 JPG / PNG / WebP · 支持粘贴上传</div>
+              <div class="u-muted u-text-xs">支持 JPG / PNG / WebP / SVG · 支持粘贴上传</div>
               <input type="file" accept="image/*" hidden data-file>
             </label>
 
-            <!-- 源图预览 -->
             <div class="panel u-mt-3" data-src-panel hidden>
-              <div class="u-row u-gap-2 u-mb-2" style="justify-content:space-between;align-items:center">
-                <span class="u-muted" style="font-size:var(--text-xs)" data-src-info></span>
+              <div class="u-row u-between u-mb-2">
+                <span class="u-muted u-text-xs" data-src-info></span>
                 <div class="u-row u-gap-1">
-                  <button class="btn is-sm is-ghost" data-act="crop">裁剪</button>
-                  <button class="btn is-sm is-ghost" data-act="re-upload">重新上传</button>
+                  <button class="btn is-sm is-ghost" type="button" data-act="crop">
+                    <i data-lucide="crop"></i>
+                    裁剪
+                  </button>
+                  <button class="btn is-sm is-ghost" type="button" data-img-delete title="移除图片">
+                    <i data-lucide="x"></i>
+                  </button>
                 </div>
               </div>
               <div class="src-wrap">
@@ -103,98 +61,121 @@
                   <div class="c-h sw"></div><div class="c-h se"></div>
                 </div>
               </div>
-              <div class="crop-bar" data-crop-bar hidden>
-                <button class="btn is-sm is-primary" data-act="apply-crop">应用裁剪</button>
-                <button class="btn is-sm" data-act="reset-crop">重置</button>
-                <button class="btn is-sm is-ghost" data-act="cancel-crop">取消</button>
+              <div class="u-row u-gap-2 u-mt-2" data-crop-bar hidden>
+                <button class="btn is-sm is-primary" type="button" data-act="apply-crop">应用裁剪</button>
+                <button class="btn is-sm" type="button" data-act="reset-crop">重置</button>
+                <button class="btn is-sm is-ghost" type="button" data-act="cancel-crop">取消</button>
               </div>
             </div>
 
-            <!-- 进度 -->
             <div data-progress hidden class="u-mt-3">
-              <div style="height:6px;background:var(--bg-surface-2);border-radius:3px;overflow:hidden">
-                <div data-bar style="height:100%;background:var(--color-brand);width:0%;transition:width .15s"></div>
+              <div class="progress">
+                <div class="progress-bar" data-bar></div>
               </div>
-              <div class="u-muted u-mt-1" style="font-size:var(--text-xs)" data-prog-text></div>
+              <div class="u-muted u-text-xs u-mt-1" data-prog-text></div>
             </div>
 
-            <!-- 结果 -->
             <div data-result-panel hidden class="u-mt-3">
               <div class="panel">
-                <h3 class="panel-title">生成结果</h3>
-                <div class="icon-grid" data-icon-grid></div>
+                <div class="u-row u-between u-mb-3">
+                  <h3 class="panel-title u-mb-0">生成结果</h3>
+                  <button class="btn is-sm is-ghost" type="button" data-dark-toggle>
+                    <i data-lucide="moon"></i>
+                    暗色预览
+                  </button>
+                </div>
+                <div class="grid grid-auto-sm" data-icon-grid></div>
               </div>
             </div>
           </div>
 
-          <!-- 右 -->
           <aside>
-            <!-- 平台 -->
             <div class="panel">
               <h3 class="panel-title">目标平台</h3>
-              <div class="plat-row" data-plats>
-                <div class="plat-card active" data-plat="windows">Windows</div>
-                <div class="plat-card" data-plat="macos">macOS</div>
-                <div class="plat-card" data-plat="ios">iOS</div>
-                <div class="plat-card" data-plat="android">Android</div>
-                <div class="plat-card" data-plat="favicon">Favicon</div>
+              <div class="opt-row" data-plats>
+                <button class="btn is-sm active" type="button" data-plat="windows">Windows</button>
+                <button class="btn is-sm" type="button" data-plat="macos">macOS</button>
+                <button class="btn is-sm" type="button" data-plat="ios">iOS</button>
+                <button class="btn is-sm" type="button" data-plat="android">Android</button>
+                <button class="btn is-sm" type="button" data-plat="favicon">Favicon</button>
               </div>
             </div>
 
-            <!-- 尺寸 -->
             <div class="panel">
               <h3 class="panel-title">
-                图标尺寸
-                <span class="u-row u-gap-1">
-                  <button class="qbtn" data-qk="__all" style="font-size:10px">全选</button>
-                  <button class="qbtn" data-qk="__none" style="font-size:10px">清空</button>
-                </span>
+                <span>尺寸规格</span>
+                <span class="u-muted u-text-xs" data-size-count>0 个</span>
               </h3>
               <div class="sz-grid" data-sizes></div>
-              <div class="quick-row" data-quick></div>
-            </div>
-
-            <!-- 圆角 -->
-            <div class="panel" data-radius-panel hidden>
-              <h3 class="panel-title">圆角</h3>
-              <div class="range-row">
-                <input type="range" data-radius min="0" max="50" value="0">
-                <span class="val" data-radius-val>0%</span>
-              </div>
-              <div class="rp-row" data-rp>
-                <button data-rv="0" class="active">0%</button>
-                <button data-rv="10">10%</button>
-                <button data-rv="22">22%</button>
-                <button data-rv="50">50%</button>
+              <div class="btn-group u-mt-3" data-quick>
+                <button class="btn is-sm is-ghost" type="button" data-qk="__all">全选</button>
+                <button class="btn is-sm is-ghost" type="button" data-qk="__none">清空</button>
               </div>
             </div>
 
-            <!-- 导出格式 -->
-            <div class="panel" data-fmt-panel>
-              <h3 class="panel-title">导出格式</h3>
-              <div class="fmt-grid">
-                <label class="fmt-card checked">
-                  <input type="checkbox" data-fmt="icon" checked>
-                  <div>
-                    <div class="fc-title" data-fmt-label>ICO</div>
-                    <div class="fc-desc">系统图标格式，支持多尺寸</div>
+            <div class="panel u-col u-gap-3" data-appearance-panel hidden>
+              <h3 class="panel-title">图标外观</h3>
+              <div class="ico-setting" data-radius-panel hidden>
+                <div class="range-row">
+                  <label class="field-label">圆角</label>
+                  <input type="range" data-radius min="0" max="50" value="0">
+                  <span class="val" data-radius-val>0%</span>
+                </div>
+                <div class="opt-row u-mt-2" data-rp>
+                  <button class="btn is-sm active" type="button" data-rv="0">0%</button>
+                  <button class="btn is-sm" type="button" data-rv="10">10%</button>
+                  <button class="btn is-sm" type="button" data-rv="22">22%</button>
+                  <button class="btn is-sm" type="button" data-rv="50">50%</button>
+                </div>
+              </div>
+
+              <div class="ico-setting" data-bg-panel hidden>
+                <div class="field-label">背景填充</div>
+                <div class="opt-row" data-bg-opts>
+                  <button class="btn is-sm" type="button" data-bg="transparent">透明</button>
+                  <button class="btn is-sm active" type="button" data-bg="fill">纯色</button>
+                </div>
+                <div class="u-row u-gap-2 u-mt-2" data-bg-color-row>
+                  <label class="field-label">颜色</label>
+                  <input type="color" data-bg-color>
+                </div>
+                <p class="hint u-mt-2">透明图建议填充底色，避免部分场景预览发黑。</p>
+              </div>
+
+              <div class="ico-setting" data-adaptive-panel hidden>
+                <div class="field-label">Android 自适应图标</div>
+                <div class="opt-row" data-adaptive-opts>
+                  <button class="btn is-sm active" type="button" data-adaptive="standard">标准</button>
+                  <button class="btn is-sm" type="button" data-adaptive="adaptive">自适应</button>
+                </div>
+                <div data-adaptive-settings hidden>
+                  <div class="u-row u-gap-2 u-mt-2">
+                    <label class="field-label">背景色</label>
+                    <input type="color" data-adaptive-bg>
                   </div>
-                </label>
-                <label class="fmt-card checked">
-                  <input type="checkbox" data-fmt="png" checked>
-                  <div>
-                    <div class="fc-title">PNG</div>
-                    <div class="fc-desc">通用格式，适用于 Web 和设计</div>
-                  </div>
-                </label>
+                  <p class="hint u-mt-2">前景缩至安全区，并额外生成背景层。</p>
+                </div>
               </div>
+
             </div>
 
-            <!-- 操作 -->
             <div class="panel">
-              <div class="act-group">
-                <button class="btn is-primary" data-act="generate" disabled>生成图标</button>
-                <button class="btn" data-act="download-zip" hidden>下载 ZIP</button>
+              <h3 class="panel-title">导出</h3>
+              <div class="u-col u-gap-2">
+                <div class="opt-row" data-fmt-opts>
+                  <button class="btn is-sm active" type="button" data-fmt="icon" data-fmt-label>ICO</button>
+                  <button class="btn is-sm active" type="button" data-fmt="png">PNG</button>
+                </div>
+                <p class="hint u-mt-0">ICO / ICNS 适合系统图标，PNG 适合网页和设计交付。</p>
+              </div>
+              <div class="u-col u-gap-2 u-mt-3">
+                <button class="btn is-primary is-block" type="button" data-act="generate" disabled>
+                  生成图标
+                </button>
+                <button class="btn is-block" type="button" data-act="download-zip" disabled>
+                  下载 ZIP
+                </button>
+                <button class="btn is-ghost is-block" type="button" data-act="clear" hidden>清空结果</button>
               </div>
             </div>
           </aside>
@@ -203,6 +184,21 @@
       </div>
     </div>
   </div></main></div>
+
+  <div class="modal-backdrop is-open" data-icon-modal hidden>
+    <div class="modal-panel">
+      <div class="modal-header u-row u-between">
+        <strong class="u-text-sm">图标预览</strong>
+        <button class="btn is-sm is-ghost" type="button" data-modal-close title="关闭">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="modal-body u-text-center">
+        <canvas data-modal-cv></canvas>
+        <p class="u-muted u-text-xs u-mt-2" data-modal-info></p>
+      </div>
+    </div>
+  </div>
   <script type="module" src="../../public/scripts/core/app-init.js"></script>
   <script type="module" src="./page.js"></script>
 </body>

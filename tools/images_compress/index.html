@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>图片压缩 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>图片压缩 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="多模式批量图片压缩（高质量/均衡/极限/自定义），支持文件夹导入">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/images_compress/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="图片压缩 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="多模式批量图片压缩（高质量/均衡/极限/自定义），支持文件夹导入">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/images_compress/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"图片压缩","url":"https://tools.jqnest.top/tools/images_compress/","description":"多模式批量图片压缩（高质量/均衡/极限/自定义），支持文件夹导入","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -14,18 +26,6 @@
   <link rel="stylesheet" href="../_shared/preview-grid.css">
   <script src="../../public/vendor/browser-image-compression.js" defer></script>
   <script src="../../public/vendor/jszip.min.js" defer></script>
-  <style>
-    .status-badge{display:inline-flex;align-items:center;gap:var(--space-1);padding:2px 8px;font-size:var(--text-xs);border-radius:var(--radius-sm);font-weight:var(--font-semibold,600)}
-    .status-badge.is-pending{background:var(--bg-surface-2);color:var(--fg-muted)}
-    .status-badge.is-processing{background:var(--color-brand-alpha,rgba(59,130,246,.12));color:var(--color-brand)}
-    .status-badge.is-done{background:rgba(34,197,94,.1);color:var(--color-success)}
-    .status-badge.is-fail{background:rgba(239,68,68,.1);color:var(--color-danger,#ef4444)}
-    .summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-3)}
-    .summary-item{text-align:center;padding:var(--space-3);background:var(--bg-surface-2);border-radius:var(--radius-md)}
-    .summary-item .val{font-size:var(--text-lg);font-weight:var(--font-semibold,600);color:var(--fg-default)}
-    .summary-item .val.highlight{color:var(--color-success)}
-    .summary-item .label{font-size:var(--text-xs);color:var(--fg-muted);margin-top:2px}
-  </style>
 </head>
 <body data-page="tool" data-base-path="../../" data-tool-slug="images_compress">
   <div class="page-shell"><main class="page-main"><div class="container">
@@ -37,19 +37,21 @@
           <!-- 左：上传 + 预览网格 -->
           <div>
             <!-- 上传 -->
-            <label class="panel u-col u-gap-2" data-drop style="border-style:dashed;align-items:center;text-align:center;cursor:pointer;padding:var(--space-8) var(--space-4);margin:0">
-              <i data-lucide="upload" style="font-size:1.8rem;opacity:.35"></i>
-              <div class="u-strong">点击或拖拽图片到此处</div>
-              <div class="u-muted" style="font-size:var(--text-xs)">支持 JPG / PNG / WebP / GIF，可多选 · 支持粘贴上传</div>
+            <label class="panel u-col u-gap-2 upload-panel" data-drop>
+              <i data-lucide="upload"></i>
+              <div class="u-strong">点击或拖拽图片、文件夹到此处</div>
+              <div class="u-muted u-text-xs">支持 JPG / PNG / WebP / GIF，可多选 · 支持粘贴上传</div>
               <input type="file" accept="image/*" multiple hidden data-file>
+              <input type="file" accept="image/*" multiple webkitdirectory hidden data-file-dir>
+              <button class="btn is-sm is-ghost u-mt-2" type="button" data-pick-dir title="选择文件夹，自动递归导入所有图片"><i data-lucide="folder-plus"></i> 选择文件夹</button>
             </label>
 
             <!-- 进度 -->
             <div data-progress hidden class="u-mt-3">
-              <div style="height:6px;background:var(--bg-surface-2);border-radius:var(--radius-sm);overflow:hidden">
-                <div data-bar style="height:100%;background:var(--color-brand);width:0%;transition:width .15s"></div>
+              <div class="progress">
+                <div class="progress-bar" data-bar></div>
               </div>
-              <div class="u-muted u-mt-1" style="font-size:var(--text-xs)" data-progress-text></div>
+              <div class="u-muted u-text-xs u-mt-1" data-progress-text></div>
             </div>
 
             <!-- 预览网格 -->
@@ -60,7 +62,7 @@
           <aside>
             <div class="panel">
               <h3 class="panel-title">压缩模式</h3>
-              <div class="u-col" style="gap:var(--space-2)">
+              <div class="u-col u-gap-2">
                 <label class="opt-card">
                   <input type="radio" name="mode" value="quality" data-mode>
                   <div><div class="u-strong">高质量</div><div class="hint" style="margin:0">保留 90% 质量</div></div>
@@ -77,6 +79,14 @@
                   <input type="radio" name="mode" value="custom" data-mode>
                   <div class="u-strong">自定义</div>
                 </label>
+                <label class="opt-card">
+                  <input type="radio" name="mode" value="target" data-mode>
+                  <div><div class="u-strong">指定大小</div><div class="hint" style="margin:0">压缩到指定文件大小</div></div>
+                </label>
+                <label class="opt-card">
+                  <input type="radio" name="mode" value="tinypng" data-mode>
+                  <div><div class="u-strong">TinyPNG 云端</div><div class="hint" style="margin:0">高压缩率，需 API Key</div></div>
+                </label>
               </div>
 
               <!-- 自定义质量 -->
@@ -86,6 +96,37 @@
                   <input type="range" data-quality min="10" max="100" value="80">
                   <span class="val" data-quality-val>80%</span>
                 </div>
+              </div>
+
+              <!-- 指定大小 -->
+              <div data-target-size hidden class="u-mt-3">
+                <label class="field-label">目标大小（每张图片）</label>
+                <div class="u-row u-gap-2 u-mt-1">
+                  <div class="input-group" style="flex:1">
+                    <input class="input" type="number" data-target-val min="1" value="200" placeholder="200">
+                  </div>
+                  <div class="field" style="width:70px">
+                    <select class="select" data-target-unit>
+                      <option value="kb">KB</option>
+                      <option value="mb">MB</option>
+                    </select>
+                  </div>
+                </div>
+                <label class="opt-card u-mt-2">
+                  <input type="checkbox" data-allow-resize>
+                  <div><div class="u-strong">允许降低分辨率</div><div class="hint" style="margin:0">无法达到目标时缩小图片尺寸</div></div>
+                </label>
+              </div>
+
+              <!-- TinyPNG 云端 -->
+              <div data-tinypng-panel hidden class="u-mt-3">
+                <label class="field-label">API Key</label>
+                <div class="u-row u-gap-2 u-mt-1" style="align-items:center">
+                  <input class="input" type="password" data-tinypng-key placeholder="粘贴你的 API Key" style="flex:1">
+                  <button class="btn is-sm is-ghost" type="button" data-tinypng-show title="显示/隐藏 Key"><i data-lucide="eye"></i></button>
+                </div>
+                <div class="hint u-mt-1" data-tinypng-count></div>
+                <div class="hint u-mt-1"><a href="https://tinify.com/developers" target="_blank" rel="noopener">获取免费 Key</a> · 每月 500 次 · 单张限 12MB</div>
               </div>
             </div>
 
@@ -115,9 +156,13 @@
             <!-- 操作 -->
             <div class="panel">
               <div class="act-group">
-                <button class="btn is-primary" data-action="compress" disabled><i data-lucide="minimize-2"></i> 开始压缩</button>
-                <button class="btn" data-action="download" hidden><i data-lucide="download"></i> 保存图片</button>
-                <button class="btn is-ghost" data-action="clear" hidden><i data-lucide="trash-2"></i> 清空全部</button>
+                <div class="u-col u-gap-2">
+                  <button class="btn is-primary is-block" data-action="compress" disabled>开始压缩</button>
+                  <div class="u-row u-gap-2">
+                    <button class="btn is-block" data-action="download" hidden>保存图片</button>
+                    <button class="btn is-ghost is-block" data-action="clear" hidden>清空全部</button>
+                  </div>
+                </div>
               </div>
             </div>
 

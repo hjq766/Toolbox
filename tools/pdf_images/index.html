@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PDF 转图片 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>PDF 转图片 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="PDF 逐页转 PNG/JPEG，批量下载 ZIP">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/pdf_images/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="PDF 转图片 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="PDF 逐页转 PNG/JPEG，批量下载 ZIP">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/pdf_images/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF 转图片","url":"https://tools.jqnest.top/tools/pdf_images/","description":"PDF 逐页转 PNG/JPEG，批量下载 ZIP","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -33,23 +45,23 @@
           <!-- 左：上传 + 预览 -->
           <div>
             <!-- 上传 -->
-            <label class="panel u-col u-gap-2" data-drop style="border-style:dashed;align-items:center;text-align:center;cursor:pointer;padding:var(--space-8) var(--space-4);margin:0">
-              <i data-lucide="upload" style="font-size:var(--text-3xl);opacity:.35"></i>
+            <label class="panel u-col u-gap-2 upload-panel" data-drop>
+              <i data-lucide="upload"></i>
               <div class="u-strong">点击或拖拽 PDF 文件到此处</div>
-              <div class="u-muted" style="font-size:var(--text-xs)">最大 100 MB · 支持拖拽到网页任意位置上传</div>
+              <div class="u-muted u-text-xs">最大 100 MB · 支持拖拽到网页任意位置上传</div>
               <input type="file" accept=".pdf,application/pdf" hidden data-file>
             </label>
 
             <!-- 进度 -->
             <div data-progress hidden class="u-mt-4">
-              <div style="height:6px;background:var(--bg-surface-2);border-radius:var(--radius-sm);overflow:hidden">
-                <div data-bar style="height:100%;background:var(--color-brand);width:0%;transition:width var(--dur-base)"></div>
+              <div class="progress">
+                <div class="progress-bar" data-bar></div>
               </div>
-              <div class="u-muted u-mt-1" style="font-size:var(--text-xs)" data-progress-text></div>
+              <div class="u-muted u-text-xs u-mt-1" data-progress-text></div>
             </div>
 
             <!-- 预览区 -->
-            <div data-viewer hidden class="u-mt-4">
+            <div data-viewer hidden class="panel u-mt-4">
               <!-- 工具栏 -->
               <div class="u-row u-gap-2 u-mb-3" style="align-items:center;flex-wrap:wrap">
                 <div class="tabs" data-view-tabs>
@@ -89,8 +101,10 @@
               </div>
               <hr class="sep">
               <div class="act-group">
-                <button class="btn is-primary" type="button" data-action="download" disabled><i data-lucide="download"></i> 批量下载 ZIP</button>
-                <button class="btn is-ghost" type="button" data-action="clear" hidden><i data-lucide="trash-2"></i> 清空</button>
+                <div class="u-col u-gap-2">
+                  <button class="btn is-primary is-block" type="button" data-action="download" disabled>批量下载 ZIP</button>
+                  <button class="btn is-ghost is-block" type="button" data-action="clear" hidden>清空</button>
+                </div>
               </div>
             </div>
 

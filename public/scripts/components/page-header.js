@@ -1,5 +1,5 @@
 // 统一的页面/工具标题头。所有页面（首页 welcome、工具页、关于页）都调用它，
-// 保证 DOM 结构、排版、间距完全一致；只有文字不同。
+
 import { findTool, categoryName } from '../data/tools.js';
 import { escapeHtml } from '../utils/dom.js';
 
@@ -26,7 +26,7 @@ export function mountPageHeader(opts = {}) {
       title   = title   || t.title;
       desc    = desc    || t.desc;
       eyebrow = eyebrow || categoryName(t.category);
-      document.title = `${t.title} · jqnest 工具箱`;
+      document.title = `${t.title} · 极趣导航-在线工具箱`;
     } else {
       console.warn('[page-header] unknown slug:', slug);
     }

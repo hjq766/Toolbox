@@ -24,7 +24,7 @@ let style = 'default';
 let cmInstance = null;
 
 const LANG_NAMES = { javascript: 'JavaScript', css: 'CSS', html: 'HTML', python: 'Python', sql: 'SQL' };
-const EXT_MAP = { js:'javascript', ts:'javascript', jsx:'javascript', tsx:'javascript', css:'css', html:'html', htm:'html', py:'python', sql:'sql', php:'javascript', java:'javascript', cpp:'javascript', c:'javascript', rb:'javascript' };
+const EXT_MAP = { js:'javascript', ts:'javascript', jsx:'javascript', tsx:'javascript', css:'css', html:'html', htm:'html', py:'python', sql:'sql' };
 
 /* ================= 语言检测 ================= */
 function detectLang(code) {
@@ -99,6 +99,7 @@ function formatCode() {
     else if (l === 'css')       result = css_beautify(code, { ...base, newline_between_rules: !compact });
     else if (l === 'javascript') result = js_beautify(code, { ...base, space_after_anon_function: !compact, break_chained_methods: !compact });
     else if (l === 'python')    result = formatPython(code, compact);
+    else if (l === 'sql')        result = formatSQL(code, compact);
     else                        result = code;
     editorEl.value = result; updateStats(); showToast('格式化成功');
   } catch (e) { showToast('格式化失败：' + e.message, { type: 'error' }); }
@@ -113,9 +114,18 @@ function formatPython(code, compact) {
     if (!t && compact) continue;
     if (/^(elif |else:|except |finally:)/.test(t)) indent = Math.max(0, indent - sz);
     out.push(' '.repeat(indent) + t);
-    if (t.endsWith(':')) indent += sz;
+    if (t.endsWith(':') && !t.startsWith('#')) indent += sz;
   }
   return out.join('\n');
+}
+
+function formatSQL(code, compact) {
+  if (compact) return code.replace(/\s+/g, ' ').trim();
+  let s = code.replace(/\s+/g, ' ').trim();
+  s = s.replace(/\b(SELECT|DISTINCT|FROM|WHERE|AND|OR|ORDER\s+BY|GROUP\s+BY|HAVING|LIMIT|OFFSET|LEFT\s+JOIN|RIGHT\s+JOIN|INNER\s+JOIN|CROSS\s+JOIN|JOIN|ON|INSERT\s+INTO|VALUES|UPDATE|SET|DELETE|CREATE\s+TABLE|ALTER\s+TABLE|DROP\s+TABLE|UNION\s+ALL|UNION|AS|IN|NOT|NULL|IS|BETWEEN|LIKE|EXISTS)\b/gi, m => m.toUpperCase().replace(/\s+/g, ' '));
+  s = s.replace(/ (SELECT|FROM|WHERE|ORDER BY|GROUP BY|HAVING|LIMIT|LEFT JOIN|RIGHT JOIN|INNER JOIN|CROSS JOIN|JOIN|INSERT INTO|VALUES|UPDATE|SET|DELETE|CREATE TABLE|UNION ALL|UNION)\b/g, '\n$1');
+  s = s.replace(/\n(AND|OR) /g, '\n  $1 ');
+  return s;
 }
 
 /* ================= 压缩 ================= */

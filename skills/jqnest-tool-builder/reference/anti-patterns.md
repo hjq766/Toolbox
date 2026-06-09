@@ -54,7 +54,7 @@
 | 自己写 `escapeHtml` | `import { escapeHtml } from '.../utils/dom.js'` | 复用 |
 | import 绝对路径 `/public/...` | 相对路径 `../../public/...` | 绝对路径在嵌入模式下会断 |
 | 重复引入同一 CDN 库多个版本 | 一库一版本 | 避免冲突 |
-| vendor 文件放工具目录 | 放 `v2/public/vendor/` 全局注入 | 统一管理 |
+| vendor 文件放工具目录 | 放 `public/vendor/` 全局注入 | 统一管理 |
 | 不注册进 `tools.js` 就创建工具 | 先改 `tools.js` 再建文件夹 | 首页看不到、路由找不到 |
 | 用 jQuery 或 Lodash | 用 `utils/dom.js` 的 `$` / `$$` | 不引入重库 |
 | 依赖 `mountUnitConverter` 共享组件做换算器 | 手写 FACTORS/NAMES + 侧栏 | 该组件不支持分组 + 侧栏 |
@@ -108,9 +108,25 @@
 | ❌ 错误 | ✅ 正确 |
 |---|---|
 | 工具目录叫 `my-tool`（连字符） | `my_tool`（下划线） |
-| 把图片/字体放到工具目录 | 放 `v2/public/assets/` |
-| 创建 `tool.css` 超过 80 行 | 拆分或尝试合入 utilities |
-| 在 `legacy/` 目录改代码 | legacy 只读，仅作迁移源参考 |
+| 把图片/字体放到工具目录 | 放 `public/` 下的共享资源目录 |
+| `tool.css` 超出行数却无说明 | ≤ 100 行无需注释；101–200 行在文件头部写明工具特有 UI 的原因；> 200 行需评估是否提取为 `_shared/*.css` 共享模块 |
+| 在 `old/` 目录改代码 | `old/` 是 1.0 历史版本，仅作迁移源参考 |
+
+---
+
+## 数据来源脚注
+
+| ❌ 错误 | ✅ 正确 | 原因 |
+|---|---|---|
+| `<p class="field-hint u-muted u-mt-4">` | `<p class="field-hint u-muted" style="margin:0;text-align:center">` | 全站脚注必须居中，margin 走固定 style |
+| 脚注左对齐（缺 `text-align:center`） | 同上模板 | 与 color_name / calendar 等已上线工具不一致 |
+| 写「本地静态加载约 79KB」 | 只写来源 + 许可证 + 可选上游 | 体积对用户无意义，且全站无先例 |
+| 脚注写性能、缓存、加载策略 | 仅 API 工具写「数据来自 xxx API」 | 实现细节不属于版权声明 |
+| 通用 `public/vendor/` 库在每个工具页重复脚注 | 写入 `attributions.js` + 关于页；工具页省略 | 集中致谢 |
+| 外部 API / 数据集 / 合规声明却无任何说明 | 按 `components.md` §数据来源脚注 在工具页补全 | 溯源义务 |
+| 自造 `.source-footer` 等 class | 只用 `field-hint u-muted` + 固定 inline style | 单一来源，避免再发明样式 |
+| vendor 来自开源项目却链个人站/论坛/HTTP 小站 | 优先 `github.com` / `gitee.com` 上的**实际引用仓库** | 便于核对许可证；例外见 `components.md` §链接怎么选 |
+| 标准/registry 硬换 GitHub mirror | IANA、WHATWG、厂商官方 API 等链**权威官网** | 官方源比随机 fork 更有说服力 |
 
 ---
 

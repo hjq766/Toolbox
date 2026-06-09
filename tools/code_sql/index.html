@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>SQL 格式化 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="SQL 语句格式化 / 压缩，支持标准 SQL / MySQL / PostgreSQL / SQLite">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/code_sql/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="SQL 格式化 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="SQL 语句格式化 / 压缩，支持标准 SQL / MySQL / PostgreSQL / SQLite">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/code_sql/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"SQL 格式化","url":"https://tools.jqnest.top/tools/code_sql/","description":"SQL 语句格式化 / 压缩，支持标准 SQL / MySQL / PostgreSQL / SQLite","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="code_sql">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="panel">
+          <!-- 顶部：方言 + 选项 + 导入 -->
+          <div class="u-row u-gap-3 u-mb-3" style="flex-wrap:wrap;justify-content:space-between;align-items:center">
+            <div class="tabs" role="tablist">
+              <button class="tab-btn is-active" data-dialect="standard">标准 SQL</button>
+              <button class="tab-btn" data-dialect="mysql">MySQL</button>
+              <button class="tab-btn" data-dialect="postgresql">PostgreSQL</button>
+              <button class="tab-btn" data-dialect="sqlite">SQLite</button>
+            </div>
+            <div class="u-row u-gap-2" style="align-items:center">
+              <label class="u-row u-gap-1" style="align-items:center;cursor:pointer;font-size:var(--text-sm)">
+                <input type="checkbox" data-uppercase checked> 关键字大写
+              </label>
+              <label class="btn is-sm" style="cursor:pointer">
+                导入
+                <input type="file" accept=".sql,.txt" hidden data-file>
+              </label>
+            </div>
+          </div>
+
+          <!-- 编辑器 -->
+          <textarea class="textarea u-mono" data-editor style="min-height:460px;font-size:var(--text-sm)"
+                    placeholder="粘贴 SQL 语句，或拖拽 .sql 文件到此处…"></textarea>
+
+          <!-- 底部：操作 + 统计 -->
+          <div class="u-row u-gap-3 u-mt-4" style="flex-wrap:wrap;justify-content:space-between;align-items:center">
+            <div class="btn-group">
+              <button class="btn is-primary" type="button" data-action="format">格式化</button>
+              <button class="btn" type="button" data-action="compress">压缩</button>
+              <button class="btn" type="button" data-action="remove-comments">移除注释</button>
+            </div>
+            <div class="u-row u-gap-3" style="align-items:center">
+              <span class="u-muted" style="font-size:var(--text-sm)" data-size>0 B</span>
+              <div class="btn-group">
+                <button class="btn" type="button" data-action="copy">复制</button>
+                <button class="btn" type="button" data-action="download">导出</button>
+                <button class="btn is-ghost" type="button" data-action="clear">清空</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

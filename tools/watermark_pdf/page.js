@@ -1,4 +1,3 @@
-/* 0. 导入 */
 import { mountToolHeader } from '../../public/scripts/core/tool-page.js';
 import { $, $$, on, delegate, debounce } from '../../public/scripts/utils/dom.js';
 import { showToast } from '../../public/scripts/components/toast.js';
@@ -9,16 +8,13 @@ import { initWatermarkUI } from '../_shared/watermark-ui.js';
 
 mountToolHeader();
 
-/* 1. 常量 */
 const PDFJS_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-/* 2. 状态 */
 let pdfDoc        = null;
 let pdfFileBytes  = null;
 let currentPage   = 1;
 let selectedPages = [];
 
-/* 3. DOM 引用 */
 const dropEl    = $('[data-drop]');
 const fileEl    = $('[data-file]');
 const previewEl = $('[data-preview]');
@@ -33,11 +29,8 @@ const progEl    = $('[data-progress]');
 const barEl     = $('[data-bar]');
 const progText  = $('[data-progress-text]');
 
-/* 4. 共享水印 UI */
 const debouncedRender = debounce(() => renderPage(currentPage), 200);
 const wmUI = initWatermarkUI({ onChanged: debouncedRender });
-
-/* 5. 工具函数 */
 
 function initPdfJs() {
   const lib = window['pdfjs-dist/build/pdf'];
@@ -79,22 +72,30 @@ function updatePageRange() {
   const rangeType = $('[data-range-type] .active')?.dataset.range;
   if (rangeType === 'all') {
     selectedPages = Array.from({ length: pdfDoc.numPages }, (_, i) => i + 1);
-    return;
-  }
-  const raw = $('[data-page-range]')?.value.trim() || '';
-  selectedPages = [];
-  if (!raw) { selectedPages = Array.from({ length: pdfDoc.numPages }, (_, i) => i + 1); return; }
-  raw.split(',').forEach(part => {
-    const sp = part.trim().split('-');
-    if (sp.length === 1) {
-      const p = parseInt(sp[0]);
-      if (p > 0 && p <= pdfDoc.numPages) selectedPages.push(p);
-    } else if (sp.length === 2) {
-      const a = parseInt(sp[0]), b = parseInt(sp[1]);
-      if (a > 0 && b >= a) for (let i = a; i <= b && i <= pdfDoc.numPages; i++) selectedPages.push(i);
+  } else {
+    const raw = $('[data-page-range]')?.value.trim() || '';
+    selectedPages = [];
+    if (!raw) {
+      selectedPages = Array.from({ length: pdfDoc.numPages }, (_, i) => i + 1);
+    } else {
+      raw.split(',').forEach(part => {
+        const sp = part.trim().split('-');
+        if (sp.length === 1) {
+          const p = parseInt(sp[0]);
+          if (p > 0 && p <= pdfDoc.numPages) selectedPages.push(p);
+        } else if (sp.length === 2) {
+          const a = parseInt(sp[0]), b = parseInt(sp[1]);
+          if (a > 0 && b >= a) for (let i = a; i <= b && i <= pdfDoc.numPages; i++) selectedPages.push(i);
+        }
+      });
+      selectedPages = [...new Set(selectedPages)].sort((a, b) => a - b);
     }
-  });
-  selectedPages = [...new Set(selectedPages)].sort((a, b) => a - b);
+  }
+  const hintEl = $('[data-range-hint]');
+  if (hintEl) {
+    hintEl.hidden = rangeType !== 'custom';
+    if (rangeType === 'custom') hintEl.textContent = `已选择 ${selectedPages.length} / ${pdfDoc.numPages} 页`;
+  }
 }
 
 async function loadPdf(file) {
@@ -110,6 +111,7 @@ async function loadPdf(file) {
     updatePageRange();
     dropEl.hidden = true;
     previewEl.hidden = false;
+    $('aside')?.classList.remove('is-inactive');
     dlBtn.disabled = false;
     clearBtn.disabled = false;
     updatePageNav();
@@ -117,13 +119,11 @@ async function loadPdf(file) {
   } catch (err) { console.error(err); showToast('PDF 加载失败', { type: 'error' }); }
 }
 
-/* 6. 事件绑定 */
 initUploadZone({ dropEl, fileEl, onFiles: files => loadPdf(files[0]), accept: 'pdf' });
 
 on(prevBtn, 'click', () => { if (currentPage > 1) { currentPage--; updatePageNav(); renderPage(currentPage); } });
 on(nextBtn, 'click', () => { if (pdfDoc && currentPage < pdfDoc.numPages) { currentPage++; updatePageNav(); renderPage(currentPage); } });
 
-/* 页面范围 */
 delegate($('[data-range-type]'), 'click', '[data-range]', (e, btn) => {
   $$('.btn', $('[data-range-type]')).forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -146,7 +146,6 @@ delegate(document.body, 'click', '[data-quick]', (e, btn) => {
   updatePageRange();
 });
 
-/* 下载 PDF */
 on(dlBtn, 'click', async () => {
   if (!pdfDoc || !pdfFileBytes) return;
   if (typeof PDFLib === 'undefined') { showToast('pdf-lib 尚未加载，请稍后重试', { type: 'warn' }); return; }
@@ -164,10 +163,13 @@ on(dlBtn, 'click', async () => {
     const existingPdf = await PDFLib.PDFDocument.load(pdfFileBytes);
     const newPdf      = await PDFLib.PDFDocument.create();
 
+    const totalPages = existingPdf.getPageCount();
+    const copiedPages = await newPdf.copyPages(existingPdf, Array.from({ length: totalPages }, (_, i) => i));
+    copiedPages.forEach(p => newPdf.addPage(p));
+
     for (let i = 0; i < selectedPages.length; i++) {
       const pageNum = selectedPages[i];
-      const [page]  = await newPdf.copyPages(existingPdf, [pageNum - 1]);
-      newPdf.addPage(page);
+      const page = newPdf.getPage(pageNum - 1);
       const { width, height } = page.getSize();
 
       const tmp = document.createElement('canvas');
@@ -178,7 +180,7 @@ on(dlBtn, 'click', async () => {
       if (wmUI.type === 'text')       drawTextWatermark(tCtx, pageOpts);
       else if (wmUI.type === 'image') drawImageWatermark(tCtx, pageOpts);
 
-      const wmBytes = await fetch(tmp.toDataURL('image/png')).then(r => r.arrayBuffer());
+      const wmBytes = await new Promise(res => tmp.toBlob(async b => res(await b.arrayBuffer()), 'image/png'));
       const wmImg   = await newPdf.embedPng(wmBytes);
       page.drawImage(wmImg, { x: 0, y: 0, width, height });
 
@@ -194,7 +196,6 @@ on(dlBtn, 'click', async () => {
   finally { dlBtn.disabled = false; progEl.hidden = true; }
 });
 
-/* 清空水印 */
 on(clearBtn, 'click', () => {
   wmUI.clear();
   debouncedRender();

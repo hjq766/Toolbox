@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>模拟数据生成 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="姓名/手机/身份证/地址/公司/职位等模拟字段，覆盖 34 个省级行政区，支持导出 JSON/CSV">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/lorem_generator/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="模拟数据生成 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="姓名/手机/身份证/地址/公司/职位等模拟字段，覆盖 34 个省级行政区，支持导出 JSON/CSV">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/lorem_generator/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"模拟数据生成","url":"https://tools.jqnest.top/tools/lorem_generator/","description":"姓名/手机/身份证/地址/公司/职位等模拟字段，覆盖 34 个省级行政区，支持导出 JSON/CSV","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="lorem_generator">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <!-- Tab 切换 -->
+        <div class="tabs" data-mode-tabs>
+          <button class="tab-btn is-active" type="button" data-mode="table">结构化数据</button>
+          <button class="tab-btn" type="button" data-mode="text">文本占位</button>
+        </div>
+
+        <!-- ====== 结构化数据模式（默认） ====== -->
+        <div data-panel="table">
+          <div class="grid grid-sidebar-r" style="--sidebar-w:240px">
+            <!-- 左：结果区 -->
+            <div class="u-col u-gap-4">
+              <div class="panel">
+                <div class="u-row u-between u-mb-3" style="flex-wrap:wrap;gap:var(--space-2)">
+                  <div class="u-row u-gap-2" style="align-items:center">
+                    <h3 class="panel-title" style="margin:0">生成结果</h3>
+                    <span class="u-muted u-text-xs" data-result-count></span>
+                  </div>
+                  <div class="u-row u-gap-1" data-export-bar style="display:none">
+                    <button class="btn is-sm" data-action="copy-table">复制</button>
+                    <button class="btn is-sm" data-action="export-json">JSON</button>
+                    <button class="btn is-sm" data-action="export-csv">CSV</button>
+                    <button class="btn is-sm" data-action="export-txt">TXT</button>
+                  </div>
+                </div>
+                <div style="overflow-x:auto" data-table-wrap>
+                  <div class="u-muted" style="text-align:center;padding:var(--space-6);font-size:var(--text-sm)">在右侧选择字段后点击"生成"</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 右：侧栏 -->
+            <aside>
+              <div class="panel">
+                <div class="act-group" style="margin-bottom:var(--space-3)">
+                  <button class="btn is-primary is-block" data-action="gen-table"><i data-lucide="sparkles"></i> 生成数据</button>
+                </div>
+                <div class="qty-group">
+                  <label class="field-label">数量</label>
+                  <input class="input" type="number" min="1" max="500" value="20" data-row-count>
+                  <div class="opt-row">
+                    <button class="btn is-sm" data-set-rows="10">10</button>
+                    <button class="btn is-sm" data-set-rows="50">50</button>
+                    <button class="btn is-sm" data-set-rows="100">100</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel">
+                <h3 class="panel-title">选择字段</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px" data-field-list>
+                  <label class="switch-item"><input type="checkbox" value="name" checked> 姓名</label>
+                  <label class="switch-item"><input type="checkbox" value="phone" checked> 手机号</label>
+                  <label class="switch-item"><input type="checkbox" value="email" checked> 邮箱</label>
+                  <label class="switch-item"><input type="checkbox" value="idCard"> 身份证</label>
+                  <label class="switch-item"><input type="checkbox" value="address"> 地址</label>
+                  <label class="switch-item"><input type="checkbox" value="company"> 公司</label>
+                  <label class="switch-item"><input type="checkbox" value="job"> 职位</label>
+                  <label class="switch-item"><input type="checkbox" value="date"> 日期</label>
+                  <label class="switch-item"><input type="checkbox" value="enName"> 英文名</label>
+                  <label class="switch-item"><input type="checkbox" value="username"> 用户名</label>
+                  <label class="switch-item"><input type="checkbox" value="ip"> IP</label>
+                  <label class="switch-item"><input type="checkbox" value="url"> URL</label>
+                  <label class="switch-item"><input type="checkbox" value="plate"> 车牌号</label>
+                  <label class="switch-item"><input type="checkbox" value="uuid"> UUID</label>
+                  <label class="switch-item"><input type="checkbox" value="color"> 颜色</label>
+                  <label class="switch-item"><input type="checkbox" value="number"> 数字</label>
+                </div>
+              </div>
+
+              <div class="panel">
+                <p class="hint">勾选字段 → 设置数量 → 生成。点击单元格可快速复制。</p>
+              </div>
+            </aside>
+          </div>
+        </div>
+
+        <!-- ====== 文本占位模式 ====== -->
+        <div data-panel="text" hidden>
+          <div class="panel">
+            <div class="grid grid-2 u-gap-3 u-mb-3">
+              <div class="field">
+                <label class="field-label">类型</label>
+                <select class="select" data-text-type>
+                  <option value="zh" selected>中文占位文本</option>
+                  <option value="lorem">英文 Lorem</option>
+                </select>
+              </div>
+              <div class="field">
+                <label class="field-label">段落数</label>
+                <input class="input" type="number" min="1" max="50" value="3" data-text-count>
+              </div>
+            </div>
+            <textarea class="textarea u-mono" data-text-output rows="14" readonly placeholder="自动生成占位文本"></textarea>
+            <div class="u-row u-between u-mt-3" style="align-items:center">
+              <div class="u-row u-gap-3" style="align-items:center">
+                <button class="btn is-sm" type="button" data-action="gen-text"><i data-lucide="refresh-cw"></i> 换一批</button>
+                <span class="u-muted u-text-xs" data-text-stats></span>
+              </div>
+              <div class="u-row u-gap-1">
+                <button class="btn is-sm" type="button" data-action="copy-text">复制</button>
+                <button class="btn is-sm is-ghost" type="button" data-action="clear-text">清空</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="field-hint u-muted" style="margin:0;text-align:center">
+          本站生成的姓名、手机、身份证、地址等均为随机虚构数据，仅供界面测试、原型设计与开发调试使用。
+          <strong>严禁</strong>用于诈骗、伪造身份、侵犯隐私或任何违法违规用途，使用者须自行承担相应法律责任。
+        </p>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

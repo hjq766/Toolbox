@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>图片圆角边框 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="添加圆角 + 边框 + 阴影 + 背景色/渐变底">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/images_border/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="图片圆角边框 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="添加圆角 + 边框 + 阴影 + 背景色/渐变底">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/images_border/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"图片圆角边框","url":"https://tools.jqnest.top/tools/images_border/","description":"添加圆角 + 边框 + 阴影 + 背景色/渐变底","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="./tool.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="images_border">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-rail-sidebar" style="--rail-w:220px;--sidebar-w:330px">
+          <aside class="panel ib-preset-rail">
+            <div class="u-row u-between u-mb-3">
+              <h3 class="u-strong u-text-sm u-mt-0 u-mb-0">预设样式</h3>
+              <span class="u-muted u-text-xs" data-preset-count>0 个</span>
+            </div>
+            <div class="preset-list" data-preset-opts></div>
+          </aside>
+
+          <section class="u-col u-gap-3">
+            <label class="panel u-col u-gap-2 upload-panel" data-drop>
+              <i data-lucide="upload"></i>
+              <div class="u-strong">点击或拖拽图片到此处</div>
+              <div class="u-muted u-text-xs">支持 JPG / PNG / WebP，也可直接粘贴图片</div>
+              <input type="file" accept="image/*" hidden data-file>
+            </label>
+
+            <div class="panel ib-preview-panel" data-preview hidden>
+              <div class="u-row u-between u-mb-3">
+                <div>
+                  <div class="u-strong u-text-sm u-truncate ib-file-name" data-file-name></div>
+                  <div class="u-muted u-text-xs u-mt-1" data-img-info></div>
+                </div>
+                <button class="btn is-sm is-ghost" type="button" data-img-delete><i data-lucide="x"></i></button>
+              </div>
+              <div class="preview-wrap ib-canvas-wrap" data-canvas-wrap>
+                <div class="ib-empty" data-empty>
+                  <i class="ib-empty-icon" data-lucide="image"></i>
+                  <span>上传图片后实时预览</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <aside>
+            <div class="panel">
+              <h3 class="panel-title">构图</h3>
+              <div class="u-col u-gap-3">
+                <label class="field">
+                  <span class="field-label">图片适配</span>
+                  <select class="select" data-fit>
+                    <option value="original">原始尺寸</option>
+                    <option value="contain">完整放入</option>
+                    <option value="cover">填满裁切</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span class="field-label">画布比例</span>
+                  <select class="select" data-ratio>
+                    <option value="auto">自适应</option>
+                    <option value="1:1">1:1 方图</option>
+                    <option value="4:3">4:3 横图</option>
+                    <option value="16:9">16:9 横图</option>
+                    <option value="3:4">3:4 竖图</option>
+                    <option value="9:16">9:16 竖图</option>
+                  </select>
+                </label>
+                <div class="opt-row" data-shape-opts>
+                  <button class="btn is-sm is-active" type="button" data-shape="rounded">圆角</button>
+                  <button class="btn is-sm" type="button" data-shape="circle">圆形</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">边框与空间</h3>
+              <div class="u-col u-gap-3">
+                <div class="range-row">
+                  <span class="field-label">圆角</span>
+                  <input type="range" min="0" max="240" value="16" data-radius>
+                  <span class="val" data-radius-val>16 px</span>
+                </div>
+                <div class="range-row">
+                  <span class="field-label">留白</span>
+                  <input type="range" min="0" max="160" value="24" data-padding>
+                  <span class="val" data-padding-val>24 px</span>
+                </div>
+                <div class="range-row">
+                  <span class="field-label">边框</span>
+                  <input type="range" min="0" max="48" value="0" data-border-w>
+                  <span class="val" data-border-w-val>0 px</span>
+                </div>
+                <div class="u-row u-gap-2" data-border-color-row>
+                  <span class="field-label">边框颜色</span>
+                  <input type="color" data-border-color>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">阴影</h3>
+              <div class="u-col u-gap-3">
+                <div class="range-row">
+                  <span class="field-label">模糊</span>
+                  <input type="range" min="0" max="100" value="24" data-shadow-blur>
+                  <span class="val" data-shadow-blur-val>24 px</span>
+                </div>
+                <div class="range-row" data-shadow-x-row>
+                  <span class="field-label">X</span>
+                  <input type="range" min="-80" max="80" value="0" data-shadow-x>
+                  <span class="val" data-shadow-x-val>0 px</span>
+                </div>
+                <div class="range-row" data-shadow-y-row>
+                  <span class="field-label">Y</span>
+                  <input type="range" min="-80" max="80" value="18" data-shadow-y>
+                  <span class="val" data-shadow-y-val>18 px</span>
+                </div>
+                <div class="range-row">
+                  <span class="field-label">透明度</span>
+                  <input type="range" min="0" max="80" value="22" data-shadow-opacity>
+                  <span class="val" data-shadow-opacity-val>22%</span>
+                </div>
+                <div class="u-row u-gap-2" data-shadow-color-row>
+                  <span class="field-label">阴影颜色</span>
+                  <input type="color" data-shadow-color>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">背景</h3>
+              <div class="u-col u-gap-3">
+                <div class="opt-row" data-bg-mode-opts>
+                  <button class="btn is-sm is-active" type="button" data-bg-mode="solid">纯色</button>
+                  <button class="btn is-sm" type="button" data-bg-mode="gradient">渐变</button>
+                  <button class="btn is-sm" type="button" data-bg-mode="blur">模糊</button>
+                  <button class="btn is-sm" type="button" data-bg-mode="transparent">透明</button>
+                </div>
+                <div class="u-row u-gap-2" data-bg-color-row>
+                  <span class="field-label">背景</span>
+                  <input type="color" data-bg-color>
+                </div>
+                <div class="u-row u-gap-2" data-gradient-row>
+                  <span class="field-label">渐变</span>
+                  <input type="color" data-gradient-from>
+                  <input type="color" data-gradient-to>
+                </div>
+                <div class="range-row" data-bg-blur-row>
+                  <span class="field-label">模糊强度</span>
+                  <input type="range" min="8" max="80" value="32" data-bg-blur>
+                  <span class="val" data-bg-blur-val>32 px</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">导出</h3>
+              <div class="u-col u-gap-3">
+                <label class="field">
+                  <span class="field-label">输出倍率</span>
+                  <select class="select" data-scale>
+                    <option value="1">1×</option>
+                    <option value="2">2×</option>
+                    <option value="3">3×</option>
+                  </select>
+                </label>
+                <div class="opt-row" data-format-opts>
+                  <button class="btn is-sm is-active" type="button" data-fmt="png">PNG</button>
+                  <button class="btn is-sm" type="button" data-fmt="jpg">JPG</button>
+                  <button class="btn is-sm" type="button" data-fmt="webp">WebP</button>
+                </div>
+                <div class="range-row" data-quality-row hidden>
+                  <span class="field-label">质量</span>
+                  <input type="range" min="40" max="100" value="92" data-quality>
+                  <span class="val" data-quality-val>92%</span>
+                </div>
+                <div class="output-grid" data-output hidden></div>
+                <div class="act-group">
+                  <div class="u-row u-gap-2">
+                    <button class="btn is-primary is-block" type="button" data-action="download" disabled><i data-lucide="download"></i> 下载</button>
+                    <button class="btn is-block" type="button" data-action="copy" disabled><i data-lucide="copy"></i> 复制</button>
+                  </div>
+                  <button class="btn is-ghost" type="button" data-action="reset">重置</button>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

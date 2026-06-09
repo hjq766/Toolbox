@@ -1,7 +1,5 @@
 /* =========================================================
  * Design Tokens (v2)
- * 单一来源的设计变量。颜色使用 HSL 便于主题切换。
- * 不要在其他文件里再定义颜色/间距/圆角/阴影等基础变量。
  * ========================================================= */
 
 :root {
@@ -16,8 +14,11 @@
   --color-brand-ring: hsl(var(--brand-h) var(--brand-s) var(--brand-l) / 0.32);
 
   --color-success: hsl(152 62% 42%);
+  --color-success-soft: hsl(152 55% 94%);
   --color-warning: hsl(35 92% 52%);
+  --color-warning-soft: hsl(38 92% 94%);
   --color-danger:  hsl(0 78% 58%);
+  --color-danger-soft: hsl(0 85% 96%);
   --color-info:    hsl(210 88% 56%);
 
   /* ---------- 中性色 ---------- */
@@ -33,10 +34,12 @@
   --fg-muted:  hsl(230 10% 46%);
   --fg-subtle: hsl(230 8% 62%);
   --fg-invert: #ffffff;
+  --fg-on-inverse: #ffffff;
 
   --border-base: hsl(230 18% 90%);
   --border-strong: hsl(230 16% 82%);
   --border-subtle: hsl(230 20% 94%);
+  --overlay-scrim: hsl(230 20% 10% / 0.35);
 
   /* ---------- 字体 ---------- */
   --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC",
@@ -105,7 +108,7 @@
   --dur-slow: 280ms;
 
   /* ---------- 布局尺寸 ---------- */
-  --container-max: 1240px;
+  --container-max: 1280px;
   --container-px: clamp(16px, 4vw, 32px);
   --header-h: 60px;
   --dock-size: 48px;
@@ -125,13 +128,18 @@
   --fg-muted:  hsl(230 10% 66%);
   --fg-subtle: hsl(230 8% 50%);
   --fg-invert: #ffffff;
+  --fg-on-inverse: hsl(230 20% 12%);
 
   --border-base: hsl(230 12% 22%);
   --border-strong: hsl(230 12% 30%);
   --border-subtle: hsl(230 14% 18%);
+  --overlay-scrim: hsl(230 60% 2% / 0.55);
 
   --color-brand-soft: hsl(var(--brand-h) 40% 20%);
   --color-brand-ring: hsl(var(--brand-h) var(--brand-s) 70% / 0.36);
+  --color-success-soft: hsl(152 40% 18%);
+  --color-warning-soft: hsl(35 50% 15%);
+  --color-danger-soft: hsl(0 50% 15%);
 
   --shadow-xs: 0 1px 2px hsl(230 50% 2% / 0.5);
   --shadow-sm: 0 2px 6px hsl(230 50% 2% / 0.45);

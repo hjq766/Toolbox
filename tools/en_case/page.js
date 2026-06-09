@@ -9,13 +9,14 @@ const src       = $('[data-input="src"]');
 const out       = $('[data-output]');
 const charCount = $('[data-char-count]');
 const modeLabel = $('[data-mode-label]');
+const opsPanel  = $('[data-ops]');
 
 const LABELS = {
   uppercase: '全大写', lowercase: '全小写',
   capitalize: '单词首字母大写', sentenceCase: '句首字母大写',
   lineFirstUpper: '行首字母大写',
-  camelCase: 'camelCase', pascalCase: 'PascalCase',
-  snakeCase: 'snake_case', kebabCase: 'kebab-case', constantCase: 'CONSTANT_CASE',
+  camelCase: '小驼峰', pascalCase: '大驼峰',
+  snakeCase: '蛇形命名', kebabCase: '短横线式', constantCase: '常量命名',
   spaceToUnderscore: '空格→下划线', underscoreToSpace: '下划线→空格',
   underscoreToDash: '下划线→中横线', dashToUnderscore: '中横线→下划线',
   spaceToDash: '空格→中横线', dashToSpace: '中横线→空格'
@@ -32,16 +33,16 @@ function words(s) {
 }
 
 const OPS = {
-  uppercase:        s => s.toUpperCase(),
-  lowercase:        s => s.toLowerCase(),
-  capitalize:       s => s.replace(/\b\w/g, c => c.toUpperCase()),
-  sentenceCase:     s => s.toLowerCase().replace(/(^\s*\w|[.!?]\s+\w)/g, c => c.toUpperCase()),
-  lineFirstUpper:   s => s.split('\n').map(l => l ? l[0].toUpperCase() + l.slice(1) : l).join('\n'),
-  camelCase:        s => words(s).map((w, i) => i === 0 ? w.toLowerCase() : w[0].toUpperCase() + w.slice(1).toLowerCase()).join(''),
-  pascalCase:       s => words(s).map(w => w[0].toUpperCase() + w.slice(1).toLowerCase()).join(''),
-  snakeCase:        s => words(s).map(w => w.toLowerCase()).join('_'),
-  kebabCase:        s => words(s).map(w => w.toLowerCase()).join('-'),
-  constantCase:     s => words(s).map(w => w.toUpperCase()).join('_'),
+  uppercase:         s => s.toUpperCase(),
+  lowercase:         s => s.toLowerCase(),
+  capitalize:        s => s.replace(/\b\w/g, c => c.toUpperCase()),
+  sentenceCase:      s => s.toLowerCase().replace(/(^\s*\w|[.!?]\s+\w)/g, c => c.toUpperCase()),
+  lineFirstUpper:    s => s.split('\n').map(l => l ? l[0].toUpperCase() + l.slice(1) : l).join('\n'),
+  camelCase:         s => words(s).map((w, i) => i === 0 ? w.toLowerCase() : w[0].toUpperCase() + w.slice(1).toLowerCase()).join(''),
+  pascalCase:        s => words(s).map(w => w[0].toUpperCase() + w.slice(1).toLowerCase()).join(''),
+  snakeCase:         s => words(s).map(w => w.toLowerCase()).join('_'),
+  kebabCase:         s => words(s).map(w => w.toLowerCase()).join('-'),
+  constantCase:      s => words(s).map(w => w.toUpperCase()).join('_'),
   spaceToUnderscore: s => s.replace(/\s+/g, '_'),
   underscoreToSpace: s => s.replace(/_+/g, ' '),
   underscoreToDash:  s => s.replace(/_+/g, '-'),
@@ -57,62 +58,57 @@ function updateCount() {
 }
 
 function apply(op) {
-  if (!src.value) { showToast('请先输入文本', { type: 'warn' }); return; }
+  if (!src.value) { showToast('请先输入文本'); return; }
   const fn = OPS[op]; if (!fn) return;
   out.value = fn(src.value);
   lastOp = op;
   modeLabel.textContent = LABELS[op] || '';
-  // 标记活跃按钮
-  $$('[data-op]').forEach(b => b.classList.toggle('is-primary', b.dataset.op === op));
+  $$('[data-op]', opsPanel).forEach(b => b.classList.toggle('active', b.dataset.op === op));
 }
 
-/* ---------- Tab 切换 ---------- */
-$$('[data-tab]').forEach(btn => on(btn, 'click', () => {
-  const name = btn.dataset.tab;
-  $$('[data-tab]').forEach(b => b.classList.toggle('is-active', b === btn));
-  $$('[data-tab-pane]').forEach(p => { p.hidden = p.dataset.tabPane !== name; });
-}));
+/* ---------- 操作按钮（事件委托） ---------- */
+on(opsPanel, 'click', e => {
+  const btn = e.target.closest('[data-op]'); if (!btn) return;
+  apply(btn.dataset.op);
+});
 
-/* ---------- 操作绑定 ---------- */
-$$('[data-op]').forEach(btn => on(btn, 'click', () => apply(btn.dataset.op)));
-
+/* ---------- 实时重算 ---------- */
 on(src, 'input', () => {
   updateCount();
-  if (lastOp) apply(lastOp);   // 实时以上次转换模式重算
+  if (lastOp) apply(lastOp);
 });
 
-// 拖拽文本文件
-['dragover', 'dragleave'].forEach(ev => on(src, ev, e => {
+/* ---------- 拖拽文本文件 ---------- */
+on(src, 'dragover',  e => { e.preventDefault(); src.classList.add('is-drag-over'); });
+on(src, 'dragleave', () => src.classList.remove('is-drag-over'));
+on(src, 'drop', async e => {
   e.preventDefault();
-  src.style.borderColor = ev === 'dragover' ? 'var(--color-brand)' : '';
-}));
-on(src, 'drop', e => {
-  e.preventDefault();
-  src.style.borderColor = '';
-  const file = e.dataTransfer.files[0];
-  if (!file) return;
+  src.classList.remove('is-drag-over');
+  const file = e.dataTransfer.files[0]; if (!file) return;
   if (!/^text\/|\.(txt|md|json|csv|log)$/i.test(file.type || file.name)) {
-    showToast('请拖入文本文件', { type: 'warn' }); return;
+    showToast('请拖入文本文件'); return;
   }
-  const reader = new FileReader();
-  reader.onload = () => { src.value = reader.result; updateCount(); if (lastOp) apply(lastOp); };
-  reader.readAsText(file);
+  src.value = await file.text();
+  updateCount();
+  if (lastOp) apply(lastOp);
 });
 
-/* ---------- 动作按钮 ---------- */
+/* ---------- 复制 ---------- */
 on($('[data-action="copy"]'), 'click', async () => {
-  if (!out.value) { showToast('结果为空', { type: 'warn' }); return; }
+  if (!out.value) { showToast('结果为空'); return; }
   const ok = await copyText(out.value);
   showToast(ok ? '已复制' : '复制失败', { type: ok ? 'success' : 'error' });
 });
+
+/* ---------- 清空 ---------- */
 on($('[data-action="clear"]'), 'click', () => {
   src.value = ''; out.value = ''; lastOp = ''; modeLabel.textContent = '';
-  $$('[data-op]').forEach(b => b.classList.remove('is-primary'));
+  $$('[data-op]', opsPanel).forEach(b => b.classList.remove('active'));
   updateCount();
 });
 
 /* ---------- 快捷键 ---------- */
-on(document, 'keydown', (e) => {
+on(document, 'keydown', e => {
   if (!(e.ctrlKey || e.metaKey)) return;
   const k = e.key.toLowerCase();
   if (k === 'u') { e.preventDefault(); apply('uppercase'); }

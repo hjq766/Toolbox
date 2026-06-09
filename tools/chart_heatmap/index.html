@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>热力图 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="创建热力图，自定义颜色区间与数值范围，支持数据标签与色阶图例，导出 PNG / SVG">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/chart_heatmap/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="热力图 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="创建热力图，自定义颜色区间与数值范围，支持数据标签与色阶图例，导出 PNG / SVG">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/chart_heatmap/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"热力图","url":"https://tools.jqnest.top/tools/chart_heatmap/","description":"创建热力图，自定义颜色区间与数值范围，支持数据标签与色阶图例，导出 PNG / SVG","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="../_shared/chart.css">
+  <script src="../../public/vendor/echarts.min.js" defer></script>
+  <script src="../../public/vendor/xlsx.mini.min.js" defer></script>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="chart_heatmap">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="chart-studio">
+
+          <!-- 左：图表预览 -->
+          <div class="chart-stage">
+            <div class="chart-canvas" id="chart"></div>
+          </div>
+
+          <!-- 右：操作面板 -->
+          <div class="chart-controls">
+            <div class="panel">
+
+              <!-- ▼ 数据编辑（默认展开） -->
+              <div class="cs-section is-open" data-section="data">
+                <button class="cs-header" type="button">数据编辑</button>
+                <div class="cs-body">
+                  <div data-editor></div>
+                </div>
+              </div>
+
+              <!-- ▶ 颜色配置（默认折叠） -->
+              <div class="cs-section" data-section="color">
+                <button class="cs-header" type="button">颜色配置</button>
+                <div class="cs-body">
+                  <div class="u-col u-gap-3">
+                    <div class="u-row u-gap-3">
+                      <div class="field" style="flex:1">
+                        <label class="field-label">低值色</label>
+                        <input type="color" value="#d4e8ff" data-opt="color-low">
+                      </div>
+                      <div class="field" style="flex:1">
+                        <label class="field-label">高值色</label>
+                        <input type="color" value="#165DFF" data-opt="color-high">
+                      </div>
+                    </div>
+                    <div class="gradient-row">
+                      <div class="gradient-preview" data-grad-preview></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ▶ 图表选项（默认折叠） -->
+              <div class="cs-section" data-section="options">
+                <button class="cs-header" type="button">图表选项</button>
+                <div class="cs-body">
+                  <div class="u-col u-gap-3">
+                    <!-- 导出尺寸 -->
+                    <div class="u-row u-gap-2">
+                      <div class="field" style="flex:1">
+                        <label class="field-label">导出宽度</label>
+                        <input class="input is-sm" type="number" data-opt="width" value="800" min="400" max="2000" step="10">
+                      </div>
+                      <div class="field" style="flex:1">
+                        <label class="field-label">导出高度</label>
+                        <input class="input is-sm" type="number" data-opt="height" value="560" min="200" max="1200" step="10">
+                      </div>
+                    </div>
+                    <div class="co-sep"></div>
+                    <!-- 数值范围 -->
+                    <div class="co-row">
+                      <span class="co-label">数值范围</span>
+                      <div class="co-seg" data-range-mode>
+                        <button class="active" data-val="auto">自动</button>
+                        <button data-val="manual">手动</button>
+                      </div>
+                    </div>
+                    <div class="u-row u-gap-2" data-range-manual hidden>
+                      <div class="field" style="flex:1">
+                        <label class="field-label">最小值</label>
+                        <input class="input is-sm" type="number" data-opt="vmin" value="0">
+                      </div>
+                      <div class="field" style="flex:1">
+                        <label class="field-label">最大值</label>
+                        <input class="input is-sm" type="number" data-opt="vmax" value="100">
+                      </div>
+                    </div>
+                    <div class="co-sep"></div>
+                    <!-- 数据标签 -->
+                    <label class="co-toggle">
+                      <input type="checkbox" data-opt="label">
+                      <span class="co-toggle-track"></span>
+                      显示数值标签
+                    </label>
+                    <!-- 可视映射条 -->
+                    <label class="co-toggle">
+                      <input type="checkbox" data-opt="visualmap" checked>
+                      <span class="co-toggle-track"></span>
+                      显示色阶图例
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- 导出（始终可见） -->
+            <div class="panel">
+              <div class="act-group">
+                <div class="u-col u-gap-2">
+                  <button class="btn is-primary is-block" data-export="png">下载 PNG</button>
+                  <button class="btn is-block" data-export="svg">下载 SVG</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <p class="field-hint u-muted" style="margin:0;text-align:center">
+          图表渲染由开源项目
+          <a href="https://github.com/apache/echarts" target="_blank" rel="noopener noreferrer">Apache ECharts</a>
+          （Apache-2.0）提供。
+        </p>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

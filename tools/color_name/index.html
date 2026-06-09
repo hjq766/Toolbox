@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>颜色名称查询 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="输入任意 HEX 色值，自动查找最接近的 CSS 命名色和中国传统色（744 色），附全量色表浏览">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/color_name/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="颜色名称查询 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="输入任意 HEX 色值，自动查找最接近的 CSS 命名色和中国传统色（744 色），附全量色表浏览">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/color_name/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"颜色名称查询","url":"https://tools.jqnest.top/tools/color_name/","description":"输入任意 HEX 色值，自动查找最接近的 CSS 命名色和中国传统色（744 色），附全量色表浏览","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../../public/styles/browse.css">
+  <link rel="stylesheet" href="./tool.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="color_name">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <!-- 输入区 -->
+        <div class="panel">
+          <div class="cn-query-grid">
+            <div class="field">
+              <label class="field-label">输入颜色</label>
+              <div class="input-group cn-input-group" data-input-group>
+                <input class="input u-mono" type="text" data-input="hex" value="#6366F1" placeholder="#6366F1" maxlength="7" aria-describedby="cn-input-error">
+                <input class="cn-picker" type="color" data-input="picker" value="#6366f1" aria-label="选择颜色">
+              </div>
+              <div class="field-error" id="cn-input-error" data-input-error hidden>请输入 3 位或 6 位 HEX 色值</div>
+            </div>
+            <div class="field">
+              <label class="field-label">预览</label>
+              <div class="cn-preview" data-color-preview></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 结果：最接近的命名色 -->
+        <div class="grid grid-2" data-results hidden>
+
+          <div class="panel">
+            <h3 class="panel-title">CSS 命名色</h3>
+            <div data-css-list class="u-col u-gap-2"></div>
+          </div>
+
+          <div class="panel">
+            <h3 class="panel-title">中国传统色</h3>
+            <div data-cn-list class="u-col u-gap-2"></div>
+          </div>
+
+        </div>
+
+        <!-- 色表浏览 -->
+        <section class="browse-section">
+          <div class="browse-section-head">
+            <h3 class="browse-section-title">色表浏览</h3>
+            <div data-tabs="set" role="tablist"></div>
+          </div>
+
+          <div class="browse-head">
+            <div class="browse-toolbar">
+              <label class="search-shell">
+                <i data-lucide="search" class="search-icon" aria-hidden="true"></i>
+                <input class="search-box" type="search" data-browse-search placeholder="搜索色名…" autocomplete="off">
+              </label>
+            </div>
+            <div data-tabs="hue" role="tablist"></div>
+          </div>
+
+          <div class="browse-body">
+            <p class="field-hint u-mb-2" data-browse-status></p>
+            <div class="cn-browse-grid" data-browse-grid></div>
+            <div class="cn-browse-pager u-row u-gap-3 u-mt-3" data-browse-pager></div>
+          </div>
+        </section>
+
+        <p class="browse-foot field-hint u-muted">
+          CSS 命名色来自开源项目
+          <a href="https://github.com/colorjs/color-name" target="_blank" rel="noopener noreferrer">color-name</a>
+          （MIT，对齐 W3C CSS Color Module）；
+          中国传统色以
+          <a href="https://github.com/waterbeside/colorsea" target="_blank" rel="noopener noreferrer">colorsea</a>
+          （MIT）为基础，已对照
+          <a href="https://zhongguose.com/" target="_blank" rel="noopener noreferrer">中国色</a>
+          补全至 744 色。
+        </p>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

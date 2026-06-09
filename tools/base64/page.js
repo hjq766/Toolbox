@@ -15,38 +15,42 @@ tabs.forEach(btn => on(btn, 'click', () => {
   panes.forEach(p => p.hidden = p.dataset.pane !== id);
 }));
 
-/* ---------- UTF-8 安全的 Base64 编解码 ---------- */
+/* ---------- UTF-8 安全的 Base64 编解码（修复栈溢出） ---------- */
 function utf8ToBase64(str) {
-  return btoa(String.fromCodePoint(...new TextEncoder().encode(str)));
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin);
 }
 function base64ToUtf8(b64) {
   const bin = atob(b64);
-  const bytes = Uint8Array.from(bin, c => c.codePointAt(0));
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
   return new TextDecoder().decode(bytes);
 }
 
-/* ========== 文本编码 ========== */
+/* ========== 文本编码（双向实时） ========== */
 const textIn  = $('[data-text-in]');
 const textOut = $('[data-text-out]');
+let _dir = '';  // 'encode' | 'decode' — 防止循环触发
 
-function encode() {
-  if (!textIn.value) { showToast('请输入文本', { type: 'warn' }); return; }
-  try {
-    textOut.value = utf8ToBase64(textIn.value);
-    showToast('编码成功', { type: 'success' });
-  } catch (e) { showToast('编码失败：' + e.message, { type: 'error' }); }
-}
-function decode() {
-  if (!textOut.value) { showToast('请在右侧输入 Base64', { type: 'warn' }); return; }
-  try {
-    textIn.value = base64ToUtf8(textOut.value.trim());
-    showToast('解码成功', { type: 'success' });
-  } catch (_) { showToast('解码失败：无效的 Base64', { type: 'error' }); }
-}
+on(textIn, 'input', () => {
+  if (_dir === 'decode') return;
+  _dir = 'encode';
+  try { textOut.value = textIn.value ? utf8ToBase64(textIn.value) : ''; }
+  catch { textOut.value = ''; }
+  _dir = '';
+});
 
-on($('[data-action="encode"]'),     'click', encode);
-on($('[data-action="decode"]'),     'click', decode);
-on($('[data-action="copy-text"]'),  'click', async () => {
+on(textOut, 'input', () => {
+  if (_dir === 'encode') return;
+  _dir = 'decode';
+  try { textIn.value = textOut.value ? base64ToUtf8(textOut.value.trim()) : ''; }
+  catch { /* 输入中的 Base64 可能不完整，静默 */ }
+  _dir = '';
+});
+
+on($('[data-action="copy-text"]'), 'click', async () => {
   if (!textOut.value) { showToast('结果为空', { type: 'warn' }); return; }
   const ok = await copyText(textOut.value);
   showToast(ok ? '已复制' : '复制失败', { type: ok ? 'success' : 'error' });
@@ -85,7 +89,6 @@ function handleImageFile(file) {
     const base64 = e.target.result;
     showPreview(base64, `${file.name} · ${file.type} · ${formatSize(file.size)} · Base64 长度 ${base64.length.toLocaleString()}`);
     imgOut.value = base64;
-    showToast('图片转换成功', { type: 'success' });
   };
   reader.readAsDataURL(file);
 }
@@ -98,14 +101,19 @@ initUploadZone({
   multiple: false,
 });
 
-on($('[data-action="decode-img"]'), 'click', () => {
-  const v = imgOut.value.trim();
-  if (!v) { showToast('请输入 Base64', { type: 'warn' }); return; }
-  const src = v.startsWith('data:') ? v : `data:image/png;base64,${v}`;
-  previewImg.onerror = () => { hidePreview(); showToast('无效的图片 Base64', { type: 'error' }); };
-  showPreview(src, `Base64 长度 ${v.length.toLocaleString()}`);
-  showToast('图片还原成功', { type: 'success' });
+/* 粘贴 Base64 到 textarea 自动还原预览 */
+let _imgTimer = null;
+on(imgOut, 'input', () => {
+  clearTimeout(_imgTimer);
+  _imgTimer = setTimeout(() => {
+    const v = imgOut.value.trim();
+    if (!v) { hidePreview(); return; }
+    const src = v.startsWith('data:') ? v : `data:image/png;base64,${v}`;
+    previewImg.onerror = () => { hidePreview(); };
+    showPreview(src, `Base64 长度 ${v.length.toLocaleString()}`);
+  }, 400);
 });
+
 on($('[data-action="copy-img"]'), 'click', async () => {
   if (!imgOut.value) { showToast('结果为空', { type: 'warn' }); return; }
   const ok = await copyText(imgOut.value);
@@ -114,4 +122,5 @@ on($('[data-action="copy-img"]'), 'click', async () => {
 on($('[data-action="clear-img"]'), 'click', () => {
   hidePreview();
   imgOut.value = '';
+  imgInfo.textContent = '';
 });

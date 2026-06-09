@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>图片滤镜 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="可视化调色滤镜，实时预览 + 下载成品图 + 复制 CSS 代码">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/images_filter/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="图片滤镜 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="可视化调色滤镜，实时预览 + 下载成品图 + 复制 CSS 代码">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/images_filter/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"图片滤镜","url":"https://tools.jqnest.top/tools/images_filter/","description":"可视化调色滤镜，实时预览 + 下载成品图 + 复制 CSS 代码","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="./tool.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="images_filter">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:300px">
+
+          <!-- 左：预览 + 输出 -->
+          <div class="u-col u-gap-4">
+
+            <!-- 上传区（无图时显示） -->
+            <label class="panel u-col u-gap-2 upload-panel" data-drop data-upload-zone>
+              <i data-lucide="image-plus"></i>
+              <div class="u-strong">点击或拖拽图片到此处</div>
+              <div class="u-muted u-text-xs">支持 JPG / PNG / WebP · 支持粘贴上传</div>
+              <input type="file" accept="image/*" hidden data-file>
+            </label>
+
+            <!-- 预览区（上传后显示） -->
+            <div class="panel" data-preview-panel hidden style="margin:0">
+              <div class="u-row u-between u-mb-3">
+                <div>
+                  <div class="u-strong" style="max-width:48vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--text-sm)" data-file-name></div>
+                  <div class="u-muted" style="margin-top:2px;font-size:var(--text-xs)" data-img-info></div>
+                </div>
+                <button class="btn is-sm is-ghost" type="button" data-img-delete><i data-lucide="x"></i></button>
+              </div>
+              <div class="cf-preview-wrap">
+                <img data-img class="cf-preview-img" src="" alt="预览图片">
+              </div>
+            </div>
+
+            <!-- CSS 代码（次级功能） -->
+            <div class="panel" data-result-panel>
+              <div class="field-label u-mb-2">对应 CSS 代码</div>
+              <div class="result-strip">
+                <code class="u-mono u-break u-grow" data-css-out>filter: none;</code>
+                <button class="btn is-sm is-ghost" data-action="copy-css">
+                  <i data-lucide="copy"></i>
+                </button>
+              </div>
+              <div class="u-row u-gap-2 u-mt-3">
+                <button class="btn is-ghost is-sm" data-action="reset">
+                  <i data-lucide="rotate-ccw"></i> 重置参数
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 右：参数面板 -->
+          <aside>
+
+            <!-- 滤镜参数 -->
+            <div class="panel">
+              <h3 class="panel-title">滤镜参数</h3>
+              <div class="grid-chips u-mb-3" data-presets></div>
+              <div class="sep u-mb-3"></div>
+              <div class="u-col u-gap-3">
+                <div class="field">
+                  <label class="field-label">亮度</label>
+                  <div class="range-row">
+                    <input type="range" min="0" max="200" value="100" data-filter="brightness">
+                    <span class="val" data-val="brightness">100%</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="field-label">对比度</label>
+                  <div class="range-row">
+                    <input type="range" min="0" max="200" value="100" data-filter="contrast">
+                    <span class="val" data-val="contrast">100%</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="field-label">饱和度</label>
+                  <div class="range-row">
+                    <input type="range" min="0" max="200" value="100" data-filter="saturate">
+                    <span class="val" data-val="saturate">100%</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="field-label">色相旋转</label>
+                  <div class="range-row">
+                    <input type="range" min="0" max="360" value="0" data-filter="hue-rotate">
+                    <span class="val" data-val="hue-rotate">0deg</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="field-label">灰度</label>
+                  <div class="range-row">
+                    <input type="range" min="0" max="100" value="0" data-filter="grayscale">
+                    <span class="val" data-val="grayscale">0%</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="field-label">复古（Sepia）</label>
+                  <div class="range-row">
+                    <input type="range" min="0" max="100" value="0" data-filter="sepia">
+                    <span class="val" data-val="sepia">0%</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="field-label">反色</label>
+                  <div class="range-row">
+                    <input type="range" min="0" max="100" value="0" data-filter="invert">
+                    <span class="val" data-val="invert">0%</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="field-label">模糊</label>
+                  <div class="range-row">
+                    <input type="range" min="0" max="20" value="0" data-filter="blur">
+                    <span class="val" data-val="blur">0px</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 导出图片（上传后显示） -->
+            <div class="panel" data-export-panel hidden>
+              <h3 class="panel-title">导出图片</h3>
+              <div class="opt-row u-mb-3">
+                <button class="btn is-sm active" data-fmt="png">PNG</button>
+                <button class="btn is-sm" data-fmt="jpg">JPG</button>
+              </div>
+              <div class="act-group">
+                <button class="btn is-primary" data-action="export">
+                  <i data-lucide="download"></i> 下载图片
+                </button>
+              </div>
+              <p class="hint u-mt-2">图片尺寸与原图一致，已应用当前滤镜效果。</p>
+            </div>
+
+            <!-- 提示 -->
+            <div class="panel" data-hint-panel>
+              <p class="hint">复制 CSS 代码可直接用于网页开发，将滤镜效果应用到页面中的图片元素。</p>
+            </div>
+
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

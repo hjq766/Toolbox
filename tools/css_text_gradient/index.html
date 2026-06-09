@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>CSS 文字渐变 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="可视化文字渐变生成器，色标拖拽 + 方向控制 + 预设库，一键导出 background-clip: text CSS">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/css_text_gradient/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="CSS 文字渐变 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="可视化文字渐变生成器，色标拖拽 + 方向控制 + 预设库，一键导出 background-clip: text CSS">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/css_text_gradient/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"CSS 文字渐变","url":"https://tools.jqnest.top/tools/css_text_gradient/","description":"可视化文字渐变生成器，色标拖拽 + 方向控制 + 预设库，一键导出 background-clip: text CSS","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="./tool.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="css_text_gradient">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:300px">
+          <!-- 左：预览 + 色标条 + 输出 -->
+          <div class="u-col u-gap-3">
+            <section class="panel">
+              <label class="field u-mb-0">
+                <span class="field-label">预览文字</span>
+                <input class="input" type="text" data-text-input value="渐变文字效果" placeholder="输入预览文字">
+              </label>
+            </section>
+
+            <div class="panel preview-wrap ctg-preview" data-preview-wrap>
+              <div class="ctg-preview-text u-text-center u-break" data-preview-text>渐变文字效果</div>
+            </div>
+
+            <div class="cg-bar-wrap">
+              <div class="cg-bar" data-bar></div>
+              <div data-stops></div>
+            </div>
+            <p class="hint u-mt-0">点击渐变条添加色标 · 右键删除 · 拖拽移动</p>
+
+            <section class="panel">
+              <h3 class="panel-title">
+                <span>色标颜色</span>
+                <span class="badge" data-stop-count>2 个</span>
+              </h3>
+              <div class="grid grid-auto-sm cg-stop-list" data-stop-list></div>
+              <div class="cg-stop-detail" data-stop-detail hidden></div>
+              <p class="hint u-mt-2 u-mb-0">色标卡可直接改颜色；选中后可调整透明度与精确位置。</p>
+            </section>
+
+            <section class="panel">
+              <div class="u-row u-between u-mb-2">
+                <h3 class="panel-title u-mb-0">CSS 输出</h3>
+              </div>
+              <pre class="ctg-css u-mb-0" data-css-out></pre>
+              <div class="u-row u-gap-2 u-mt-2">
+                <button class="btn is-sm is-primary" data-action="copy-css"><i data-lucide="copy"></i> 复制 CSS</button>
+                <button class="btn is-sm" data-action="copy-gradient"><i data-lucide="layers"></i> 仅复制渐变</button>
+                <button class="btn is-sm is-ghost" data-action="reset"><i data-lucide="refresh-cw"></i> 重置</button>
+              </div>
+            </section>
+          </div>
+
+          <!-- 右：侧边栏 -->
+          <aside>
+            <!-- 文字样式 -->
+            <div class="panel">
+              <h3 class="panel-title">文字样式</h3>
+              <div class="u-col u-gap-2">
+                <div class="range-row">
+                  <label class="field-label">字号</label>
+                  <input type="range" data-font-size min="24" max="200" value="72">
+                  <span class="val" data-font-size-val>72px</span>
+                </div>
+                <div class="range-row">
+                  <label class="field-label">字重</label>
+                  <input type="range" data-font-weight min="100" max="900" step="100" value="700">
+                  <span class="val" data-font-weight-val>700</span>
+                </div>
+                <div class="range-row">
+                  <label class="field-label">字间距</label>
+                  <input type="range" data-letter-spacing min="-5" max="30" value="0">
+                  <span class="val" data-letter-spacing-val>0px</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 渐变方向 -->
+            <div class="panel">
+              <h3 class="panel-title">渐变方向</h3>
+              <div class="opt-row">
+                <button class="btn is-sm" data-dir="0">向上</button>
+                <button class="btn is-sm" data-dir="45">右上</button>
+                <button class="btn is-sm is-active" data-dir="90">向右</button>
+                <button class="btn is-sm" data-dir="135">右下</button>
+                <button class="btn is-sm" data-dir="180">向下</button>
+                <button class="btn is-sm" data-dir="225">左下</button>
+                <button class="btn is-sm" data-dir="270">向左</button>
+                <button class="btn is-sm" data-dir="315">左上</button>
+              </div>
+              <div class="field u-mt-3">
+                <label class="field-label">自定义角度</label>
+                <div class="range-row">
+                  <input type="range" data-angle min="0" max="360" value="90">
+                  <span class="val" data-angle-val>90°</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 预览背景 -->
+            <div class="panel">
+              <h3 class="panel-title">预览背景</h3>
+              <div class="opt-row" data-bg-opts>
+                <button class="btn is-sm is-active" data-bg="white">白</button>
+                <button class="btn is-sm" data-bg="black">黑</button>
+                <button class="btn is-sm" data-bg="light">浅灰</button>
+              </div>
+              <label class="field u-mt-3">
+                <span class="field-label">自定义</span>
+                <div class="u-row u-gap-2">
+                  <input type="color" data-bg-custom>
+                  <input class="input u-grow" data-bg-hex placeholder="#RRGGBB">
+                </div>
+              </label>
+            </div>
+
+          </aside>
+        </div>
+
+        <section class="panel">
+          <h3 class="panel-title">精选渐变预设</h3>
+          <div class="tabs u-mb-3" data-preset-tabs></div>
+          <div class="grid grid-auto-sm cg-preset-grid" data-preset-grid></div>
+        </section>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

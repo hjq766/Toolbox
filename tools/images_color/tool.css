@@ -1,0 +1,234 @@
+/*
+ * images_color/tool.css — 超过 80 行原因：
+ * 色板提取工具包含多个独有的复杂 UI：Canvas 预览层（含十字准线、选区蒙层）、
+ * 可拖拽取色器、调色板网格、WCAG 对比度展示条，以及响应式的两栏布局适配。
+ * 这些交互控件均为本工具独有，无法用全局组件替代。
+ */
+
+/* ===== 图片预览 ===== */
+.preview-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-2);
+}
+
+.preview-inner {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.preview-wrap canvas {
+  display: block;
+}
+
+.zoom-label {
+  min-width: 3.5em;
+  color: var(--fg-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-align: center;
+}
+
+.preview-hint {
+  color: var(--fg-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.preview-hint.is-active {
+  color: var(--color-brand);
+}
+
+.color-loupe {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  gap: var(--space-1);
+  width: 118px;
+  padding: var(--space-2);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+}
+
+.color-loupe canvas {
+  width: 72px;
+  height: 72px;
+  justify-self: center;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-sm);
+}
+
+.color-loupe strong,
+.color-loupe span {
+  overflow: hidden;
+  font-family: var(--font-mono, monospace);
+  font-size: var(--text-xs);
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selection-badge {
+  position: absolute;
+  z-index: 2;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--color-brand);
+  color: var(--fg-invert);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  pointer-events: none;
+}
+
+/* ===== 色板 ===== */
+.palette-strip {
+  display: grid;
+  grid-template-columns: repeat(var(--palette-count, 1), minmax(0, 1fr));
+  min-height: 42px;
+  overflow: hidden;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-2);
+}
+
+.palette-strip:empty {
+  display: none;
+}
+
+.palette-chip {
+  min-width: 0;
+  border: 0;
+  background: var(--swatch);
+  cursor: pointer;
+}
+
+.color-card {
+  --swatch: transparent;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color var(--dur-fast);
+}
+
+.color-card.active {
+  border-color: var(--color-brand);
+}
+
+.color-swatch {
+  aspect-ratio: 5 / 3;
+  background: var(--swatch);
+}
+
+.color-info {
+  padding: var(--space-2);
+}
+
+.color-actions {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: color-mix(in srgb, var(--bg-inverse) 35%, transparent);
+  opacity: 0;
+  transition: opacity var(--dur-fast);
+}
+
+.color-card:hover .color-actions {
+  opacity: 1;
+}
+
+.color-act-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--bg-surface) 90%, transparent);
+}
+
+.color-act-btn.is-danger:hover {
+  color: var(--color-danger);
+}
+
+.color-act-btn [data-lucide] {
+  width: 15px;
+  height: 15px;
+}
+
+@media (hover: none) {
+  .color-actions {
+    opacity: 1;
+    background: transparent;
+    inset: auto 0 0 0;
+    padding: var(--space-1);
+    justify-content: flex-end;
+  }
+  .color-act-btn {
+    width: 26px;
+    height: 26px;
+    background: color-mix(in srgb, var(--bg-inverse) 45%, transparent);
+    color: var(--fg-on-inverse, var(--fg-invert));
+  }
+}
+
+.color-detail-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4);
+  min-height: 72px;
+  background: var(--swatch, var(--bg-surface-2));
+  color: var(--swatch-text, var(--fg-base));
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.color-detail-banner-hex {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.color-detail-banner-source {
+  font-size: var(--text-xs);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, currentColor 18%, transparent);
+  white-space: nowrap;
+}
+
+.color-role-tag {
+  padding: calc(var(--space-1) / 2) var(--space-1);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-brand) 14%, transparent);
+  color: var(--color-brand);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  line-height: 1.4;
+  transition: opacity var(--dur-fast);
+}
+.color-role-tag.is-unset {
+  background: transparent;
+  color: var(--fg-muted);
+  border: 1px dashed var(--border-base);
+  opacity: 0;
+}
+.color-card:hover .color-role-tag.is-unset,
+.color-card.active .color-role-tag.is-unset {
+  opacity: 1;
+}

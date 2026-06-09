@@ -2,11 +2,12 @@ import { mountToolHeader } from '../../public/scripts/core/tool-page.js';
 import { $, $$, on } from '../../public/scripts/utils/dom.js';
 import { copyText } from '../../public/scripts/utils/clipboard.js';
 import { showToast } from '../../public/scripts/components/toast.js';
+import { downloadText } from '../../public/scripts/utils/download.js';
 
 mountToolHeader();
 
-const input = $('[data-input]');
-const output = $('[data-output]');
+const input   = $('[data-input]');
+const output  = $('[data-output]');
 const countEl = $('[data-count]');
 
 function opts() {
@@ -24,7 +25,7 @@ function run() {
     return k;
   };
 
-  const seen = new Map(); // key -> { count, first, value }
+  const seen = new Map();
   const order = [];
   for (const line of lines) {
     const k = keyFn(line);
@@ -44,21 +45,34 @@ function run() {
   const result = keys.map(k => seen.get(k).value);
   output.value = result.join('\n');
   const removed = lines.length - result.length;
-  countEl.textContent = `共 ${result.length} 条 · 去掉 ${removed >= 0 ? removed : 0} 条`;
+  countEl.textContent = `${result.length} 条 · 去掉 ${removed >= 0 ? removed : 0} 条`;
 }
 
-on($('[data-run]'), 'click', run);
 on(input, 'input', run);
 $$('[data-opt]').forEach(el => on(el, 'change', run));
 
-on($('[data-copy]'), 'click', async () => {
+on($('[data-action="copy"]'), 'click', async () => {
+  if (!output.value) return;
   const ok = await copyText(output.value);
-  showToast(ok ? '已复制结果' : '复制失败', { type: ok ? 'success' : 'error' });
+  showToast(ok ? '已复制' : '复制失败', { type: ok ? 'success' : 'error' });
 });
-on($('[data-clear]'), 'click', () => { input.value = ''; output.value = ''; countEl.textContent = ''; input.focus(); });
 
-input.value = [
-  'apple', 'banana', 'Apple', 'orange', 'banana', '',
-  'grape', 'APPLE  ', 'orange'
-].join('\n');
+on($('[data-action="download"]'), 'click', () => {
+  if (!output.value) return;
+  downloadText(output.value, 'deduplicated.txt', 'text/plain');
+});
+
+on($('[data-action="sample"]'), 'click', () => {
+  input.value = 'apple\nbanana\nApple\norange\nbanana\n\ngrape\nAPPLE  \norange';
+  run();
+});
+
+on($('[data-action="clear"]'), 'click', () => {
+  input.value = '';
+  output.value = '';
+  countEl.textContent = '';
+  input.focus();
+});
+
+input.value = 'apple\nbanana\nApple\norange\nbanana\n\ngrape\nAPPLE  \norange';
 run();

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>亲戚关系计算 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="中国亲属称谓计算器，正向/反向/关系链/两人合称四种查询">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/relationship/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="亲戚关系计算 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="中国亲属称谓计算器，正向/反向/关系链/两人合称四种查询">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/relationship/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"亲戚关系计算","url":"https://tools.jqnest.top/tools/relationship/","description":"中国亲属称谓计算器，正向/反向/关系链/两人合称四种查询","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="./tool.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="relationship">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="u-col u-gap-4">
+
+          <!-- 查询模式 -->
+          <div class="grid grid-auto-sm" data-modes>
+            <button class="chip u-col u-items-start u-pt-3 u-pb-3 u-radius-lg is-active" type="button" data-mode="forward">
+              <i data-lucide="arrow-right" class="icon-18 u-muted"></i>
+              <span>正向查询</span>
+              <span class="chip-sub">我该怎么称呼 TA？</span>
+            </button>
+            <button class="chip u-col u-items-start u-pt-3 u-pb-3 u-radius-lg" type="button" data-mode="reverse">
+              <i data-lucide="arrow-left" class="icon-18 u-muted"></i>
+              <span>反向查询</span>
+              <span class="chip-sub">TA 该怎么称呼我？</span>
+            </button>
+            <button class="chip u-col u-items-start u-pt-3 u-pb-3 u-radius-lg" type="button" data-mode="chain">
+              <i data-lucide="git-branch" class="icon-18 u-muted"></i>
+              <span>关系链</span>
+              <span class="chip-sub">某个称谓代表什么关系？</span>
+            </button>
+            <button class="chip u-col u-items-start u-pt-3 u-pb-3 u-radius-lg" type="button" data-mode="pair">
+              <i data-lucide="users" class="icon-18 u-muted"></i>
+              <span>两人合称</span>
+              <span class="chip-sub">两人之间是什么关系？</span>
+            </button>
+          </div>
+
+          <!-- 关系链构建（正向 / 反向） -->
+          <div data-panel="builder" class="u-col u-gap-4">
+            <div class="panel">
+              <div class="u-row u-between u-items-center u-mb-3">
+                <span class="field-label">关系链</span>
+                <div class="u-row u-gap-2">
+                  <button class="btn is-ghost is-sm" type="button" data-action="undo" disabled>
+                    <i data-lucide="undo-2" class="icon-16"></i> 撤销
+                  </button>
+                  <button class="btn is-ghost is-sm" type="button" data-action="clear">
+                    <i data-lucide="trash-2" class="icon-16"></i> 清空
+                  </button>
+                </div>
+              </div>
+              <div class="rel-chain" data-chain-display>
+                <span class="rel-chain__me">我</span>
+              </div>
+              <p class="field-hint u-muted u-mt-2" data-builder-hint>点击下方亲属关系，逐步构建「我的 XX 的 XX …」</p>
+            </div>
+
+            <div class="panel">
+              <div class="field-label u-mb-2">选择亲属</div>
+              <div class="grid grid-auto-sm" data-kin-grid></div>
+            </div>
+
+            <div class="panel" data-sex-panel hidden>
+              <div class="field-label u-mb-2">我的性别</div>
+              <div class="u-row u-gap-2" data-sex-toggle>
+                <button class="chip is-active" type="button" data-sex="1">男</button>
+                <button class="chip" type="button" data-sex="0">女</button>
+              </div>
+              <p class="field-hint u-muted u-mt-2">反向查询需指定性别，以区分「外孙 / 外孙女」等称谓</p>
+            </div>
+          </div>
+
+          <!-- 称谓输入（关系链 / 两人合称） -->
+          <div data-panel="title" hidden class="u-col u-gap-4">
+            <div class="panel">
+              <div class="field">
+                <label class="field-label" for="title-input">称谓</label>
+                <input class="input" id="title-input" type="text" placeholder="如：外婆、舅公" data-title-input autocomplete="off">
+              </div>
+            </div>
+          </div>
+
+          <div data-panel="pair" hidden class="panel">
+            <div class="grid grid-2">
+              <div class="field">
+                <label class="field-label" for="pair-a">一方称谓</label>
+                <input class="input" id="pair-a" type="text" placeholder="如：外婆" data-pair-a autocomplete="off">
+              </div>
+              <div class="field">
+                <label class="field-label" for="pair-b">另一方称谓</label>
+                <input class="input" id="pair-b" type="text" placeholder="如：奶奶" data-pair-b autocomplete="off">
+              </div>
+            </div>
+          </div>
+
+          <!-- 结果 -->
+          <div data-result hidden>
+            <div class="panel">
+              <div class="u-row u-between u-items-center u-mb-3">
+                <span class="field-label">查询结果</span>
+                <button class="btn is-ghost is-sm" type="button" data-action="copy">
+                  <i data-lucide="copy" class="icon-16"></i> 复制
+                </button>
+              </div>
+              <div class="rel-results" data-result-list></div>
+              <p class="field-hint u-muted u-mt-3" data-result-hint></p>
+            </div>
+          </div>
+
+        </div>
+
+        <p class="field-hint u-muted" style="margin:0;text-align:center">
+          称谓计算核心来自
+          <a href="https://github.com/ExploringTheCodeWorld/relationship-ts" target="_blank" rel="noopener noreferrer">relationship-ts</a>
+          （MIT，基于
+          <a href="https://github.com/mumuy/relationship" target="_blank" rel="noopener noreferrer">mumuy/relationship</a>
+          重构）。
+        </p>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script src="../../public/vendor/relationship.min.js"></script>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

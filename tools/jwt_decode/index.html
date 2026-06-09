@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>JWT 解析 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="粘贴 JWT 自动解码 Header / Payload，可视化过期时间">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/jwt_decode/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="JWT 解析 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="粘贴 JWT 自动解码 Header / Payload，可视化过期时间">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/jwt_decode/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"JWT 解析","url":"https://tools.jqnest.top/tools/jwt_decode/","description":"粘贴 JWT 自动解码 Header / Payload，可视化过期时间","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <style>
+    .jwt-part{padding:var(--space-3);border-radius:var(--radius-md);border:1px solid var(--border-subtle);background:var(--bg-surface)}
+    .jwt-part pre{margin:0;white-space:pre-wrap;word-break:break-all;font-family:var(--font-mono);font-size:var(--text-sm);line-height:1.6;color:var(--fg-strong)}
+    .jwt-label{font-weight:700;font-size:var(--text-sm);margin-bottom:var(--space-2);display:flex;align-items:center;gap:var(--space-2)}
+    .jwt-dot-header{color:#f97316}
+    .jwt-dot-payload{color:#8b5cf6}
+    .jwt-dot-sig{color:#06b6d4}
+    .exp-ok{color:var(--color-success)}
+    .exp-expired{color:var(--color-danger)}
+    .exp-bar{height:6px;border-radius:var(--radius-pill);background:var(--bg-surface-2);overflow:hidden;margin-top:var(--space-2)}
+    .exp-bar-fill{height:100%;border-radius:var(--radius-pill);transition:width .3s}
+  </style>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="jwt_decode">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="panel u-mb-3">
+          <div class="u-row u-between u-mb-3" style="flex-wrap:wrap;gap:var(--space-2)">
+            <label class="field-label" style="margin:0">粘贴 JWT Token</label>
+            <div class="u-row u-gap-2" style="align-items:center">
+              <button class="btn is-sm" type="button" data-action="paste"><i class="icon-16" data-lucide="clipboard-paste"></i> 粘贴</button>
+              <button class="btn is-sm is-ghost" type="button" data-action="sample">示例</button>
+              <button class="btn is-sm is-ghost" type="button" data-action="clear">清空</button>
+            </div>
+          </div>
+          <textarea class="textarea u-mono" data-input="jwt" rows="4" placeholder="粘贴 JWT Token，自动解析"></textarea>
+          <div class="field-error u-mt-2" data-error hidden></div>
+        </div>
+
+        <div data-result hidden>
+          <!-- 过期时间 -->
+          <div class="panel u-mb-3" data-exp-panel hidden>
+            <div class="u-row u-between">
+              <span class="u-strong">Token 有效期</span>
+              <span data-exp-status></span>
+            </div>
+            <div data-exp-detail class="u-muted" style="font-size:var(--text-sm);margin-top:var(--space-1)"></div>
+            <div class="exp-bar"><div class="exp-bar-fill" data-exp-bar></div></div>
+          </div>
+
+          <div class="grid grid-2">
+            <!-- Header -->
+            <div class="jwt-part">
+              <div class="jwt-label"><span class="badge" style="background:#f97316;color:#fff">Header</span><button class="btn is-sm is-ghost" type="button" data-action="copy-header"><i data-lucide="copy"></i></button></div>
+              <pre data-out="header"></pre>
+            </div>
+            <!-- Payload -->
+            <div class="jwt-part">
+              <div class="jwt-label"><span class="badge" style="background:#8b5cf6;color:#fff">Payload</span><button class="btn is-sm is-ghost" type="button" data-action="copy-payload"><i data-lucide="copy"></i></button></div>
+              <pre data-out="payload"></pre>
+            </div>
+          </div>
+
+          <!-- Signature -->
+          <div class="jwt-part u-mt-4">
+            <div class="jwt-label"><span class="badge" style="background:#06b6d4;color:#fff">Signature</span></div>
+            <pre data-out="sig" style="color:var(--fg-muted)"></pre>
+          </div>
+
+          <!-- Payload 字段说明 -->
+          <div class="panel u-mt-4" data-claims-panel hidden>
+            <h3 class="panel-title">标准声明字段</h3>
+            <div data-claims></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

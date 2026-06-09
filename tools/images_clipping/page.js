@@ -1,7 +1,6 @@
 import { mountToolHeader } from '../../public/scripts/core/tool-page.js';
 import { $, on } from '../../public/scripts/utils/dom.js';
 import { showToast } from '../../public/scripts/components/toast.js';
-import { downloadBlob } from '../../public/scripts/utils/download.js';
 import { initUploadZone } from '../_shared/upload-zone.js';
 
 mountToolHeader();
@@ -11,6 +10,7 @@ let currentImage = null;
 let currentFile  = null;
 let rotation = 0, flipH = false, flipV = false;
 let currentRatio = 'free';
+let currentFmt   = 'image/jpeg';
 let canvasScale = 1;
 let cropData = { x: 0, y: 0, width: 0, height: 0 };
 let isDragging = false, isResizing = false, resizeHandle = null;
@@ -31,25 +31,23 @@ const resultImg   = $('[data-result-img]');
 const cropBtn     = $('[data-action="crop"]');
 
 /* ========== 上传 ========== */
-initUploadZone({ dropEl, fileEl, onFiles: files => handleFile(files[0]), accept: 'image' });
+initUploadZone({ dropEl, fileEl, onFiles: files => handleFile(files[0]), accept: 'image', onDelete: clearImage });
 
 function handleFile(file) {
   if (!file || !file.type.startsWith('image/')) return;
   currentFile = file;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const img = new Image();
-    img.onload = () => {
-      currentImage = img;
-      rotation = 0; flipH = false; flipV = false;
-      dropEl.hidden = true; previewEl.hidden = false; resultEl.hidden = true;
-      cropBtn.disabled = false;
-      sizeInfoEl.textContent = `${img.width} × ${img.height}`;
-      setTimeout(() => { displayImage(); initCropBox(); }, 0);
-    };
-    img.src = e.target.result;
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    URL.revokeObjectURL(url);
+    currentImage = img;
+    rotation = 0; flipH = false; flipV = false;
+    dropEl.hidden = true; previewEl.hidden = false; resultEl.hidden = true;
+    cropBtn.disabled = false;
+    sizeInfoEl.textContent = `${img.width} × ${img.height}`;
+    requestAnimationFrame(() => { displayImage(); initCropBox(); });
   };
-  reader.readAsDataURL(file);
+  img.src = url;
 }
 
 /* ========== 显示 ========== */
@@ -104,7 +102,7 @@ on(cropBox, 'mousedown', e => {
   e.preventDefault();
 });
 
-document.addEventListener('mousemove', e => {
+on(document, 'mousemove', e => {
   if (!isDragging && !isResizing) return;
   const dx = e.clientX - startX, dy = e.clientY - startY;
   if (isDragging) {
@@ -117,7 +115,7 @@ document.addEventListener('mousemove', e => {
   updateCropBox();
 });
 
-document.addEventListener('mouseup', () => { isDragging = false; isResizing = false; resizeHandle = null; });
+on(document, 'mouseup', () => { isDragging = false; isResizing = false; resizeHandle = null; });
 
 function resizeCrop(dx, dy) {
   const min = 30;
@@ -145,11 +143,19 @@ function resizeCrop(dx, dy) {
   }
 }
 
-/* ========== 比例 ========== */
-$('[data-ratio-opts]').addEventListener('click', e => {
-  const btn = e.target.closest('[data-ratio]'); if (!btn) return;
-  $('[data-ratio-opts]').querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+/* ========== 比例 / 格式 公共辅助 ========== */
+const ratioOpts = $('[data-ratio-opts]');
+const fmtOpts   = $('[data-format-opts]');
+
+function activateBtn(root, btn) {
+  root.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+}
+
+/* ========== 比例 ========== */
+on(ratioOpts, 'click', e => {
+  const btn = e.target.closest('[data-ratio]'); if (!btn) return;
+  activateBtn(ratioOpts, btn);
   currentRatio = btn.dataset.ratio;
   if (currentRatio !== 'free' && canvasEl.width) {
     const [rw, rh] = currentRatio.split(':').map(Number);
@@ -186,26 +192,24 @@ on(cropBtn, 'click', () => {
   fCtx.drawImage(currentImage, -currentImage.width / 2, -currentImage.height / 2);
   fCtx.restore();
 
-  const fmt = document.querySelector('[data-format-opts] .active')?.dataset.fmt || 'image/jpeg';
   const cx = cropData.x / canvasScale, cy = cropData.y / canvasScale;
   const cw = cropData.width / canvasScale, ch = cropData.height / canvasScale;
 
   const out = document.createElement('canvas');
   out.width = cw; out.height = ch;
   const oCtx = out.getContext('2d');
-  if (fmt === 'image/jpeg') { oCtx.fillStyle = '#fff'; oCtx.fillRect(0, 0, cw, ch); }
+  if (currentFmt === 'image/jpeg') { oCtx.fillStyle = '#fff'; oCtx.fillRect(0, 0, cw, ch); }
   oCtx.drawImage(full, cx, cy, cw, ch, 0, 0, cw, ch);
 
-  resultImg.src = out.toDataURL(fmt, 1.0);
+  resultImg.src = out.toDataURL(currentFmt, 1.0);
   previewEl.hidden = true; resultEl.hidden = false;
   showToast('裁剪完成');
 });
 
 /* ========== 下载 ========== */
 on($('[data-action="download"]'), 'click', () => {
-  const fmt = document.querySelector('[data-format-opts] .active')?.dataset.fmt || 'image/jpeg';
   const extMap = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
-  const ext = extMap[fmt] || 'jpg';
+  const ext = extMap[currentFmt] || 'jpg';
   const name = currentFile ? currentFile.name.replace(/\.[^/.]+$/, '') : 'image';
   const link = document.createElement('a');
   link.download = `${name}-cropped.${ext}`;
@@ -216,17 +220,17 @@ on($('[data-action="download"]'), 'click', () => {
 on($('[data-action="continue"]'), 'click', () => { resultEl.hidden = true; previewEl.hidden = false; });
 
 /* ========== 格式选择 ========== */
-$('[data-format-opts]').addEventListener('click', e => {
+on(fmtOpts, 'click', e => {
   const btn = e.target.closest('[data-fmt]'); if (!btn) return;
-  $('[data-format-opts]').querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  activateBtn(fmtOpts, btn);
+  currentFmt = btn.dataset.fmt;
 });
 
 /* ========== 删除 ========== */
-on($('[data-action="delete"]'), 'click', () => {
+function clearImage() {
   currentImage = null; currentFile = null;
   ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
   cropBox.classList.remove('active');
   previewEl.hidden = true; resultEl.hidden = true; dropEl.hidden = false;
   cropBtn.disabled = true; fileEl.value = '';
-});
+}

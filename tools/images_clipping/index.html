@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>图片裁剪 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>图片裁剪 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="自由/比例裁剪 + 旋转翻转 + 多格式输出">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/images_clipping/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="图片裁剪 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="自由/比例裁剪 + 旋转翻转 + 多格式输出">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/images_clipping/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"图片裁剪","url":"https://tools.jqnest.top/tools/images_clipping/","description":"自由/比例裁剪 + 旋转翻转 + 多格式输出","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -12,11 +24,10 @@
   <link rel="stylesheet" href="../../public/styles/utilities.css">
   <link rel="stylesheet" href="../_shared/sidebar.css">
   <style>
-    .preview-wrap{position:relative;background:var(--bg-surface-2);border-radius:var(--radius);overflow:hidden;min-height:300px;display:flex;align-items:center;justify-content:center}
+    .preview-wrap{position:relative;background:var(--bg-surface-2);border-radius:var(--radius-md);overflow:hidden;min-height:300px;display:flex;align-items:center;justify-content:center}
     .preview-wrap canvas{max-width:100%;max-height:500px;display:block}
     .crop-box{position:absolute;border:2px solid var(--color-brand,#3b82f6);cursor:move;display:none}
     .crop-box.active{display:block}
-    .crop-box::after{content:'';position:absolute;inset:0;background:transparent}
     .crop-handle{position:absolute;width:10px;height:10px;background:var(--color-brand,#3b82f6);border:1px solid #fff;border-radius:2px}
     .crop-handle.nw{top:-5px;left:-5px;cursor:nw-resize}
     .crop-handle.ne{top:-5px;right:-5px;cursor:ne-resize}
@@ -27,8 +38,7 @@
     .crop-handle.w{top:50%;left:-5px;margin-top:-5px;cursor:w-resize}
     .crop-handle.e{top:50%;right:-5px;margin-top:-5px;cursor:e-resize}
     .result-wrap{text-align:center}
-    .result-wrap img{max-width:100%;max-height:400px;border-radius:var(--radius)}
-    .info-sm{font-size:var(--text-xs);color:var(--text-muted)}
+    .result-wrap img{max-width:100%;max-height:400px;border-radius:var(--radius-md)}
   </style>
 </head>
 <body data-page="tool" data-base-path="../../" data-tool-slug="images_clipping">
@@ -41,10 +51,10 @@
           <!-- 左 -->
           <div>
             <!-- 上传 -->
-            <label class="panel u-col u-gap-2" data-drop style="border-style:dashed;align-items:center;text-align:center;cursor:pointer;padding:var(--space-8) var(--space-4);margin:0">
-              <i data-lucide="upload" style="font-size:1.8rem;opacity:.35"></i>
+            <label class="panel u-col u-gap-2 upload-panel" data-drop>
+              <i data-lucide="upload"></i>
               <div class="u-strong">点击或拖拽图片到此处</div>
-              <div class="u-muted" style="font-size:var(--text-xs)">支持 JPG / PNG / WebP / GIF · 支持粘贴上传</div>
+              <div class="u-muted u-text-xs">支持 JPG / PNG / WebP / GIF · 支持粘贴上传</div>
               <input type="file" accept="image/*" hidden data-file>
             </label>
 
@@ -58,9 +68,9 @@
                   <button class="btn is-sm" data-action="flip-v" title="垂直翻转">⇕</button>
                   <button class="btn is-sm" data-action="reset">重置</button>
                 </div>
-                <div class="u-row u-gap-1">
-                  <span class="info-sm" data-size-info></span>
-                  <button class="btn is-sm is-ghost" data-action="delete">✕</button>
+                <div class="u-row u-gap-2">
+                  <span class="u-muted u-text-xs" data-size-info></span>
+                  <button class="btn is-sm is-ghost" type="button" data-img-delete><i data-lucide="x"></i></button>
                 </div>
               </div>
               <div class="preview-wrap" data-image-preview>
@@ -71,7 +81,7 @@
                   <div class="crop-handle sw"></div><div class="crop-handle s"></div><div class="crop-handle se"></div>
                 </div>
               </div>
-              <div class="u-mt-1 info-sm" data-crop-size></div>
+              <div class="u-mt-1 u-muted u-text-xs" data-crop-size></div>
             </div>
 
             <!-- 结果 -->

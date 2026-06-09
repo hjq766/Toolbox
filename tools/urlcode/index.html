@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>URL 编码 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>URL 编码 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="URL 编码 / 解码转换工具">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/urlcode/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="URL 编码 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="URL 编码 / 解码转换工具">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/urlcode/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"URL 编码","url":"https://tools.jqnest.top/tools/urlcode/","description":"URL 编码 / 解码转换工具","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -16,36 +28,29 @@
     <div class="tool-layout">
       <header class="tool-header" data-tool-header></header>
       <div class="tool-body">
-        <div class="panel">
-          <div class="u-row u-between u-mb-4">
-            <div class="tabs" data-mode-nav>
-              <button class="tab-btn is-active" data-mode="component">Component 模式</button>
-              <button class="tab-btn" data-mode="full">完整 URL 模式</button>
-            </div>
-            <label class="checkbox"><input type="checkbox" data-auto checked> 实时同步</label>
-          </div>
-          <div class="grid grid-2">
-            <div class="field">
-              <label class="field-label">原文 / 已解码</label>
-              <textarea class="textarea" data-raw placeholder="在此输入要编码的文本或 URL"></textarea>
-            </div>
-            <div class="field">
-              <label class="field-label">编码结果</label>
-              <textarea class="textarea" data-encoded placeholder="编码后内容"></textarea>
-            </div>
-          </div>
-          <div class="u-row u-gap-3 u-mt-4">
-            <button class="btn is-primary" data-encode>编码 →</button>
-            <button class="btn" data-decode>← 解码</button>
-            <button class="btn is-ghost" data-swap>⇅ 交换</button>
-            <button class="btn is-ghost" data-clear>清空</button>
-            <button class="btn" data-copy-encoded>复制编码结果</button>
-          </div>
-          <p class="field-hint u-mt-4">
-            Component 模式：使用 <code>encodeURIComponent</code>，用于参数值；
-            完整 URL 模式：使用 <code>encodeURI</code>，保留保留字符。
-          </p>
+
+        <div class="tabs u-mb-3">
+          <button class="tab-btn is-active" data-mode="component">Component</button>
+          <button class="tab-btn" data-mode="full">完整 URL</button>
         </div>
+
+        <div class="grid grid-2">
+          <div class="panel">
+            <div class="u-row u-between u-mb-3" style="align-items:center">
+              <h3 class="panel-title" style="margin:0">原文</h3>
+              <button class="btn is-sm is-ghost" data-action="clear">清空</button>
+            </div>
+            <textarea class="textarea u-mono" data-raw placeholder="输入文本或 URL，实时编码"></textarea>
+          </div>
+          <div class="panel">
+            <div class="u-row u-between u-mb-3" style="align-items:center">
+              <h3 class="panel-title" style="margin:0">编码结果</h3>
+              <button class="btn is-sm" data-action="copy">复制</button>
+            </div>
+            <textarea class="textarea u-mono" data-encoded placeholder="输入编码内容，实时解码"></textarea>
+          </div>
+        </div>
+
       </div>
     </div>
   </div></main></div>

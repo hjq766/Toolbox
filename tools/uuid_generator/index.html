@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>UUID 生成器 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="生成 UUID v4，支持批量、大写、去横杠等格式选项">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/uuid_generator/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="UUID 生成器 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="生成 UUID v4，支持批量、大写、去横杠等格式选项">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/uuid_generator/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"UUID 生成器","url":"https://tools.jqnest.top/tools/uuid_generator/","description":"生成 UUID v4，支持批量、大写、去横杠等格式选项","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="uuid_generator">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:240px">
+          <!-- 左：结果区 -->
+          <div class="u-col u-gap-4">
+            <div class="panel">
+              <div class="u-row u-between u-mb-3">
+                <h3 class="panel-title" style="margin:0">生成结果</h3>
+                <span class="u-muted u-text-xs" data-result-count></span>
+              </div>
+              <div class="u-col u-gap-2" data-result-list>
+                <div class="u-muted" style="text-align:center;padding:var(--space-6);font-size:var(--text-sm)">点击"生成"获取 UUID</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右：设置 -->
+          <aside>
+            <div class="panel">
+              <div class="act-group" style="margin-bottom:var(--space-3)">
+                <button class="btn is-primary is-block" type="button" data-action="generate"><i data-lucide="refresh-cw"></i> 生成</button>
+              </div>
+              <div class="qty-group">
+                <label class="field-label">数量</label>
+                <input class="input" type="number" min="1" max="100" value="5" data-count>
+                <div class="opt-row">
+                  <button class="btn is-sm" data-set-count="1">1</button>
+                  <button class="btn is-sm" data-set-count="5">5</button>
+                  <button class="btn is-sm" data-set-count="10">10</button>
+                  <button class="btn is-sm" data-set-count="50">50</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <label class="field-label u-mb-2">版本</label>
+              <select class="select" data-version>
+                <option value="v4" selected>v4（随机）</option>
+                <option value="v1">v1（时间戳）</option>
+              </select>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">格式选项</h3>
+              <div class="switch-list">
+                <label class="switch-item"><input type="checkbox" data-opt="uppercase"> 大写字母</label>
+                <label class="switch-item"><input type="checkbox" data-opt="no-dash"> 去掉横杠</label>
+                <label class="switch-item"><input type="checkbox" data-opt="braces"> 加花括号 {}</label>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="act-group">
+                <div class="u-row u-gap-2">
+                  <button class="btn is-block" type="button" data-action="copy"><i data-lucide="copy"></i> 复制全部</button>
+                  <button class="btn is-ghost is-block" type="button" data-action="clear">清空</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <p class="hint">点击单行可快速复制。修改选项后点击"生成"刷新结果。</p>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

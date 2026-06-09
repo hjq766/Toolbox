@@ -32,7 +32,7 @@ updateSize();
 /* ---------- 大小 ---------- */
 function updateSize() {
   const b = new Blob([editorEl.value]).size;
-  sizeEl.textContent = b < 1024 ? b + ' B' : (b / 1024).toFixed(2) + ' KB';
+  sizeEl.textContent = b < 1024 ? b + ' B' : b < 1048576 ? (b / 1024).toFixed(1) + ' KB' : (b / 1048576).toFixed(2) + ' MB';
 }
 on(editorEl, 'input', updateSize);
 
@@ -63,7 +63,7 @@ function prettyXml(xml) {
     } else if (token.endsWith('/>')) {
       formatted += PADDING.repeat(indent) + token + '\n';
     } else {
-      formatted += PADDING.repeat(indent) + token + (token.startsWith('<?') || token.startsWith('<!') ? '\n' : '');
+      formatted += PADDING.repeat(indent) + token + '\n';
     }
   }
   return formatted.trim();

@@ -7,7 +7,7 @@
 .preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4)}
 
 /* --- 卡片 --- */
-.preview-item{position:relative;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--bg-surface);display:flex;flex-direction:column}
+.preview-item{position:relative;border:1px solid var(--border-base);border-radius:var(--radius-lg);overflow:hidden;background:var(--bg-surface);display:flex;flex-direction:column}
 
 /* --- 缩略图区 --- */
 .preview-img{width:100%;height:160px;overflow:hidden;background:var(--bg-surface-2);display:flex;align-items:center;justify-content:center}
@@ -16,18 +16,17 @@
 
 /* --- 信息区 --- */
 .preview-info{flex:1;padding:var(--space-3);display:flex;flex-direction:column;gap:2px;font-size:var(--text-xs)}
-.preview-info .fname{font-size:var(--text-sm);font-weight:var(--font-semibold,600);word-break:break-all;margin-bottom:var(--space-1);color:var(--fg-strong,var(--fg-default))}
+.preview-info .fname{font-size:var(--text-sm);font-weight:600;word-break:break-all;margin-bottom:var(--space-1);color:var(--fg-strong)}
 .preview-info .info-row{display:flex;justify-content:space-between;color:var(--fg-muted)}
-.preview-info .info-row .cv{font-weight:var(--font-semibold,600)}
+.preview-info .info-row .cv{font-weight:600}
 .preview-info .info-row .cv.good{color:var(--color-success)}
 .preview-info .info-row .cv.same{color:var(--fg-muted)}
 .preview-info .info-row .cv.fail{color:var(--color-danger,#ef4444)}
 .preview-info .btn{margin-top:var(--space-2)}
 
-/* --- 悬浮删除按钮 --- */
-.remove-btn{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.5);border:none;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,opacity .15s;line-height:1;opacity:0;pointer-events:none}
+/* --- 悬浮删除按钮（视觉基础在 sidebar.css .remove-btn） --- */
+.preview-item .remove-btn{position:absolute;top:6px;right:6px;opacity:0;pointer-events:none}
 .preview-item:hover .remove-btn{opacity:1;pointer-events:auto}
-.remove-btn:hover{background:rgba(0,0,0,.7)}
 
 /* --- 全屏预览模态框 --- */
 .img-modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .2s}

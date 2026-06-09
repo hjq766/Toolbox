@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>年龄计算器 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="输入生日计算精确年龄，含总天数、下次生日倒计时、星座生肖">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/age_calc/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="年龄计算器 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="输入生日计算精确年龄，含总天数、下次生日倒计时、星座生肖">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/age_calc/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"年龄计算器","url":"https://tools.jqnest.top/tools/age_calc/","description":"输入生日计算精确年龄，含总天数、下次生日倒计时、星座生肖","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="./tool.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="age_calc">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="u-col u-gap-4">
+
+          <!-- 输入 -->
+          <div class="panel">
+            <div class="field-label u-mb-2">出生日期</div>
+            <div class="u-row u-gap-2" style="max-width:360px">
+              <div class="pk" id="pk-year"></div>
+              <div class="pk" id="pk-month"></div>
+              <div class="pk" id="pk-day"></div>
+            </div>
+            <div data-birthday-hint hidden class="u-mt-2" style="padding:var(--space-2) var(--space-3);background:var(--color-brand-soft);border-radius:var(--radius-sm);font-size:var(--text-sm);font-weight:600;color:var(--color-brand)">
+              🎂 今天是你的生日，生日快乐！
+            </div>
+          </div>
+
+          <!-- 结果（默认隐藏） -->
+          <div data-result hidden class="u-col u-gap-4">
+
+            <!-- 精确年龄 -->
+            <div class="panel">
+              <div class="grid grid-3" data-age-grid></div>
+            </div>
+
+            <!-- 次级统计 + 附加信息 -->
+            <div class="grid grid-2" style="gap:var(--space-4)">
+              <div class="panel">
+                <div class="grid grid-2" data-extra-grid></div>
+              </div>
+              <div class="panel" data-info-panel></div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

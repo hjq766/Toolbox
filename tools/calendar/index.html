@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>日历查询 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>日历查询 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="公历农历日期查询转换，节气节日，干支生肖">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/calendar/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="日历查询 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="公历农历日期查询转换，节气节日，干支生肖">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/calendar/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"日历查询","url":"https://tools.jqnest.top/tools/calendar/","description":"公历农历日期查询转换，节气节日，干支生肖","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -24,6 +36,8 @@
     .cal i .fm { color: var(--fg-muted); }
     .cal i.today small { color: rgba(255,255,255,.8); }
     .cal i.today .f { color: #fca5a5; }
+    .cal i .ft { color: var(--color-success); }
+    .cal i.today .ft { color: rgba(255,255,255,.8); }
     /* ---- 自定义选择器 ---- */
     .pk { position: relative; flex: 1; }
     .pk-trigger {
@@ -113,6 +127,13 @@
             <div data-conv-result class="u-mt-3"></div>
           </div>
         </div>
+
+        <p class="field-hint u-muted" style="margin:0;text-align:center">
+          公历农历互转核心来自开源项目
+          <a href="https://github.com/jjonline/calendar.js" target="_blank" rel="noopener noreferrer">calendar.js</a>
+          （GPL-3.0，作者 Jea杨）；
+          节日列表、干支五行、立春生肖分界、动态节日（清明/母亲节等）为本站补充。
+        </p>
 
       </div>
     </div>

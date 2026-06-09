@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>CSS 圆角生成 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="可视化生成 border-radius，支持统一/四角/椭圆三种模式，内置 8 种形状预设与 CSS 一键复制">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/css_border_radius/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="CSS 圆角生成 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="可视化生成 border-radius，支持统一/四角/椭圆三种模式，内置 8 种形状预设与 CSS 一键复制">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/css_border_radius/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"CSS 圆角生成","url":"https://tools.jqnest.top/tools/css_border_radius/","description":"可视化生成 border-radius，支持统一/四角/椭圆三种模式，内置 8 种形状预设与 CSS 一键复制","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="./tool.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="css_border_radius">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:300px;align-items:start">
+
+          <!-- 左：预览 + 输出 -->
+          <section class="u-col u-gap-4">
+            <div class="panel">
+              <div class="u-row u-between u-mb-3">
+                <div>
+                  <h3 class="panel-title">实时预览</h3>
+                  <p class="hint">拖动滑块或点击预设，圆角实时更新。</p>
+                </div>
+                <span class="badge" data-mode-badge>统一</span>
+              </div>
+              <div class="br-stage">
+                <div class="br-box" data-preview></div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="u-row u-between u-mb-3">
+                <h3 class="panel-title">CSS 输出</h3>
+                <button class="btn is-sm is-primary" type="button" data-action="copy">
+                  <i data-lucide="copy"></i> 复制
+                </button>
+              </div>
+              <textarea class="textarea u-mono" data-css-output readonly></textarea>
+              <details class="tool-details u-mt-3">
+                <summary>HTML 示例</summary>
+                <textarea class="textarea u-mono u-mt-2" data-html-output readonly></textarea>
+              </details>
+            </div>
+          </section>
+
+          <!-- 右：控制 -->
+          <aside class="u-col u-gap-4">
+
+            <!-- 模式 + 滑块 + 单位 -->
+            <div class="panel u-col u-gap-3">
+              <div class="tabs" style="width:100%" data-mode-tabs>
+                <button class="tab-btn is-active" type="button" data-mode="uniform">统一</button>
+                <button class="tab-btn" type="button" data-mode="corners">四角</button>
+                <button class="tab-btn" type="button" data-mode="ellipse">椭圆</button>
+              </div>
+
+              <!-- 统一 -->
+              <div data-panel="uniform" class="u-col u-gap-3">
+                <div class="range-row">
+                  <label class="field-label">半径</label>
+                  <input type="range" min="0" max="200" value="16" data-input="all">
+                  <span class="val" data-val="all">16px</span>
+                </div>
+              </div>
+
+              <!-- 四角 -->
+              <div data-panel="corners" class="u-col u-gap-3" hidden>
+                <div class="range-row">
+                  <label class="field-label">左上</label>
+                  <input type="range" min="0" max="200" value="16" data-input="tl">
+                  <span class="val" data-val="tl">16px</span>
+                </div>
+                <div class="range-row">
+                  <label class="field-label">右上</label>
+                  <input type="range" min="0" max="200" value="16" data-input="tr">
+                  <span class="val" data-val="tr">16px</span>
+                </div>
+                <div class="range-row">
+                  <label class="field-label">右下</label>
+                  <input type="range" min="0" max="200" value="16" data-input="br">
+                  <span class="val" data-val="br">16px</span>
+                </div>
+                <div class="range-row">
+                  <label class="field-label">左下</label>
+                  <input type="range" min="0" max="200" value="16" data-input="bl">
+                  <span class="val" data-val="bl">16px</span>
+                </div>
+              </div>
+
+              <!-- 椭圆 -->
+              <div data-panel="ellipse" class="u-col u-gap-3" hidden>
+                <p class="hint">分别设置水平和垂直半径，生成 <code>X / Y</code> 语法的椭圆圆角。</p>
+                <div class="range-row">
+                  <label class="field-label">水平</label>
+                  <input type="range" min="0" max="200" value="50" data-input="h">
+                  <span class="val" data-val="h">50px</span>
+                </div>
+                <div class="range-row">
+                  <label class="field-label">垂直</label>
+                  <input type="range" min="0" max="200" value="25" data-input="v">
+                  <span class="val" data-val="v">25px</span>
+                </div>
+              </div>
+
+              <div class="sep"></div>
+
+              <div class="u-row u-gap-2" style="align-items:center">
+                <span class="field-label" style="margin:0">单位</span>
+                <div class="opt-row" data-unit-opts style="flex:1;margin-top:0">
+                  <button class="btn is-sm is-active" type="button" data-unit="px">px</button>
+                  <button class="btn is-sm" type="button" data-unit="%">%</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 预设 -->
+            <div class="panel">
+              <h3 class="panel-title">预设形状</h3>
+              <div class="opt-row" data-presets></div>
+            </div>
+
+            <!-- 预览颜色 -->
+            <div class="panel">
+              <h3 class="panel-title">预览颜色</h3>
+              <div class="opt-row" data-color-opts>
+                <button class="btn is-sm is-active" type="button" data-color="brand">主色</button>
+                <button class="btn is-sm" type="button" data-color="gradient">渐变</button>
+                <button class="btn is-sm" type="button" data-color="success">绿色</button>
+                <button class="btn is-sm" type="button" data-color="warm">暖橙</button>
+              </div>
+            </div>
+
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

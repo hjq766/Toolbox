@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SVG 代码编辑 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>SVG 代码编辑 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="SVG 代码编辑、实时预览、元素可视化编辑、裁剪、优化与多格式导出">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/svg_code_editor/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="SVG 代码编辑 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="SVG 代码编辑、实时预览、元素可视化编辑、裁剪、优化与多格式导出">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/svg_code_editor/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"SVG 代码编辑","url":"https://tools.jqnest.top/tools/svg_code_editor/","description":"SVG 代码编辑、实时预览、元素可视化编辑、裁剪、优化与多格式导出","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -11,23 +23,7 @@
   <link rel="stylesheet" href="../../public/styles/components.css">
   <link rel="stylesheet" href="../../public/styles/utilities.css">
   <link rel="stylesheet" href="../_shared/sidebar.css">
-  <style>
-    .editor-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr;gap:var(--space-3);height:clamp(500px,70vh,900px)}
-    .editor-grid>.cm-embed{display:flex;flex-direction:column;overflow:hidden;min-height:0}
-    .preview-box{position:relative;background:var(--bg-surface-2);border:1px solid var(--border-base);border-radius:var(--radius-md);overflow:auto;display:flex;align-items:center;justify-content:center;min-height:0}
-    .preview-box svg{max-width:100%;max-height:100%}
-    .checker-bg{position:absolute;inset:0;opacity:.12;background:repeating-conic-gradient(var(--border-base) 0% 25%,transparent 0% 50%) 0 0/20px 20px;pointer-events:none}
-    .bg-bar{position:absolute;top:var(--space-2);right:var(--space-2);z-index:2;display:flex;gap:2px;background:var(--bg-surface);border-radius:var(--radius-sm);padding:2px;border:1px solid var(--border-subtle);opacity:.55;transition:opacity var(--dur-fast)}
-    .bg-bar:hover{opacity:1}
-    .bg-bar button{border:0;background:none;padding:2px 8px;font-size:11px;cursor:pointer;border-radius:3px;color:var(--fg-muted);transition:all var(--dur-fast)}
-    .bg-bar button.active{background:var(--color-brand-soft);color:var(--color-brand)}
-    .stat-strip{display:flex;gap:var(--space-4);padding:var(--space-2) 0;font-size:var(--text-xs);color:var(--fg-muted)}
-    .el-prop{display:flex;align-items:center;gap:var(--space-2)}
-    .el-prop label{font-size:var(--text-xs);min-width:36px;color:var(--fg-muted)}
-    .el-prop .val{font-size:var(--text-xs);min-width:32px;text-align:right;color:var(--fg-muted)}
-    .color-pick{width:28px;height:22px;border:1px solid var(--border-base);cursor:pointer;border-radius:var(--radius-sm);padding:0}
-    @media(max-width:768px){.editor-grid{grid-template-columns:1fr;height:auto}.editor-grid>.cm-embed,.preview-box{min-height:300px;max-height:50vh}}
-  </style>
+  <link rel="stylesheet" href="./tool.css">
 </head>
 <body data-page="tool" data-base-path="../../" data-tool-slug="svg_code_editor">
   <div class="page-shell"><main class="page-main"><div class="container">
@@ -35,118 +31,218 @@
       <header class="tool-header" data-tool-header></header>
       <div class="tool-body">
 
-        <div class="grid grid-sidebar-r" style="--sidebar-w:280px">
-          <!-- 左：编辑器 + 预览 -->
-          <div data-main>
-            <div class="editor-grid">
-              <div class="cm-embed">
-                <textarea class="textarea" data-code spellcheck="false" placeholder="在此粘贴或编写 SVG 代码…"
-                  style="font-family:'SF Mono',Menlo,Monaco,Consolas,monospace;font-size:13px;tab-size:2"></textarea>
+        <div class="grid grid-sidebar-r" style="--sidebar-w:300px;align-items:start">
+          <div class="u-col u-gap-3">
+            <section class="panel">
+              <div class="btn-group">
+                <label class="btn is-sm" data-drop title="从本地打开 SVG 文件或拖拽进页面">
+                  <i data-lucide="folder-open"></i> 打开
+                  <input type="file" accept=".svg,image/svg+xml" hidden data-file>
+                </label>
+                <button class="btn is-sm is-ghost" type="button" data-action="load-example" title="加载内置示例 SVG"><i data-lucide="code"></i> 示例</button>
+                <button class="btn is-sm is-ghost" type="button" data-action="reset" title="恢复到最近一次加载的原始 SVG"><i data-lucide="undo-2"></i> 恢复</button>
+                <button class="btn is-sm is-ghost" type="button" data-action="clear" title="清空编辑器与预览"><i data-lucide="trash-2"></i> 清空</button>
+                <button class="btn is-sm" type="button" data-action="format" title="按层级重新缩进 SVG 代码">格式化</button>
+                <button class="btn is-sm" type="button" data-action="minify" title="去除空白与换行，压成一行">压缩</button>
+                <button class="btn is-sm" type="button" data-action="sanitize" title="移除 script / 事件属性 / javascript: 链接等不安全内容">安全清理</button>
+                <button class="btn is-sm" type="button" data-action="optimize" title="一键优化代码：清理注释、metadata、空分组与部分冗余属性">优化</button>
               </div>
-              <div class="preview-box" data-preview>
-                <div class="bg-bar" data-bg-row>
-                  <button class="active" type="button" data-bg="checker" title="棋盘格">棋盘</button>
-                  <button type="button" data-bg="white" title="白色">白</button>
-                  <button type="button" data-bg="dark" title="深色">暗</button>
-                  <button type="button" data-bg="none" title="无">无</button>
+            </section>
+
+            <div class="grid grid-2 sce-grid">
+              <div class="cm-embed cm-fill">
+                <textarea class="textarea sce-input" data-code spellcheck="false" placeholder="在此粘贴或编写 SVG 代码…"></textarea>
+              </div>
+              <div class="sce-preview is-bg-checker" data-preview>
+                <div class="sce-bgswitch opt-row" data-bg-row role="group" aria-label="预览背景">
+                  <button class="btn is-sm is-active" type="button" data-bg="checker" title="棋盘格背景">棋盘</button>
+                  <button class="btn is-sm" type="button" data-bg="white" title="白色背景">白</button>
+                  <button class="btn is-sm" type="button" data-bg="dark" title="深色背景">暗</button>
+                  <button class="btn is-sm" type="button" data-bg="none" title="无背景">无</button>
                 </div>
-                <div class="checker-bg" data-bg-layer></div>
-                <div style="position:relative;z-index:1;width:100%;height:100%;display:flex;align-items:center;justify-content:center" data-preview-inner></div>
+                <div class="sce-checker" aria-hidden="true"></div>
+                <div class="sce-stage" data-preview-inner></div>
               </div>
             </div>
-            <!-- 统计条 -->
-            <div class="stat-strip">
-              <span data-stat-chars></span>
-              <span data-stat-lines></span>
-              <span data-stat-size></span>
-              <span data-stat-dim></span>
+
+            <div class="u-row u-between u-gap-4 u-text-xs u-muted">
+              <div class="u-row u-gap-4">
+                <span data-stat-chars></span>
+                <span data-stat-lines></span>
+                <span data-stat-size></span>
+                <span data-stat-dim></span>
+              </div>
+              <a href="../svg_compress/" class="u-link" title="多个 SVG 文件批量压缩与优化">需要批量处理？打开 SVG 批量压缩 →</a>
             </div>
+
           </div>
 
-          <!-- 右：侧栏 -->
-          <aside>
-            <!-- 文件 + 操作 -->
-            <div class="panel">
-              <h3 class="panel-title">文件</h3>
-              <label class="btn is-block" style="cursor:pointer;text-align:center" data-drop>
-                <i data-lucide="folder-open"></i> 打开 SVG
-                <input type="file" accept=".svg,image/svg+xml" hidden data-file>
-              </label>
-              <div class="opt-row">
-                <button class="btn is-sm is-ghost" type="button" data-action="load-example"><i data-lucide="code"></i> 示例</button>
-                <button class="btn is-sm is-ghost" type="button" data-action="reset"><i data-lucide="undo-2"></i> 恢复</button>
-                <button class="btn is-sm is-ghost" type="button" data-action="clear"><i data-lucide="trash-2"></i> 清空</button>
-              </div>
-              <p class="hint">支持拖拽或粘贴 SVG 文件</p>
+          <aside data-drawer>
+            <!-- 面板切换 tabs（胶囊风格，复用 .tabs / .tab-btn 公共类） -->
+            <div class="tabs" role="tablist" aria-label="面板切换">
+              <button class="tab-btn is-active" type="button" data-drawer-open="colors" title="颜色资产：检测并替换 SVG 中的填充、描边与渐变颜色">颜色</button>
+              <button class="tab-btn" type="button" data-drawer-open="size" title="修改 width / height / viewBox · 裁剪">尺寸</button>
+              <button class="tab-btn" type="button" data-drawer-open="a11y" title="设置 title / desc / aria-label 无障碍信息">元信息</button>
+              <button class="tab-btn" type="button" data-drawer-open="element" data-el-tab hidden title="编辑选中的 SVG 元素属性">元素</button>
             </div>
 
-            <!-- 代码处理 -->
-            <div class="panel">
-              <h3 class="panel-title">代码处理</h3>
-              <div class="opt-row">
-                <button class="btn is-sm" type="button" data-action="format">格式化</button>
-                <button class="btn is-sm" type="button" data-action="minify">压缩</button>
-              </div>
-              <div class="opt-row">
-                <button class="btn is-sm" type="button" data-action="trim">精确裁剪</button>
-                <button class="btn is-sm" type="button" data-action="trim-safe">安全裁剪</button>
-              </div>
-              <p class="hint">精确裁剪贴合内容，安全裁剪保留 10% 边距</p>
+            <div class="panel" data-drawer-panel="colors">
+              <h3 class="panel-title">颜色资产</h3>
+              <p class="hint">检测 SVG 中的填充、描边与渐变颜色，逐个替换。</p>
+              <div class="u-col u-gap-3" data-palette></div>
             </div>
 
-            <!-- 导出 -->
+            <div class="panel" data-drawer-panel="size" hidden>
+              <h3 class="panel-title">尺寸与 viewBox</h3>
+              <div class="u-col u-gap-3 u-mb-3">
+                <div class="u-row u-gap-2">
+                  <label class="field u-grow">
+                    <span class="field-label">宽</span>
+                    <input class="input is-center" data-size-width placeholder="auto">
+                  </label>
+                  <label class="field u-grow">
+                    <span class="field-label">高</span>
+                    <input class="input is-center" data-size-height placeholder="auto">
+                  </label>
+                </div>
+                <label class="field">
+                  <span class="field-label">viewBox</span>
+                  <input class="input u-mono u-text-sm" data-size-viewbox placeholder="0 0 200 200">
+                </label>
+              </div>
+              <div class="act-group">
+                <button class="btn is-primary" type="button" data-action="apply-size">应用尺寸</button>
+                <button class="btn is-ghost" type="button" data-action="size-from-viewbox">宽高取 viewBox</button>
+              </div>
+
+              <div class="sep"></div>
+              <h3 class="panel-title">自动裁剪 viewBox</h3>
+              <p class="hint u-mb-3">根据图形边界重新计算 viewBox 与 width/height。</p>
+              <div class="act-group">
+                <div class="u-row u-gap-2">
+                  <button class="btn" type="button" data-action="trim" title="贴合内容边界重新计算 viewBox">精确裁剪</button>
+                  <button class="btn" type="button" data-action="trim-safe" title="边界基础上保留 10% 边距，防止内容贴边">安全裁剪</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel" data-drawer-panel="a11y" hidden>
+              <h3 class="panel-title">元信息</h3>
+              <div class="u-col u-gap-3 u-mb-3">
+                <label class="field">
+                  <span class="field-label">title</span>
+                  <input class="input" data-a11y-title placeholder="图标名称">
+                </label>
+                <label class="field">
+                  <span class="field-label">aria-label</span>
+                  <input class="input" data-a11y-label placeholder="辅助技术朗读文本">
+                </label>
+                <label class="field">
+                  <span class="field-label">desc</span>
+                  <textarea class="textarea" data-a11y-desc placeholder="图形说明"></textarea>
+                </label>
+              </div>
+              <div class="act-group">
+                <button class="btn is-primary" type="button" data-action="apply-a11y">应用元信息</button>
+                <button class="btn is-ghost" type="button" data-action="clear-a11y">清空</button>
+              </div>
+            </div>
+
+            <div class="panel" data-drawer-panel="element" data-el-panel hidden>
+              <div class="u-row u-between u-items-center u-mb-3">
+                <h3 class="panel-title u-mb-0">元素属性 <span class="u-text-xs u-muted" data-el-title></span></h3>
+                <button class="btn is-sm is-ghost" type="button" data-el-close title="取消选中"><i data-lucide="x"></i></button>
+              </div>
+              <p class="hint u-mb-3" data-el-empty>点击预览区中的 SVG 图形元素（路径、矩形、圆形等）进行编辑。</p>
+              <div class="u-col u-gap-3" data-el-form hidden>
+                <label class="field">
+                  <span class="field-label">填充 fill</span>
+                  <div class="u-row u-gap-2">
+                    <input type="color" data-el-fill>
+                    <input class="input u-grow u-text-xs u-mono" data-el-fill-text>
+                  </div>
+                </label>
+                <label class="field">
+                  <span class="field-label">填充透明度</span>
+                  <div class="u-row u-gap-2">
+                    <input type="range" class="u-grow" data-el-fill-opacity min="0" max="100" value="100">
+                    <span class="u-text-xs u-muted" data-el-fill-opacity-val>100%</span>
+                  </div>
+                </label>
+                <label class="field">
+                  <span class="field-label">描边 stroke</span>
+                  <div class="u-row u-gap-2">
+                    <input type="color" data-el-stroke>
+                    <input class="input u-grow u-text-xs u-mono" data-el-stroke-text>
+                  </div>
+                </label>
+                <label class="field">
+                  <span class="field-label">描边宽度</span>
+                  <div class="u-row u-gap-2">
+                    <input type="range" class="u-grow" data-el-stroke-w min="0" max="20" value="1" step="0.5">
+                    <span class="u-text-xs u-muted" data-el-stroke-w-val>1</span>
+                  </div>
+                </label>
+                <label class="field">
+                  <span class="field-label">描边透明度</span>
+                  <div class="u-row u-gap-2">
+                    <input type="range" class="u-grow" data-el-stroke-opacity min="0" max="100" value="100">
+                    <span class="u-text-xs u-muted" data-el-stroke-opacity-val>100%</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <!-- 常驻导出面板（按类型分组：SVG / PNG / 前端代码） -->
             <div class="panel">
               <h3 class="panel-title">导出</h3>
-              <div class="u-row u-gap-2">
-                <button class="btn is-primary" type="button" data-action="dl-svg" style="flex:1"><i data-lucide="download"></i> 下载 SVG</button>
-                <button class="btn is-ghost" type="button" data-action="copy"><i data-lucide="copy"></i> 复制</button>
-              </div>
-              <div class="sep"></div>
-              <div class="u-row u-gap-2">
-                <button class="btn is-block" type="button" data-action="dl-png" style="flex:1"><i data-lucide="image"></i> 导出 PNG</button>
-                <select class="select" data-png-scale style="width:56px">
-                  <option value="1">1x</option>
-                  <option value="2" selected>2x</option>
-                  <option value="3">3x</option>
-                  <option value="4">4x</option>
-                </select>
-              </div>
-            </div>
 
-            <!-- 元素编辑（点击 SVG 元素后显示） -->
-            <div class="panel" data-el-panel hidden>
-              <div class="u-row u-between" style="align-items:center">
-                <h3 class="panel-title" style="margin:0;padding:0;border:0"><span data-el-title></span></h3>
-                <button class="btn is-sm is-ghost" type="button" data-el-close><i data-lucide="x"></i></button>
-              </div>
-              <div class="u-col u-gap-2 u-mt-2">
-                <div class="el-prop">
-                  <label>填充</label>
-                  <input type="color" class="color-pick" data-el-fill value="#000000">
-                  <input class="input" data-el-fill-text value="#000000" style="flex:1;font-size:var(--text-xs)">
-                </div>
-                <div class="el-prop">
-                  <label>透明</label>
-                  <input type="range" data-el-fill-opacity min="0" max="100" value="100" style="flex:1">
-                  <span class="val" data-el-fill-opacity-val>100%</span>
-                </div>
-                <div class="el-prop">
-                  <label>描边</label>
-                  <input type="color" class="color-pick" data-el-stroke value="#000000">
-                  <input class="input" data-el-stroke-text value="none" style="flex:1;font-size:var(--text-xs)">
-                </div>
-                <div class="el-prop">
-                  <label>线宽</label>
-                  <input type="range" data-el-stroke-w min="0" max="20" value="1" step="0.5" style="flex:1">
-                  <span class="val" data-el-stroke-w-val>1</span>
-                </div>
-                <div class="el-prop">
-                  <label>线透</label>
-                  <input type="range" data-el-stroke-opacity min="0" max="100" value="100" style="flex:1">
-                  <span class="val" data-el-stroke-opacity-val>100%</span>
+              <!-- SVG 组 -->
+              <div class="field">
+                <div class="field-label">SVG</div>
+                <div class="u-row u-gap-2">
+                  <button class="btn is-primary u-grow" type="button" data-action="dl-svg" title="下载为 .svg 文件">下载</button>
+                  <button class="btn u-grow" type="button" data-action="copy" title="复制当前 SVG 代码到剪贴板">复制代码</button>
                 </div>
               </div>
-              <p class="hint u-mt-2">点击预览区中的 SVG 图形元素进行编辑</p>
+
+              <!-- PNG 组 -->
+              <div class="field u-mt-3">
+                <div class="field-label">PNG</div>
+                <div class="u-col u-gap-2">
+                  <div class="u-row u-items-center u-gap-2">
+                    <span class="field-label u-mb-0 u-no-shrink">倍率</span>
+                    <div class="opt-row u-grow u-mt-0" data-png-scale>
+                      <button class="btn is-sm is-active" type="button" data-scale="2">2x</button>
+                      <button class="btn is-sm" type="button" data-scale="3">3x</button>
+                      <button class="btn is-sm" type="button" data-scale="4">4x</button>
+                    </div>
+                  </div>
+                  <div class="u-row u-items-center u-gap-2">
+                    <span class="field-label u-mb-0 u-no-shrink">背景</span>
+                    <select class="input u-grow" data-png-bg>
+                      <option value="transparent" selected>透明</option>
+                      <option value="white">白色</option>
+                      <option value="dark">深色</option>
+                      <option value="custom">自定义</option>
+                    </select>
+                  </div>
+                  <div class="u-row u-gap-2" data-png-bg-custom hidden>
+                    <span class="field-label u-mb-0 u-no-shrink">&nbsp;</span>
+                    <input type="color" data-png-bg-color>
+                    <input type="text" class="input u-mono u-grow" data-png-bg-text placeholder="如 white 或 royalblue">
+                  </div>
+                </div>
+                <button class="btn is-primary is-block u-mt-2" type="button" data-action="dl-png" title="按上方参数导出 PNG">下载 PNG</button>
+              </div>
+
+              <!-- 前端代码组 -->
+              <div class="field u-mt-3">
+                <div class="field-label">复制为前端代码</div>
+                <div class="u-row u-gap-2">
+                  <button class="btn is-sm is-ghost u-grow" type="button" data-action="copy-data-uri" title="复制 data:image/svg+xml,... 格式的编码字符串，可直接嵌入 HTML/CSS">data: URI</button>
+                  <button class="btn is-sm is-ghost u-grow" type="button" data-action="copy-css-bg" title="复制完整 background-image: url(...) CSS 声明">CSS bg</button>
+                </div>
+              </div>
             </div>
           </aside>
         </div>

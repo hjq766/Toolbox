@@ -1,0 +1,122 @@
+/*
+ * css_text_gradient/tool.css — 超过 80 行原因：
+ * 文字渐变生成器需要独有的可拖拽色标条（渐变 bar + 浮动色标点）、
+ * 大字号预览区的自适应字号布局，以及色标编辑面板的精细定位样式。
+ */
+
+.ctg-preview {
+  --preview-min-h: 220px;
+  transition: background var(--dur-fast);
+}
+
+.ctg-preview-text {
+  max-width: 100%;
+  line-height: 1.25;
+  user-select: none;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cg-bar-wrap {
+  position: relative;
+  padding-block: var(--space-1);
+}
+
+.cg-bar {
+  height: 28px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  user-select: none;
+}
+
+.cg-stop {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  width: var(--space-4);
+  height: 36px;
+  border: 2px solid var(--fg-invert);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+  transform: translateX(-50%);
+  transition: box-shadow var(--dur-fast);
+}
+
+.cg-stop:hover,
+.cg-stop.is-active {
+  box-shadow: 0 0 0 2px var(--color-brand), var(--shadow-sm);
+}
+
+.ctg-css {
+  min-height: 110px;
+  font-size: var(--text-xs);
+  line-height: 1.6;
+}
+
+.cg-stop-list {
+  gap: var(--space-2);
+}
+
+.cg-stop-card {
+  min-width: 0;
+  padding: var(--space-2);
+}
+
+.cg-stop-card.is-active {
+  background: var(--color-brand-soft);
+  border-color: var(--color-brand);
+}
+
+.cg-stop-card input[type="color"] {
+  width: 34px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.cg-stop-hex {
+  min-width: 96px;
+  flex: 1;
+}
+
+.cg-stop-pos {
+  width: 70px;
+}
+
+.cg-stop-detail {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.cg-preset-grid {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.cg-preset-card {
+  position: relative;
+  height: 72px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.cg-preset-card.is-active {
+  box-shadow: inset 0 0 0 3px var(--color-brand), var(--shadow-md);
+}
+
+.cg-preset-name {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: var(--space-1) var(--space-2);
+  background: color-mix(in srgb, var(--fg-strong) 28%, transparent);
+  color: var(--fg-invert);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-align: center;
+  backdrop-filter: blur(6px);
+}

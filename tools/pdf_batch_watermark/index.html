@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>PDF 批量专属水印 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="按名单批量生成专属水印 PDF，支持名单预览、共用副水印、命名规则与 ZIP 导出">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/pdf_batch_watermark/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="PDF 批量专属水印 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="按名单批量生成专属水印 PDF，支持名单预览、共用副水印、命名规则与 ZIP 导出">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/pdf_batch_watermark/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF 批量专属水印","url":"https://tools.jqnest.top/tools/pdf_batch_watermark/","description":"按名单批量生成专属水印 PDF，支持名单预览、共用副水印、命名规则与 ZIP 导出","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="../_shared/watermark.css">
+  <script src="../../public/vendor/pdf-lib.min.js" defer></script>
+  <script src="../../public/vendor/pdf.min.js" defer></script>
+  <script src="../../public/vendor/jszip.min.js" defer></script>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="pdf_batch_watermark">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:calc(var(--space-20) * 4)">
+          <div>
+            <label class="panel u-col u-gap-2 upload-panel" data-drop>
+              <i data-lucide="file-up"></i>
+              <div class="u-strong">点击或拖拽 PDF 到此处</div>
+              <div class="u-muted u-text-xs">按名单批量生成个性化水印 PDF，并打包为 ZIP</div>
+              <input type="file" accept=".pdf,application/pdf" hidden data-file>
+            </label>
+
+            <div class="panel u-mt-3" data-preview-panel hidden>
+              <div class="page-nav">
+                <button class="btn is-sm is-ghost" data-nav="prev" disabled><i data-lucide="chevron-left"></i> 上一页</button>
+                <span class="page-nav-info" data-page-info>第 1 页，共 1 页</span>
+                <button class="btn is-sm is-ghost" data-nav="next" disabled>下一页 <i data-lucide="chevron-right"></i></button>
+              </div>
+            </div>
+
+            <div class="panel u-mt-2" data-preview-wrap hidden>
+              <div class="preview-wrap"><canvas data-canvas></canvas></div>
+              <div class="hint u-text-center u-mt-2">预览效果可能与实际导出略有差异，请以导出为准</div>
+            </div>
+
+            <div class="panel u-mt-3">
+              <h3 class="panel-title">
+                <span>数据录入</span>
+                <label class="checkbox u-muted u-nowrap" data-secondary-share-control>
+                  <input type="checkbox" data-secondary-shared>
+                  共用副水印
+                </label>
+              </h3>
+              <div class="grid grid-2">
+                <div class="u-col u-gap-2">
+                  <div class="field">
+                    <label class="field-label" for="batchNames">主水印名单</label>
+                    <textarea class="textarea" id="batchNames" data-names rows="4" placeholder="张三&#10;李四&#10;王五"></textarea>
+                    <span class="field-hint" data-name-count>0 个主水印</span>
+                  </div>
+                  <div class="field">
+                    <label class="field-label" for="primaryTemplate">主水印模板</label>
+                    <input class="input" id="primaryTemplate" data-primary-template value="专属水印：{{name}}">
+                    <span class="field-hint">使用 {{name}} 作为名单占位符</span>
+                  </div>
+                </div>
+
+                <div class="u-col u-gap-2" data-secondary-panel>
+                  <div class="field">
+                    <label class="field-label" for="secondaryNames">副水印列表</label>
+                    <textarea class="textarea" id="secondaryNames" data-secondary-names rows="4" placeholder="手机号、微信号或邮箱，每行一个"></textarea>
+                    <span class="field-hint" data-secondary-count>0 个副水印</span>
+                  </div>
+                  <div class="field">
+                    <label class="field-label" for="secondaryTemplate">副水印模板</label>
+                    <input class="input" id="secondaryTemplate" data-secondary-template value="联系方式：{{number}}">
+                    <span class="field-hint">使用 {{number}} 作为副水印占位符</span>
+                  </div>
+                </div>
+              </div>
+
+              <div data-fixed-panel hidden class="u-mt-3">
+                <div class="field">
+                  <label class="field-label" for="fixedText">固定水印内容</label>
+                  <input class="input" id="fixedText" data-fixed-text placeholder="例如：内部资料 · 禁止外传">
+                </div>
+              </div>
+            </div>
+
+            <div class="panel u-mt-3" data-list-preview>
+              <h3 class="panel-title">
+                <span>名单预览</span>
+                <span class="u-row u-gap-2">
+                  <span class="badge" data-report-badge hidden>缺失 0</span>
+                  <span class="badge" data-output-count>预计 0 份</span>
+                  <button class="btn is-sm" type="button" data-action="download-report" hidden><i data-lucide="file-down"></i> 检测报告</button>
+                </span>
+              </h3>
+              <p class="hint" data-list-empty>输入主水印名单后，这里会预览每一份 PDF 的水印内容与输出文件名。</p>
+              <div class="table-scroll" data-list-table hidden></div>
+            </div>
+          </div>
+
+          <aside class="is-inactive">
+            <div class="panel">
+              <h3 class="panel-title">水印层级</h3>
+              <div class="switch-list">
+                <label class="switch-item">
+                  <span>启用副水印</span>
+                  <span class="switch">
+                    <input type="checkbox" data-use-secondary checked>
+                    <span class="track"></span><span class="thumb"></span>
+                  </span>
+                </label>
+                <label class="switch-item">
+                  <span>启用固定水印</span>
+                  <span class="switch">
+                    <input type="checkbox" data-use-fixed>
+                    <span class="track"></span><span class="thumb"></span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">主水印样式</h3>
+              <div class="u-col u-gap-3">
+                <div class="u-row u-gap-2">
+                  <label class="field-label u-mb-0">颜色</label>
+                  <input type="color" data-primary-color>
+                </div>
+                <div class="range-row">
+                  <label class="field-label">字号</label>
+                  <input type="range" data-primary-size min="12" max="56" value="28">
+                  <span class="val" data-primary-size-val>28px</span>
+                </div>
+                <div class="range-row">
+                  <label class="field-label">不透明度</label>
+                  <input type="range" data-primary-opacity min="1" max="30" value="8">
+                  <span class="val" data-primary-opacity-val>8%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel" data-secondary-style>
+              <h3 class="panel-title">副水印样式</h3>
+              <div class="u-col u-gap-3">
+                <div class="u-row u-gap-2">
+                  <label class="field-label u-mb-0">颜色</label>
+                  <input type="color" data-secondary-color>
+                </div>
+                <div class="range-row">
+                  <label class="field-label">字号</label>
+                  <input type="range" data-secondary-size min="10" max="40" value="20">
+                  <span class="val" data-secondary-size-val>20px</span>
+                </div>
+                <div class="range-row">
+                  <label class="field-label">不透明度</label>
+                  <input type="range" data-secondary-opacity min="1" max="30" value="6">
+                  <span class="val" data-secondary-opacity-val>6%</span>
+                </div>
+                <div class="range-row">
+                  <label class="field-label">与主水印间距</label>
+                  <input type="range" data-line-spacing min="2" max="24" value="8">
+                  <span class="val" data-line-spacing-val>8px</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel" data-fixed-style hidden>
+              <h3 class="panel-title">固定水印样式</h3>
+              <div class="u-col u-gap-3">
+                <div class="u-row u-gap-2">
+                  <label class="field-label u-mb-0">颜色</label>
+                  <input type="color" data-fixed-color>
+                </div>
+                <div class="range-row">
+                  <label class="field-label">字号</label>
+                  <input type="range" data-fixed-size min="8" max="32" value="16">
+                  <span class="val" data-fixed-size-val>16px</span>
+                </div>
+                <div class="range-row">
+                  <label class="field-label">不透明度</label>
+                  <input type="range" data-fixed-opacity min="1" max="30" value="5">
+                  <span class="val" data-fixed-opacity-val>5%</span>
+                </div>
+                <div class="range-row">
+                  <label class="field-label">与上方间距</label>
+                  <input type="range" data-fixed-line-spacing min="4" max="28" value="12">
+                  <span class="val" data-fixed-line-spacing-val>12px</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">铺满设置</h3>
+              <div class="field">
+                <label class="field-label">密度</label>
+                <div class="opt-row" data-density-row>
+                  <button class="btn is-sm" type="button" data-density="dense">密集</button>
+                  <button class="btn is-sm active" type="button" data-density="medium">适中</button>
+                  <button class="btn is-sm" type="button" data-density="sparse">稀疏</button>
+                  <button class="btn is-sm" type="button" data-density="minimal">极简</button>
+                </div>
+              </div>
+              <div>
+                <label class="field-label">角度预设</label>
+                <div class="opt-row" data-angle-row>
+                  <button class="btn is-sm" type="button" data-angle="-45">-45°</button>
+                  <button class="btn is-sm active" type="button" data-angle="-30">-30°</button>
+                  <button class="btn is-sm" type="button" data-angle="0">0°</button>
+                  <button class="btn is-sm" type="button" data-angle="30">30°</button>
+                </div>
+              </div>
+              <div class="range-row u-mt-3">
+                <label class="field-label">角度</label>
+                <input type="range" data-angle-input min="-90" max="90" value="-30">
+                <span class="val" data-angle-val>-30°</span>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">导出</h3>
+              <div class="field">
+                <label class="field-label" for="filenamePattern">文件命名规则</label>
+                <input class="input" id="filenamePattern" data-filename-pattern value="水印_{{name}}.pdf">
+                <span class="field-hint">支持 {{index}}、{{name}}、{{number}}</span>
+              </div>
+              <div class="act-group">
+                <button class="btn is-primary is-block" type="button" data-action="generate" disabled>生成 ZIP</button>
+                <button class="btn is-ghost is-block" type="button" data-action="clear" disabled>清空</button>
+              </div>
+              <div data-progress hidden class="u-mt-3">
+                <div class="progress">
+                  <div class="progress-bar" data-bar></div>
+                </div>
+                <div class="hint u-mt-1" data-progress-text></div>
+              </div>
+              <p class="hint u-mt-2">第一版使用浏览器字体绘制透明水印层，不需要额外上传字体。</p>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <div class="modal-backdrop" data-confirm-modal hidden>
+    <div class="modal-panel">
+      <div class="modal-header"><h3>确认批量生成</h3></div>
+      <div class="modal-body">
+        <div class="summary-grid">
+          <div class="summary-item">
+            <div class="val" data-confirm-count>0</div>
+            <div class="label">输出 PDF</div>
+          </div>
+          <div class="summary-item">
+            <div class="val" data-confirm-secondary>0</div>
+            <div class="label">副水印条目</div>
+          </div>
+          <div class="summary-item">
+            <div class="val" data-confirm-missing>0</div>
+            <div class="label">缺失副水印</div>
+          </div>
+          <div class="summary-item">
+            <div class="val" data-confirm-pages>0</div>
+            <div class="label">PDF 页数</div>
+          </div>
+        </div>
+        <div class="u-mt-3">
+          <div class="result-row"><span class="u-muted">命名规则</span><strong class="u-mono" data-confirm-pattern>—</strong></div>
+          <div class="result-row"><span class="u-muted">首个文件</span><strong class="u-mono" data-confirm-first-file>—</strong></div>
+        </div>
+        <p class="hint u-mt-3" data-confirm-note></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn is-ghost" type="button" data-confirm-cancel>取消</button>
+        <button class="btn is-primary" type="button" data-confirm-ok>确认生成</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

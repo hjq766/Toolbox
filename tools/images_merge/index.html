@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>图片拼接 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="多图横向/纵向/宫格/模板拼接，支持自定义标题、间距背景与预设版式">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/images_merge/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="图片拼接 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="多图横向/纵向/宫格/模板拼接，支持自定义标题、间距背景与预设版式">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/images_merge/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"图片拼接","url":"https://tools.jqnest.top/tools/images_merge/","description":"多图横向/纵向/宫格/模板拼接，支持自定义标题、间距背景与预设版式","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="./tool.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="images_merge">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:320px">
+          <section class="u-col u-gap-3">
+            <label class="panel u-col u-gap-2 upload-panel" data-drop>
+              <i data-lucide="upload"></i>
+              <div class="u-strong" data-drop-title>点击或拖拽图片、文件夹到此处</div>
+              <div class="u-muted u-text-xs" data-drop-hint>支持多选、粘贴图片；拖动缩略图调整顺序</div>
+              <input type="file" accept="image/*" multiple hidden data-file>
+              <input type="file" accept="image/*" multiple webkitdirectory hidden data-file-dir>
+              <button class="btn is-sm is-ghost u-mt-2" type="button" data-pick-dir title="选择文件夹，自动递归导入所有图片"><i data-lucide="folder-plus"></i> 选择文件夹</button>
+            </label>
+            <input type="file" accept="image/*" hidden data-slot-file>
+
+            <div class="u-col u-gap-2" data-template-workbench hidden>
+              <section class="panel mg-template-rail">
+                <div class="u-row u-between u-mb-2">
+                  <h3 class="u-strong u-text-sm u-mt-0 u-mb-0">模板</h3>
+                  <span class="u-muted u-text-xs" data-template-total>0</span>
+                </div>
+                <div class="preset-list" data-presets></div>
+              </section>
+              <div class="u-min-0">
+                <div class="panel u-min-0">
+                  <div class="u-row u-between u-gap-2 u-mb-3">
+                    <div>
+                      <h3 class="u-strong u-text-sm u-mt-0 u-mb-0" data-template-title>模板拼图</h3>
+                      <p class="u-muted u-text-xs u-mt-1 u-mb-0" data-template-desc>点击上方模板切换版式</p>
+                    </div>
+                    <span class="badge u-no-shrink" data-slot-count>0 / 0</span>
+                  </div>
+                  <div class="mg-slots-stage" data-slots-stage>
+                    <div class="mg-slots" data-slots></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel" data-strip hidden>
+              <div class="u-row u-between u-mb-2">
+                <div>
+                  <h3 class="panel-title">图片顺序</h3>
+                  <p class="hint">拖动缩略图调整拼接顺序</p>
+                </div>
+                <span class="badge" data-count>0 张</span>
+              </div>
+              <div class="mg-thumbs" data-thumbs></div>
+            </div>
+
+            <div data-free-preview-slot>
+              <div class="panel mg-preview" data-preview>
+                <div class="u-row u-between u-mb-3">
+                  <h3 class="panel-title u-mb-0" data-preview-title>实时预览</h3>
+                  <span class="badge" data-preview-badge>未添加图片</span>
+                </div>
+                <div class="mg-empty" data-empty>
+                  <i data-lucide="images"></i>
+                  <div>添加图片后在这里预览</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <aside>
+            <div class="panel">
+              <h3 class="panel-title">工作模式</h3>
+              <div class="opt-row" data-workflow-opts>
+                <button class="btn is-sm active" data-workflow="free" type="button">自由拼接</button>
+                <button class="btn is-sm" data-workflow="template" type="button">模板拼图</button>
+              </div>
+            </div>
+
+            <div class="panel" data-free-panel>
+              <h3 class="panel-title">拼接方式</h3>
+              <div class="opt-row" data-mode-opts>
+                <button class="btn is-sm active" data-dir="horizontal" type="button">横向</button>
+                <button class="btn is-sm" data-dir="vertical" type="button">纵向</button>
+                <button class="btn is-sm" data-dir="grid" type="button">宫格</button>
+              </div>
+            </div>
+
+            <div class="panel" data-free-panel data-grid-opts hidden>
+              <h3 class="panel-title">网格</h3>
+              <div class="range-row">
+                <span class="field-label">列数</span>
+                <input type="range" min="2" max="8" value="2" data-cols>
+                <span class="val" data-cols-val>2</span>
+              </div>
+            </div>
+
+            <div class="panel" data-template-panel hidden>
+              <h3 class="panel-title">单格尺寸</h3>
+              <div class="opt-row" data-cellsize-opts>
+                <button class="btn is-sm" data-cellsize="800" type="button">800</button>
+                <button class="btn is-sm active" data-cellsize="1200" type="button">1200</button>
+                <button class="btn is-sm" data-cellsize="1500" type="button">1500</button>
+                <button class="btn is-sm" data-cellsize="2000" type="button">2000</button>
+              </div>
+              <p class="hint u-mt-1">每格正方形单元边长（px），输出尺寸固定可控</p>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">标题</h3>
+              <div class="u-col u-gap-3">
+                <label class="field">
+                  <span class="field-label">标题文字</span>
+                  <input class="input" type="text" data-title-input placeholder="可选，留空则不显示标题">
+                </label>
+                <div>
+                  <span class="field-label">显示位置</span>
+                  <div class="opt-row u-mt-1" data-title-align-opts>
+                    <button class="btn is-sm" data-title-align="start" type="button">居左</button>
+                    <button class="btn is-sm active" data-title-align="center" type="button">居中</button>
+                    <button class="btn is-sm" data-title-align="end" type="button">居右</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">尺寸与间距</h3>
+              <div class="u-col u-gap-3">
+                <label class="field">
+                  <span class="field-label">图片适配</span>
+                  <select class="select" data-fit>
+                    <option value="original">原始尺寸</option>
+                    <option value="contain">完整放入单元格</option>
+                    <option value="cover">填满并裁切</option>
+                    <option value="width">统一宽度</option>
+                    <option value="height">统一高度</option>
+                  </select>
+                </label>
+                <div class="range-row">
+                  <span class="field-label">间距</span>
+                  <input type="range" min="0" max="80" value="4" data-gap>
+                  <span class="val" data-gap-val>4</span>
+                </div>
+                <div class="range-row">
+                  <span class="field-label">边距</span>
+                  <input type="range" min="0" max="120" value="0" data-padding>
+                  <span class="val" data-padding-val>0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel" data-align-panel>
+              <h3 class="panel-title">对齐</h3>
+              <div class="grid grid-2">
+                <label class="field">
+                  <span class="field-label">水平</span>
+                  <select class="select" data-align-x>
+                    <option value="center">居中</option>
+                    <option value="start">靠左</option>
+                    <option value="end">靠右</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span class="field-label">垂直</span>
+                  <select class="select" data-align-y>
+                    <option value="center">居中</option>
+                    <option value="start">靠上</option>
+                    <option value="end">靠下</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">背景</h3>
+              <div class="u-row u-gap-3">
+                <input type="color" data-bg-color>
+                <label class="checkbox"><input type="checkbox" data-bg-transparent> 透明</label>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">导出设置</h3>
+              <div class="u-col u-gap-3">
+                <div class="opt-row" data-format-opts>
+                  <button class="btn is-sm active" data-fmt="png" type="button">PNG</button>
+                  <button class="btn is-sm" data-fmt="jpg" type="button">JPG</button>
+                  <button class="btn is-sm" data-fmt="webp" type="button">WebP</button>
+                </div>
+                <div class="range-row" data-quality-row hidden>
+                  <span class="field-label">质量</span>
+                  <input type="range" min="40" max="100" value="92" data-quality>
+                  <span class="val" data-quality-val>92%</span>
+                </div>
+                <div class="output-grid" data-output hidden></div>
+                <p class="hint" data-export-warning hidden></p>
+                <div class="act-group">
+                  <div class="u-col u-gap-2">
+                    <button class="btn is-primary is-block" type="button" data-action="download" disabled>下载</button>
+                    <div class="u-row u-gap-2">
+                      <button class="btn is-block" type="button" data-action="copy" disabled title="始终以 PNG 格式复制到剪贴板">复制</button>
+                      <button class="btn is-ghost is-block" type="button" data-action="clear" disabled>清空</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

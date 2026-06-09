@@ -29,9 +29,12 @@ export function initWatermarkUI({ onChanged = () => {} } = {}) {
   function bindOptRow(selector, dataAttr, onChange) {
     const container = $(selector);
     if (!container) return;
+    const isTab = container.classList.contains('tabs');
+    const btnSel = isTab ? '.tab-btn' : '.btn';
+    const activeClass = isTab ? 'is-active' : 'active';
     delegate(container, 'click', `[${dataAttr}]`, (e, btn) => {
-      $$('.btn', container).forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      $$(btnSel, container).forEach(b => b.classList.remove(activeClass));
+      btn.classList.add(activeClass);
       onChange(btn.getAttribute(dataAttr));
     });
   }

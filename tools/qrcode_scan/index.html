@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>二维码识别 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>二维码识别 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="上传图片识别二维码（WiFi/链接/名片/微信等）">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/qrcode_scan/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="二维码识别 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="上传图片识别二维码（WiFi/链接/名片/微信等）">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/qrcode_scan/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"二维码识别","url":"https://tools.jqnest.top/tools/qrcode_scan/","description":"上传图片识别二维码（WiFi/链接/名片/微信等）","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -32,16 +44,16 @@
           <div class="u-col u-gap-3">
             <div class="panel">
               <div>
-                <label class="u-col u-gap-2" data-drop style="border:2px dashed var(--border-base);border-radius:var(--radius-md);align-items:center;text-align:center;cursor:pointer;padding:var(--space-8) var(--space-4)">
-                  <i data-lucide="upload" style="font-size:1.8rem;opacity:.35"></i>
+                <label class="u-col u-gap-2 upload-panel is-inner is-strong" data-drop>
+                  <i data-lucide="upload"></i>
                   <div class="u-strong">点击或拖拽图片到此处</div>
-                  <div class="u-muted" style="font-size:var(--text-xs)">支持 JPG / PNG / WebP · 支持粘贴上传</div>
+                  <div class="u-muted u-text-xs">支持 JPG / PNG / WebP · 支持粘贴上传</div>
                   <input type="file" accept="image/*" hidden data-file>
                 </label>
                 <div class="scan-preview u-mt-3" data-preview hidden>
                   <img data-img>
                   <div class="u-row u-gap-2 u-mt-2" style="justify-content:center">
-                    <button class="btn is-sm is-ghost" type="button" data-action="re-upload"><i data-lucide="refresh-cw"></i> 重新选择</button>
+                    <button class="btn is-sm is-ghost" type="button" data-img-delete><i data-lucide="x"></i></button>
                   </div>
                 </div>
               </div>
@@ -58,15 +70,17 @@
               <div data-result hidden>
                 <div class="u-row u-gap-2 u-mb-3" style="align-items:center">
                   <span class="badge is-brand" data-result-type></span>
-                  <span class="u-muted" style="font-size:var(--text-xs)" data-result-time></span>
+                  <span class="u-muted u-text-xs" data-result-time></span>
                 </div>
                 <div class="result-rows" data-result-body></div>
                 <div class="sep u-mt-3 u-mb-2"></div>
                 <label class="field-label">原始内容</label>
                 <textarea class="textarea u-mono" data-raw-text rows="3" readonly></textarea>
                 <div class="act-group u-mt-3">
-                  <button class="btn is-primary" type="button" data-action="copy"><i data-lucide="copy"></i> 复制内容</button>
-                  <button class="btn is-ghost" type="button" data-action="open-url" hidden><i data-lucide="external-link"></i> 打开链接</button>
+                  <div class="u-row u-gap-2">
+                    <button class="btn is-primary is-block" type="button" data-action="copy"><i data-lucide="copy"></i> 复制内容</button>
+                    <button class="btn is-ghost is-block" type="button" data-action="open-url" hidden><i data-lucide="external-link"></i> 打开链接</button>
+                  </div>
                 </div>
               </div>
             </div>

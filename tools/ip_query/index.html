@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>IP 地址查询 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="查询当前 IP 及任意 IP 的归属地信息">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/ip_query/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="IP 地址查询 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="查询当前 IP 及任意 IP 的归属地信息">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/ip_query/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"IP 地址查询","url":"https://tools.jqnest.top/tools/ip_query/","description":"查询当前 IP 及任意 IP 的归属地信息","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="ip_query">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <!-- 当前 IP -->
+        <div class="panel">
+          <h3 class="panel-title">你的公网 IP</h3>
+          <div data-my-ip>
+            <span class="u-muted">正在获取…</span>
+          </div>
+        </div>
+
+        <!-- 查询 -->
+        <div class="panel">
+          <h3 class="panel-title">查询 IP 归属地</h3>
+          <div class="u-row u-gap-2" style="flex-wrap:wrap">
+            <input class="input u-mono" data-input placeholder="输入 IP 地址，如 8.8.8.8 或 2001:4860::8888" autocomplete="off" style="flex:1;min-width:200px">
+            <button class="btn is-primary" type="button" data-action="query"><i data-lucide="search"></i> 查询</button>
+          </div>
+          <div data-result class="u-mt-3"></div>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

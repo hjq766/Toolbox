@@ -3,13 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Emoji 大全 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>Emoji 大全 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="常用 emoji 表情，点击即复制">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/emoji/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="Emoji 大全 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="常用 emoji 表情，点击即复制">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/emoji/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Emoji 大全","url":"https://tools.jqnest.top/tools/emoji/","description":"常用 emoji 表情，点击即复制","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
   <link rel="stylesheet" href="../../public/styles/layout.css">
   <link rel="stylesheet" href="../../public/styles/components.css">
   <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../../public/styles/browse.css">
   <script src="../../public/vendor/emoji_data.js"></script>
   <style>
     .emoji-chip { position: relative; font-size: var(--text-xl); padding: 8px 10px; min-width: 42px; justify-content: center; }
@@ -23,18 +36,24 @@
       <header class="tool-header" data-tool-header></header>
       <div class="tool-body">
 
-        <div class="panel">
-          <label class="search-shell" style="max-width:460px">
-            <i data-lucide="search" class="search-icon" aria-hidden="true"></i>
-            <input class="search-box" type="search" data-search placeholder="搜索表情…" autocomplete="off">
-          </label>
-          <div class="field-hint u-mt-2" data-status></div>
+        <div class="browse-head">
+          <div class="browse-toolbar">
+            <label class="search-shell">
+              <i data-lucide="search" class="search-icon" aria-hidden="true"></i>
+              <input class="search-box" type="search" data-search placeholder="搜索表情名称或分组…" autocomplete="off">
+            </label>
+            <span class="browse-toolbar__meta" data-status></span>
+          </div>
+          <div data-tabs role="tablist"></div>
         </div>
 
-        <div class="panel">
-          <div class="tabs" role="tablist" data-tabs></div>
-          <div data-content class="u-mt-4"></div>
-        </div>
+        <div class="browse-body" data-content></div>
+
+        <p class="browse-foot field-hint u-muted">
+          Emoji 分类与英文名来自开源项目
+          <a href="https://github.com/muan/unicode-emoji-json" target="_blank" rel="noopener noreferrer">unicode-emoji-json</a>
+          （MIT，基于 Unicode 标准）。
+        </p>
 
       </div>
     </div>

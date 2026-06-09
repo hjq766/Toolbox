@@ -3,13 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>行政区划 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>行政区划 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="中国行政区划代码 / 邮编查询">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/areacode/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="行政区划 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="中国行政区划代码 / 邮编查询">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/areacode/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"行政区划","url":"https://tools.jqnest.top/tools/areacode/","description":"中国行政区划代码 / 邮编查询","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
   <link rel="stylesheet" href="../../public/styles/layout.css">
   <link rel="stylesheet" href="../../public/styles/components.css">
   <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../../public/styles/browse.css">
   <script src="../../public/vendor/areacode_data.js"></script>
 </head>
 <body data-page="tool" data-base-path="../../" data-tool-slug="areacode">
@@ -18,19 +31,19 @@
       <header class="tool-header" data-tool-header></header>
       <div class="tool-body">
 
-        <!-- 搜索 -->
-        <div class="panel">
-          <div class="field" style="max-width:420px">
-            <div class="input-group">
-              <input class="input" type="text" data-search placeholder="搜索地区名称或邮编…">
-              <button class="btn is-primary" type="button" data-action="search">搜索</button>
-            </div>
+        <div class="browse-head u-mb-3">
+          <div class="browse-toolbar">
+            <label class="search-shell">
+              <i data-lucide="search" class="search-icon" aria-hidden="true"></i>
+              <input class="search-box" type="search" data-search placeholder="搜索地区名称或邮编…" autocomplete="off">
+            </label>
+            <span class="browse-toolbar__meta" data-status></span>
           </div>
         </div>
 
         <!-- 面包屑 + 内容 -->
         <div class="panel">
-          <div class="u-row u-gap-2 u-mb-4" style="font-size:var(--text-sm)" data-breadcrumb></div>
+          <div class="u-row u-gap-2 u-mb-3" style="font-size:var(--text-sm)" data-breadcrumb></div>
           <div class="grid grid-sidebar" style="min-height:400px">
             <div class="grid-aside" data-province-list></div>
             <div data-content></div>

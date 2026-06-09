@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>宽高比换算 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>宽高比换算 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="任意宽/高推算比例，预设 16:9、4:3、3:2、1:1">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/convert_scale/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="宽高比换算 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="任意宽/高推算比例，预设 16:9、4:3、3:2、1:1">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/convert_scale/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"宽高比换算","url":"https://tools.jqnest.top/tools/convert_scale/","description":"任意宽/高推算比例，预设 16:9、4:3、3:2、1:1","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -12,7 +24,8 @@
   <link rel="stylesheet" href="../../public/styles/utilities.css">
   <link rel="stylesheet" href="../_shared/sidebar.css">
   <style>
-    .cs-stage{display:flex;align-items:center;justify-content:center;min-height:460px;background:var(--bg-surface-2);border-radius:var(--radius-md);padding:var(--space-6)}
+    .cs-stage{display:flex;align-items:center;justify-content:center;min-height:360px;background:var(--bg-surface-2);border-radius:var(--radius-md);padding:var(--space-6)}
+    .cs-stats{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2) var(--space-6);font-size:var(--text-sm)}
     .cs-box{background:var(--color-brand);border-radius:var(--radius-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-1);transition:width var(--dur-slow),height var(--dur-slow)}
     .cs-box-ratio{font-size:var(--text-xl);font-weight:700;color:var(--fg-invert)}
     .cs-box-size{font-size:var(--text-xs);color:var(--fg-invert);opacity:.75}
@@ -25,8 +38,8 @@
       <div class="tool-body">
 
         <div class="grid grid-sidebar-r" style="--sidebar-w:300px">
-          <!-- 左：输入 + 预览 -->
-          <div>
+          <!-- 左：输入 + 预览 + 信息 + 操作 -->
+          <div class="u-col u-gap-3">
             <div class="panel">
               <div class="u-row u-gap-3" style="align-items:flex-end;flex-wrap:wrap">
                 <div class="field" style="flex:1;min-width:120px">
@@ -55,81 +68,60 @@
                 <span class="cs-box-size" data-preview-size>1920 × 1080</span>
               </div>
             </div>
+            <div class="panel">
+              <div class="cs-stats">
+                <div class="u-row u-between"><span class="u-muted">简化比例</span><strong data-stat="ratio">16:9</strong></div>
+                <div class="u-row u-between"><span class="u-muted">比值</span><span data-stat="value">1.778</span></div>
+                <div class="u-row u-between"><span class="u-muted">对角线</span><span data-stat="diag">2203 px</span></div>
+              </div>
+            </div>
           </div>
 
-          <!-- 右：侧栏 -->
+          <!-- 右：预设 + 操作 -->
           <aside>
-            <!-- 比例预设 -->
             <div class="panel">
               <h3 class="panel-title">比例预设</h3>
 
-              <label class="field-label">屏幕 / 视频</label>
+              <label class="field-label">常用比例</label>
               <div class="opt-row u-mb-3">
-                <button class="btn is-sm active" data-ratio="16:9">16:9</button>
+                <button class="btn is-sm is-active" data-ratio="16:9">16:9</button>
                 <button class="btn is-sm" data-ratio="16:10">16:10</button>
                 <button class="btn is-sm" data-ratio="4:3">4:3</button>
                 <button class="btn is-sm" data-ratio="21:9">21:9</button>
                 <button class="btn is-sm" data-ratio="32:9">32:9</button>
                 <button class="btn is-sm" data-ratio="1:1">1:1</button>
+                <button class="btn is-sm" data-ratio="3:2">3:2</button>
               </div>
 
-              <label class="field-label">社交媒体</label>
+              <label class="field-label">社交 & 内容</label>
               <div class="opt-row u-mb-3">
                 <button class="btn is-sm" data-ratio="9:16" data-preset='{"w":1080,"h":1920}'>竖屏 9:16</button>
                 <button class="btn is-sm" data-ratio="4:5" data-preset='{"w":1080,"h":1350}'>Ins 竖图</button>
                 <button class="btn is-sm" data-ratio="3:4" data-preset='{"w":1080,"h":1440}'>小红书</button>
                 <button class="btn is-sm" data-ratio="2.35:1" data-preset='{"w":900,"h":383}'>公众号封面</button>
                 <button class="btn is-sm" data-ratio="2.35:1" data-preset='{"w":1280,"h":545}'>B站封面</button>
+                <button class="btn is-sm" data-ratio="3:1" data-preset='{"w":1500,"h":500}'>Twitter 封面</button>
               </div>
 
-              <label class="field-label">摄影 / 印刷</label>
-              <div class="opt-row u-mb-3">
-                <button class="btn is-sm" data-ratio="3:2">3:2</button>
-                <button class="btn is-sm" data-ratio="5:4">5:4</button>
-                <button class="btn is-sm" data-ratio="7:5">7:5</button>
-                <button class="btn is-sm" data-ratio="6:4">6:4</button>
-                <button class="btn is-sm" data-ratio="1:1.414" data-preset='{"w":2480,"h":3508}'>A4 纸</button>
-                <button class="btn is-sm" data-ratio="1:1.414" data-preset='{"w":3508,"h":4961}'>A3 纸</button>
-              </div>
-
-              <label class="field-label">电影</label>
-              <div class="opt-row u-mb-3">
-                <button class="btn is-sm" data-ratio="1.85:1" data-preset='{"w":1998,"h":1080}'>1.85:1</button>
-                <button class="btn is-sm" data-ratio="2.35:1" data-preset='{"w":2538,"h":1080}'>2.35:1</button>
-                <button class="btn is-sm" data-ratio="2.39:1" data-preset='{"w":2581,"h":1080}'>2.39:1</button>
-                <button class="btn is-sm" data-ratio="1.33:1">学院比</button>
-              </div>
-
-              <label class="field-label">移动设备</label>
+              <label class="field-label">设备 & 印刷</label>
               <div class="opt-row">
-                <button class="btn is-sm" data-ratio="9:19.5" data-preset='{"w":390,"h":844}'>iPhone 15</button>
-                <button class="btn is-sm" data-ratio="9:19.5" data-preset='{"w":430,"h":932}'>iPhone Max</button>
+                <button class="btn is-sm" data-ratio="9:19.5" data-preset='{"w":402,"h":874}'>iPhone 17</button>
+                <button class="btn is-sm" data-ratio="9:19.5" data-preset='{"w":440,"h":956}'>iPhone Max</button>
                 <button class="btn is-sm" data-ratio="9:20" data-preset='{"w":360,"h":800}'>Android</button>
                 <button class="btn is-sm" data-ratio="3:4" data-preset='{"w":768,"h":1024}'>iPad</button>
                 <button class="btn is-sm" data-ratio="2:3" data-preset='{"w":820,"h":1180}'>iPad Air</button>
                 <button class="btn is-sm" data-ratio="4:3" data-preset='{"w":2048,"h":1536}'>iPad Pro</button>
+                <button class="btn is-sm" data-ratio="1:1.414" data-preset='{"w":2480,"h":3508}'>A4 纸</button>
+                <button class="btn is-sm" data-ratio="1:1.414" data-preset='{"w":3508,"h":4961}'>A3 纸</button>
               </div>
             </div>
-
-
-            <!-- 信息 -->
-            <div class="panel">
-              <h3 class="panel-title">信息</h3>
-              <div class="u-col u-gap-2" style="font-size:var(--text-sm)">
-                <div class="u-row u-between"><span class="u-muted">简化比例</span><strong data-stat="ratio">16:9</strong></div>
-                <div class="u-row u-between"><span class="u-muted">比值</span><span data-stat="value">1.778</span></div>
-                <div class="u-row u-between"><span class="u-muted">对角线</span><span data-stat="diag">2203 px</span></div>
-                <div class="u-row u-between"><span class="u-muted">总像素</span><span data-stat="pixels">2.07M</span></div>
-                <div class="u-row u-between"><span class="u-muted">方向</span><span data-stat="orient">横向</span></div>
-              </div>
-            </div>
-
-            <!-- 操作 -->
             <div class="panel">
               <div class="act-group">
-                <button class="btn" type="button" data-action="swap"><i data-lucide="arrow-left-right"></i> 交换宽高</button>
-                <button class="btn" type="button" data-action="copy"><i data-lucide="copy"></i> 复制信息</button>
-                <button class="btn is-ghost" type="button" data-action="reset">重置</button>
+                <div class="u-row u-gap-2">
+                  <button class="btn is-block" type="button" data-action="swap">交换宽高</button>
+                  <button class="btn is-block" type="button" data-action="copy">复制信息</button>
+                  <button class="btn is-ghost is-block" type="button" data-action="reset">重置</button>
+                </div>
               </div>
             </div>
           </aside>

@@ -7,7 +7,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-TOOLS_DIR="$PROJECT_ROOT/v2/tools"
+TOOLS_DIR="$PROJECT_ROOT/tools"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -69,7 +69,8 @@ scan_file() {
     ((hits += count))
   fi
 
-  ((TOTAL_HITS += hits))
+  ((TOTAL_HITS += hits)) || true
+  return 0
 }
 
 check_tool() {
@@ -81,7 +82,7 @@ check_tool() {
     return
   fi
 
-  ((CHECKED++))
+  ((++CHECKED))
   echo "🔍 $slug"
 
   # 扫描 html, css, js 文件
@@ -106,7 +107,6 @@ if [[ "$1" == "--all" ]]; then
   for dir in "$TOOLS_DIR"/*/; do
     slug=$(basename "$dir")
     [[ "$slug" == _* ]] && continue
-    TOOL_HITS=0
     check_tool "$slug"
     echo ""
   done

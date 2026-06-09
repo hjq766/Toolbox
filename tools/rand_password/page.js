@@ -101,13 +101,19 @@ function refresh() {
 on(lenEl, 'input', () => { lenDisp.textContent = lenEl.value; refresh(); });
 $$('[data-opt]').forEach(el => on(el, 'change', refresh));
 on($('[data-gen]'), 'click', refresh);
-on($('[data-copy]'), 'click', async () => {
+on($('[data-action="copy"]'), 'click', async () => {
   const ok = await copyText(out.textContent);
   showToast(ok ? '已复制密码' : '复制失败', { type: ok ? 'success' : 'error' });
 });
 on($('[data-batch]'), 'click', () => {
   const arr = Array.from({ length: 10 }, () => generate());
   $('[data-batch-out]').textContent = arr.join('\n');
+});
+on($('[data-batch-copy]'), 'click', async () => {
+  const text = $('[data-batch-out]').textContent;
+  if (!text) { showToast('请先批量生成', { type: 'warn' }); return; }
+  const ok = await copyText(text);
+  showToast(ok ? '已复制' : '复制失败', { type: ok ? 'success' : 'error' });
 });
 
 refresh();

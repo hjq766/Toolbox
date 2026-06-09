@@ -1,5 +1,5 @@
 import { mountToolHeader } from '../../public/scripts/core/tool-page.js';
-import { $, on } from '../../public/scripts/utils/dom.js';
+import { $, $$, on } from '../../public/scripts/utils/dom.js';
 import { showToast } from '../../public/scripts/components/toast.js';
 import { downloadBlob } from '../../public/scripts/utils/download.js';
 import { initUploadZone } from '../_shared/upload-zone.js';
@@ -9,6 +9,15 @@ mountToolHeader();
 /* ========== state ========== */
 let currentImage = null;
 let rows = 3, cols = 3;
+let sourceBaseName = 'grid';
+let selectedFormat = 'png';
+let imageQuality = 0.92;
+
+const MIME_MAP = {
+  png: 'image/png',
+  jpg: 'image/jpeg',
+  webp: 'image/webp',
+};
 
 /* ========== DOM ========== */
 const dropEl    = $('[data-drop]');
@@ -16,14 +25,26 @@ const fileEl    = $('[data-file]');
 const previewEl = $('[data-preview]');
 const canvasEl  = $('[data-canvas]');
 const ctx       = canvasEl.getContext('2d');
-const gridEl    = $('[data-grid-lines]');
 const cutBtn    = $('[data-action="cut"]');
+const imageInfo = $('[data-image-info]');
+const presetsEl = $('[data-presets]');
+const customGroup = $('[data-custom-group]');
+const customRows = $('[data-custom-rows]');
+const customCols = $('[data-custom-cols]');
+const formatRow = $('[data-format-row]');
+const qualityPanel = $('[data-quality-panel]');
+const qualityInput = $('[data-quality]');
+const qualityVal = $('[data-quality-val]');
+const namePrefix = $('[data-name-prefix]');
 
 /* ========== 上传 ========== */
-initUploadZone({ dropEl, fileEl, onFiles: files => handleFile(files[0]), accept: 'image' });
+initUploadZone({ dropEl, fileEl, onFiles: files => handleFile(files[0]), accept: 'image', onDelete: clearImage });
 
 function handleFile(file) {
   if (!file || !file.type.startsWith('image/')) return;
+  sourceBaseName = getBaseName(file.name);
+  if (!namePrefix.value.trim()) namePrefix.placeholder = sourceBaseName;
+  if (file.type === 'image/gif') showToast('GIF 会按静态首帧切割', { type: 'warn' });
   const reader = new FileReader();
   reader.onload = e => {
     const img = new Image();
@@ -52,98 +73,220 @@ function displayImage() {
   ctx.drawImage(currentImage, 0, 0, w, h);
   canvasEl._info = { w, h, scale };
   drawGridLines();
+  updateImageInfo();
 }
 
 /* ========== 网格线 ========== */
 function drawGridLines() {
-  gridEl.innerHTML = '';
-  if (!canvasEl._info) return;
+  if (!currentImage || !canvasEl._info) return;
   const { w, h } = canvasEl._info;
-  // 计算 canvas 在 wrap 中的偏移
-  const wrap = canvasEl.parentElement;
-  const offX = (wrap.offsetWidth - w) / 2;
-  const offY = (wrap.offsetHeight - h) / 2;
+  ctx.drawImage(currentImage, 0, 0, w, h);
 
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('width', '100%'); svg.setAttribute('height', '100%');
-  svg.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none';
-
-  const makeLine = (x1, y1, x2, y2) => {
-    const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
-    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
-    l.setAttribute('stroke', '#fff'); l.setAttribute('stroke-width', '1');
-    l.setAttribute('stroke-dasharray', '4,4');
-    svg.appendChild(l);
+  ctx.setLineDash([4, 4]);
+  const makeLine = (x1, y1, x2, y2, stroke, widthPx) => {
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = widthPx;
+    ctx.stroke();
   };
+  const token = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const backStroke = token('--fg-invert');
+  const frontStroke = token('--color-brand');
 
-  for (let i = 1; i < cols; i++) makeLine(offX + w * i / cols, offY, offX + w * i / cols, offY + h);
-  for (let i = 1; i < rows; i++) makeLine(offX, offY + h * i / rows, offX + w, offY + h * i / rows);
+  ctx.save();
+  for (let i = 1; i < cols; i++) makeLine(w * i / cols, 0, w * i / cols, h, backStroke, 3);
+  for (let i = 1; i < rows; i++) makeLine(0, h * i / rows, w, h * i / rows, backStroke, 3);
+  for (let i = 1; i < cols; i++) makeLine(w * i / cols, 0, w * i / cols, h, frontStroke, 1);
+  for (let i = 1; i < rows; i++) makeLine(0, h * i / rows, w, h * i / rows, frontStroke, 1);
+  ctx.restore();
+}
 
-  gridEl.appendChild(svg);
+function updateImageInfo() {
+  if (!currentImage) {
+    imageInfo.textContent = '';
+    return;
+  }
+  const minPieceW = Math.floor(currentImage.width / cols);
+  const maxPieceW = Math.ceil(currentImage.width / cols);
+  const minPieceH = Math.floor(currentImage.height / rows);
+  const maxPieceH = Math.ceil(currentImage.height / rows);
+  const pieceText = minPieceW === maxPieceW && minPieceH === maxPieceH
+    ? `${minPieceW} × ${minPieceH}`
+    : `约 ${minPieceW}-${maxPieceW} × ${minPieceH}-${maxPieceH}`;
+  imageInfo.textContent = `${currentImage.width} × ${currentImage.height} · ${rows} × ${cols} · ${rows * cols} 张 · 单张 ${pieceText}`;
+}
+
+function getBaseName(filename) {
+  return (filename || 'grid').replace(/\.[^.]+$/, '').trim() || 'grid';
+}
+
+function sanitizeName(value) {
+  return (value || '').trim().replace(/[\\/:*?"<>|]+/g, '_').replace(/\s+/g, '_') || 'grid';
+}
+
+function pad(num, size) {
+  return String(num).padStart(size, '0');
+}
+
+function getExportBaseName() {
+  return sanitizeName(namePrefix.value || sourceBaseName);
+}
+
+function updateQualityPanel() {
+  qualityPanel.hidden = !(selectedFormat === 'jpg' || selectedFormat === 'webp');
+}
+
+function fillBackgroundForOpaqueFormat(context, width, height) {
+  if (selectedFormat !== 'jpg') return;
+  context.save();
+  context.globalCompositeOperation = 'destination-over';
+  context.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg-surface').trim();
+  context.fillRect(0, 0, width, height);
+  context.restore();
+}
+
+function canvasToBlob(canvas, mime, quality) {
+  return new Promise(resolve => canvas.toBlob(resolve, mime, quality));
+}
+
+function setRange(el) {
+  const min = parseFloat(el.min) || 0;
+  const max = parseFloat(el.max) || 100;
+  const value = parseFloat(el.value) || min;
+  el.style.setProperty('--range-pct', `${((value - min) / (max - min)) * 100}%`);
+}
+
+function readGridValue(input, fallback) {
+  const value = parseInt(input.value, 10);
+  return Number.isFinite(value) ? Math.min(Math.max(value, 1), 10) : fallback;
+}
+
+function applyCustomGrid({ commit = false } = {}) {
+  rows = readGridValue(customRows, rows);
+  cols = readGridValue(customCols, cols);
+  if (commit) {
+    customRows.value = rows;
+    customCols.value = cols;
+  }
+  drawGridLines();
+  updateImageInfo();
 }
 
 /* ========== 宫格预设 ========== */
-$('[data-presets]').addEventListener('click', e => {
+on(presetsEl, 'click', e => {
   const btn = e.target.closest('[data-rows]');
   const customBtn = e.target.closest('[data-custom]');
   if (btn) {
     rows = +btn.dataset.rows; cols = +btn.dataset.cols;
-    $('[data-presets]').querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    $('[data-custom-group]').classList.remove('show');
+    $$('.btn', presetsEl).forEach(b => b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+    customGroup.hidden = true;
     drawGridLines();
+    updateImageInfo();
   } else if (customBtn) {
-    $('[data-presets]').querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-    customBtn.classList.add('active');
-    $('[data-custom-group]').classList.add('show');
+    $$('.btn', presetsEl).forEach(b => b.classList.remove('is-active'));
+    customBtn.classList.add('is-active');
+    customGroup.hidden = false;
+    customRows.value = rows;
+    customCols.value = cols;
+    applyCustomGrid();
   }
 });
 
-on($('[data-action="apply-custom"]'), 'click', () => {
-  rows = Math.min(Math.max(+$('[data-custom-rows]').value || 1, 1), 10);
-  cols = Math.min(Math.max(+$('[data-custom-cols]').value || 1, 1), 10);
-  $('[data-custom-rows]').value = rows;
-  $('[data-custom-cols]').value = cols;
-  drawGridLines();
+on(customGroup, 'input', e => {
+  if (!e.target.matches('[data-custom-rows], [data-custom-cols]')) return;
+  applyCustomGrid();
 });
+on(customGroup, 'change', e => {
+  if (!e.target.matches('[data-custom-rows], [data-custom-cols]')) return;
+  applyCustomGrid({ commit: true });
+});
+
+on(formatRow, 'click', e => {
+  const btn = e.target.closest('[data-format]');
+  if (!btn) return;
+  selectedFormat = btn.dataset.format;
+  $$('[data-format]', formatRow).forEach(b => b.classList.toggle('is-active', b === btn));
+  updateQualityPanel();
+});
+
+on(qualityInput, 'input', () => {
+  imageQuality = +qualityInput.value / 100;
+  qualityVal.textContent = `${qualityInput.value}%`;
+  setRange(qualityInput);
+});
+
+const previewResize = new ResizeObserver(() => displayImage());
+previewResize.observe(canvasEl.parentElement);
 
 /* ========== 切割下载 ========== */
 on(cutBtn, 'click', async () => {
   if (!currentImage) { showToast('请先上传图片'); return; }
+  if (typeof JSZip === 'undefined') { showToast('ZIP 库未加载，请刷新后重试', { type: 'error' }); return; }
   showToast('正在切割...');
   cutBtn.disabled = true;
   try {
-    const pw = currentImage.width / cols, ph = currentImage.height / rows;
     const tmp = document.createElement('canvas');
     const tmpCtx = tmp.getContext('2d');
-    tmp.width = pw; tmp.height = ph;
+    const mime = MIME_MAP[selectedFormat] || MIME_MAP.png;
+    const quality = selectedFormat === 'jpg' || selectedFormat === 'webp' ? imageQuality : undefined;
+    const base = getExportBaseName();
+    const ext = selectedFormat;
+    const rowDigits = String(rows).length;
+    const colDigits = String(cols).length;
+    let warnedWebpFallback = false;
 
     const zip = new JSZip();
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
-        tmpCtx.clearRect(0, 0, pw, ph);
-        tmpCtx.drawImage(currentImage, c * pw, r * ph, pw, ph, 0, 0, pw, ph);
-        const data = tmp.toDataURL('image/png').split(',')[1];
-        zip.file(`piece_${r + 1}_${c + 1}.png`, data, { base64: true });
+        const sx = Math.round(c * currentImage.width / cols);
+        const sy = Math.round(r * currentImage.height / rows);
+        const ex = Math.round((c + 1) * currentImage.width / cols);
+        const ey = Math.round((r + 1) * currentImage.height / rows);
+        const sw = ex - sx;
+        const sh = ey - sy;
+        tmp.width = sw; tmp.height = sh;
+        tmpCtx.clearRect(0, 0, sw, sh);
+        tmpCtx.drawImage(currentImage, sx, sy, sw, sh, 0, 0, sw, sh);
+        fillBackgroundForOpaqueFormat(tmpCtx, sw, sh);
+        let blob = await canvasToBlob(tmp, mime, quality);
+        if (selectedFormat === 'webp' && blob && blob.type !== MIME_MAP.webp) {
+          blob = await canvasToBlob(tmp, MIME_MAP.png);
+          if (!warnedWebpFallback) {
+            showToast('当前浏览器不支持 WebP 导出，已改用 PNG', { type: 'warn' });
+            warnedWebpFallback = true;
+          }
+        }
+        if (!blob) throw new Error('canvas export failed');
+        const actualExt = blob.type === MIME_MAP.png && selectedFormat === 'webp' ? 'png' : ext;
+        zip.file(`${base}_r${pad(r + 1, rowDigits)}_c${pad(c + 1, colDigits)}.${actualExt}`, blob);
       }
     }
     const blob = await zip.generateAsync({ type: 'blob' });
-    downloadBlob(blob, 'grid_pieces.zip');
+    downloadBlob(blob, `${base}_${rows}x${cols}.zip`);
     showToast('下载已开始');
   } catch (err) {
-    showToast('切割失败，请重试');
+    showToast('切割失败，请重试', { type: 'error' });
+  } finally {
+    cutBtn.disabled = false;
   }
-  cutBtn.disabled = false;
 });
 
 /* ========== 删除 ========== */
-on($('[data-action="delete"]'), 'click', () => {
+function clearImage() {
   currentImage = null;
+  canvasEl._info = null;
+  sourceBaseName = 'grid';
   ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
-  gridEl.innerHTML = '';
+  imageInfo.textContent = '';
   previewEl.hidden = true;
   dropEl.hidden = false;
   cutBtn.disabled = true;
   fileEl.value = '';
-});
+  namePrefix.placeholder = '默认使用原图文件名';
+}
+
+updateQualityPanel();
+setRange(qualityInput);

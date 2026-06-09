@@ -20,7 +20,7 @@ const rawText   = $('[data-raw-text]');
 const openUrlBtn = $('[data-action="open-url"]');
 
 // ── 上传 ────────────────────────────────────────────────────
-initUploadZone({ dropEl, fileEl, onFiles: files => loadImage(files[0]), accept: 'image' });
+initUploadZone({ dropEl, fileEl, onFiles: files => loadImage(files[0]), accept: 'image', onDelete: resetToUpload });
 
 function loadImage(file) {
   const reader = new FileReader();
@@ -258,13 +258,12 @@ on($('[data-action="copy"]'), 'click', () => {
   showToast('已复制');
 });
 
-// 重新上传
-on($('[data-action="re-upload"]'), 'click', () => {
+function resetToUpload() {
   previewEl.hidden = true;
   dropEl.style.display = '';
   noResult.hidden = false;
   resultEl.hidden = true;
   imgEl.src = '';
   rawText.value = '';
-});
+}
 

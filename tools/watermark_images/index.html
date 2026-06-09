@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>图片水印 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>图片水印 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="文字/图片水印 + 单个/铺满模式 + 位置/角度/间距">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/watermark_images/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="图片水印 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="文字/图片水印 + 单个/铺满模式 + 位置/角度/间距">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/watermark_images/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"图片水印","url":"https://tools.jqnest.top/tools/watermark_images/","description":"文字/图片水印 + 单个/铺满模式 + 位置/角度/间距","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -20,135 +32,122 @@
       <div class="tool-body">
 
         <div class="grid grid-sidebar-r" style="--sidebar-w:300px">
-          <!-- 左：上传 + 预览 -->
           <div>
-            <label class="panel u-col u-gap-2" data-drop style="border-style:dashed;align-items:center;text-align:center;cursor:pointer;padding:var(--space-8) var(--space-4);margin:0">
-              <i data-lucide="upload" style="font-size:1.8rem;opacity:.35"></i>
+            <label class="panel u-col u-gap-2 upload-panel" data-drop>
+              <i data-lucide="upload"></i>
               <div class="u-strong">点击或拖拽图片到此处</div>
-              <div class="u-muted" style="font-size:var(--text-xs)">支持 JPG / PNG / WebP 等常见格式 · 支持粘贴上传</div>
+              <div class="u-muted u-text-xs">支持 JPG / PNG / WebP 等常见格式 · 支持粘贴上传</div>
               <input type="file" accept="image/*" hidden data-file>
             </label>
             <div class="panel u-mt-3" data-preview hidden>
+              <div class="u-row u-mb-3" style="justify-content:space-between;align-items:center">
+                <span class="u-muted u-text-xs" data-img-info></span>
+                <button class="btn is-sm is-ghost" type="button" data-img-delete><i data-lucide="x"></i></button>
+              </div>
               <div class="preview-wrap"><canvas data-canvas></canvas></div>
             </div>
           </div>
 
-          <!-- 右：水印设置 -->
-          <aside>
-            <!-- 水印类型 -->
+          <aside class="is-inactive">
             <div class="panel">
-              <h3 class="panel-title">水印类型</h3>
-              <div class="opt-row" data-type-opts>
-                <button class="btn is-sm active" data-wm-type="text"><i data-lucide="type"></i> 文字水印</button>
-                <button class="btn is-sm" data-wm-type="image"><i data-lucide="image"></i> 图片水印</button>
+              <h3 class="panel-title">水印设置</h3>
+              <div class="tabs" data-type-opts style="width:100%">
+                <button class="tab-btn is-active" data-wm-type="text">文字水印</button>
+                <button class="tab-btn" data-wm-type="image">图片水印</button>
               </div>
-            </div>
-
-            <!-- 文字设置 -->
-            <div class="panel" data-text-settings>
-              <h3 class="panel-title">文字设置</h3>
-              <div class="u-col u-gap-3">
-                <input type="text" data-wm-text placeholder="请输入水印文字" class="input">
-                <div class="range-row">
-                  <label class="field-label">字号</label>
-                  <input type="range" data-wm-fontsize min="12" max="72" value="24">
-                  <span class="val" data-fontsize-val>24px</span>
-                </div>
-                <div class="u-row u-gap-2" style="align-items:center">
-                  <label class="field-label" style="margin:0">颜色</label>
-                  <input type="color" data-wm-color value="#000000">
-                </div>
-                <div class="range-row">
-                  <label class="field-label">不透明度</label>
-                  <input type="range" data-wm-opacity min="1" max="100" value="50">
-                  <span class="val" data-opacity-val>50%</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 图片水印设置 -->
-            <div class="panel" data-image-settings hidden>
-              <h3 class="panel-title">图片水印</h3>
-              <div class="wm-upload" data-wm-upload>
-                <input type="file" accept="image/*" hidden data-wm-file>
-                <div data-wm-upload-hint>
-                  <i data-lucide="image" style="font-size:var(--text-lg);opacity:.4"></i>
-                  <div class="u-muted" style="font-size:var(--text-xs)">点击上传水印图片</div>
-                  <div class="hint">建议使用透明 PNG</div>
-                </div>
-                <img data-wm-preview hidden>
-              </div>
-              <div class="u-col u-gap-2 u-mt-3">
-                <div class="range-row">
-                  <label class="field-label">大小</label>
-                  <input type="range" data-wm-size min="5" max="100" value="30">
-                  <span class="val" data-size-val>30%</span>
-                </div>
-                <div class="range-row">
-                  <label class="field-label">不透明度</label>
-                  <input type="range" data-wm-img-opacity min="1" max="100" value="50">
-                  <span class="val" data-img-opacity-val>50%</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 水印模式 -->
-            <div class="panel">
-              <h3 class="panel-title">水印模式</h3>
-              <div class="opt-row" data-mode-opts>
-                <button class="btn is-sm active" data-wm-mode="single">单个水印</button>
-                <button class="btn is-sm" data-wm-mode="tile">铺满水印</button>
-              </div>
-            </div>
-
-            <!-- 位置（单个模式） -->
-            <div class="panel" data-pos-panel>
-              <h3 class="panel-title">水印位置</h3>
-              <div class="pos-grid" data-pos-grid>
-                <button class="pos-cell" data-pos="top-left">↖</button>
-                <button class="pos-cell" data-pos="top-center">↑</button>
-                <button class="pos-cell" data-pos="top-right">↗</button>
-                <button class="pos-cell" data-pos="middle-left">←</button>
-                <button class="pos-cell active" data-pos="middle-center">●</button>
-                <button class="pos-cell" data-pos="middle-right">→</button>
-                <button class="pos-cell" data-pos="bottom-left">↙</button>
-                <button class="pos-cell" data-pos="bottom-center">↓</button>
-                <button class="pos-cell" data-pos="bottom-right">↘</button>
-              </div>
-            </div>
-
-            <!-- 铺满设置 -->
-            <div class="panel" data-tile-panel hidden>
-              <h3 class="panel-title">铺满设置</h3>
-              <div class="u-col u-gap-3">
-                <div>
-                  <label class="field-label">角度预设</label>
-                  <div class="opt-row u-mt-1">
-                    <button class="btn is-sm" data-angle="0">0°</button>
-                    <button class="btn is-sm" data-angle="45">45°</button>
-                    <button class="btn is-sm active" data-angle="315">-45°</button>
-                    <button class="btn is-sm" data-angle="90">90°</button>
+              <div data-text-settings class="u-mt-3">
+                <div class="u-col u-gap-3">
+                  <input type="text" data-wm-text placeholder="请输入水印文字" class="input">
+                  <div class="range-row">
+                    <label class="field-label">字号</label>
+                    <input type="range" data-wm-fontsize min="12" max="72" value="24">
+                    <span class="val" data-fontsize-val>24px</span>
+                  </div>
+                  <div class="u-row u-gap-2" style="align-items:center">
+                    <label class="field-label" style="margin:0">颜色</label>
+                    <input type="color" data-wm-color value="#000000">
+                  </div>
+                  <div class="range-row">
+                    <label class="field-label">不透明度</label>
+                    <input type="range" data-wm-opacity min="1" max="100" value="50">
+                    <span class="val" data-opacity-val>50%</span>
                   </div>
                 </div>
-                <div class="range-row">
-                  <label class="field-label">角度</label>
-                  <input type="range" data-tile-rotation min="0" max="360" value="315">
-                  <span class="val" data-rotation-val>-45°</span>
+              </div>
+              <div data-image-settings hidden class="u-mt-3">
+                <div class="wm-upload upload-panel is-inner is-compact" data-wm-upload>
+                  <input type="file" accept="image/*" hidden data-wm-file>
+                  <div data-wm-upload-hint class="u-col u-items-center">
+                    <i data-lucide="image" style="font-size:var(--text-lg);opacity:.4"></i>
+                    <div class="u-muted u-text-xs">点击上传水印图片</div>
+                    <div class="hint">建议使用透明 PNG</div>
+                  </div>
+                  <img data-wm-preview hidden>
                 </div>
-                <div class="range-row">
-                  <label class="field-label">水平间距</label>
-                  <input type="range" data-tile-sx min="100" max="300" value="150">
-                  <span class="val" data-sx-val>150%</span>
-                </div>
-                <div class="range-row">
-                  <label class="field-label">垂直间距</label>
-                  <input type="range" data-tile-sy min="100" max="300" value="150">
-                  <span class="val" data-sy-val>150%</span>
+                <div class="u-col u-gap-2 u-mt-3">
+                  <div class="range-row">
+                    <label class="field-label">大小</label>
+                    <input type="range" data-wm-size min="5" max="100" value="30">
+                    <span class="val" data-size-val>30%</span>
+                  </div>
+                  <div class="range-row">
+                    <label class="field-label">不透明度</label>
+                    <input type="range" data-wm-img-opacity min="1" max="100" value="50">
+                    <span class="val" data-img-opacity-val>50%</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- 导出 -->
+            <div class="panel">
+              <h3 class="panel-title">水印位置</h3>
+              <div class="tabs" data-mode-opts style="width:100%">
+                <button class="tab-btn is-active" data-wm-mode="single">单个水印</button>
+                <button class="tab-btn" data-wm-mode="tile">铺满水印</button>
+              </div>
+              <div data-pos-panel class="u-mt-3">
+                <div class="pos-grid" data-pos-grid>
+                  <button class="pos-cell" data-pos="top-left">↖</button>
+                  <button class="pos-cell" data-pos="top-center">↑</button>
+                  <button class="pos-cell" data-pos="top-right">↗</button>
+                  <button class="pos-cell" data-pos="middle-left">←</button>
+                  <button class="pos-cell active" data-pos="middle-center">●</button>
+                  <button class="pos-cell" data-pos="middle-right">→</button>
+                  <button class="pos-cell" data-pos="bottom-left">↙</button>
+                  <button class="pos-cell" data-pos="bottom-center">↓</button>
+                  <button class="pos-cell" data-pos="bottom-right">↘</button>
+                </div>
+              </div>
+              <div data-tile-panel hidden class="u-mt-3">
+                <div class="u-col u-gap-3">
+                  <div>
+                    <label class="field-label">角度预设</label>
+                    <div class="opt-row u-mt-1">
+                      <button class="btn is-sm" data-angle="0">0°</button>
+                      <button class="btn is-sm" data-angle="45">45°</button>
+                      <button class="btn is-sm active" data-angle="315">-45°</button>
+                      <button class="btn is-sm" data-angle="90">90°</button>
+                    </div>
+                  </div>
+                  <div class="range-row">
+                    <label class="field-label">角度</label>
+                    <input type="range" data-tile-rotation min="0" max="360" value="315">
+                    <span class="val" data-rotation-val>-45°</span>
+                  </div>
+                  <div class="range-row">
+                    <label class="field-label">水平间距</label>
+                    <input type="range" data-tile-sx min="100" max="300" value="150">
+                    <span class="val" data-sx-val>150%</span>
+                  </div>
+                  <div class="range-row">
+                    <label class="field-label">垂直间距</label>
+                    <input type="range" data-tile-sy min="100" max="300" value="150">
+                    <span class="val" data-sy-val>150%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="panel">
               <h3 class="panel-title">导出设置</h3>
               <div class="opt-row u-mb-3" data-format-opts>
@@ -157,8 +156,13 @@
                 <button class="btn is-sm" data-fmt="webp">WebP</button>
               </div>
               <div class="act-group">
-                <button class="btn is-primary" data-action="download" disabled><i data-lucide="download"></i> 下载图片</button>
-                <button class="btn is-ghost" data-action="clear" disabled><i data-lucide="trash-2"></i> 清空水印</button>
+                <div class="u-col u-gap-2">
+                  <button class="btn is-primary is-block" data-action="download" disabled>下载图片</button>
+                  <div class="u-row u-gap-2">
+                    <button class="btn is-block" data-action="copy" disabled>复制图片</button>
+                    <button class="btn is-ghost is-block" data-action="clear" disabled>清空水印</button>
+                  </div>
+                </div>
               </div>
             </div>
           </aside>

@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grid 网格布局生成器 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>Grid 网格布局 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="可视化网格布局生成器，支持智能推荐、多设备预览与导出">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/grid_layout/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="Grid 网格布局 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="可视化网格布局生成器，支持智能推荐、多设备预览与导出">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/grid_layout/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Grid 网格布局","url":"https://tools.jqnest.top/tools/grid_layout/","description":"可视化网格布局生成器，支持智能推荐、多设备预览与导出","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -24,7 +36,7 @@
       <header class="tool-header" data-tool-header></header>
       <div class="tool-body">
 
-        <div class="tabs u-mb-4" role="tablist">
+        <div class="tabs u-mb-3" role="tablist">
           <button class="tab-btn is-active" data-tab="recommend" type="button">栅格系统</button>
           <button class="tab-btn" data-tab="manual" type="button">网格类型</button>
         </div>
@@ -65,7 +77,7 @@
                 </div>
                 <div class="input-group u-mt-2">
                   <button class="addon" type="button" data-step="cols" data-dir="-1">−</button>
-                  <input class="input" type="number" data-input="desiredCols" value="12" min="1" max="36" style="text-align:center">
+                  <input class="input is-center" type="number" data-input="desiredCols" value="12" min="1" max="36">
                   <button class="addon" type="button" data-step="cols" data-dir="1">+</button>
                 </div>
               </div>
@@ -91,9 +103,9 @@
               <div class="panel" data-show="spacing">
                 <h3 class="panel-title">间距风格</h3>
                 <div class="tabs">
-                  <button class="tab" data-style="compact" type="button">紧凑</button>
-                  <button class="tab is-active" data-style="balanced" type="button">均衡</button>
-                  <button class="tab" data-style="spacious" type="button">宽松</button>
+                  <button class="tab-btn" data-style="compact" type="button">紧凑</button>
+                  <button class="tab-btn is-active" data-style="balanced" type="button">均衡</button>
+                  <button class="tab-btn" data-style="spacious" type="button">宽松</button>
                 </div>
               </div>
 
@@ -115,11 +127,6 @@
                 </div>
               </div>
 
-              <div class="panel">
-                <div class="act-group">
-                  <button class="btn is-primary" type="button" data-action="generate">生成布局方案</button>
-                </div>
-              </div>
             </div>
 
             <!-- ===== 网格类型 ===== -->
@@ -130,7 +137,7 @@
                   <label class="field-label">行数</label>
                   <div class="input-group">
                     <button class="addon" type="button" data-step="rows" data-dir="-1">−</button>
-                    <input class="input" type="number" data-input="rowCount" min="1" max="36" value="1" style="text-align:center">
+                    <input class="input is-center" type="number" data-input="rowCount" min="1" max="36" value="1">
                     <button class="addon" type="button" data-step="rows" data-dir="1">+</button>
                   </div>
                 </div>
@@ -138,7 +145,7 @@
                   <label class="field-label">左右边距</label>
                   <div class="input-group">
                     <button class="addon" type="button" data-step="margin" data-dir="-1">−</button>
-                    <input class="input" type="number" data-input="gridSideMargin" min="0" max="100" value="16" style="text-align:center">
+                    <input class="input is-center" type="number" data-input="gridSideMargin" min="0" max="100" value="16">
                     <button class="addon" type="button" data-step="margin" data-dir="1">+</button>
                   </div>
                 </div>
@@ -146,7 +153,7 @@
                   <label class="field-label">列间距</label>
                   <div class="input-group">
                     <button class="addon" type="button" data-step="colGap" data-dir="-1">−</button>
-                    <input class="input" type="number" data-input="colGap" min="0" max="50" value="20" style="text-align:center">
+                    <input class="input is-center" type="number" data-input="colGap" min="0" max="50" value="20">
                     <button class="addon" type="button" data-step="colGap" data-dir="1">+</button>
                   </div>
                 </div>
@@ -154,7 +161,7 @@
                   <label class="field-label">行间距</label>
                   <div class="input-group">
                     <button class="addon" type="button" data-step="rowGap" data-dir="-1">−</button>
-                    <input class="input" type="number" data-input="rowGap" min="0" max="50" value="20" style="text-align:center">
+                    <input class="input is-center" type="number" data-input="rowGap" min="0" max="50" value="20">
                     <button class="addon" type="button" data-step="rowGap" data-dir="1">+</button>
                   </div>
                 </div>
@@ -162,8 +169,10 @@
 
               <div class="panel">
                 <div class="act-group">
-                  <button class="btn is-primary" type="button" data-action="export">导出当前预览图</button>
-                  <button class="btn" type="button" data-action="copyCSS">复制 CSS 代码</button>
+                  <div class="u-row u-gap-2">
+                    <button class="btn is-primary is-block" type="button" data-action="export">导出预览图</button>
+                    <button class="btn is-block" type="button" data-action="copyCSS">复制 CSS</button>
+                  </div>
                 </div>
               </div>
             </div>

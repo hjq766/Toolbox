@@ -1,6 +1,6 @@
 # 组件库速查
 
-> 组件样式定义于 `v2/public/styles/components.css`。**有原名就用原名**，严禁另造 class。
+> 组件样式定义于 `public/styles/components.css`。**有原名就用原名**，严禁另造 class。
 
 ---
 
@@ -180,6 +180,29 @@
 
 **原则**：凡是"多选一"按钮组都用 `.tabs`，**不要**自造 `chip-btn` / `segment` / `filter-btn`。
 
+**浏览速查类**（符号/色卡/首都等）：Tab 由 `mountBrowseTabs()` 统一渲染，始终单行横滑、**标准 tab-btn 尺寸**（不缩小字号）；容器只需 `<div data-tabs role="tablist"></div>`。
+
+其它工具少量选项（2–5 个）手写 `.tabs` 即可，可自动换行；`.is-scroll` 仅在手写多分类横滑时使用。
+
+---
+
+## Browse 浏览速查（`browse.css`）
+
+数据集浏览类工具引入 `public/styles/browse.css`，完整骨架见 `layouts.md` §6。
+
+| Class | 用途 |
+|---|---|
+| `.browse-head` | 搜索 + Tab 控制区（无 panel） |
+| `.browse-toolbar` | 全宽搜索行 + 右侧 meta/actions |
+| `.browse-toolbar__meta` | 「共 N 个」「找到 N 条」 |
+| `.browse-toolbar__actions` | 换一批等辅助按钮组 |
+| `.browse-body` | 芯片/网格/列表内容区 |
+| `.browse-foot` | 居中数据来源脚注 |
+| `.browse-section` | 复合工具内的独立浏览块 |
+| `.query-bar` | 主动提交查询（仅 meta_fetch 等），非即时筛选 |
+
+浏览 Tab JS：`import { mountBrowseTabs } from '../_shared/browse-tabs.js'`，统一 `data-cat`，自动 `is-scroll`。
+
 ---
 
 ## Badge / Chip
@@ -243,7 +266,7 @@
 ### Data Table（数据表格）
 
 ```html
-<div style="overflow-x:auto">
+<div class="table-scroll">
   <table class="data-table">
     <thead><tr><th>列 A</th><th>列 B</th></tr></thead>
     <tbody>
@@ -254,6 +277,51 @@
 ```
 
 轻量表格：自带 th 加粗底线 + td 浅底线 + 行 hover 高亮。外层加 `overflow-x:auto` 防窄屏溢出。
+
+### Upload Panel（上传区）
+
+```html
+<label class="panel u-col u-gap-2 upload-panel" data-drop>
+  <i data-lucide="upload"></i>
+  <div class="u-strong">点击或拖拽文件到此处</div>
+  <div class="u-muted u-text-xs">支持 JPG/PNG/WebP · 支持粘贴上传</div>
+  <input type="file" accept="image/*" hidden data-file>
+</label>
+```
+
+用于单图或批量文件上传区。交互能力仍由 `_shared/upload-zone.js` 提供。
+
+变体：嵌在已有 `.panel` 内部时使用 `upload-panel is-inner`；需要 2px 虚线边框时加 `is-strong`；小上传区可加 `is-compact` 或 `is-comfortable`。
+
+### Progress（进度条）
+
+```html
+<div class="progress">
+  <div class="progress-bar" style="--progress:40%"></div>
+</div>
+```
+
+JS 中优先更新 CSS 变量：`bar.style.setProperty('--progress', '40%')`。
+
+### Status Badge（处理状态）
+
+```html
+<span class="status-badge is-pending">待处理</span>
+<span class="status-badge is-processing">处理中</span>
+<span class="status-badge is-done">完成</span>
+<span class="status-badge is-fail">失败</span>
+```
+
+### Summary Grid（结果汇总）
+
+```html
+<div class="summary-grid">
+  <div class="summary-item">
+    <div class="val highlight">42%</div>
+    <div class="label">平均节省</div>
+  </div>
+</div>
+```
 
 ### Stat Grid（统计卡片）
 
@@ -341,16 +409,23 @@ showToast('长消息', { type: 'info', duration: 5000 });
 | `is-hidden` / `[hidden]` | `display: none !important` |
 | `sr-only` | 屏幕阅读器专用 |
 | `u-text-center` / `u-text-right` | 对齐 |
+| `u-text-xs` / `u-text-sm` | 小字号快捷 |
 | `u-mono` | 等宽字体 |
 | `u-muted` / `u-strong` | 弱化 / 强化颜色 |
 | `u-truncate` | 单行省略 |
 | `u-break` | 强制换行（长 URL） |
+| `u-nowrap` | 禁止换行 |
 | `u-mt-0/2/3/4/6` / `u-mb-*` | 上下外边距 |
 | `u-pt-*` / `u-pb-*` | 上下内边距 |
 | `u-flex` / `u-row` / `u-col` | flex 容器（默认/横/竖） |
+| `u-items-start/center/end` | flex 交叉轴对齐 |
 | `u-between` | `justify-content: space-between` |
 | `u-gap-2/3/4/6` | gap（8/12/16/24） |
 | `u-grow` | `flex: 1` |
+| `u-min-0` | 防止 flex/grid 子项撑破 |
+| `u-no-shrink` | `flex-shrink: 0` |
+| `u-clickable` | `cursor: pointer` |
+| `icon-16/18/20/24` | 常用图标尺寸 |
 
 ### Grid 类
 
@@ -403,6 +478,79 @@ showToast('长消息', { type: 'info', duration: 5000 });
 - 去掉 focus 时的 box-shadow
 
 典型用于 `html_preview`（3 个并排编辑器面板）。
+
+---
+
+## 数据来源脚注（第三方库 / 数据集）
+
+### 何时用工具页脚注 vs 关于页集中致谢
+
+| 场景 | 处理方式 |
+|---|---|
+| `public/vendor/` 通用开源库（ECharts、PDF.js、qrcodejs、crypto-js 等） | **关于页「开源组件」**集中列出（`attributions.js` / `NOTICE.md`），工具页**不必重复** |
+| 外部 API（汇率、IP 查询等） | 工具页脚注：写清数据来自哪个 API |
+| 权威标准 / 注册表（IANA、WHATWG、Unicode 等） | 工具页脚注 |
+| 静态数据集且与工具卖点强绑定（色表、Emoji、拼音字典等） | 工具页脚注：写清数据仓库 + 可选本站扩展说明 |
+| 合规 / 虚构数据声明（如模拟数据生成） | 工具页脚注 |
+| GPL 等需单独提示的许可 | 工具页脚注或关于页均可，calendar 等须在工具页说明扩展与许可 |
+
+纯自研、无外部依赖的工具可省略脚注。
+
+### 工具页脚注（仅以上「须单独说明」场景）
+
+### 固定 HTML 模板（class 与 style 不得改）
+
+```html
+<p class="field-hint u-muted" style="margin:0;text-align:center">
+  数据/核心来自开源项目
+  <a href="https://github.com/xxx/yyy" target="_blank" rel="noopener noreferrer">xxx/yyy</a>
+  （MIT）。
+</p>
+```
+
+**要点**：
+- 必须**居中**：`style="margin:0;text-align:center"` 写死在 `<p>` 上
+- 禁止用 `u-mt-*` / `u-mb-*` 替代；禁止省略 `text-align:center`（否则会左对齐）
+- 外链必须 `target="_blank" rel="noopener noreferrer"`
+
+### 链接怎么选（优先 GitHub / Gitee，但有例外）
+
+**默认原则**：脚注里的来源链接，**尽量**指向 GitHub、Gitee 等代码托管平台（`owner/repo` 形式），而不是个人站、论坛帖、已停更的第三方页面。
+
+| 场景 | 推荐链接 | 说明 |
+|---|---|---|
+| `public/vendor/` 来自开源项目 | 该项目的 **GitHub / Gitee 仓库** | 用户可核对许可证、版本、issue；比零散网页更稳定 |
+| 数据经某仓库打包/redistribute | 打包仓库（如 `sxei/pinyinjs`） | 脚注链「你实际引用的那份」，正文可一句带过原始出处 |
+| **无**稳定开源托管 | 最权威的**官方**页面 | 如 IANA 注册表、WHATWG 规范、厂商官方 API 文档 |
+| 官方 API（微信、地图等） | **官方域名**（如 `open.weixin.qq.com`） | 链 GitHub 上的非官方封装反而误导 |
+
+**为什么倾向 GitHub/Gitee（但不是绝对）**：
+- ✅ 仓库通常比个人小站更长寿，HTTPS 稳定，便于核对 LICENSE
+- ✅ 与「本地 vendor 来自某开源项目」的叙事一致，说服力更强
+- ⚠️ GitHub 也会删库、改名、转移；链接仍可能失效
+- ⚠️ 规范/标准类数据，**官方注册表比某个 mirror 仓库更权威**（如 `http_status` → IANA，不应硬换 GitHub）
+
+**反例**：拼音字典曾链 `zi.artx.cn`——本站实际用的是 `pinyinjs` 仓库里的打包字典，改链 `sxei/pinyinjs` 更准确。
+
+### 正文只写什么
+
+| ✅ 要写 | ❌ 不要写 |
+|---|---|
+| 来源名称 + 链接（优先 GitHub/Gitee，见上表） | 文件体积（「约 79KB」「18KB」） |
+| 许可证（MIT、GPL-3.0 等） | 「本地静态加载」等实现细节 |
+| 上游项目（如「基于 mumuy/relationship 重构」） | 性能数据、缓存策略 |
+| 本站扩展说明（如 calendar 的节日/五行） | 与溯源无关的废话 |
+| API/CDN 类工具可写获取方式（如 exchange_rate 的 CDN 缓存） | 把脚注当 changelog 用 |
+| 标准/官方源可注明「基于 Unicode / IANA / WHATWG」 | 为凑 GitHub 而链非官方 fork |
+
+### 参考示例
+
+| 场景 | 工具 |
+|---|---|
+| 本地 vendor 库 | `tools/relationship/` · `tools/color_name/` |
+| vendor + 本站扩展 | `tools/calendar/` |
+| 外部 API | `tools/exchange_rate/` |
+| 标准数据集 | `tools/http_status/` · `tools/html_query/` |
 
 ---
 

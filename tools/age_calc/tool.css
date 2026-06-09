@@ -1,0 +1,36 @@
+/* ===== 年龄计算器 ===== */
+
+/* 日期选择器（移植自 calendar 工具） */
+.pk { position: relative; flex: 1; }
+.pk-trigger {
+  display: flex; align-items: center; justify-content: center; gap: var(--space-2);
+  width: 100%; padding: 8px 12px; font-size: var(--text-sm); font-weight: 500;
+  background: var(--bg-surface); border: 1px solid var(--border-base);
+  border-radius: var(--radius-md); cursor: pointer; color: var(--fg-strong);
+  transition: border-color .15s;
+}
+.pk-trigger:hover, .pk-trigger.open { border-color: var(--color-brand); }
+.pk-trigger::after { content: '▾'; font-size: 10px; color: var(--fg-muted); margin-left: auto; }
+.pk-drop {
+  position: absolute; top: calc(100% + 4px); left: 50%; transform: translateX(-50%);
+  z-index: 20; background: var(--bg-surface); border: 1px solid var(--border-base);
+  border-radius: var(--radius-md); padding: var(--space-2);
+  box-shadow: var(--shadow-lg); max-height: 240px; overflow-y: auto;
+  min-width: max-content; display: none;
+}
+.pk-drop.show { display: block; }
+.pk-grid { display: grid; gap: calc(var(--space-1) / 2); }
+.pk-grid.cols-4 { grid-template-columns: repeat(4,1fr); }
+.pk-grid.cols-5 { grid-template-columns: repeat(5,1fr); }
+.pk-grid.cols-7 { grid-template-columns: repeat(7,1fr); }
+.pk-grid span {
+  display: flex; align-items: center; justify-content: center;
+  padding: 6px 8px; border-radius: var(--radius-sm); cursor: pointer;
+  font-size: var(--text-sm); white-space: nowrap; transition: background .1s;
+}
+.pk-grid span:hover { background: var(--bg-surface-2); }
+.pk-grid span.on { background: var(--color-brand); color: var(--fg-invert); }
+.pk-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-2); }
+.pk-nav button { background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-sm); color: var(--fg-strong); font-size: var(--text-sm); }
+.pk-nav button:hover { background: var(--bg-surface-2); }
+.pk-nav strong { font-size: var(--text-sm); }

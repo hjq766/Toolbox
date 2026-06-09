@@ -4,17 +4,9 @@ import { initPerfMode } from './perf-mode.js';
 import { mountShell } from './shell.js';
 import { mountDock } from '../components/dock.js';
 import { mountBackTop } from '../components/back-top.js';
+import { initCopyDelegation } from '../utils/clipboard.js';
 import '../components/toast.js';
 
-/* ---------------- 僵尸 Service Worker 清理 ----------------
- * v2 不再注册任何 Service Worker。但历史版本（v1）可能注册过，
- * 残留的 SW 会拦截所有请求并返回旧缓存，导致"无论怎么刷新都是旧页面"。
- * 这里在每次页面加载时：
- *   1) 注销所有已注册的 Service Worker
- *   2) 清空 Cache Storage 中的所有缓存
- * 执行完毕后老用户只需再刷一次即可拿到最新代码，之后彻底干净。
- * 新用户不受影响（没有 SW 时 getRegistrations 返回空）。
- * -------------------------------------------------------- */
 (function purgeLegacyServiceWorker() {
   try {
     if ('serviceWorker' in navigator) {
@@ -42,6 +34,27 @@ if (isEmbedded) document.documentElement.classList.add('is-embedded');
 // 尽早应用主题 / 性能模式，降低 FOUC
 initTheme();
 initPerfMode();
+
+// 网站统计 - 模块顶层立即执行，不等待 DOMContentLoaded
+if (!isEmbedded) {
+  // 百度统计
+  window._hmt = window._hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d07c3a564a178264d3c3326f1509bc98";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+  // 51.la
+  (function() {
+    var la = document.createElement('script');
+    la.charset = 'UTF-8';
+    la.id = 'LA_COLLECT';
+    la.src = '//sdk.51.la/js-sdk-pro.min.js';
+    la.onload = function() { if (window.LA) LA.init({ id: '3PqV31tIx1xTAuun', ck: '3PqV31tIx1xTAuun' }); };
+    document.head.appendChild(la);
+  })();
+}
 
 function start() {
   const body = document.body;
@@ -97,27 +110,30 @@ function refreshIcons(root) {
 }
 window.refreshIcons = refreshIcons;
 
-/* ---------- 网站统计 ---------- */
-function initAnalytics() {
-  if (isEmbedded) return; // iframe 内不重复统计
-  // 百度统计
-  window._hmt = window._hmt || [];
-  const hm = document.createElement('script');
-  hm.src = 'https://hm.baidu.com/hm.js?d07c3a564a178264d3c3326f1509bc98';
-  document.head.appendChild(hm);
-  // 51.la
-  const la = document.createElement('script');
-  la.charset = 'UTF-8';
-  la.id = 'LA_COLLECT';
-  la.src = '//sdk.51.la/js-sdk-pro.min.js';
-  la.onload = () => { if (window.LA) LA.init({ id: '3PqV31tIx1xTAuun', ck: '3PqV31tIx1xTAuun' }); };
-  document.head.appendChild(la);
+/* ---------- 版本强刷（部署新版后自动刷新） ---------- */
+async function checkVersion() {
+  try {
+    const basePath = document.body?.dataset.basePath || './';
+    const res = await fetch(`${basePath}version.json?_=${Date.now()}`, { cache: 'no-store' });
+    if (!res.ok) return;
+    const { v } = await res.json();
+    const key = '__app_ver__';
+    const stored = localStorage.getItem(key);
+    if (stored && stored !== v) {
+      localStorage.setItem(key, v);
+      location.reload();                 // 版本不一致 → 强刷
+      return true;                       // 标记已刷新
+    }
+    localStorage.setItem(key, v);
+  } catch {}
+  return false;
 }
 
 async function boot() {
+  if (await checkVersion()) return;      // 若触发了强刷，后续不执行
   start();
+  initCopyDelegation();
   initRangeSliders();
-  initAnalytics();
   await loadLucide();
   refreshIcons();
 }

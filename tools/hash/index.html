@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>哈希计算 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>哈希计算 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="支持 MD5 / SHA1 / SHA256 / SHA512 / SHA3 / RIPEMD160 + HMAC">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/hash/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="哈希计算 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="支持 MD5 / SHA1 / SHA256 / SHA512 / SHA3 / RIPEMD160 + HMAC">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/hash/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"哈希计算","url":"https://tools.jqnest.top/tools/hash/","description":"支持 MD5 / SHA1 / SHA256 / SHA512 / SHA3 / RIPEMD160 + HMAC","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -43,10 +55,9 @@
 
         <!-- 文件模式 -->
         <div class="panel" data-view="file" hidden>
-          <label class="panel u-col u-gap-2" data-drop style="border-style:dashed;align-items:center;text-align:center;cursor:pointer;padding:var(--space-8)">
-            <i data-lucide="upload" class="u-muted" style="width:32px;height:32px"></i>
+          <label class="panel u-col u-gap-2 upload-panel" data-drop>
             <div class="u-strong">拖拽文件到此处，或点击选择</div>
-            <div class="u-muted" style="font-size:var(--text-xs)">支持一次选多个文件，全部在本地计算，不会上传</div>
+            <div class="u-muted u-text-xs">支持一次选多个文件，全部在本地计算，不会上传</div>
             <input type="file" multiple hidden data-input="file">
           </label>
 
@@ -63,7 +74,7 @@
 
         <!-- 结果区 -->
         <div class="panel" data-result-panel hidden>
-          <div class="u-row u-between u-mb-4">
+          <div class="u-row u-between u-mb-3">
             <h3 class="panel-title" style="margin:0">计算结果</h3>
             <button class="btn is-sm is-ghost" type="button" data-action="clear-result">清空结果</button>
           </div>

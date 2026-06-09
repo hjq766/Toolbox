@@ -59,7 +59,7 @@ agent = Agent(
     skills=load_skills("./skills"),   # 自动扫描所有子文件夹
 )
 
-response = agent.run("帮我按规范重构 convert_volume 工具")
+response = agent.run("帮我按规范重构 unit_converter 工具")
 # agent 会自动从 jqnest-tool-builder 调出相关 reference / templates
 ```
 
@@ -76,7 +76,7 @@ client = anthropic.Anthropic()
 msg = client.messages.create(
     model="claude-sonnet-4-5",
     system=f"You have access to the following skill:\n\n{skill_md}",
-    messages=[{"role": "user", "content": "改版 convert_volume"}],
+    messages=[{"role": "user", "content": "改版 unit_converter"}],
     tools=[{"type": "bash_20250124"}, {"type": "text_editor_20250124"}],
 )
 ```
@@ -130,7 +130,7 @@ msg = client.messages.create(
 | `.github/copilot-instructions.md` | GitHub Copilot | Copilot 项目指令 |
 | `.windsurf/workflows/` | Windsurf | 斜杠命令工作流 |
 
-**单一数据源仍是 `SKILL.md` + `v2/docs/DEVELOPMENT.md`**。Skill 的 reference/ 内容精简自这两个文档，保持同步。
+**单一数据源仍是 `skills/jqnest-tool-builder/SKILL.md` + `docs/DEVELOPMENT.md`**。Skill 的 reference/ 内容精简自这两个文档，保持同步。
 
 ---
 

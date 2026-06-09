@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>日期计算器 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="两日期间隔 + 日期加减天数 + 工作日计算">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/date_calc/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="日期计算器 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="两日期间隔 + 日期加减天数 + 工作日计算">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/date_calc/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"日期计算器","url":"https://tools.jqnest.top/tools/date_calc/","description":"两日期间隔 + 日期加减天数 + 工作日计算","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="./tool.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="date_calc">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="tabs" data-mode-tabs>
+          <button class="tab-btn is-active" type="button" data-mode="diff">日期间隔</button>
+          <button class="tab-btn" type="button" data-mode="add">日期推算</button>
+          <button class="tab-btn" type="button" data-mode="workday">工作日计算</button>
+        </div>
+
+        <!-- ====== 日期间隔 ====== -->
+        <div data-panel="diff">
+          <div class="panel">
+            <div class="grid grid-2 u-gap-3">
+              <div class="field">
+                <label class="field-label">开始日期</label>
+                <input class="input" type="date" data-diff-start>
+              </div>
+              <div class="field">
+                <label class="field-label">结束日期</label>
+                <input class="input" type="date" data-diff-end>
+              </div>
+            </div>
+            <div class="u-row u-gap-2 u-mt-3" style="flex-wrap:wrap">
+              <span class="u-muted" style="font-size:var(--text-xs);line-height:28px">快捷</span>
+              <button class="btn is-sm is-ghost" data-diff-q="7">近 7 天</button>
+              <button class="btn is-sm is-ghost" data-diff-q="30">近 30 天</button>
+              <button class="btn is-sm is-ghost" data-diff-q="90">近 90 天</button>
+              <button class="btn is-sm is-ghost" data-diff-q="365">近一年</button>
+              <button class="btn is-sm is-ghost" data-diff-q="month">本月</button>
+              <button class="btn is-sm is-ghost" data-diff-q="year">本年</button>
+              <span style="flex:1"></span>
+              <button class="btn is-sm" data-action="swap-diff" title="交换日期"><i data-lucide="arrow-left-right"></i></button>
+            </div>
+          </div>
+          <div class="panel" data-diff-result>
+            <div class="u-muted" style="text-align:center;padding:var(--space-3);font-size:var(--text-sm)">选择日期后自动计算</div>
+          </div>
+        </div>
+
+        <!-- ====== 日期推算 ====== -->
+        <div data-panel="add" hidden>
+          <div class="panel">
+            <div class="grid grid-2 u-gap-3">
+              <div class="field">
+                <label class="field-label">起始日期</label>
+                <input class="input" type="date" data-add-start>
+              </div>
+              <div class="u-row u-gap-2" style="align-items:end">
+                <div class="field" style="min-width:64px">
+                  <label class="field-label">操作</label>
+                  <select class="select" data-add-op>
+                    <option value="add">加 +</option>
+                    <option value="sub">减 −</option>
+                  </select>
+                </div>
+                <div class="field" style="min-width:70px">
+                  <label class="field-label">数值</label>
+                  <input class="input" type="number" min="0" value="30" data-add-num>
+                </div>
+                <div class="field" style="min-width:80px">
+                  <label class="field-label">单位</label>
+                  <select class="select" data-add-unit>
+                    <option value="day">天</option>
+                    <option value="week">周</option>
+                    <option value="month">月</option>
+                    <option value="year">年</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="u-row u-gap-2 u-mt-3" style="flex-wrap:wrap">
+              <span class="u-muted" style="font-size:var(--text-xs);line-height:28px">快捷</span>
+              <button class="btn is-sm is-ghost" data-add-q="7d">+7 天</button>
+              <button class="btn is-sm is-ghost" data-add-q="14d">+14 天</button>
+              <button class="btn is-sm is-ghost" data-add-q="30d">+30 天</button>
+              <button class="btn is-sm is-ghost" data-add-q="90d">+90 天</button>
+              <button class="btn is-sm is-ghost" data-add-q="6m">+6 月</button>
+              <button class="btn is-sm is-ghost" data-add-q="1y">+1 年</button>
+            </div>
+          </div>
+          <div class="panel" data-add-result>
+            <div class="u-muted" style="text-align:center;padding:var(--space-3);font-size:var(--text-sm)">选择日期后自动计算</div>
+          </div>
+        </div>
+
+        <!-- ====== 工作日计算 ====== -->
+        <div data-panel="workday" hidden>
+          <div class="panel">
+            <div class="grid grid-2 u-gap-3">
+              <div class="field">
+                <label class="field-label">开始日期</label>
+                <input class="input" type="date" data-wd-start>
+              </div>
+              <div class="field">
+                <label class="field-label">结束日期</label>
+                <input class="input" type="date" data-wd-end>
+              </div>
+            </div>
+            <div class="u-row u-gap-2 u-mt-3" style="flex-wrap:wrap">
+              <span class="u-muted" style="font-size:var(--text-xs);line-height:28px">快捷</span>
+              <button class="btn is-sm is-ghost" data-wd-q="week">本周</button>
+              <button class="btn is-sm is-ghost" data-wd-q="month">本月</button>
+              <button class="btn is-sm is-ghost" data-wd-q="quarter">本季度</button>
+              <button class="btn is-sm is-ghost" data-wd-q="year">本年</button>
+            </div>
+          </div>
+          <div class="panel" data-wd-result>
+            <div class="u-muted" style="text-align:center;padding:var(--space-3);font-size:var(--text-sm)">选择日期后自动计算</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+/* ===== 预设卡片预览（仅视觉部分，基础卡片用 sidebar.css .preset-card） ===== */
+.ib-preset-rail {
+  max-height: calc(100vh - var(--space-8));
+  overflow: auto;
+}
+
+.ib-preview-panel {
+  margin: 0;
+}
+
+.ib-file-name {
+  max-width: 48vw;
+}
+
+.ib-canvas-wrap {
+  --preview-min-h: 420px;
+  --canvas-max-h: 64vh;
+  overflow: auto;
+  padding: var(--space-4);
+  border: 1px solid var(--border-base);
+  background: repeating-conic-gradient(var(--bg-surface-2) 0% 25%, transparent 0% 50%) 50% / 16px 16px;
+}
+
+.ib-empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+}
+
+.ib-empty-icon {
+  width: 34px;
+  height: 34px;
+  opacity: .42;
+}
+
+.ib-preset-preview {
+  width: 58px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--ib-preview-a, var(--color-brand-soft)), var(--ib-preview-b, var(--bg-surface)));
+}
+.ib-preset-frame {
+  width: 42px;
+  height: 30px;
+  border-radius: var(--ib-radius, 8px);
+  border: var(--ib-border, 0) solid var(--ib-border-color, var(--fg-invert));
+  background: color-mix(in srgb, var(--color-brand) 18%, var(--fg-invert));
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--fg-strong) calc(var(--ib-shadow, .18) * 100%), transparent);
+}
+.ib-preset-frame.is-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+}

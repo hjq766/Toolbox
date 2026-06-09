@@ -1,6 +1,6 @@
-# 5 种布局模式详解
+# 6 种布局模式详解
 
-> 所有布局 class 定义于 `v2/public/styles/utilities.css` 和 `layout.css`。改版时**优先从下列 5 种选一种**，不要自造。
+> 布局 class 定义于 `public/styles/utilities.css`、`public/styles/layout.css` 与 `public/styles/browse.css`。改版时**优先从下列模式选一种**，不要自造。
 
 ---
 
@@ -173,7 +173,7 @@
 </div>
 ```
 
-**特殊许可**：此类工具**允许写 `tool.css`**（≤80 行）控制 `iframe[data-device="xxx"]` 的尺寸：
+**特殊许可**：此类工具需写 `tool.css` 控制 `iframe[data-device="xxx"]` 的尺寸，通常 ≤ 30 行：
 
 ```css
 .preview-wrapper { display: flex; justify-content: center; }
@@ -228,6 +228,57 @@ iframe[data-device="mobile"]  { width: 375px; height: 667px; }
   <aside>
     <!-- 参数 + 操作 -->
   </aside>
+</div>
+```
+
+---
+
+## 6. Browse / Reference（浏览速查）★ 数据集浏览类
+
+**适用**：本地数据集即时筛选 + Tab 分类 + 卡片/芯片/网格内容（符号大全、色卡、首都、HTTP 状态码等）。
+
+**代表工具**：`special_symbols`、`emoji`、`html_query`、`capital`、`color_gradient`、`http_status`、`areacode`（仅搜索条，无 Tab）；`color_name` 色表区为复合工具内的 `browse-section`。
+
+**引入**（`index.html`）：
+
+```html
+<link rel="stylesheet" href="../../public/styles/browse.css">
+```
+
+**骨架**（控制区无 panel，内容区扁平）：
+
+```html
+<div class="browse-head">
+  <div class="browse-toolbar">
+    <label class="search-shell">
+      <i data-lucide="search" class="search-icon" aria-hidden="true"></i>
+      <input class="search-box" type="search" data-search placeholder="搜索…" autocomplete="off">
+    </label>
+    <span class="browse-toolbar__meta" data-status></span>
+    <!-- 可选：browse-toolbar__actions 放「换一批」等 -->
+  </div>
+  <div data-tabs role="tablist"></div>
+</div>
+
+<div class="browse-body" data-content></div>
+<p class="browse-foot field-hint u-muted">数据来源脚注…</p>
+```
+
+**约定**：
+- 控制区（搜索 + Tab）**不用** `.panel`
+- 内容区（芯片/网格/列表）**不用** `.panel`
+- Tab 用 `mountBrowseTabs()`（`tools/_shared/browse-tabs.js`），始终横滑、标准字号
+- 复合工具内独立浏览块用 `.browse-section` + `.browse-section-head`
+
+### 提交查询（非即时筛选）
+
+仅 `meta_fetch` 等需主动触发的工具用 `.query-bar`，输入区可保留 `.panel`：
+
+```html
+<div class="query-bar">
+  <input class="input" data-input placeholder="…">
+  <button class="btn is-primary" type="button" data-action="fetch">抓取</button>
+  <div class="field-error" data-error hidden></div>
 </div>
 ```
 

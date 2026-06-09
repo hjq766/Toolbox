@@ -21,6 +21,7 @@ let currentRatio = 1.618;
 const totalEl    = $('[data-total]');
 const longEl     = $('[data-long]');
 const shortEl    = $('[data-short]');
+const previewBox = $('[data-preview]');
 const barL       = $('[data-bar-l]');
 const barR       = $('[data-bar-r]');
 const ratioLabel = $('[data-ratio-label]');
@@ -48,9 +49,16 @@ function calc() {
   longEl.textContent  = long;
   shortEl.textContent = short;
 
-  /* 比例条 */
+  /* 预览矩形 */
   const pctL = ((long / total) * 100).toFixed(2);
   const pctS = (100 - parseFloat(pctL)).toFixed(2);
+  const boxH = total / currentRatio;
+  const maxW = 360, maxH = 300, minDim = 60;
+  const sc = Math.min(maxW / total, maxH / boxH);
+  const pw = Math.max(Math.round(total * sc), minDim);
+  const ph = Math.max(Math.round(boxH * sc), minDim);
+  previewBox.style.width = pw + 'px';
+  previewBox.style.height = ph + 'px';
   barL.style.width = pctL + '%';
   barR.style.width = pctS + '%';
   barL.textContent = long + 'px';
@@ -75,7 +83,7 @@ on(totalEl, 'input', calc);
 /* --- 比例预设 --- */
 ratioBtns.forEach(btn => on(btn, 'click', () => {
   currentRatio = parseFloat(btn.dataset.ratio);
-  ratioBtns.forEach(b => b.classList.toggle('active', b === btn));
+  ratioBtns.forEach(b => b.classList.toggle('is-active', b === btn));
   calc();
 }));
 
@@ -92,7 +100,7 @@ on($('[data-action="copy"]'), 'click', async () => {
 on($('[data-action="reset"]'), 'click', () => {
   currentRatio = 1.618;
   totalEl.value = 1920;
-  ratioBtns.forEach(b => b.classList.toggle('active', b.dataset.ratio === '1.618'));
+  ratioBtns.forEach(b => b.classList.toggle('is-active', b.dataset.ratio === '1.618'));
   calc();
   showToast('已重置');
 });

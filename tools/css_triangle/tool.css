@@ -1,0 +1,71 @@
+/* ===== CSS 三角形生成 ===== */
+.tri-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 420px;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--border-subtle) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--border-subtle) 55%, transparent) 1px, transparent 1px),
+    var(--bg-surface-2);
+  background-size: 24px 24px;
+}
+
+.tri-preview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(0 16px 22px color-mix(in srgb, var(--fg-strong) 18%, transparent));
+}
+.tri-preview > i {
+  display: block;
+  transition: border-color var(--dur-fast), background var(--dur-fast), clip-path var(--dur-fast);
+}
+
+.tri-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-8);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--fg-strong);
+  color: var(--fg-invert);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  opacity: 0;
+  transform: translateX(-50%) translateY(var(--space-2));
+  transition: opacity var(--dur-fast), transform var(--dur-fast);
+  pointer-events: none;
+}
+.tri-tooltip.is-visible {
+  opacity: 1;
+  transform: translateX(-50%);
+}
+.tri-tooltip i {
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  width: 0;
+  height: 0;
+  transform: translateX(-50%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid var(--fg-strong);
+}
+
+.tri-dir-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+
+@media (max-width: 640px) {
+  .tri-stage { min-height: 320px; }
+}

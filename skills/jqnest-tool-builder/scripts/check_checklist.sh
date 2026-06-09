@@ -6,8 +6,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-TOOLS_DIR="$PROJECT_ROOT/v2/tools"
-TOOLS_JS="$PROJECT_ROOT/v2/public/scripts/data/tools.js"
+TOOLS_DIR="$PROJECT_ROOT/tools"
+TOOLS_JS="$PROJECT_ROOT/public/scripts/data/tools.js"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -18,9 +18,9 @@ PASS=0
 FAIL=0
 WARN=0
 
-pass() { echo -e "${GREEN}  ✅ $1${NC}"; ((PASS++)); }
-fail() { echo -e "${RED}  ❌ $1${NC}"; ((FAIL++)); }
-warn() { echo -e "${YELLOW}  ⚠️  $1${NC}"; ((WARN++)); }
+pass() { echo -e "${GREEN}  ✅ $1${NC}"; ((++PASS)); return 0; }
+fail() { echo -e "${RED}  ❌ $1${NC}"; ((++FAIL)); return 0; }
+warn() { echo -e "${YELLOW}  ⚠️  $1${NC}"; ((++WARN)); return 0; }
 
 if [[ $# -lt 1 ]]; then
   echo "用法: $0 <slug>"
@@ -97,26 +97,60 @@ fi
 # 推荐导入 dom.js
 grep -q "dom.js" "$JS" && pass "导入 dom.js 工具" || warn "未导入 dom.js 工具"
 
-# --- 5. 硬编码 Token 扫描（简化版） ---
+# 禁止 document.querySelector（应用 $ from dom.js）
+if grep -qE '\bdocument\.querySelector\b' "$JS"; then
+  warn "JS 中直接用了 document.querySelector（推荐用 \$ from dom.js）"
+else
+  pass "未直接使用 document.querySelector"
+fi
+
+# --- 5. tool.css 行数检查 ---
+# 规范：≤100 行无需注释；101-200 行需文件头部说明原因；>200 行需评估是否提取到 _shared/
+echo ""
+echo "📏 tool.css 行数"
+CSS="$TOOLS_DIR/$SLUG/tool.css"
+if [[ -f "$CSS" ]]; then
+  css_lines=$(wc -l < "$CSS" | tr -d ' ')
+  has_reason=$(grep -cE '(工具特有|独立.*布局|拖拽|交互层|tool-specific|reason)' "$CSS" 2>/dev/null || true)
+  if [[ "$css_lines" -le 100 ]]; then
+    pass "tool.css $css_lines 行（≤ 100，无需注释）"
+  elif [[ "$css_lines" -le 200 ]]; then
+    if [[ "$has_reason" -gt 0 ]]; then
+      pass "tool.css $css_lines 行（101-200，有说明注释 ✓）"
+    else
+      warn "tool.css $css_lines 行（> 100），请在文件头部注释说明工具特有 UI 的原因"
+    fi
+  else
+    if [[ "$has_reason" -gt 0 ]]; then
+      warn "tool.css $css_lines 行（> 200），已有说明注释，但建议评估是否提取为 _shared/*.css"
+    else
+      fail "tool.css $css_lines 行（> 200），须在文件头部注释说明原因，并评估是否提取为 _shared/*.css"
+    fi
+  fi
+else
+  pass "无 tool.css（最优）"
+fi
+
+# --- 6. 硬编码 Token 扫描（简化版） ---
 echo ""
 echo "🎯 硬编码 Token"
 
 # 硬编码颜色（排除注释和 CSS 变量定义）
-color_hits=$(grep -cE '#[0-9a-fA-F]{3,8}' "$HTML" 2>/dev/null || echo "0")
+color_hits=$(grep -cE '#[0-9a-fA-F]{3,8}' "$HTML" 2>/dev/null || true)
 if [[ "$color_hits" -gt 0 ]]; then
   warn "index.html 中有 $color_hits 处疑似硬编码颜色"
 else
   pass "index.html 无硬编码颜色"
 fi
 
-color_hits_js=$(grep -cE '#[0-9a-fA-F]{3,8}' "$JS" 2>/dev/null || echo "0")
+color_hits_js=$(grep -cE '#[0-9a-fA-F]{3,8}' "$JS" 2>/dev/null || true)
 if [[ "$color_hits_js" -gt 0 ]]; then
   warn "page.js 中有 $color_hits_js 处疑似硬编码颜色"
 else
   pass "page.js 无硬编码颜色"
 fi
 
-# --- 6. 工具注册 ---
+# --- 7. 工具注册 ---
 echo ""
 echo "📋 工具注册"
 if grep -q "\"$SLUG\"\\|'$SLUG'" "$TOOLS_JS" 2>/dev/null; then
@@ -125,7 +159,7 @@ else
   fail "未在 tools.js 注册"
 fi
 
-# --- 7. 图标 ---
+# --- 8. 图标 ---
 echo ""
 echo "🖼️ 图标"
 if grep -qE 'data-lucide=' "$HTML"; then
@@ -138,6 +172,32 @@ if grep -qE '<svg|emoji' "$HTML"; then
   warn "发现内联 SVG 或 emoji（应用 Lucide data-lucide）"
 else
   pass "未使用内联 SVG/emoji"
+fi
+
+# --- 9. 数据来源脚注 ---
+echo ""
+echo "📎 数据来源脚注"
+
+# 仅有 vendor 脚本 → 通用库在关于页集中致谢，不强制工具页脚注
+footer_line=$(grep -E '<p class="field-hint u-muted' "$HTML" | grep 'text-align:center' | head -1 || true)
+if [[ -n "$footer_line" ]]; then
+  if echo "$footer_line" | grep -qE 'text-align:\s*center'; then
+    pass "脚注含 text-align:center"
+  else
+    fail "数据来源脚注须居中：style=\"margin:0;text-align:center\"（见 components.md §数据来源脚注）"
+  fi
+  if echo "$footer_line" | grep -qE 'u-m[tbxy]-'; then
+    fail "脚注禁止用 u-mt-* / u-mb-* 等 margin 工具类"
+  else
+    pass "脚注未滥用 margin 工具类"
+  fi
+  if echo "$footer_line" | grep -qE '[0-9]+\s*KB|[0-9]+\s*MB|本地静态加载'; then
+    fail "脚注禁止写文件体积或「本地静态加载」"
+  else
+    pass "脚注未写体积/加载细节"
+  fi
+else
+  pass "无工具页脚注（通用 vendor 见关于页开源组件）"
 fi
 
 # --- 汇总 ---

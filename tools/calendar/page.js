@@ -26,11 +26,11 @@ function render() {
     const info = calendar.solar2lunar(vY, vM + 1, d);
     const cls  = (vY === TODAY.y && vM + 1 === TODAY.m && d === TODAY.d ? ' today' : '')
                + (vY === sel.y && vM + 1 === sel.m && d === sel.d ? ' sel' : '');
-    const imp = info.festivalImportant || info.lunarFestivalImportant;
-    const fest = info.festival || info.lunarFestival || '';
-    const sub  = fest
-      ? `<small class="${imp ? 'f' : 'fm'}">${fest}</small>`
-      : `<small>${info.displayText || info.IDayCn}</small>`;
+    const parts = [];
+    if (info.festival)      parts.push(`<span class="${info.festivalImportant ? 'f' : 'fm'}">${info.festival}</span>`);
+    if (info.lunarFestival) parts.push(`<span class="${info.lunarFestivalImportant ? 'f' : 'fm'}">${info.lunarFestival}</span>`);
+    if (info.isTerm)        parts.push(`<span class="ft">${info.Term}</span>`);
+    const sub = `<small>${parts.length ? parts.join(' · ') : info.IDayCn}</small>`;
     h += `<i data-d="${d}"${cls ? ` class="${cls.trim()}"` : ''}>${d}${sub}</i>`;
   }
   body.innerHTML = h;
@@ -72,9 +72,12 @@ const nav = {
   nm()    { vM++; if (vM > 11) { vM = 0;  vY++; } },
   today() { vY = TODAY.y; vM = TODAY.m - 1; },
 };
-document.querySelectorAll('[data-nav]').forEach(btn =>
-  on(btn, 'click', () => { nav[btn.dataset.nav](); render(); })
-);
+on(document, 'click', e => {
+  const btn = e.target.closest('[data-nav]');
+  if (!btn) return;
+  nav[btn.dataset.nav]?.();
+  render();
+});
 
 /* ======== 自定义选择器 ======== */
 
@@ -161,7 +164,13 @@ function createPicker(selector, { items, cols, value, label, hasNav, onChange })
 
 const MONTHS = Array.from({ length: 12 }, (_, i) => ({ v: i + 1, t: `${i + 1}月` }));
 const DAYS31 = Array.from({ length: 31 }, (_, i) => ({ v: i + 1, t: i + 1 }));
-const DAYS30 = Array.from({ length: 30 }, (_, i) => ({ v: i + 1, t: i + 1 }));
+
+function lunarDays(year, month) {
+  const isLeap = month < 0;
+  const m = Math.abs(month);
+  const days = isLeap ? calendar.leapDays(year) : calendar.monthDays(year, m);
+  return Array.from({ length: days }, (_, i) => ({ v: i + 1, t: i + 1 }));
+}
 
 function lunarMonths(year) {
   const leap = calendar.leapMonth(year);
@@ -186,15 +195,21 @@ const s2lD = createPicker('[data-pk="s2l-d"]', { value: TODAY.d, label: v => `${
 // 农历选择器（月份根据年份动态生成，含闰月）
 const l2sY = createPicker('[data-pk="l2s-y"]', {
   value: lunar.lYear, label: v => `${v}年`, hasNav: true,
-  onChange: () => l2sM.refresh?.(),
+  onChange: () => { l2sM.refresh?.(); l2sD.refresh?.(); },
 });
 const l2sM = createPicker('[data-pk="l2s-m"]', {
   value: lunar.lMonth,
   label: v => v < 0 ? `闰${-v}月` : `${v}月`,
   items: () => lunarMonths(l2sY.value),
   cols: 4,
+  onChange: () => l2sD.refresh?.(),
 });
-const l2sD = createPicker('[data-pk="l2s-d"]', { value: lunar.lDay, label: v => `${v}日`, items: DAYS30, cols: 7 });
+const l2sD = createPicker('[data-pk="l2s-d"]', {
+  value: lunar.lDay,
+  label: v => `${v}日`,
+  items: () => lunarDays(l2sY.value, l2sM.value),
+  cols: 7,
+});
 
 // tab 切换
 const s2lPane = $('[data-pane-s2l]');

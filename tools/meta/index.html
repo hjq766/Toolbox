@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meta 生成器 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>Meta 生成器 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="快速生成 HTML Meta 标签（title/description/keywords/robots/viewport）">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/meta/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="Meta 生成器 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="快速生成 HTML Meta 标签（title/description/keywords/robots/viewport）">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/meta/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Meta 生成器","url":"https://tools.jqnest.top/tools/meta/","description":"快速生成 HTML Meta 标签（title/description/keywords/robots/viewport）","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -11,11 +23,6 @@
   <link rel="stylesheet" href="../../public/styles/components.css">
   <link rel="stylesheet" href="../../public/styles/utilities.css">
   <link rel="stylesheet" href="../_shared/sidebar.css">
-  <style>
-    .meta-output{display:flex;flex-direction:column;min-height:520px}
-    .meta-output .CodeMirror{flex:1}
-    .meta-output textarea{flex:1;resize:none}
-  </style>
 </head>
 <body data-page="tool" data-base-path="../../" data-tool-slug="meta">
   <div class="page-shell"><main class="page-main"><div class="container">
@@ -25,8 +32,8 @@
 
         <div class="grid grid-sidebar-r" style="--sidebar-w:300px">
           <!-- 左：实时代码输出 -->
-          <div class="meta-output">
-            <textarea class="textarea u-mono" data-result readonly placeholder="填写右侧字段，代码实时生成…" style="font-size:var(--text-sm)"></textarea>
+          <div class="cm-embed cm-fill" style="min-height:520px">
+            <textarea class="textarea u-mono" data-result readonly placeholder="填写右侧字段，代码实时生成…" style="font-size:var(--text-sm);flex:1;resize:none"></textarea>
           </div>
 
           <!-- 右：侧栏 -->
@@ -89,8 +96,10 @@
 
             <div class="panel">
               <div class="act-group">
-                <button class="btn is-primary" type="button" data-action="copy"><i data-lucide="copy"></i> 复制代码</button>
-                <button class="btn is-ghost" type="button" data-action="reset">重置</button>
+                <div class="u-row u-gap-2">
+                  <button class="btn is-primary is-block" type="button" data-action="copy"><i data-lucide="copy"></i> 复制代码</button>
+                  <button class="btn is-ghost is-block" type="button" data-action="reset">重置</button>
+                </div>
               </div>
             </div>
           </aside>

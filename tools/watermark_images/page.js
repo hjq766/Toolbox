@@ -1,6 +1,5 @@
-/* 0. 导入 */
 import { mountToolHeader } from '../../public/scripts/core/tool-page.js';
-import { $, on } from '../../public/scripts/utils/dom.js';
+import { $, on, debounce } from '../../public/scripts/utils/dom.js';
 import { showToast } from '../../public/scripts/components/toast.js';
 import { downloadBlob } from '../../public/scripts/utils/download.js';
 import { drawTextWatermark, drawImageWatermark } from '../_shared/watermark-core.js';
@@ -9,22 +8,23 @@ import { initWatermarkUI } from '../_shared/watermark-ui.js';
 
 mountToolHeader();
 
-/* 1. 状态 */
 let originalImage = null;
 
-/* 2. DOM 引用 */
 const dropEl    = $('[data-drop]');
 const fileEl    = $('[data-file]');
 const previewEl = $('[data-preview]');
 const canvasEl  = $('[data-canvas]');
 const ctx       = canvasEl.getContext('2d');
-const dlBtn     = $('[data-action="download"]');
-const clearBtn  = $('[data-action="clear"]');
+const dlBtn      = $('[data-action="download"]');
+const clearBtn   = $('[data-action="clear"]');
+const copyBtn    = $('[data-action="copy"]');
+const imgInfoEl  = $('[data-img-info]');
 
-/* 3. 共享水印 UI */
 const wmUI = initWatermarkUI({ onChanged: updatePreview });
 
-/* 4. 工具函数 */
+const ro = new ResizeObserver(debounce(() => { if (originalImage) updatePreview(); }, 150));
+ro.observe(canvasEl.parentElement);
+
 function resetCanvas() {
   if (!originalImage) return;
   const maxW = canvasEl.parentElement.offsetWidth || 600;
@@ -51,8 +51,11 @@ function loadImage(file) {
       originalImage = img;
       dropEl.hidden = true;
       previewEl.hidden = false;
+      $('aside')?.classList.remove('is-inactive');
       dlBtn.disabled = false;
       clearBtn.disabled = false;
+      if (copyBtn)   copyBtn.disabled = false;
+      if (imgInfoEl) imgInfoEl.textContent = `${img.naturalWidth} × ${img.naturalHeight} px`;
       updatePreview();
     };
     img.src = e.target.result;
@@ -60,8 +63,39 @@ function loadImage(file) {
   reader.readAsDataURL(file);
 }
 
-/* 5. 事件绑定 */
-initUploadZone({ dropEl, fileEl, onFiles: files => loadImage(files[0]), accept: 'image' });
+initUploadZone({ dropEl, fileEl, onFiles: files => loadImage(files[0]), accept: 'image', onDelete: clearImage });
+
+function clearImage() {
+  originalImage = null;
+  previewEl.hidden = true;
+  dropEl.hidden = false;
+  $('aside')?.classList.add('is-inactive');
+  dlBtn.disabled = true;
+  clearBtn.disabled = true;
+  if (copyBtn)   copyBtn.disabled = true;
+  if (imgInfoEl) imgInfoEl.textContent = '';
+  fileEl.value = '';
+}
+
+on(copyBtn, 'click', () => {
+  if (!originalImage) return;
+  const full = document.createElement('canvas');
+  full.width  = originalImage.width;
+  full.height = originalImage.height;
+  const fCtx  = full.getContext('2d');
+  fCtx.drawImage(originalImage, 0, 0);
+  const opts = wmUI.getOpts(full.width, full.height);
+  if (wmUI.type === 'text' && opts.text)        drawTextWatermark(fCtx, opts);
+  else if (wmUI.type === 'image' && wmUI.image) drawImageWatermark(fCtx, opts);
+  full.toBlob(async blob => {
+    try {
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      showToast('已复制到剪贴板');
+    } catch {
+      showToast('当前环境不支持复制，请使用下载', { type: 'warn' });
+    }
+  }, 'image/png');
+});
 
 on(dlBtn, 'click', () => {
   if (!originalImage) return;

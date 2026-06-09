@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>jqnest 工具箱 · 免费在线工具集合</title>
-  <meta name="description" content="jqnest 工具箱：开发、文本、换算、图片、查询等常用在线工具，免费、纯前端、尊重隐私。">
+  <title>极趣导航-在线工具箱 · 免费在线工具集合</title>
+  <meta name="description" content="极趣导航-在线工具箱：开发、文本、换算、图片、查询等常用在线工具，免费、纯前端、尊重隐私。">
   <link rel="icon" type="image/webp" href="./public/favicon.webp">
   <link rel="stylesheet" href="./public/styles/tokens.css">
   <link rel="stylesheet" href="./public/styles/themes.css">
@@ -13,6 +13,16 @@
   <link rel="stylesheet" href="./public/styles/components.css">
   <link rel="stylesheet" href="./public/styles/utilities.css">
   <link rel="stylesheet" href="./public/styles/pages/home.css">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <link rel="canonical" href="https://tools.jqnest.top/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="极趣导航-在线工具箱 · 免费在线工具集合">
+  <meta property="og:description" content="开发、文本、换算、图片、查询等 100+ 常用在线工具，免费、纯前端、尊重隐私，无需登录即开即用。">
+  <meta property="og:url" content="https://tools.jqnest.top/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <!-- SEO:END -->
 </head>
 <body class="workspace-body" data-page="home" data-base-path="./" data-shell="none">
 
@@ -31,16 +41,20 @@
         <label class="search-shell" for="toolSearch">
           <i data-lucide="search" class="search-icon" aria-hidden="true"></i>
           <input id="toolSearch" type="search" class="search-box" placeholder="搜索工具…" autocomplete="off" data-tool-search>
+          <button type="button" class="clear-search" data-search-recent aria-label="最近使用" title="最近使用">
+            <i data-lucide="history" class="icon-16"></i>
+          </button>
           <button type="button" class="clear-search is-hidden" data-clear-search aria-label="清空搜索">
             <i data-lucide="x" style="width:16px;height:16px"></i>
           </button>
         </label>
+        <div class="quick-panel" data-quick-panel hidden></div>
       </div>
 
       <nav class="ws-nav" data-tool-cats aria-label="分类导航"></nav>
 
       <div class="ws-sidebar-footer">
-        <span>© Jacket</span>
+        <span>© Jacket <a href="#/page/about" data-ver style="color:var(--fg-muted);text-decoration:none;opacity:.65;font-size:var(--text-xs)"></a></span>
         <div style="display:flex;align-items:center;gap:4px">
           <a href="old/index.html" title="回到旧版" style="font-size:var(--text-xs);color:var(--fg-muted);text-decoration:none">返回旧版</a>
           <a class="icon-btn" href="#/page/about" title="关于" aria-label="关于">
@@ -65,6 +79,9 @@
         </div>
         <span class="ws-hitokoto u-truncate" data-hitokoto title="点击换一句"></span>
         <div class="ws-actions" data-actions>
+          <button class="icon-btn" type="button" data-action="recent" title="最近使用" aria-label="最近使用">
+            <i data-lucide="history"></i>
+          </button>
           <button class="icon-btn" type="button" data-toggle-theme title="切换主题" aria-label="切换主题">
             <i data-lucide="moon" style="width:16px;height:16px"></i>
           </button>
@@ -78,6 +95,7 @@
             <i data-lucide="home"></i>
           </button>
         </div>
+        <div class="recent-popover" data-recent-popover hidden></div>
       </header>
 
       <div class="ws-canvas">

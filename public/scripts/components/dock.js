@@ -185,12 +185,69 @@ function bindNeighborEffect() {
 }
 
 /* ── Picker 弹窗 ── */
+function isMobile() { return window.matchMedia('(max-width: 860px)').matches || 'ontouchstart' in window; }
+function isEmbedded() { try { return window.self !== window.top; } catch { return true; } }
+
+function getSiteHomeHref() {
+  return window.location.pathname.includes('/tools/') ? '../../index.html' : 'index.html';
+}
+
+function getSiteAssetHref(path) {
+  return window.location.pathname.includes('/tools/') ? `../../${path}` : path;
+}
+
+function createSiteDockItem({ href, icon, image, title, external }) {
+  const item = document.createElement('a');
+  item.className = `dock-item${external ? ' dock-external' : ''}`;
+  item.href = href;
+  if (external) {
+    item.target = '_blank';
+    item.rel = 'noopener';
+  }
+  const media = image
+    ? `<img class="dock-logo-img" src="${image}" alt="${title}">`
+    : `<span class="iconify" data-icon="${icon}" data-inline="false"></span>`;
+  item.innerHTML = `
+    ${media}
+    <span class="dock-tooltip">${title}</span>
+  `;
+  return item;
+}
+
+function mountSiteDock(target) {
+  if (isEmbedded() || document.getElementById('dockContainer')) return;
+
+  const container = document.createElement('div');
+  container.className = 'dock-container';
+  container.id = 'dockContainer';
+
+  const dock = document.createElement('div');
+  dock.className = 'dock';
+  dock.append(
+    createSiteDockItem({
+      href: getSiteHomeHref(),
+      image: getSiteAssetHref('public/favicon.webp'),
+      title: '极趣工具箱',
+    }),
+    createSiteDockItem({
+      href: 'https://jqnav.top',
+      image: getSiteAssetHref('public/designer.svg'),
+      title: '极趣导航',
+      external: true,
+    })
+  );
+
+  container.appendChild(dock);
+  target.appendChild(container);
+}
+
 function openPicker() {
   overlayEl.classList.add('is-open');
   pickerEl.classList.add('is-open');
   searchInput.value = '';
   renderPickerList();
-  requestAnimationFrame(() => searchInput.focus());
+  // 移动端不自动聚焦，避免弹出软键盘把弹窗顶飞
+  if (!isMobile()) requestAnimationFrame(() => searchInput.focus());
 }
 
 function closePicker() {
@@ -233,13 +290,13 @@ function renderPickerList(filter = '') {
     const isAdded = added.has(t.slug);
     const div = document.createElement('div');
     div.className = 'dock-picker-item' + (isAdded ? ' is-added' : '');
-    div.innerHTML = `<i data-lucide="${t.icon}"></i><div><div class="pi-title">${t.title}${isAdded ? ' <span class="added-hint" style="font-weight:400;color:var(--fg-subtle)">(已添加)</span><span class="remove-hint" style="font-weight:400;color:var(--color-danger,#ef4444)">(点击移除)</span>' : ''}</div><div class="pi-desc">${t.desc}</div></div>`;
+    div.innerHTML = `<i data-lucide="${t.icon}"></i><div><div class="pi-title">${t.title}${isAdded ? ' <span class="added-hint">(已添加)</span><span class="remove-hint">(点击移除)</span>' : ''}</div><div class="pi-desc">${t.desc}</div></div>`;
     div.addEventListener('click', () => isAdded ? removeDockItem(t.slug) : addDockItem(t.slug));
     grid.appendChild(div);
   });
 
   if (!filtered.length) {
-    listEl.innerHTML = '<div style="text-align:center;color:var(--fg-muted);padding:24px;font-size:var(--text-sm)">没有匹配的工具</div>';
+    listEl.innerHTML = '<div class="dock-picker-empty">没有匹配的工具</div>';
   } else {
     listEl.appendChild(grid);
   }
@@ -247,7 +304,11 @@ function renderPickerList(filter = '') {
 }
 
 /* ── 挂载 ── */
-export function mountDock(target = document.body) {
+export function mountDock(target = document.body, options = {}) {
+  if (options.variant === 'site') {
+    mountSiteDock(target);
+    return;
+  }
   if (document.querySelector('[data-dock]')) return;
 
   // Dock 栏
@@ -340,12 +401,13 @@ export function mountDock(target = document.body) {
 
   renderDock();
 
-  // 滚动隐藏：向下滚隐藏，向上滚显示，鼠标靠近底部边缘显示
+  // 滚动隐藏：向下滚隐藏，向上滚显示
   let lastY = 0;
+  let hoverNearBottom = false;
   const THRESHOLD = 8;
-  const SHOW_ZONE = 80; // 底部 80px 区域内显示 Dock
   const onScroll = (src) => {
     if (pickerEl?.classList.contains('is-open')) return;
+    if (hoverNearBottom) return;               // 鼠标在底部时不隐藏
     const y = (src === window) ? window.scrollY
       : (src.scrollTop != null) ? src.scrollTop : 0;
     if (y - lastY > THRESHOLD) dockEl.classList.add('is-hidden');
@@ -353,37 +415,33 @@ export function mountDock(target = document.body) {
     lastY = y;
   };
   window.addEventListener('scroll', () => onScroll(window), { passive: true });
-  
-  // 鼠标靠近底部边缘时显示 Dock
-  let mouseTimer = null;
-  document.addEventListener('mousemove', (e) => {
-    if (pickerEl?.classList.contains('is-open')) return;
-    const nearBottom = window.innerHeight - e.clientY <= SHOW_ZONE;
-    if (nearBottom) {
-      dockEl.classList.remove('is-hidden');
-      if (mouseTimer) clearTimeout(mouseTimer);
-      mouseTimer = setTimeout(() => {
-        // 鼠标离开底部区域后，如果页面没再滚动，保持显示一段时间
-        if (!dockEl.matches(':hover')) {
-          // 可选：延迟重新隐藏，这里先保持显示状态
-        }
-      }, 1000);
-    } else {
-      if (mouseTimer) clearTimeout(mouseTimer);
-    }
-  });
+
+  // 鼠标靠近底部时显示 Dock（即使被滚动隐藏）
+  const BOTTOM_ZONE = 48;
+  window.addEventListener('mousemove', (e) => {
+    const near = e.clientY >= window.innerHeight - BOTTOM_ZONE;
+    hoverNearBottom = near;
+    if (near) dockEl.classList.remove('is-hidden');
+  }, { passive: true });
 
   // SPA 模式：监听 iframe / 欢迎页滚动
   const frameEl = document.querySelector('.ws-frame');
   const welcomeEl = document.querySelector('.ws-welcome');
   if (welcomeEl) welcomeEl.addEventListener('scroll', () => onScroll(welcomeEl), { passive: true });
   if (frameEl) {
-    frameEl.addEventListener('load', () => {
+    const bindFrame = () => {
       try {
         const cw = frameEl.contentWindow;
         lastY = 0;
         cw.addEventListener('scroll', () => onScroll({ scrollTop: cw.scrollY }), { passive: true });
+        // iframe 内鼠标靠近底部时也唤出 Dock
+        cw.addEventListener('mousemove', (e) => {
+          const near = e.clientY >= cw.innerHeight - BOTTOM_ZONE;
+          hoverNearBottom = near;
+          if (near) dockEl.classList.remove('is-hidden');
+        }, { passive: true });
       } catch {}
-    });
+    };
+    frameEl.addEventListener('load', bindFrame);
   }
 }

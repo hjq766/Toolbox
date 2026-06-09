@@ -20,7 +20,7 @@ const previewEl  = $('[data-preview]');
 const canvasEl   = $('[data-canvas]');
 const ctx        = canvasEl.getContext('2d');
 const dlBtn      = $('[data-action="download"]');
-const deleteBtn  = $('[data-action="delete"]');
+const deleteBtn  = $('[data-img-delete]');
 const statePanel = $('[data-state-panel]');
 const stateTags  = $('[data-state-tags]');
 const infoName   = $('[data-info-name]');
@@ -37,7 +37,7 @@ function fmtSize(bytes) {
 }
 
 /* ========== 上传 ========== */
-initUploadZone({ dropEl, fileEl, onFiles: files => handleFile(files[0]), accept: 'image' });
+initUploadZone({ dropEl, fileEl, onFiles: files => handleFile(files[0]), accept: 'image', onDelete: clearImage });
 
 function handleFile(file) {
   if (!file || !file.type.startsWith('image/')) return;
@@ -140,10 +140,10 @@ on(dlBtn, 'click', () => {
 });
 
 /* ========== 删除 ========== */
-on(deleteBtn, 'click', () => {
+function clearImage() {
   currentImage = null; currentFile = null; resetTransforms();
   ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
   previewEl.hidden = true; dropEl.hidden = false;
   dlBtn.disabled = true; deleteBtn.hidden = true;
   statePanel.hidden = true; fileEl.value = '';
-});
+}

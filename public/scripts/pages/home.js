@@ -1,14 +1,35 @@
 // 工作台首页：侧边栏 + 右侧 iframe。Hash 路由：#/tool/<slug>
 import { TOOLS, CATEGORIES, findTool, categoryName } from '../data/tools.js';
-import { $, $$, on, debounce, escapeHtml } from '../utils/dom.js';
+import { CHANGELOG } from '../data/changelog.js';
+import { $, on, debounce, escapeHtml } from '../utils/dom.js';
 import { toggleTheme } from '../core/theme.js';
 import { showToast } from '../components/toast.js';
 import { mountPageHeader } from '../components/page-header.js';
+import { clearRecentTools, getRecentToolItems, recordRecentTool } from '../utils/recent-tools.js';
+
+try { history.scrollRestoration = 'manual'; } catch {}
+window.scrollTo(0, 0);
 
 /* 每次"父页面加载"都用同一个 nonce，确保 iframe 跟随父页的刷新生命周期：
  * - 硬刷新 / 普通刷新父页 → 新 nonce → iframe 强制拉新
  * - 在同一次会话内切换工具 → 同一 nonce → 命中 HTTP 缓存
  * 这样解决"Cmd+Shift+R 不会穿透到 JS 动态注入的 iframe src"的浏览器行为。 */
+/* 版本号注入（点击在 iframe 内打开关于页并滚到更新日志） */
+const verEl = document.querySelector('[data-ver]');
+if (verEl && CHANGELOG[0]) {
+  verEl.textContent = CHANGELOG[0].version;
+  on(verEl, 'click', (e) => {
+    e.preventDefault();
+    const alreadyOpen = els.frame.dataset.slug === 'page:about';
+    openPage('about');
+    const scrollToChangelog = () => {
+      try { els.frame.contentDocument?.getElementById('changelog')?.scrollIntoView({ behavior: 'smooth' }); } catch {}
+    };
+    if (alreadyOpen) { scrollToChangelog(); }
+    else { els.frame.addEventListener('load', scrollToChangelog, { once: true }); }
+  });
+}
+
 const FRAME_NONCE = (() => {
   try {
     const nav = performance.getEntriesByType?.('navigation')?.[0];
@@ -23,7 +44,9 @@ const withNonce = (url) => url + (url.includes('?') ? '&' : '?') + '_v=' + FRAME
 const els = {
   cats:     $('[data-tool-cats]'),
   search:   $('[data-tool-search]'),
+  searchRecent: $('[data-search-recent]'),
   clear:    $('[data-clear-search]'),
+  quick:    $('[data-quick-panel]'),
   welcome:  $('[data-welcome]'),
   groups:   $('[data-welcome-groups]'),
   empty:    $('[data-empty]'),
@@ -32,6 +55,7 @@ const els = {
   back:     $('[data-action="back"]'),
   burger:   $('[data-burger]'),
   actions:  $('[data-actions]'),
+  recentPopover: $('[data-recent-popover]'),
   toggleTheme: $('[data-toggle-theme]'),
   hitokoto: $('[data-hitokoto]')
 };
@@ -56,10 +80,71 @@ let activeSlug = null;
 /* ---------- 顶部数量（已移除） ---------- */
 function renderStats() {}
 
+const RECENT_DAYS = 7;
+const IMPROVED_DAYS = 15;
+const isRecent   = (t) => !!t.updatedAt  && (Date.now() - new Date(t.updatedAt).getTime())  < RECENT_DAYS   * 86400000;
+const isImproved = (t) => !!t.improvedAt && (Date.now() - new Date(t.improvedAt).getTime()) < IMPROVED_DAYS * 86400000;
+
+function renderRecentItems(emptyText = '暂无最近使用') {
+  const items = getRecentToolItems(TOOLS, { limit: 8 });
+  if (!items.length) return `<p class="quick-empty">${escapeHtml(emptyText)}</p>`;
+  return `<div class="quick-list">
+    ${items.map(t => `<button class="quick-item" type="button" data-launch-slug="${escapeHtml(t.slug)}">
+      <i data-lucide="${escapeHtml(t.icon || 'box')}" class="icon-16"></i>
+      <span class="u-truncate">${escapeHtml(t.title)}</span>
+    </button>`).join('')}
+  </div>
+  <button class="btn is-sm is-ghost" type="button" data-clear-recent>清空</button>`;
+}
+
+function openRecentTool(slug) {
+  const t = findTool(slug);
+  if (!t || t.status !== 'ready') return;
+  closeQuickPanel();
+  closeRecentPopover();
+  if (t.url) {
+    recordRecentTool(slug);
+    window.open(t.url, '_blank');
+    return;
+  }
+  openTool(slug);
+}
+
+function renderQuickPanel() {
+  if (!els.quick || els.search.value.trim()) return;
+  els.quick.innerHTML = renderRecentItems('打开工具后会出现在这里');
+  els.quick.hidden = false;
+  if (window.refreshIcons) window.refreshIcons(els.quick);
+}
+
+function closeQuickPanel() {
+  if (els.quick) els.quick.hidden = true;
+}
+
+function renderRecentPopover() {
+  if (!els.recentPopover) return;
+  els.recentPopover.innerHTML = renderRecentItems('打开工具后会出现在这里');
+  if (window.refreshIcons) window.refreshIcons(els.recentPopover);
+}
+
+function toggleRecentPopover() {
+  if (!els.recentPopover) return;
+  if (!els.recentPopover.hidden) { closeRecentPopover(); return; }
+  closeQuickPanel();
+  renderRecentPopover();
+  els.recentPopover.hidden = false;
+}
+
+function closeRecentPopover() {
+  if (els.recentPopover) els.recentPopover.hidden = true;
+}
+
 /* ---------- 侧边栏分类导航 ---------- */
 function renderCats() {
   els.cats.innerHTML = CATEGORIES.map(c => {
-    const count = c.id === 'all' ? TOOLS.length : TOOLS.filter(t => t.category === c.id).length;
+    const count = c.id === 'all' ? TOOLS.length
+      : c.id === 'recently' ? TOOLS.filter(t => isRecent(t) || isImproved(t)).length
+      : TOOLS.filter(t => t.category === c.id).length;
     return `<button class="nav-item${c.id === currentCategory ? ' is-active' : ''}" data-cat="${c.id}" type="button">
       <span class="nav-icon" aria-hidden="true"><i data-lucide="${c.icon || ''}"></i></span>
       <span class="nav-name">${escapeHtml(c.name)}</span>
@@ -73,7 +158,11 @@ function renderCats() {
 function filterTools() {
   const kw = keyword.trim().toLowerCase();
   return TOOLS.filter(t => {
-    if (currentCategory !== 'all' && t.category !== currentCategory) return false;
+    if (currentCategory === 'recently') {
+      if (!isRecent(t) && !isImproved(t)) return false;
+    } else if (currentCategory !== 'all' && t.category !== currentCategory) {
+      return false;
+    }
     if (!kw) return true;
     return (t.title + t.desc + (t.tags || []).join(' ')).toLowerCase().includes(kw);
   });
@@ -93,7 +182,7 @@ function renderCard(t) {
         <h4>${escapeHtml(t.title)}</h4>
       </div>
       <p>${escapeHtml(t.desc)}</p>
-      ${planned ? '<span class="wc-tag">规划中</span>' : ''}
+      ${planned ? '<span class="wc-tag">规划中</span>' : isRecent(t) ? '<span class="wc-tag is-new">new</span>' : ''}
     </a>`;
 }
 
@@ -106,13 +195,30 @@ function renderGroups() {
   }
   els.empty?.classList.add('is-hidden');
 
+  if (currentCategory === 'recently') {
+    const newTools      = pool.filter(isRecent).sort((a, b) => new Date(b.updatedAt)  - new Date(a.updatedAt));
+    const improvedTools = pool.filter(t => isImproved(t) && !isRecent(t)).sort((a, b) => new Date(b.improvedAt) - new Date(a.improvedAt));
+    els.groups.innerHTML = [
+      newTools.length ? `<section class="welcome-group" data-group="new-tools">
+        <h3>最近新增 <span class="group-count">· ${newTools.length} 个</span></h3>
+        <div class="welcome-grid">${newTools.map(renderCard).join('')}</div>
+      </section>` : '',
+      improvedTools.length ? `<section class="welcome-group" data-group="improved-tools">
+        <h3>近期优化 <span class="group-count">· ${improvedTools.length} 个</span></h3>
+        <div class="welcome-grid">${improvedTools.map(renderCard).join('')}</div>
+      </section>` : '',
+    ].join('');
+    if (window.refreshIcons) window.refreshIcons(els.groups);
+    return;
+  }
+
   // 按分类分组，保持 CATEGORIES 顺序
   const groups = new Map();
   for (const t of pool) {
     if (!groups.has(t.category)) groups.set(t.category, []);
     groups.get(t.category).push(t);
   }
-  const order = CATEGORIES.map(c => c.id).filter(id => id !== 'all');
+  const order = CATEGORIES.map(c => c.id).filter(id => id !== 'all' && id !== 'recently');
 
   els.groups.innerHTML = order
     .filter(id => groups.has(id))
@@ -141,6 +247,7 @@ function openTool(slug, { push = true } = {}) {
     goHome({ push });
     return;
   }
+  recordRecentTool(slug);
   activeSlug = slug;
   // \u66f4\u65b0 iframe\uff08\u4ec5\u5f53 src \u4e0d\u540c\u65f6\u91cd\u65b0\u52a0\u8f7d\uff09
   const url = `./tools/${encodeURIComponent(slug)}/index.html`;
@@ -159,7 +266,7 @@ function openTool(slug, { push = true } = {}) {
   toggleActions(true, url);
 
   // 更新标题
-  document.title = `${t.title} · jqnest 工具箱`;
+  document.title = `${t.title} · 极趣导航-在线工具箱`;
 
   // URL 同步
   if (push) {
@@ -174,12 +281,13 @@ function goHome({ push = true } = {}) {
   activeSlug = null;
   els.frame.classList.remove('is-active');
   els.welcome.classList.remove('is-hidden');
+  els.welcome.scrollTop = 0;
   els.crumb.innerHTML = `
     <span class="crumb-cat">\u9996\u9875</span>
     <span class="crumb-title">\u9009\u62e9\u5de5\u5177\u5f00\u59cb\u4f7f\u7528</span>`;
   if (els.back) els.back.hidden = true;
   toggleActions(false);
-  document.title = 'jqnest 工具箱 · 免费在线工具集合';
+  document.title = '极趣导航-在线工具箱 · 免费在线工具集合';
   renderGroups();
   if (push && location.hash) history.pushState({}, '', location.pathname + location.search);
 }
@@ -214,7 +322,7 @@ function openPage(id, { push = true } = {}) {
     <span class="crumb-title">${escapeHtml(p.title)}</span>`;
   if (els.back) els.back.hidden = false;
   toggleActions(true, p.url);
-  document.title = `${p.title} · jqnest 工具箱`;
+  document.title = `${p.title} · 极趣导航-在线工具箱`;
   if (push) {
     const hash = `#/page/${encodeURIComponent(id)}`;
     if (location.hash !== hash) history.pushState({ page: id }, '', hash);
@@ -254,6 +362,7 @@ on(els.groups, 'click', (e) => {
   const t = findTool(a.dataset.slug);
   if (t?.url) {
     e.preventDefault();
+    recordRecentTool(t.slug);
     window.open(t.url, '_blank');
   }
 });
@@ -279,13 +388,40 @@ on(els.search, 'input', debounce((e) => {
   keyword = e.target.value;
   els.clear.classList.toggle('is-hidden', !keyword);
   renderGroups();
+  if (keyword) closeQuickPanel();
+  else renderQuickPanel();
 }, 120));
+
+on(els.search, 'focus', renderQuickPanel);
+on(els.search, 'keydown', (e) => {
+  if (e.key === 'Escape') { closeQuickPanel(); return; }
+});
+
+on(els.quick, 'click', (e) => {
+  const clear = e.target.closest('[data-clear-recent]');
+  if (clear) {
+    clearRecentTools();
+    closeQuickPanel();
+    closeRecentPopover();
+    return;
+  }
+  const item = e.target.closest('[data-launch-slug]');
+  if (item) openRecentTool(item.dataset.launchSlug);
+});
+
+on(els.quick, 'mousedown', e => e.preventDefault());
+
+on(els.searchRecent, 'click', () => {
+  els.search.focus();
+  renderQuickPanel();
+});
 
 on(els.clear, 'click', () => {
   els.search.value = ''; keyword = '';
   els.clear.classList.add('is-hidden');
   els.search.focus();
   renderGroups();
+  renderQuickPanel();
 });
 
 on(els.toggleTheme, 'click', toggleTheme);
@@ -306,11 +442,29 @@ on(els.actions, 'click', (e) => {
     if (els.frame.src) els.frame.contentWindow?.location.reload();
   } else if (act === 'home') {
     goHome();
+  } else if (act === 'recent') {
+    toggleRecentPopover();
   }
 });
 
+on(els.recentPopover, 'click', (e) => {
+  const clear = e.target.closest('[data-clear-recent]');
+  if (clear) {
+    clearRecentTools();
+    closeQuickPanel();
+    closeRecentPopover();
+    return;
+  }
+  const item = e.target.closest('[data-launch-slug]');
+  if (item) openRecentTool(item.dataset.launchSlug);
+});
+
+on(els.recentPopover, 'mousedown', e => e.preventDefault());
+
 // 点击空白关闭 sidebar
 on(document, 'click', (e) => {
+  if (!e.target.closest('.ws-search')) closeQuickPanel();
+  if (!e.target.closest('[data-recent-popover]') && !e.target.closest('[data-action="recent"]')) closeRecentPopover();
   if (!document.body.classList.contains('ws-sidebar-open')) return;
   if (e.target.closest('.ws-sidebar') || e.target.closest('[data-burger]')) return;
   document.body.classList.remove('ws-sidebar-open');
@@ -336,13 +490,8 @@ applyHash();
 
 /* ---------- 一言 ---------- */
 const HITOKOTO_FALLBACK = [
-  { hitokoto: '代码千万行，注释第一行。', from: '程序员民谣' },
-  { hitokoto: '用心做好每一个工具。', from: 'jqnest' },
-  { hitokoto: '万物皆可工具化。', from: 'jqnest' },
-  { hitokoto: '好的工具让创造更简单。', from: 'jqnest' },
+  { hitokoto: '好的工具让创造更简单。', from: '极趣导航' },
   { hitokoto: '简洁是智慧的灵魂。', from: '莎士比亚' },
-  { hitokoto: '技术为人所用，工具为人所造。', from: '佚名' },
-  { hitokoto: '世上无难事，只要有工具。', from: 'jqnest' },
   { hitokoto: '凡事预则立，不预则废。', from: '礼记' },
 ];
 let hitoCooldown = false;

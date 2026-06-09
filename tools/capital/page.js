@@ -2,46 +2,43 @@ import { mountToolHeader } from '../../public/scripts/core/tool-page.js';
 import { $, on, debounce } from '../../public/scripts/utils/dom.js';
 import { copyText } from '../../public/scripts/utils/clipboard.js';
 import { showToast } from '../../public/scripts/components/toast.js';
+import { mountBrowseTabs } from '../_shared/browse-tabs.js';
 
 mountToolHeader();
 
 /* globals capitalData */
-const data      = typeof capitalData !== 'undefined' ? capitalData : {};
-const tabsEl    = $('[data-tabs]');
+const data = typeof capitalData !== 'undefined' ? capitalData : {};
+
+const tabsEl = $('[data-tabs]');
 const contentEl = $('[data-content]');
-const searchEl  = $('[data-search]');
-const emptyEl   = $('[data-empty]');
+const searchEl = $('[data-search]');
+const emptyEl = $('[data-empty]');
+const statusEl = $('[data-status]');
 
 const CATS = [
-  { id: 'all', title: '全部地区' },
-  { id: 'asia', title: '亚洲' },
-  { id: 'europe', title: '欧洲' },
-  { id: 'africa', title: '非洲' },
-  { id: 'northAmerica', title: '北美洲' },
-  { id: 'southAmerica', title: '南美洲' },
-  { id: 'oceania', title: '大洋洲' }
+  { id: 'all', label: '全部地区' },
+  { id: 'asia', label: '亚洲' },
+  { id: 'europe', label: '欧洲' },
+  { id: 'africa', label: '非洲' },
+  { id: 'northAmerica', label: '北美洲' },
+  { id: 'southAmerica', label: '南美洲' },
+  { id: 'oceania', label: '大洋洲' },
 ];
+
 let activeCat = 'all';
 
-/* ---------- tabs ---------- */
-function renderTabs() {
-  tabsEl.innerHTML = CATS.map(c =>
-    `<button class="tab-btn ${c.id === activeCat ? 'is-active' : ''}" type="button" data-cat="${c.id}">${c.title}</button>`
-  ).join('');
-}
-
-on(tabsEl, 'click', e => {
-  const btn = e.target.closest('[data-cat]');
-  if (!btn) return;
-  activeCat = btn.dataset.cat;
-  renderTabs();
-  render();
+mountBrowseTabs(tabsEl, {
+  items: CATS,
+  getActive: () => activeCat,
+  onSelect: id => {
+    activeCat = id;
+    render();
+  },
 });
 
-/* ---------- render ---------- */
 function render(filterText) {
   const q = (filterText || '').toLowerCase().trim();
-  let html = '', hasResults = false;
+  let html = '', hasResults = false, total = 0;
 
   Object.entries(data).forEach(([key, continent]) => {
     if (activeCat !== 'all' && key !== activeCat) return;
@@ -55,6 +52,7 @@ function render(filterText) {
 
     if (!countries.length) return;
     hasResults = true;
+    total += countries.length;
 
     html += `<div class="u-mb-6">`;
     html += `<h3 class="panel-title">${continent.name} <span class="u-muted" style="font-weight:400">${continent.nameEn}</span></h3>`;
@@ -77,22 +75,20 @@ function render(filterText) {
 
   contentEl.innerHTML = html;
   emptyEl.hidden = hasResults;
+  contentEl.hidden = !hasResults;
+  statusEl.textContent = q
+    ? (hasResults ? `找到 ${total} 个国家` : '')
+    : (hasResults ? `共 ${total} 个国家` : '');
 }
 
-/* ---------- click to copy ---------- */
 on(contentEl, 'click', async e => {
   const card = e.target.closest('[data-card]');
   if (!card) return;
-  const country = card.dataset.country || '';
-  const capital = card.dataset.capital || '';
-  const text = `${country} · 首都：${capital}`;
+  const text = `${card.dataset.country || ''} · 首都：${card.dataset.capital || ''}`;
   const ok = await copyText(text);
   showToast(ok ? `已复制：${text}` : '复制失败', { type: ok ? 'success' : 'error' });
 });
 
-/* ---------- search ---------- */
 on(searchEl, 'input', debounce(() => render(searchEl.value), 200));
 
-/* ---------- init ---------- */
-renderTabs();
 render();

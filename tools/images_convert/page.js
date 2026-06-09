@@ -25,7 +25,6 @@ const progText     = $('[data-progress-text]');
 const convBtn      = $('[data-action="convert"]');
 const clearBtn     = $('[data-action="clear"]');
 const dlBtn        = $('[data-action="download"]');
-const dlPanel      = $('[data-download-panel]');
 const qualPanel    = $('[data-quality-panel]');
 const qualSlider   = $('[data-quality]');
 const qualVal      = $('[data-quality-val]');
@@ -34,6 +33,8 @@ const sizeRow      = $('[data-size-row]');
 const customSizeEl = $('[data-custom-size]');
 const cwInput      = $('[data-cw]');
 const chInput      = $('[data-ch]');
+const msInput      = $('[data-ms]');
+const maxsideEl    = $('[data-maxside-size]');
 const linkIcon     = $('[data-link-icon]');
 const modal        = $('[data-modal]');
 const modalImg     = $('[data-modal-img]');
@@ -60,15 +61,42 @@ const MIME_MAP = {
   webp: 'image/webp', gif: 'image/gif', bmp: 'image/bmp', tiff: 'image/tiff',
 };
 
+function markConvertedStale() {
+  if (!convertedFiles.some(Boolean)) return;
+  convertedFiles = [];
+  dlBtn.hidden = true;
+  $$('[data-dl-single]', gridEl).forEach(btn => { btn.hidden = true; });
+}
+
+function buildZipPath(f, usedPaths) {
+  let candidate;
+  if (f.relPath) {
+    const segs = f.relPath.split('/');
+    segs[segs.length - 1] = f.name;
+    candidate = segs.join('/');
+  } else {
+    candidate = f.name;
+  }
+  if (!usedPaths.has(candidate)) return candidate;
+  const dot  = candidate.lastIndexOf('.');
+  const base = dot >= 0 ? candidate.slice(0, dot) : candidate;
+  const ext  = dot >= 0 ? candidate.slice(dot) : '';
+  for (let n = 1; ; n++) {
+    const alt = `${base} (${n})${ext}`;
+    if (!usedPaths.has(alt)) return alt;
+  }
+}
+
 /* ========== 格式选择 ========== */
 on($('[data-fmt-grid]'), 'click', e => {
   const btn = e.target.closest('[data-fmt]');
   if (!btn) return;
-  $$('[data-fmt]', $('[data-fmt-grid]')).forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  $$('[data-fmt]', $('[data-fmt-grid]')).forEach(b => b.classList.remove('is-active'));
+  btn.classList.add('is-active');
   selectedFormat = btn.dataset.fmt;
   updateQualityDisplay();
   updateAlphaDisplay();
+  markConvertedStale();
 });
 
 function updateQualityDisplay() {
@@ -84,21 +112,25 @@ updateAlphaDisplay();
 on(qualSlider, 'input', () => {
   imageQuality = parseInt(qualSlider.value) / 100;
   qualVal.textContent = qualSlider.value + '%';
+  markConvertedStale();
 });
 
 /* ========== 透明度选项 ========== */
 $$('[data-alpha]').forEach(r => on(r, 'change', () => {
   preserveAlpha = r.value === 'preserve';
+  markConvertedStale();
 }));
 
 /* ========== 尺寸预设 ========== */
 on(sizeRow, 'click', e => {
   const btn = e.target.closest('[data-size]');
   if (!btn) return;
-  $$('[data-size]', sizeRow).forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  $$('[data-size]', sizeRow).forEach(b => b.classList.remove('is-active'));
+  btn.classList.add('is-active');
   selectedPreset = btn.dataset.size;
   customSizeEl.hidden = selectedPreset !== 'custom';
+  maxsideEl.hidden = selectedPreset !== 'maxside';
+  markConvertedStale();
 });
 
 /* ========== 宽高比联动 ========== */
@@ -110,12 +142,15 @@ on(cwInput, 'input', () => {
   if (maintainAspectRatio && currentAspectRatio && cwInput.value) {
     chInput.value = Math.round(cwInput.value / currentAspectRatio);
   }
+  markConvertedStale();
 });
 on(chInput, 'input', () => {
   if (maintainAspectRatio && currentAspectRatio && chInput.value) {
     cwInput.value = Math.round(chInput.value * currentAspectRatio);
   }
+  markConvertedStale();
 });
+on(msInput, 'input', () => markConvertedStale());
 
 /* ========== 命名方式 ========== */
 $$('[data-naming]').forEach(r => on(r, 'change', () => {
@@ -142,34 +177,83 @@ document.addEventListener('keydown', e => {
 initUploadZone({
   dropEl: $('[data-drop]'),
   fileEl: $('[data-file]'),
+  dirEl: $('[data-file-dir]'),
   onFiles: handleFiles,
   accept: 'image',
   multiple: true,
 });
 
-function handleFiles(files) {
+function isHeic(file) {
+  const ext = file.name.toLowerCase().split('.').pop();
+  return ext === 'heic' || ext === 'heif' || file.type === 'image/heic' || file.type === 'image/heif';
+}
+
+async function loadHeicDecoder() {
+  if (typeof HeicTo !== 'undefined') return;
+  showToast('HEIC 解码库加载中，请稍候...', { type: 'info' });
+  await new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/heic-to@1.4.2/dist/iife/heic-to.js';
+    s.onload = resolve;
+    s.onerror = () => reject(new Error('HEIC 解码库加载失败，请检查网络'));
+    document.head.appendChild(s);
+  });
+}
+
+async function decodeHeic(file) {
+  // Lazy-load heic-to (supports all modern iPhone HEIC formats)
+  await loadHeicDecoder();
+  return await HeicTo({ blob: file, type: 'image/png' });
+}
+
+async function handleFiles(files) {
   let count = 0;
   for (const file of files) {
-    if (!file.type.startsWith('image/')) continue;
+    const heic = isHeic(file);
+    if (!heic && !file.type.startsWith('image/')) continue;
     count++;
+
+    let displayFile = file;
+    let preview;
+
+    if (heic) {
+      try {
+        const decoded = await decodeHeic(file);
+        preview = URL.createObjectURL(decoded);
+        // store decoded blob for conversion, keep original name
+        displayFile = new File([decoded], file.name, { type: 'image/png' });
+      } catch (e) {
+        showToast(`HEIC 解码失败: ${e.message}`, { type: 'error' });
+        continue;
+      }
+    } else {
+      preview = URL.createObjectURL(file);
+    }
+
+    const relPath = file.webkitRelativePath || '';
     const isFirst = uploadedFiles.length === 0;
-    const preview = URL.createObjectURL(file);
-    uploadedFiles.push({ file, preview });
-    createPreviewItem(file, preview, uploadedFiles.length - 1, isFirst);
+    uploadedFiles.push({ file: displayFile, preview, originalFile: file, relPath });
+    createPreviewItem(displayFile, preview, uploadedFiles.length - 1, isFirst, relPath);
   }
+  const hasGif = [...files].some(f => f.type === 'image/gif');
+  if (hasGif && selectedFormat !== 'gif') showToast('GIF 动图转换后仅保留第一帧', { type: 'warn' });
   if (count === 0) { showToast('请选择有效的图片文件', { type: 'warn' }); return; }
   convBtn.disabled = false;
   clearBtn.hidden = false;
 }
 
-function createPreviewItem(file, previewUrl, index, isFirst) {
+function createPreviewItem(file, previewUrl, index, isFirst, relPath = '') {
   const el = document.createElement('div');
   el.className = 'preview-item';
   el.dataset.idx = index;
+  const pathHtml = relPath && relPath.includes('/')
+    ? `<div class="hint u-truncate" title="${escapeHtml(relPath)}">${escapeHtml(relPath)}</div>`
+    : '';
   el.innerHTML = `
     <div class="preview-img"><img src="${previewUrl}" alt="${escapeHtml(file.name)}" data-preview-img></div>
     <div class="preview-info">
       <div class="fname">${escapeHtml(file.name)}</div>
+      ${pathHtml}
       <div class="info-row"><span>原始大小：</span><span>${fmtSize(file.size)}</span></div>
       <div class="info-row"><span>原始尺寸：</span><span data-orig-dim>-</span></div>
       <div class="info-row"><span>转换格式：</span><span data-cv-fmt class="cv">-</span></div>
@@ -204,12 +288,14 @@ on(gridEl, 'click', e => {
   if (!rmBtn) return;
   const idx = +rmBtn.dataset.remove;
   rmBtn.closest('.preview-item').remove();
+  const removing = uploadedFiles[idx];
+  if (removing) URL.revokeObjectURL(removing.preview);
   uploadedFiles[idx] = null;
   if (convertedFiles[idx]) convertedFiles[idx] = null;
   if (uploadedFiles.every(u => !u)) {
     uploadedFiles = []; convertedFiles = [];
     convBtn.disabled = true; clearBtn.hidden = true;
-    dlPanel.hidden = true;
+    dlBtn.hidden = true;
   }
 });
 
@@ -222,20 +308,24 @@ on(convBtn, 'click', async () => {
   barEl.style.width = '0%';
   convertedFiles = [];
 
-  try {
-    for (let i = 0; i < uploadedFiles.length; i++) {
-      const entry = uploadedFiles[i];
-      if (!entry) continue;
-      const { file, preview } = entry;
-      const card = gridEl.querySelector(`[data-idx="${i}"]`);
+  const total = uploadedFiles.filter(Boolean).length;
+  let successCount = 0, failCount = 0;
 
-      barEl.style.width = `${((i + 1) / uploadedFiles.filter(Boolean).length) * 100}%`;
-      progText.textContent = `${i + 1} / ${uploadedFiles.filter(Boolean).length}`;
+  for (let i = 0; i < uploadedFiles.length; i++) {
+    const entry = uploadedFiles[i];
+    if (!entry) continue;
+    const { file, preview } = entry;
+    const card = gridEl.querySelector(`[data-idx="${i}"]`);
+    const doneCount = successCount + failCount;
+    barEl.style.width = `${(doneCount / total) * 100}%`;
+    progText.textContent = `${doneCount + 1} / ${total}`;
 
-      const originalFormat = file.type.split('/')[1];
-      if (originalFormat === selectedFormat && selectedPreset === 'original') {
+    try {
+      const rawFormat = file.type ? file.type.split('/')[1] : '';
+      const originalFormat = rawFormat === 'jpeg' ? 'jpg' : rawFormat;
+      if (originalFormat === selectedFormat && selectedPreset === 'original' && selectedFormat !== 'jpg' && selectedFormat !== 'webp') {
         const ext = selectedFormat === 'jpg' ? 'jpg' : selectedFormat;
-        convertedFiles[i] = { file: file, name: getConvertedFileName(file.name, ext) };
+        convertedFiles[i] = { file: file, name: getConvertedFileName(file.name, ext), relPath: uploadedFiles[i].relPath || '' };
         const bmp = await createImageBitmap(file);
         if (card) {
           card.querySelector('[data-cv-fmt]').textContent = selectedFormat.toUpperCase();
@@ -243,6 +333,7 @@ on(convBtn, 'click', async () => {
           card.querySelector('[data-cv-dim]').textContent = `${bmp.width} × ${bmp.height}`;
           setupSingleDownload(card, i);
         }
+        successCount++;
         continue;
       }
 
@@ -256,18 +347,22 @@ on(convBtn, 'click', async () => {
 
       let tw, th;
       switch (selectedPreset) {
-        case '0.5x':    tw = Math.round(img.naturalWidth * 0.5); th = Math.round(img.naturalHeight * 0.5); break;
-        case '2x':      tw = Math.round(img.naturalWidth * 2);   th = Math.round(img.naturalHeight * 2);   break;
-        case 'hd':      tw = 1280; th = 720;  break;
-        case 'fhd':     tw = 1920; th = 1080; break;
-        case '4k':      tw = 3840; th = 2160; break;
-        case 'square': { const s = Math.min(img.naturalWidth, img.naturalHeight); tw = th = s; break; }
-        case 'custom':   tw = parseInt(cwInput.value) || img.naturalWidth; th = parseInt(chInput.value) || img.naturalHeight; break;
-        default:         tw = img.naturalWidth; th = img.naturalHeight;
+        case '0.5x':    tw = Math.round(img.naturalWidth * 0.5);  th = Math.round(img.naturalHeight * 0.5);  break;
+        case '0.75x':   tw = Math.round(img.naturalWidth * 0.75); th = Math.round(img.naturalHeight * 0.75); break;
+        case '2x':      tw = Math.round(img.naturalWidth * 2);    th = Math.round(img.naturalHeight * 2);    break;
+        case 'maxside': {
+          const ms = parseInt(msInput.value) || Math.max(img.naturalWidth, img.naturalHeight);
+          const s = ms / Math.max(img.naturalWidth, img.naturalHeight);
+          tw = Math.round(img.naturalWidth * s); th = Math.round(img.naturalHeight * s);
+          break;
+        }
+        case 'square':  { const sq = Math.min(img.naturalWidth, img.naturalHeight); tw = th = sq; break; }
+        case 'custom':  tw = parseInt(cwInput.value) || img.naturalWidth; th = parseInt(chInput.value) || img.naturalHeight; break;
+        default:        tw = img.naturalWidth; th = img.naturalHeight;
       }
 
       let fw = tw, fh = th;
-      if (maintainAspectRatio && selectedPreset !== 'square') {
+      if (maintainAspectRatio && selectedPreset !== 'square' && selectedPreset !== 'maxside') {
         const ratio = img.naturalWidth / img.naturalHeight;
         if (tw && !th) fh = Math.round(tw / ratio);
         else if (!tw && th) fw = Math.round(th * ratio);
@@ -296,7 +391,7 @@ on(convBtn, 'click', async () => {
       const quality = (selectedFormat === 'jpg' || selectedFormat === 'webp') ? imageQuality : undefined;
 
       let blob = await new Promise((res, rej) => {
-        canvas.toBlob(b => b ? res(b) : rej(new Error('转换失败')), mimeType, quality);
+        canvas.toBlob(b => b ? res(b) : rej(new Error(`${selectedFormat.toUpperCase()} 格式转换失败，当前浏览器不支持`)), mimeType, quality);
       });
 
       let actualFmt = selectedFormat;
@@ -307,7 +402,7 @@ on(convBtn, 'click', async () => {
       }
 
       const ext = actualFmt === 'jpg' ? 'jpg' : actualFmt;
-      convertedFiles[i] = { file: blob, name: getConvertedFileName(file.name, ext) };
+      convertedFiles[i] = { file: blob, name: getConvertedFileName(file.name, ext), relPath: uploadedFiles[i].relPath || '' };
 
       if (card) {
         card.querySelector('[data-cv-fmt]').textContent = actualFmt.toUpperCase() + (actualFmt !== selectedFormat ? ' (WebP不支持)' : '');
@@ -315,21 +410,28 @@ on(convBtn, 'click', async () => {
         card.querySelector('[data-cv-dim]').textContent = `${fw} × ${fh}`;
         setupSingleDownload(card, i);
       }
+      successCount++;
+    } catch (err) {
+      failCount++;
+      console.error(`[${file.name}] 转换失败:`, err);
+      if (card) card.querySelector('[data-cv-fmt]').textContent = '转换失败';
     }
-
-    dlPanel.hidden = false;
-    dlBtn.innerHTML = convertedFiles.filter(Boolean).length > 1
-      ? '<i data-lucide="download"></i> 批量下载'
-      : '<i data-lucide="download"></i> 下载图片';
-    if (window.refreshIcons) window.refreshIcons(dlBtn);
-    showToast('转换完成！', { type: 'success' });
-  } catch (err) {
-    console.error('转换错误:', err);
-    showToast('转换失败，请重试', { type: 'error' });
-  } finally {
-    convBtn.disabled = false;
-    progEl.hidden = true;
   }
+
+  barEl.style.width = '100%';
+  if (successCount > 0) {
+    dlBtn.hidden = false;
+    dlBtn.textContent = successCount > 1 ? '批量下载' : '保存图片';
+  }
+  if (failCount === 0) {
+    showToast('转换完成！', { type: 'success' });
+  } else if (successCount > 0) {
+    showToast(`${successCount} 张成功，${failCount} 张失败`, { type: 'warn' });
+  } else {
+    showToast('全部转换失败，请检查格式或文件', { type: 'error' });
+  }
+  convBtn.disabled = false;
+  progEl.hidden = true;
 });
 
 function setupSingleDownload(card, idx) {
@@ -355,11 +457,12 @@ on(dlBtn, 'click', async () => {
 
   if (typeof JSZip === 'undefined') { showToast('ZIP 库未加载', { type: 'error' }); return; }
   const zip = new JSZip();
-  done.forEach((f, i) => {
-    const ext = selectedFormat === 'jpg' ? 'jpg' : selectedFormat;
-    const origName = uploadedFiles.filter(Boolean)[i]?.file?.name;
-    const name = origName ? getConvertedFileName(origName, ext) : f.name;
-    zip.file(name, f.file);
+  const usedPaths = new Set();
+  convertedFiles.forEach(f => {
+    if (!f) return;
+    const zipPath = buildZipPath(f, usedPaths);
+    usedPaths.add(zipPath);
+    zip.file(zipPath, f.file);
   });
   const blob = await zip.generateAsync({ type: 'blob' });
   downloadBlob(blob, 'converted_images.zip');
@@ -372,7 +475,7 @@ on(clearBtn, 'click', () => {
   uploadedFiles = []; convertedFiles = [];
   gridEl.innerHTML = '';
   convBtn.disabled = true; clearBtn.hidden = true;
-  dlPanel.hidden = true; progEl.hidden = true;
+  dlBtn.hidden = true; progEl.hidden = true;
   barEl.style.width = '0%';
   showToast('已清空所有内容');
 });

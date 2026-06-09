@@ -27,6 +27,10 @@
 | `.field-label` | 小号 muted 标签 | select 上方标签 |
 | `.hint` | 11px 浅色提示 | 使用说明 |
 | `.sep` | 分隔线 | 面板内分隔 |
+| `.tool-details` | `<details>` 折叠区，`summary` 统一样式 | CSS 工具「HTML 示例」折叠展示 |
+
+**CSS 工具演示色变量**（定义在 `sidebar.css :root`，仅用于 demo 预览区装饰）：
+- `--demo-purple: hsl(280 72% 62%)` — 与 `--color-brand` 搭配做渐变演示
 
 ### 典型组合
 
@@ -170,16 +174,53 @@ document.addEventListener('keydown', e => {
 
 ---
 
+## browse-tabs.js + browse.css
+
+**适用**：符号大全、色卡、首都、HTTP 状态码、颜色名称色表等浏览速查 Tab。
+
+**CSS**（`index.html`）：
+```html
+<link rel="stylesheet" href="../../public/styles/browse.css">
+```
+
+**HTML**（Tab 一律留空容器，由 JS 渲染）：
+```html
+<div class="browse-head">
+  <div class="browse-toolbar">…</div>
+  <div data-tabs role="tablist"></div>
+</div>
+```
+
+**JS**：
+```js
+import { mountBrowseTabs } from '../_shared/browse-tabs.js';
+
+let active = 'all';
+
+mountBrowseTabs($('[data-tabs]'), {
+  items: [
+    { id: 'all', label: '全部' },
+    { id: 'foo', label: '分类 A' },
+  ],
+  getActive: () => active,
+  onSelect: id => { active = id; render(); },
+});
+```
+
+- 统一 `data-cat` 传值；始终 `.is-scroll` 横滑，字号与全局 `.tab-btn` 一致
+- 同一页多个 Tab 条：`<div data-tabs="hue">` 等，分别 `mountBrowseTabs`
+
+---
+
 ## 3. `upload-zone.js`
 
 ### HTML 结构
 
 ```html
-<label class="panel u-col u-gap-2" data-drop
-       style="border-style:dashed;align-items:center;text-align:center;cursor:pointer;padding:var(--space-8) var(--space-4);margin:0">
-  <i data-lucide="upload" style="width:1.8rem;height:1.8rem;opacity:.35"></i>
+<label class="panel u-col u-gap-2 upload-panel" data-drop>
+  <i data-lucide="upload"></i>
   <div class="u-strong">点击或拖拽文件到此处</div>
-  <div class="u-muted" style="font-size:var(--text-xs)">
+  <div class="u-muted u-text-xs">
     支持 JPG/PNG/WebP · 支持粘贴上传
   </div>
   <input type="file" accept="image/*" hidden data-file>
@@ -341,14 +382,131 @@ function convert() {
 
 ---
 
+## 5. `chart-core.js` + `chart-data.js` + `chart.css`
+
+> 三个文件配合使用，覆盖所有 `chart_*` 图表工具的完整需求。
+
+### 5.1 引入方式
+
+```html
+<!-- index.html <head> -->
+<link rel="stylesheet" href="../_shared/chart.css">
+<script src="../../public/vendor/echarts.min.js" defer></script>
+<script src="../../public/vendor/xlsx.mini.min.js" defer></script>
+```
+
+```js
+// page.js
+import { createChart, exportPNG, exportSVG, getPalette, getPaletteNames,
+         PALETTES, interpolateColors, setupChartSize } from '../_shared/chart-core.js';
+import { createDataEditor } from '../_shared/chart-data.js';
+```
+
+### 5.2 `chart-core.js` API
+
+| 函数 | 说明 |
+|---|---|
+| `createChart(container, opts?)` | 创建 ECharts 实例（SVG 渲染器），自动绑定 ResizeObserver |
+| `disposeChart(instance)` | 销毁实例并释放 ResizeObserver |
+| `setupChartSize(container, widthInput, heightInput, defaults?)` | 统一管理导出宽高，预览区用 aspect-ratio 保持比例；返回 `{ getW, getH }` |
+| `exportPNG(instance, filename, { w, h, pixelRatio? })` | 导出 PNG（离屏实例，不影响预览） |
+| `exportSVG(instance, filename, { w, h })` | 导出 SVG（离屏实例） |
+| `getPalette(name?)` | 取配色方案数组，默认 `'default'` |
+| `getPaletteNames()` | 返回所有方案名数组 |
+| `PALETTES` | 全部配色方案对象（`default / vibrant / ocean / warm / pastel / mono`） |
+| `interpolateColors(c1, c2, steps)` | 两色渐变插值，返回 hex 数组 |
+
+```js
+// 典型用法
+const chart = createChart($('#chart'));
+chart.setOption(option, true);  // true = 完全替换（推荐）
+
+const size = setupChartSize($('#chart'), $('[data-opt="width"]'), $('[data-opt="height"]'));
+on($('[data-export="png"]'), 'click',
+  () => exportPNG(chart, '图表.png', { w: size.getW(), h: size.getH() }));
+```
+
+### 5.3 `chart-data.js` API
+
+```js
+const editor = createDataEditor(container, {
+  data: DEFAULT_DATA,   // 2D 数组（见数据格式）
+  onChange: (data) => updateChart(),
+  minRows: 2,           // 可选，最少数据行，默认 2
+  minCols: 2,           // 可选，最少列数，默认 2
+});
+
+editor.getData()        // → 2D 数组（deep clone）
+editor.setData(newData) // 替换数据并重渲染
+editor.destroy()        // 从 DOM 移除
+```
+
+**数据格式**（2D 数组，第 0 行为表头）：
+```js
+// 多系列图（柱/线/散/雷达）
+[['', '1月', '2月', '3月'],
+ ['系列A', 100, 200, 150],
+ ['系列B',  80, 160, 120]]
+
+// 单系列图（饼/漏斗/仪表/树图）
+[['类别', '值'],
+ ['A', 335],
+ ['B', 210]]
+```
+
+**内置能力**：
+- 单元格 `contenteditable` 直接编辑，数值自动转 Number
+- Tab / Enter 键盘导航
+- `+ 行 / + 列` 按钮
+- 导入弹窗：支持 Excel（`.xlsx/.xls`，依赖 `xlsx.mini.min.js`）、CSV / TSV 文件，以及表格内粘贴多行数据
+
+### 5.4 `chart.css` 提供的类
+
+**布局**：
+
+| Class | 说明 |
+|---|---|
+| `.chart-studio` | 主布局容器（`grid: 1fr 380px`，响应式折叠） |
+| `.chart-stage` | 左侧图表区（`position: sticky`） |
+| `.chart-canvas` | ECharts 挂载容器（默认 `aspect-ratio: 800/480`） |
+| `.chart-controls` | 右侧面板栏（`flex-direction: column; gap`） |
+
+**手风琴**：
+
+| Class | 说明 |
+|---|---|
+| `.cs-section` | 折叠区块容器，加 `.is-open` 展开 |
+| `.cs-header` | 折叠标题按钮（含箭头伪元素） |
+| `.cs-body` | 折叠内容区（`.is-open` 时 `display: block`） |
+
+**选项控件**：
+
+| Class | 说明 |
+|---|---|
+| `.co-row` | 标签 + 控件横排一行 |
+| `.co-label` | 行内标签（muted，不换行） |
+| `.co-seg` | 连体分段按钮（active 状态显示品牌色） |
+| `.co-seg.is-disabled` | 禁用分段按钮组 |
+| `.co-toggle` + `.co-toggle-track` | Toggle 开关 |
+| `.co-sep` | 选项区内分隔线 |
+
+**配色选择器**：`.palette-grid` / `.palette-item`（`.active` 显示品牌色边框）
+
+**数据编辑器**（由 `chart-data.js` 自动生成 DOM，样式在此）：`.cd-wrap` / `.cd-toolbar` / `.cd-btn` / `.cd-scroll` / `.cd-table` / `.cd-act` / `.cd-overlay` / `.cd-modal`
+
+---
+
 ## 共享模块路径总览
 
 ```text
-v2/tools/_shared/
+tools/_shared/
 ├─ sidebar.css           ← <link rel="stylesheet" href="../_shared/sidebar.css">
 ├─ preview-grid.css      ← <link rel="stylesheet" href="../_shared/preview-grid.css">
+├─ chart.css             ← <link rel="stylesheet" href="../_shared/chart.css">
 ├─ upload-zone.js        ← import { initUploadZone } from '../_shared/upload-zone.js';
-└─ code-editor.js        ← import { createEditor } from '../_shared/code-editor.js';
+├─ code-editor.js        ← import { createEditor } from '../_shared/code-editor.js';
+├─ chart-core.js         ← import { createChart, … } from '../_shared/chart-core.js';
+└─ chart-data.js         ← import { createDataEditor } from '../_shared/chart-data.js';
 ```
 
 所有工具的 import/link 路径都是相对的 `../_shared/xxx`，不要写绝对路径。

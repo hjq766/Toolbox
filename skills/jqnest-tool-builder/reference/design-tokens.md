@@ -1,6 +1,6 @@
 # Design Tokens 完整清单
 
-> 定义于 `v2/public/styles/tokens.css`，**所有颜色/字号/间距/圆角/阴影必须用变量**，禁止硬编码。
+> 定义于 `public/styles/tokens.css`，**所有颜色/字号/间距/圆角/阴影必须用变量**，禁止硬编码。
 
 ---
 
@@ -133,7 +133,7 @@
 
 | Token | 值 | 用途 |
 |---|---|---|
-| `--container-max` | 1240px | 容器最大宽度 |
+| `--container-max` | 1280px | 容器最大宽度（对齐 Tailwind max-w-7xl） |
 | `--container-px` | clamp(…) | 容器左右 padding |
 | `--header-h` | 60px | 站点 header 高度 |
 | `--sidebar-w` | 180px | 网格默认侧栏宽（可被 `style="--sidebar-w:300px"` 覆盖） |
@@ -154,7 +154,7 @@
 
 ## 主题切换
 
-`v2/public/styles/themes.css` 通过 `[data-theme="dark"]` 重新赋值这些 token，工具无需关心明暗适配，**只要用 token 就自动跟随**。
+`public/styles/themes.css` 通过 `[data-theme="dark"]` 重新赋值这些 token，工具无需关心明暗适配，**只要用 token 就自动跟随**。
 
 ```css
 /* 错误 */
@@ -168,6 +168,6 @@
 
 ## 快速查找
 
-- 不确定用哪个 token 时，在 `v2/public/styles/tokens.css` 里搜关键词
+- 不确定用哪个 token 时，在 `public/styles/tokens.css` 里搜关键词
 - 遇到设计稿里的具体数值，先想"它属于哪个抽象层级"再选 token
 - 色号接近但找不到匹配的 → 在 `tokens.css` 新增（需同步深色主题）；**不要硬编码救急**

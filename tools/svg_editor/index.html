@@ -6,7 +6,19 @@
     <link rel="icon" href="static/images/favicon.svg" sizes="any" type="image/svg+xml">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <title>SVG在线编辑器 - 在线工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>SVG 编辑（第三方） · 极趣导航-在线工具箱</title>
+  <meta name="description" content="在线 SVG 矢量图形编辑器（第三方）">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/svg_editor/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="SVG 编辑（第三方） · 极趣导航-在线工具箱">
+  <meta property="og:description" content="在线 SVG 矢量图形编辑器（第三方）">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/svg_editor/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"SVG 编辑（第三方）","url":"https://tools.jqnest.top/tools/svg_editor/","description":"在线 SVG 矢量图形编辑器（第三方）","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
     <meta charset="utf-8">
     <meta name="author" content="Pluto"/>
     <link rel="stylesheet" href="static/css/all.css?=20250808">
@@ -734,7 +746,10 @@
 </div>
 
 <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
-<script src="../../public/dock.js"></script>
+<script type="module">
+import { mountDock } from '../../public/scripts/components/dock.js';
+mountDock(document.body, { variant: 'site' });
+</script>
 <script src="static/loading.js"></script>
 <script src="static/all.js"></script>
 </body>

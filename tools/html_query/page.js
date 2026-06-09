@@ -2,35 +2,30 @@ import { mountToolHeader } from '../../public/scripts/core/tool-page.js';
 import { $, on, debounce } from '../../public/scripts/utils/dom.js';
 import { copyText } from '../../public/scripts/utils/clipboard.js';
 import { showToast } from '../../public/scripts/components/toast.js';
+import { mountBrowseTabs } from '../_shared/browse-tabs.js';
 
 mountToolHeader();
 
 /* globals symbolData */
-const data      = typeof symbolData !== 'undefined' ? symbolData : {};
-const tabsEl    = $('[data-tabs]');
-const contentEl = $('[data-content]');
-const searchEl  = $('[data-search]');
-const statusEl  = $('[data-status]');
-
+const data = typeof symbolData !== 'undefined' ? symbolData : {};
 const keys = Object.keys(data);
+
+const tabsEl = $('[data-tabs]');
+const contentEl = $('[data-content]');
+const searchEl = $('[data-search]');
+const statusEl = $('[data-status]');
+
 let activeKey = keys[0] || '';
 
-/* ---------- tabs ---------- */
-function renderTabs() {
-  tabsEl.innerHTML = keys.map(k =>
-    `<button class="tab-btn ${k === activeKey ? 'is-active' : ''}" type="button" data-cat="${k}">${data[k].title}</button>`
-  ).join('');
-}
-
-on(tabsEl, 'click', e => {
-  const btn = e.target.closest('[data-cat]');
-  if (!btn) return;
-  activeKey = btn.dataset.cat;
-  renderTabs();
-  renderContent();
+mountBrowseTabs(tabsEl, {
+  items: () => keys.map(k => ({ id: k, label: data[k].title })),
+  getActive: () => activeKey,
+  onSelect: id => {
+    activeKey = id;
+    renderContent();
+  },
 });
 
-/* ---------- render ---------- */
 function renderContent() {
   const cat = data[activeKey];
   if (!cat) { contentEl.innerHTML = ''; return; }
@@ -58,7 +53,6 @@ function renderContent() {
   applySearch(searchEl.value);
 }
 
-/* ---------- click to copy ---------- */
 on(contentEl, 'click', async e => {
   const row = e.target.closest('[data-row]');
   if (!row) return;
@@ -67,7 +61,6 @@ on(contentEl, 'click', async e => {
   showToast(ok ? '符号已复制' : '复制失败', { type: ok ? 'success' : 'error' });
 });
 
-/* ---------- search ---------- */
 function applySearch(q) {
   q = (q || '').toLowerCase();
   let total = 0;
@@ -85,6 +78,4 @@ function applySearch(q) {
 
 on(searchEl, 'input', debounce(() => applySearch(searchEl.value), 200));
 
-/* ---------- init ---------- */
-renderTabs();
 renderContent();

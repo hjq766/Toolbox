@@ -14,7 +14,6 @@ export function showToast(message, { type = 'default', duration = 1800 } = {}) {
   el.className = 'toast' + (type !== 'default' ? ` is-${type}` : '');
   el.textContent = message;
   root.appendChild(el);
-  // force reflow then show
   requestAnimationFrame(() => el.classList.add('is-in'));
   setTimeout(() => {
     el.classList.remove('is-in');
@@ -28,6 +27,5 @@ if (typeof window !== 'undefined') {
     const d = e.detail || {};
     showToast(d.message || '', { type: d.type, duration: d.duration });
   });
-  // 暴露一个全局方法方便在 inline 脚本调用
   window.$toast = showToast;
 }

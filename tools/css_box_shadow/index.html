@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>CSS 阴影生成 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="可视化生成 box-shadow，支持多层叠加、内阴影、不透明度调节，内置柔和/卡片/浮起/霓虹等预设，一键复制 CSS">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/css_box_shadow/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="CSS 阴影生成 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="可视化生成 box-shadow，支持多层叠加、内阴影、不透明度调节，内置柔和/卡片/浮起/霓虹等预设，一键复制 CSS">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/css_box_shadow/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"CSS 阴影生成","url":"https://tools.jqnest.top/tools/css_box_shadow/","description":"可视化生成 box-shadow，支持多层叠加、内阴影、不透明度调节，内置柔和/卡片/浮起/霓虹等预设，一键复制 CSS","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="./tool.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="css_box_shadow">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:300px;align-items:start">
+
+          <!-- 左：预览 + 输出 -->
+          <section class="u-col u-gap-4">
+            <div class="panel">
+              <h3 class="panel-title">实时预览</h3>
+              <div class="shadow-stage">
+                <div class="shadow-box" data-preview></div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="u-row u-between u-mb-3">
+                <h3 class="panel-title">CSS 输出</h3>
+                <button class="btn is-sm is-primary" type="button" data-action="copy">复制</button>
+              </div>
+              <textarea class="textarea u-mono" data-css-output readonly></textarea>
+            </div>
+          </section>
+
+          <!-- 右：控制 -->
+          <aside class="u-col u-gap-4">
+
+            <!-- 阴影层列表 -->
+            <div class="panel">
+              <div class="u-row u-between u-mb-3">
+                <h3 class="panel-title">阴影层</h3>
+                <button class="btn is-sm" type="button" data-action="add-layer"><i data-lucide="plus" class="icon-16"></i>添加层</button>
+              </div>
+              <div class="u-col u-gap-2" data-layer-list></div>
+            </div>
+
+            <!-- 当前层参数 -->
+            <div class="panel u-col u-gap-3">
+              <h3 class="panel-title">参数调节</h3>
+
+              <div class="range-row">
+                <label class="field-label">X 偏移</label>
+                <input type="range" min="-60" max="60" value="4" data-input="x">
+                <span class="val" data-val="x">4px</span>
+              </div>
+              <div class="range-row">
+                <label class="field-label">Y 偏移</label>
+                <input type="range" min="-60" max="60" value="4" data-input="y">
+                <span class="val" data-val="y">4px</span>
+              </div>
+              <div class="range-row">
+                <label class="field-label">模糊半径</label>
+                <input type="range" min="0" max="100" value="8" data-input="blur">
+                <span class="val" data-val="blur">8px</span>
+              </div>
+              <div class="range-row">
+                <label class="field-label">扩散半径</label>
+                <input type="range" min="-30" max="30" value="0" data-input="spread">
+                <span class="val" data-val="spread">0px</span>
+              </div>
+              <div class="range-row">
+                <label class="field-label">不透明度</label>
+                <input type="range" min="0" max="100" value="20" data-input="opacity">
+                <span class="val" data-val="opacity">20%</span>
+              </div>
+
+              <div class="sep"></div>
+
+              <div class="field">
+                <label class="field-label">阴影颜色</label>
+                <input class="input" type="color" data-input="color" value="#000000">
+              </div>
+
+              <label class="switch-item">
+                <input type="checkbox" data-input="inset"> 内阴影 (inset)
+              </label>
+            </div>
+
+            <!-- 预设 -->
+            <div class="panel">
+              <h3 class="panel-title">预设效果</h3>
+              <div class="opt-row" data-presets></div>
+            </div>
+
+            <!-- 预览颜色 -->
+            <div class="panel">
+              <h3 class="panel-title">预览背景</h3>
+              <div class="opt-row" data-bg-opts>
+                <button class="btn is-sm is-active" type="button" data-bg="surface">默认</button>
+                <button class="btn is-sm" type="button" data-bg="brand">品牌色</button>
+                <button class="btn is-sm" type="button" data-bg="dark">深色</button>
+              </div>
+            </div>
+
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

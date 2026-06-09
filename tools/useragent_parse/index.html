@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>User-Agent 解析 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="粘贴 UA 字符串解析浏览器/操作系统/设备信息">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/useragent_parse/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="User-Agent 解析 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="粘贴 UA 字符串解析浏览器/操作系统/设备信息">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/useragent_parse/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"User-Agent 解析","url":"https://tools.jqnest.top/tools/useragent_parse/","description":"粘贴 UA 字符串解析浏览器/操作系统/设备信息","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <style>
+    .ua-stat{background:var(--bg-surface-2);border-radius:var(--radius-md);padding:12px 14px;text-align:center}
+    .ua-stat .label{font-size:var(--text-xs);color:var(--fg-muted);margin-bottom:2px}
+    .ua-stat .value{font-size:var(--text-md);font-weight:700}
+    .ua-stat .sub{font-size:var(--text-xs);color:var(--fg-muted);margin-top:2px}
+    .ua-raw{font-size:var(--text-xs);word-break:break-all;background:var(--bg-surface-2);padding:8px 12px;border-radius:var(--radius-sm);cursor:pointer;transition:background .15s}
+    .ua-raw:hover{background:var(--bg-surface-3)}
+    .ex-item{padding:8px 10px;border:1px solid var(--border-subtle);border-radius:var(--radius-sm);cursor:pointer;transition:border-color .15s}
+    .ex-item:hover{border-color:var(--color-brand)}
+    .ex-item .ex-label{font-size:var(--text-sm);font-weight:600}
+    .ex-item .ex-ua{font-size:10px;color:var(--fg-muted);word-break:break-all;margin-top:2px;font-family:var(--font-mono);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  </style>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="useragent_parse">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:260px">
+          <!-- 左：主区 -->
+          <div class="u-col u-gap-4">
+
+            <!-- 当前 UA -->
+            <div class="panel">
+              <h3 class="panel-title">当前浏览器</h3>
+              <div class="grid grid-3 u-gap-2" data-my-stats></div>
+              <div class="u-mt-3 ua-raw u-mono" data-my-ua data-copy-val="" title="点击复制"></div>
+            </div>
+
+            <!-- 手动解析 -->
+            <div class="panel">
+              <h3 class="panel-title">解析任意 UA 字符串</h3>
+              <div class="field u-mb-3">
+                <textarea class="textarea u-mono" data-input rows="2" placeholder="粘贴 User-Agent 字符串"></textarea>
+              </div>
+              <div class="u-row u-gap-2 u-mb-3">
+                <button class="btn is-primary" type="button" data-action="parse"><i data-lucide="search"></i> 解析</button>
+                <button class="btn is-ghost" type="button" data-action="clear">清空</button>
+              </div>
+              <div class="grid grid-3 u-gap-2" data-result-stats hidden></div>
+              <div class="u-mt-3" data-result-detail></div>
+            </div>
+
+          </div>
+
+          <!-- 右：示例 -->
+          <aside>
+            <div class="panel">
+              <h3 class="panel-title">常见 UA 示例</h3>
+              <div class="u-col u-gap-2" data-examples></div>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

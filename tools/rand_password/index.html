@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>随机密码生成 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>随机密码生成 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="安全的随机密码，支持自定义长度与字符集">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/rand_password/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="随机密码生成 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="安全的随机密码，支持自定义长度与字符集">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/rand_password/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"随机密码生成","url":"https://tools.jqnest.top/tools/rand_password/","description":"安全的随机密码，支持自定义长度与字符集","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -20,8 +32,8 @@
         <div class="panel">
           <div class="result-strip u-mono" data-output style="font-size:20px;font-weight:600;word-break:break-all">—</div>
           <div class="u-row u-gap-3 u-mt-4">
-            <button class="btn is-primary" data-gen><i data-lucide="refresh-cw"></i> 生成</button>
-            <button class="btn" data-copy><i data-lucide="copy"></i> 复制</button>
+            <button class="btn is-primary" data-gen>生成</button>
+            <button class="btn" data-action="copy">复制</button>
             <div class="u-grow"></div>
             <span class="badge" data-strength>强度：—</span>
           </div>
@@ -31,7 +43,7 @@
         <div class="grid grid-2">
           <div class="panel">
             <h3 class="panel-title">参数设置</h3>
-            <div class="field u-mb-4">
+            <div class="field u-mb-3">
               <label class="field-label u-row u-between">密码长度 <strong data-len-display>16</strong></label>
               <input type="range" min="4" max="64" value="16" data-len>
             </div>
@@ -46,7 +58,7 @@
           </div>
 
           <div class="panel">
-            <h3 class="panel-title u-row u-between">批量生成 <button class="btn is-sm" data-batch>生成 10 条</button></h3>
+            <h3 class="panel-title u-row u-between">批量生成 <div class="u-row u-gap-1"><button class="btn is-sm" data-batch>生成 10 条</button><button class="btn is-sm is-ghost" data-batch-copy>复制</button></div></h3>
             <pre class="textarea u-mono" data-batch-out style="min-height:180px;white-space:pre"></pre>
           </div>
         </div>

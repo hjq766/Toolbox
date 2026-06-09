@@ -102,9 +102,6 @@
   border-radius: var(--radius-pill);
   margin-bottom: var(--space-4);
 }
-/* 旧 hero-title/hero-copy 的尺寸已由 .tool-header / .welcome-hero / .page-hero 统一定义 */
-
-/* 工具页 / 关于页 / 首页欢迎区 —— 统一的 page title 模块 */
 .tool-layout {
   display: grid;
   gap: var(--space-6);
@@ -154,27 +151,48 @@
 }
 .tool-body { display: grid; gap: var(--space-6); min-width: 0; }
 
+/* 内容页分区标题（关于页等） */
+.section-title {
+  font-size: var(--text-lg); font-weight: 700; margin: 0 0 var(--space-4);
+  display: flex; align-items: center; gap: 10px;
+}
+.section-title::before {
+  content: ""; width: 4px; height: 18px;
+  background: var(--color-brand); border-radius: 2px; flex-shrink: 0;
+}
+
+/* 可折叠面板（关于页开源组件等） */
+.details-panel > summary {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-3); cursor: pointer; list-style: none; user-select: none;
+}
+.details-panel > summary::-webkit-details-marker { display: none; }
+.details-panel__title { margin: 0; font-size: var(--text-md); font-weight: 650; color: var(--fg-strong); }
+.details-panel[open] > summary { margin-bottom: var(--space-3); }
+.details-panel__body { font-size: var(--text-xs); line-height: 1.65; }
+.details-panel__line + .details-panel__line { margin-top: var(--space-2); }
+
 /* 响应式 */
 @media (max-width: 640px) {
   .site-header .nav-links { display: none; }
   .page-hero { padding-block: var(--space-8) var(--space-6); }
+  .tool-layout { padding-block: 16px var(--space-8); gap: var(--space-4); }
+  .tool-header { gap: 8px; margin-bottom: 0; }
+  .tool-body { gap: var(--space-4); }
+  .tool-header h1,
+  .tool-header-title { font-size: var(--text-xl); }
+  .tool-header .tool-subtitle { font-size: var(--text-sm); }
 }
 
-/* =========================================================
- * Embedded mode (iframe)
- * 被工作台外壳嵌入时的降级，保证只有内容层展示
- * ========================================================= */
+/* Embedded mode */
 html.is-embedded body::before { display: none; }
 html.is-embedded,
 html.is-embedded body { background: transparent; }
 html.is-embedded .site-header,
 html.is-embedded .site-footer,
 html.is-embedded .dock { display: none !important; }
-/* 嵌入模式下：去掉外壳自带的 .page-main 上下间距，让 .tool-layout 成为唯一的垂直节奏源
-   这样工具页 iframe 内的 tool-header 与首页 welcome 的 tool-header 垂直位置完全一致 */
 html.is-embedded .page-main { padding-top: 0; padding-bottom: 0; }
 html.is-embedded .page-shell { min-height: auto; }
 /* 防止工具页内容意外溢出导致水平滚动条 */
 html.is-embedded body { overflow-x: hidden; }
-/* 注意：不要在这里覆盖 .tool-layout 的 padding！首页 welcome 也用 .tool-layout，
-   一旦覆盖就会和首页不对齐。保持唯一定义，首页/工具页/关于页三者共享。 */
+/* 不要在此覆盖 .tool-layout 的 padding，首页/工具页/关于页共用 */

@@ -1,0 +1,18 @@
+/* ===== 图片滤镜 ===== */
+.cf-preview-wrap {
+  padding: 0;
+  overflow: hidden;
+}
+
+.cf-preview-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
+  object-fit: contain;
+  background: repeating-conic-gradient(
+    var(--bg-surface-2) 0 25%,
+    var(--bg-surface) 0 50%
+  ) 0 0 / 16px 16px;
+}
+

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>图片马赛克 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="全图/选区马赛克 + 高斯模糊，强度可调">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/images_mosaic/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="图片马赛克 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="全图/选区马赛克 + 高斯模糊，强度可调">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/images_mosaic/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"图片马赛克","url":"https://tools.jqnest.top/tools/images_mosaic/","description":"全图/选区马赛克 + 高斯模糊，强度可调","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="images_mosaic">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:320px">
+          <section>
+            <!-- 上传区 -->
+            <label class="panel u-col u-gap-2 upload-panel" data-drop>
+              <i data-lucide="upload"></i>
+              <div class="u-strong">点击或拖拽图片到此处</div>
+              <div class="u-muted u-text-xs">支持 JPG / PNG / WebP · 上传后用画笔或框选打码</div>
+              <input type="file" accept="image/*" hidden data-file>
+            </label>
+
+            <!-- 编辑面板 -->
+            <div class="panel" data-preview hidden>
+              <div class="u-row u-between u-mb-3">
+                <div>
+                  <div class="u-truncate u-strong" data-file-name style="max-width:48vw;font-size:var(--text-sm)"></div>
+                  <div class="u-muted" data-img-info style="margin-top:2px;font-size:var(--text-xs)"></div>
+                </div>
+                <button class="btn is-sm is-ghost" type="button" data-img-delete><i data-lucide="x"></i></button>
+              </div>
+              <div class="panel" data-stage style="margin:0;position:relative;min-height:460px;max-height:72vh;display:flex;align-items:center;justify-content:center;overflow:auto;background:repeating-conic-gradient(var(--bg-surface-2) 0% 25%,transparent 0% 50%) 50%/16px 16px;touch-action:none;user-select:none;cursor:crosshair">
+                <canvas data-canvas style="max-height:64vh;box-shadow:var(--shadow-md)"></canvas>
+                <div data-sel style="position:absolute;display:none;border:2px solid var(--color-brand);background:color-mix(in srgb,var(--color-brand) 12%,transparent);pointer-events:none"></div>
+                <div data-cursor style="position:absolute;display:none;width:42px;height:42px;border:2px solid var(--color-brand);border-radius:50%;background:color-mix(in srgb,var(--color-brand) 10%,transparent);pointer-events:none;transform:translate(-50%,-50%)"></div>
+              </div>
+            </div>
+          </section>
+
+          <aside>
+            <div class="panel">
+              <h3 class="panel-title">工具</h3>
+              <div class="opt-row" data-tool-opts>
+                <button class="btn is-sm active" type="button" data-tool="brush"><i data-lucide="paintbrush"></i> 画笔</button>
+                <button class="btn is-sm" type="button" data-tool="rect"><i data-lucide="square"></i> 矩形</button>
+                <button class="btn is-sm" type="button" data-tool="ellipse"><i data-lucide="circle"></i> 椭圆</button>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">效果</h3>
+              <div class="opt-row" data-effect-opts>
+                <button class="btn is-sm active" type="button" data-effect="mosaic">马赛克</button>
+                <button class="btn is-sm" type="button" data-effect="blur">模糊</button>
+                <button class="btn is-sm" type="button" data-effect="mask">遮挡</button>
+              </div>
+              <div class="range-row u-mt-3">
+                <span class="field-label">强度</span>
+                <input type="range" min="4" max="60" value="14" data-strength>
+                <span class="val" data-strength-val>14</span>
+              </div>
+              <div class="range-row u-mt-3">
+                <span class="field-label">画笔</span>
+                <input type="range" min="8" max="160" value="42" data-brush-size>
+                <span class="val" data-brush-size-val>42 px</span>
+              </div>
+              <div class="u-row u-gap-2 u-mt-3">
+                <span class="field-label">遮挡色</span>
+                <input type="color" value="#111827" data-mask-color>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">操作</h3>
+              <div class="act-group">
+                <button class="btn is-primary" type="button" data-action="apply-full" disabled><i data-lucide="scan"></i> 全图应用当前效果</button>
+                <div class="u-row u-gap-2">
+                  <button class="btn is-block" type="button" data-action="undo" disabled><i data-lucide="undo-2"></i> 撤销</button>
+                  <button class="btn is-block" type="button" data-action="redo" disabled><i data-lucide="redo-2"></i> 重做</button>
+                </div>
+                <button class="btn is-ghost" type="button" data-action="reset" disabled>恢复原图</button>
+              </div>
+              <p class="hint">画笔拖动即可涂抹；矩形/椭圆拖拽后自动应用，可随时撤销。</p>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">导出</h3>
+              <div class="u-col u-gap-3">
+                <div class="opt-row" data-format-opts>
+                  <button class="btn is-sm active" type="button" data-fmt="png">PNG</button>
+                  <button class="btn is-sm" type="button" data-fmt="jpg">JPG</button>
+                  <button class="btn is-sm" type="button" data-fmt="webp">WebP</button>
+                </div>
+                <div class="range-row" data-quality-row hidden>
+                  <span class="field-label">质量</span>
+                  <input type="range" min="40" max="100" value="92" data-quality>
+                  <span class="val" data-quality-val>92%</span>
+                </div>
+                <div class="output-grid" data-output hidden></div>
+                <div class="act-group">
+                  <div class="u-row u-gap-2">
+                    <button class="btn is-primary is-block" type="button" data-action="download" disabled><i data-lucide="download"></i> 下载</button>
+                    <button class="btn is-block" type="button" data-action="copy" disabled><i data-lucide="copy"></i> 复制</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

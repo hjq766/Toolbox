@@ -18,8 +18,6 @@ const stat = {
   ratio:  $('[data-stat="ratio"]'),
   value:  $('[data-stat="value"]'),
   diag:   $('[data-stat="diag"]'),
-  pixels: $('[data-stat="pixels"]'),
-  orient: $('[data-stat="orient"]'),
 };
 
 /* ================= 状态 ================= */
@@ -29,8 +27,22 @@ let updating = false;
 /* ================= 工具函数 ================= */
 function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
 
-function formatPx(n) {
-  return n >= 1e6 ? (n / 1e6).toFixed(2) + 'M' : n >= 1e3 ? (n / 1e3).toFixed(1) + 'K' : String(n);
+
+/* ================= 预设匹配 ================= */
+function syncActivePreset(w, h) {
+  const ratio = w / h;
+  const EPSILON = 0.01;
+  let exactMatch = null, ratioMatch = null;
+  ratioBtns.forEach(btn => {
+    const parts = btn.dataset.ratio.split(':').map(Number);
+    if (Math.abs(ratio - parts[0] / parts[1]) > EPSILON) return;
+    const preset = btn.dataset.preset ? JSON.parse(btn.dataset.preset) : null;
+    if (preset && preset.w === w && preset.h === h) { if (!exactMatch) exactMatch = btn; }
+    else if (!ratioMatch) ratioMatch = btn;
+  });
+  const matched = exactMatch || ratioMatch;
+  ratioBtns.forEach(b => b.classList.toggle('is-active', b === matched));
+  return matched;
 }
 
 /* ================= 核心更新 ================= */
@@ -42,16 +54,13 @@ function update() {
   const d = gcd(w, h);
   const sr = `${w / d}:${h / d}`;
   const diag = Math.sqrt(w * w + h * h);
-  const total = w * h;
-  const orient = w > h ? '横向' : w < h ? '纵向' : '正方形';
+  const matched = syncActivePreset(w, h);
+  const displayRatio = matched ? matched.dataset.ratio : sr;
 
-  stat.ratio.textContent  = sr;
+  stat.ratio.textContent  = displayRatio;
   stat.value.textContent  = (w / h).toFixed(3);
   stat.diag.textContent   = Math.round(diag) + ' px';
-  stat.pixels.textContent = formatPx(total);
-  stat.orient.textContent = orient;
-
-  prevRatio.textContent = sr;
+  prevRatio.textContent = displayRatio;
   prevSize.textContent  = `${w} × ${h}`;
 
   /* 预览框：按比例填满容器（最大 360×320，最小 60） */
@@ -101,7 +110,6 @@ ratioBtns.forEach(btn => on(btn, 'click', () => {
   const parts = btn.dataset.ratio.split(':').map(Number);
   ratioW = parts[0]; ratioH = parts[1];
 
-  ratioBtns.forEach(b => b.classList.toggle('active', b === btn));
   lockEl.checked = true;
 
   const preset = btn.dataset.preset ? JSON.parse(btn.dataset.preset) : null;
@@ -137,7 +145,6 @@ on($('[data-action="reset"]'), 'click', () => {
   ratioW = 16; ratioH = 9;
   wEl.value = 1920; hEl.value = 1080;
   lockEl.checked = true;
-  ratioBtns.forEach(b => b.classList.toggle('active', b.dataset.ratio === '16:9'));
   update();
   showToast('已重置');
 });

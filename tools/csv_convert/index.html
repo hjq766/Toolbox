@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>表格数据转换 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="CSV / TSV / JSON / Excel (.xlsx) / Markdown 表格互转，支持上传与导出">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/csv_convert/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="表格数据转换 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="CSV / TSV / JSON / Excel (.xlsx) / Markdown 表格互转，支持上传与导出">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/csv_convert/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"表格数据转换","url":"https://tools.jqnest.top/tools/csv_convert/","description":"CSV / TSV / JSON / Excel (.xlsx) / Markdown 表格互转，支持上传与导出","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <style>
+    .grid-2 > .panel [data-preview],
+    .grid-2 > .panel [data-excel-hint] { flex: 1; }
+    [data-preview] .data-table { font-size: var(--text-xs); }
+    [data-excel-hint] { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2); color: var(--fg-muted); font-size: var(--text-sm); }
+  </style>
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="csv_convert">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+        <div class="grid grid-2">
+
+          <!-- 左：输入 -->
+          <div class="panel">
+            <div class="u-row u-between u-mb-3" style="flex-wrap:wrap;gap:var(--space-2)">
+              <div class="u-row u-gap-2" style="align-items:center">
+                <h3 class="panel-title" style="margin:0">输入</h3>
+                <span class="u-muted u-text-xs" data-detect></span>
+              </div>
+              <div class="u-row u-gap-1">
+                <label class="btn is-sm is-ghost" style="cursor:pointer"><i class="icon-16" data-lucide="upload"></i> 上传<input type="file" accept=".csv,.tsv,.txt,.json,.xlsx,.xls" hidden data-file></label>
+                <button class="btn is-sm is-ghost" data-action="sample">示例</button>
+                <button class="btn is-sm is-ghost" data-action="clear">清空</button>
+              </div>
+            </div>
+            <textarea class="textarea u-mono" data-input rows="12" placeholder="粘贴 CSV、TSV、JSON 数据，或上传 / 拖拽文件&#10;&#10;支持 .csv .tsv .json .xlsx"></textarea>
+          </div>
+
+          <!-- 右：输出 -->
+          <div class="panel">
+            <div class="u-row u-between u-mb-3" style="flex-wrap:wrap;gap:var(--space-2)">
+              <div class="tabs" data-out-tabs>
+                <button class="tab-btn is-active" data-tab="table">表格</button>
+                <button class="tab-btn" data-tab="csv">CSV</button>
+                <button class="tab-btn" data-tab="tsv">TSV</button>
+                <button class="tab-btn" data-tab="json">JSON</button>
+                <button class="tab-btn" data-tab="md">MD</button>
+                <button class="tab-btn" data-tab="excel">Excel</button>
+              </div>
+              <div class="u-row u-gap-1">
+                <button class="btn is-sm" data-action="copy">复制</button>
+                <button class="btn is-sm" data-action="download">下载</button>
+              </div>
+            </div>
+            <div data-preview style="overflow-x:auto"></div>
+            <textarea class="textarea u-mono" data-output rows="12" readonly hidden></textarea>
+            <div data-excel-hint hidden>
+              <i data-lucide="file-spreadsheet" style="width:32px;height:32px;opacity:.4"></i>
+              <span>导出为 Excel 格式</span>
+              <button class="btn is-primary" data-action="download-excel">下载 .xlsx</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div></main></div>
+  <script src="../../public/vendor/xlsx.mini.min.js" defer></script>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

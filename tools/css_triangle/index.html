@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>CSS 三角形生成 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="可视化生成 CSS 三角形，支持 border / clip-path 两种写法、方向预设与 tooltip 箭头代码">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/css_triangle/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="CSS 三角形生成 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="可视化生成 CSS 三角形，支持 border / clip-path 两种写法、方向预设与 tooltip 箭头代码">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/css_triangle/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"CSS 三角形生成","url":"https://tools.jqnest.top/tools/css_triangle/","description":"可视化生成 CSS 三角形，支持 border / clip-path 两种写法、方向预设与 tooltip 箭头代码","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
+  <link rel="stylesheet" href="../../public/styles/tokens.css">
+  <link rel="stylesheet" href="../../public/styles/themes.css">
+  <link rel="stylesheet" href="../../public/styles/base.css">
+  <link rel="stylesheet" href="../../public/styles/layout.css">
+  <link rel="stylesheet" href="../../public/styles/components.css">
+  <link rel="stylesheet" href="../../public/styles/utilities.css">
+  <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="./tool.css">
+</head>
+<body data-page="tool" data-base-path="../../" data-tool-slug="css_triangle">
+  <div class="page-shell"><main class="page-main"><div class="container">
+    <div class="tool-layout">
+      <header class="tool-header" data-tool-header></header>
+      <div class="tool-body">
+
+        <div class="grid grid-sidebar-r" style="--sidebar-w:330px">
+          <section class="u-col u-gap-4">
+            <div class="panel">
+              <div class="u-row u-between u-mb-3">
+                <div>
+                  <h3 class="panel-title">实时预览</h3>
+                  <p class="hint">Border 适合小箭头，clip-path 适合有尺寸和背景的形状。</p>
+                </div>
+                <span class="badge" data-mode-badge>border</span>
+              </div>
+
+              <div class="tri-stage">
+                <div class="tri-preview" data-preview></div>
+                <div class="tri-tooltip" data-tooltip>
+                  <span>Tooltip arrow</span>
+                  <i data-arrow></i>
+                </div>
+              </div>
+
+              <div class="summary-grid u-mt-4">
+                <div class="summary-item">
+                  <div class="val" data-width-stat>96px</div>
+                  <div class="label">底边宽度</div>
+                </div>
+                <div class="summary-item">
+                  <div class="val" data-height-stat>72px</div>
+                  <div class="label">三角高度</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="u-row u-between u-mb-3">
+                <h3 class="panel-title">CSS 输出</h3>
+                <div class="u-row u-gap-2">
+                  <button class="btn is-sm is-primary" type="button" data-action="copy-css"><i data-lucide="copy"></i> 复制 CSS</button>
+                  <button class="btn is-sm" type="button" data-action="copy-html"><i data-lucide="code"></i> 复制 HTML</button>
+                </div>
+              </div>
+              <textarea class="textarea u-mono" data-css-output readonly></textarea>
+              <details class="tool-details u-mt-3">
+                <summary>HTML 示例</summary>
+                <textarea class="textarea u-mono u-mt-2" data-html-output readonly></textarea>
+              </details>
+            </div>
+          </section>
+
+          <aside class="u-col u-gap-4">
+            <div class="panel">
+              <h3 class="panel-title">生成方式</h3>
+              <div class="tabs" data-mode-tabs>
+                <button class="tab-btn is-active" type="button" data-mode="border">Border 三角</button>
+                <button class="tab-btn" type="button" data-mode="clip">Clip-path</button>
+              </div>
+              <p class="hint u-mt-2" data-mode-hint>经典零宽高写法，最适合 tooltip、小箭头和气泡指示器。</p>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">方向</h3>
+              <div class="tri-dir-grid" data-direction-grid>
+                <button class="btn is-sm" type="button" data-dir="top-left">左上</button>
+                <button class="btn is-sm is-active" type="button" data-dir="up">向上</button>
+                <button class="btn is-sm" type="button" data-dir="top-right">右上</button>
+                <button class="btn is-sm" type="button" data-dir="left">向左</button>
+                <button class="btn is-sm is-ghost" type="button" data-action="flip">反向</button>
+                <button class="btn is-sm" type="button" data-dir="right">向右</button>
+                <button class="btn is-sm" type="button" data-dir="bottom-left">左下</button>
+                <button class="btn is-sm" type="button" data-dir="down">向下</button>
+                <button class="btn is-sm" type="button" data-dir="bottom-right">右下</button>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">尺寸与颜色</h3>
+              <div class="u-col u-gap-3">
+                <label class="field">
+                  <span class="field-label">底边宽度</span>
+                  <div class="range-row"><input type="range" min="12" max="220" value="96" data-input="width"><span class="val" data-val="width">96px</span></div>
+                </label>
+                <label class="field">
+                  <span class="field-label">三角高度</span>
+                  <div class="range-row"><input type="range" min="12" max="180" value="72" data-input="height"><span class="val" data-val="height">72px</span></div>
+                </label>
+                <label class="field">
+                  <span class="field-label">颜色</span>
+                  <input class="input u-mono" data-input="color" value="var(--color-brand)" placeholder="如 var(--color-brand) 或 currentColor">
+                </label>
+                <label class="field" data-round-field hidden>
+                  <span class="field-label">clip-path 圆角感</span>
+                  <div class="range-row"><input type="range" min="0" max="28" value="0" data-input="radius"><span class="val" data-val="radius">0px</span></div>
+                  <span class="field-hint">CSS 三角本身不支持真正圆角，这里用父层圆角和 overflow 做轻微柔化。</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">应用场景</h3>
+              <div class="opt-row" data-example-tabs>
+                <button class="btn is-sm is-active" type="button" data-example="shape">独立形状</button>
+                <button class="btn is-sm" type="button" data-example="tooltip">Tooltip 箭头</button>
+                <button class="btn is-sm" type="button" data-example="corner">角标装饰</button>
+              </div>
+              <div class="sep u-mt-3 u-mb-3"></div>
+              <p class="hint" data-example-tip>复制独立 `.triangle` 即可放入页面。</p>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div></main></div>
+  <script type="module" src="../../public/scripts/core/app-init.js"></script>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>

@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Markdown 编辑器 · jqnest 工具箱</title>
+  <!-- SEO:START 由 scripts/build-seo.mjs 自动生成，请勿手改 -->
+  <title>Markdown 编辑器 · 极趣导航-在线工具箱</title>
+  <meta name="description" content="所见即所得 Markdown 编辑器，实时预览 + 快捷插入 + 导出">
+  <link rel="canonical" href="https://tools.jqnest.top/tools/markdown_editor/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="极趣导航-在线工具箱">
+  <meta property="og:title" content="Markdown 编辑器 · 极趣导航-在线工具箱">
+  <meta property="og:description" content="所见即所得 Markdown 编辑器，实时预览 + 快捷插入 + 导出">
+  <meta property="og:url" content="https://tools.jqnest.top/tools/markdown_editor/">
+  <meta property="og:image" content="https://tools.jqnest.top/public/favicon.webp">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Markdown 编辑器","url":"https://tools.jqnest.top/tools/markdown_editor/","description":"所见即所得 Markdown 编辑器，实时预览 + 快捷插入 + 导出","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"isPartOf":{"@type":"WebSite","name":"极趣导航-在线工具箱","url":"https://tools.jqnest.top/"},"inLanguage":"zh-CN"}</script>
+  <!-- SEO:END -->
   <link rel="stylesheet" href="../../public/styles/tokens.css">
   <link rel="stylesheet" href="../../public/styles/themes.css">
   <link rel="stylesheet" href="../../public/styles/base.css">
@@ -11,9 +23,10 @@
   <link rel="stylesheet" href="../../public/styles/components.css">
   <link rel="stylesheet" href="../../public/styles/utilities.css">
   <link rel="stylesheet" href="../_shared/sidebar.css">
+  <link rel="stylesheet" href="./tool.css">
   <script src="../../public/vendor/marked.min.js" defer></script>
   <script src="../../public/vendor/purify.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+  <!-- html2pdf 按需懒加载，不预先引入 -->
 </head>
 <body data-page="tool" data-base-path="../../" data-tool-slug="markdown_editor">
   <div class="page-shell"><main class="page-main"><div class="container">
@@ -25,18 +38,9 @@
           <!-- 左：主编辑区 -->
           <div>
             <!-- 工具栏 -->
-            <style>
-              .md-toolbar{display:flex;align-items:center;padding:8px 10px;gap:2px;flex-wrap:wrap}
-              .md-toolbar .t-btn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:none;border-radius:var(--radius-sm);color:var(--fg-muted);cursor:pointer;flex-shrink:0;font-size:16px;transition:background .15s,color .15s}
-              .md-toolbar .t-btn:hover{background:var(--bg-hover);color:var(--fg-base)}
-              .md-toolbar .t-btn.is-active{background:var(--bg-active);color:var(--color-primary)}
-              .md-toolbar .tg{display:inline-flex;gap:2px}
-              .md-toolbar .t-sep{width:1px;height:22px;background:var(--border-subtle);margin:0 6px;flex-shrink:0}
-              .md-toolbar .t-spacer{flex:1 1 0;min-width:8px}
-            </style>
-            <div class="panel" style="padding:0;display:flex;flex-direction:column;min-height:600px">
+            <div class="panel md-editor-panel">
               <!-- 工具栏 -->
-              <div class="md-toolbar" style="border-bottom:1px solid var(--border-subtle)">
+              <div class="md-toolbar">
                 <div class="tg">
                   <button class="t-btn" type="button" data-action="undo" title="撤销 Ctrl+Z"><i data-lucide="arrow-left"></i></button>
                   <button class="t-btn" type="button" data-action="redo" title="重做 Ctrl+Y"><i data-lucide="arrow-right"></i></button>
@@ -77,20 +81,20 @@
                 </div>
               </div>
               <!-- 编辑 + 预览 -->
-              <div data-split style="display:flex;flex:1;min-height:0;overflow:hidden">
-                <div class="cm-embed" style="flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden">
-                  <div style="padding:6px 14px;font-size:12px;color:var(--fg-muted);border-bottom:1px solid var(--border-subtle);background:var(--bg-surface-2)">编辑区</div>
-                  <textarea class="textarea u-mono" data-source spellcheck="false"
+              <div class="md-split" data-split>
+                <div class="cm-embed md-pane is-editor">
+                  <div class="md-pane-label">编辑区</div>
+                  <textarea class="textarea u-mono md-source" data-source spellcheck="false"
                     placeholder="# 在此编写 Markdown&#10;&#10;支持 **粗体**、*斜体*、~~删除线~~、`代码`、列表、表格等 GFM 语法"
-                    style="flex:1;resize:none;border:none;border-radius:0;font-size:13px;tab-size:2;line-height:1.6;padding:10px 14px"></textarea>
-                  <div style="display:flex;justify-content:space-between;padding:5px 14px;font-size:12px;color:var(--fg-muted);border-top:1px solid var(--border-subtle);background:var(--bg-surface-2)">
+                  ></textarea>
+                  <div class="md-status">
                     <span data-stat-words>字数：0</span>
                     <span data-stat-cursor>行：1，列：1</span>
                   </div>
                 </div>
-                <div style="flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;border-left:1px solid var(--border-subtle)">
-                  <div style="padding:6px 14px;font-size:12px;color:var(--fg-muted);border-bottom:1px solid var(--border-subtle);background:var(--bg-surface-2)">预览区</div>
-                  <div data-preview style="flex:1;overflow:auto;padding:20px;line-height:1.7;font-size:14px"></div>
+                <div class="md-pane">
+                  <div class="md-pane-label">预览区</div>
+                  <div data-preview class="prose md-preview"></div>
                 </div>
               </div>
             </div>
@@ -102,7 +106,7 @@
               <h3 class="panel-title">文件</h3>
               <div class="act-group">
                 <label class="btn is-block" style="cursor:pointer;text-align:center">
-                  <i data-lucide="folder-open"></i> 打开 .md 文件
+                  打开 .md 文件
                   <input type="file" accept=".md,.markdown,.txt,text/markdown,text/plain" hidden data-file>
                 </label>
               </div>
@@ -112,22 +116,35 @@
             <div class="panel">
               <h3 class="panel-title">导出</h3>
               <div class="act-group">
-                <button class="btn" type="button" data-action="copy-md"><i data-lucide="copy"></i> 复制 Markdown</button>
-                <button class="btn" type="button" data-action="copy-html"><i data-lucide="copy"></i> 复制 HTML</button>
+                <div class="u-row u-gap-2">
+                  <button class="btn is-block" type="button" data-action="copy-md">复制 Markdown</button>
+                  <button class="btn is-block" type="button" data-action="copy-html">复制 HTML</button>
+                </div>
                 <div class="sep"></div>
-                <button class="btn is-primary" type="button" data-action="dl-md"><i data-lucide="download"></i> 下载 .md</button>
-                <button class="btn" type="button" data-action="dl-html"><i data-lucide="download"></i> 下载 .html</button>
-                <button class="btn" type="button" data-action="dl-pdf"><i data-lucide="file-text"></i> 下载 PDF</button>
+                <div class="u-row u-gap-2">
+                  <button class="btn is-block" type="button" data-action="dl-md">.md</button>
+                  <button class="btn is-block" type="button" data-action="dl-html">.html</button>
+                  <button class="btn is-block" type="button" data-action="dl-pdf">PDF</button>
+                </div>
               </div>
             </div>
 
             <div class="panel">
               <div class="act-group">
-                <button class="btn is-ghost is-block" type="button" data-action="load-example"><i data-lucide="file-text"></i> 载入示例</button>
+                <button class="btn is-ghost is-block" type="button" data-action="load-example">载入示例</button>
               </div>
             </div>
           </aside>
         </div>
+
+        <p class="field-hint u-muted" style="margin:0;text-align:center">
+          编辑、解析与安全过滤分别由
+          <a href="https://github.com/codemirror/codemirror5" target="_blank" rel="noopener noreferrer">CodeMirror</a>、
+          <a href="https://github.com/markedjs/marked" target="_blank" rel="noopener noreferrer">marked</a>
+          与
+          <a href="https://github.com/cure53/DOMPurify" target="_blank" rel="noopener noreferrer">DOMPurify</a>
+          提供。
+        </p>
 
       </div>
     </div>
@@ -178,7 +195,7 @@
         <div class="field u-mt-3">
           <label class="field-label">对齐方式</label>
           <div class="opt-row" data-tbl-align>
-            <button class="btn is-sm active" type="button" data-val="left">左对齐</button>
+            <button class="btn is-sm is-active" type="button" data-val="left">左对齐</button>
             <button class="btn is-sm" type="button" data-val="center">居中</button>
             <button class="btn is-sm" type="button" data-val="right">右对齐</button>
           </div>

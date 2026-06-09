@@ -13,6 +13,8 @@ const MAX_SIZE = 20 * 1024 * 1024; // 20 MB
 /* ========== 2. 状态 ========== */
 let uploaded   = [];   // { file, preview(objectURL), origW, origH } | null
 let compressed = [];   // { file, name } | null
+let _jpegCodec   = null;
+let _oxipngCodec = null;
 
 /* ========== 3. DOM 引用 ========== */
 const dropEl      = $('[data-drop]');
@@ -28,6 +30,14 @@ const modeEls     = $$('[data-mode]');
 const qualityEl   = $('[data-quality]');
 const qualityValEl   = $('[data-quality-val]');
 const customQualityEl = $('[data-custom-quality]');
+const targetSizeEl    = $('[data-target-size]');
+const targetValEl     = $('[data-target-val]');
+const targetUnitEl    = $('[data-target-unit]');
+const allowResizeEl   = $('[data-allow-resize]');
+const tinypngPanelEl = $('[data-tinypng-panel]');
+const tinypngKeyEl   = $('[data-tinypng-key]');
+const tinypngShowEl  = $('[data-tinypng-show]');
+const tinypngCountEl = $('[data-tinypng-count]');
 const summaryEl   = $('[data-summary]');
 const modal       = $('[data-modal]');
 const modalImg    = $('[data-modal-img]');
@@ -49,8 +59,14 @@ function escapeHtml(s) {
 
 function getMode() {
   const v = $('[data-mode]:checked').value;
-  if (v === 'custom') return +qualityEl.value / 100;
-  return MODE_QUALITY[v] ?? 0.8;
+  if (v === 'target') {
+    const val = parseFloat(targetValEl.value) || 200;
+    const kb  = targetUnitEl.value === 'mb' ? val * 1024 : val;
+    return { type: 'target', kb, allowResize: allowResizeEl.checked };
+  }
+  if (v === 'tinypng') return { type: 'tinypng', key: tinypngKeyEl.value.trim() };
+  const quality = v === 'custom' ? +qualityEl.value / 100 : (MODE_QUALITY[v] ?? 0.8);
+  return { type: 'quality', quality };
 }
 
 function hasFiles() {
@@ -109,7 +125,7 @@ function hideModal() {
 /* ========== 5. 事件绑定 ========== */
 
 /* 上传 */
-initUploadZone({ dropEl, fileEl, onFiles: handleFiles, accept: 'image', multiple: true });
+initUploadZone({ dropEl, fileEl, dirEl: $('[data-file-dir]'), onFiles: handleFiles, accept: 'image', multiple: true });
 
 function handleFiles(files) {
   let added = 0;
@@ -144,7 +160,8 @@ function createPreviewItem(file, previewUrl, index) {
       <div class="info-row"><span>压缩后</span><span class="cv" data-compressed-size>—</span></div>
       <div class="info-row"><span>节省</span><span class="cv" data-ratio>—</span></div>
       <span class="status-badge is-pending" data-status>待压缩</span>
-      <button class="btn is-sm" data-dl-single="${index}" hidden style="margin-top:var(--space-2)"><i data-lucide="download"></i> 下载</button>
+      ${file.size > 12 * 1024 * 1024 ? `<div style="text-align:center;color:var(--color-danger);font-size:11px;margin-top:5px">超过 12MB，TinyPNG 模式将改用本地压缩</div>` : ''}
+      <button class="btn is-sm" data-dl-single="${index}" hidden><i data-lucide="download"></i> 下载</button>
     </div>
     <button class="remove-btn" data-remove="${index}"><i data-lucide="x"></i></button>`;
   gridEl.appendChild(el);
@@ -204,13 +221,96 @@ document.addEventListener('keydown', e => {
 
 /* 模式切换 */
 modeEls.forEach(r => {
-  on(r, 'change', () => { customQualityEl.hidden = r.value !== 'custom'; });
+  on(r, 'change', () => {
+    customQualityEl.hidden = r.value !== 'custom';
+    targetSizeEl.hidden    = r.value !== 'target';
+    tinypngPanelEl.hidden  = r.value !== 'tinypng';
+  });
 });
 on(qualityEl, 'input', e => { qualityValEl.textContent = e.target.value + '%'; });
 
+/* TinyPNG */
+function updateTinyPngCount(n) {
+  localStorage.setItem('tinypng_count', String(n));
+  if (tinypngCountEl) tinypngCountEl.textContent = `本月已用：${n} / 500`;
+}
+if (tinypngKeyEl) {
+  const _k = localStorage.getItem('tinypng_key');
+  if (_k) tinypngKeyEl.value = _k;
+}
+if (tinypngCountEl) {
+  const _c = localStorage.getItem('tinypng_count');
+  if (_c) tinypngCountEl.textContent = `本月已用：${_c} / 500`;
+}
+on(tinypngKeyEl, 'change', () => {
+  const k = tinypngKeyEl.value.trim();
+  k ? localStorage.setItem('tinypng_key', k) : localStorage.removeItem('tinypng_key');
+});
+on(tinypngShowEl, 'click', () => {
+  const hidden = tinypngKeyEl.type === 'password';
+  tinypngKeyEl.type = hidden ? 'text' : 'password';
+  const ico = tinypngShowEl.querySelector('[data-lucide]');
+  if (ico) { ico.dataset.lucide = hidden ? 'eye-off' : 'eye'; if (window.refreshIcons) window.refreshIcons(tinypngShowEl); }
+});
+
+/* jSquash 懒加载 */
+async function loadJpegCodec() {
+  if (!_jpegCodec) _jpegCodec = await import('https://esm.sh/@jsquash/jpeg');
+  return _jpegCodec;
+}
+async function loadOxipngCodec() {
+  if (!_oxipngCodec) _oxipngCodec = await import('https://esm.sh/@jsquash/oxipng');
+  return _oxipngCodec;
+}
+async function compressJsquash(file, quality) {
+  try {
+    if (file.type === 'image/jpeg') {
+      const { decode, encode } = await loadJpegCodec();
+      const imageData = await decode(await file.arrayBuffer());
+      const buf = await encode(imageData, { quality: Math.round(quality * 100) });
+      return new Blob([buf], { type: 'image/jpeg' });
+    }
+    if (file.type === 'image/png') {
+      const { optimise } = await loadOxipngCodec();
+      const buf = await optimise(await file.arrayBuffer(), { level: 2 });
+      return new Blob([buf], { type: 'image/png' });
+    }
+  } catch (e) {
+    console.warn('[jsquash] 压缩失败，降级处理:', e);
+  }
+  return null;
+}
+async function compressWithTinyPng(file, apiKey) {
+  const auth = 'Basic ' + btoa('api:' + apiKey);
+  const uploadRes = await fetch('https://long-credit-bed9.hjq766.workers.dev/shrink', {
+    method: 'POST',
+    headers: { 'Authorization': auth, 'Content-Type': file.type || 'application/octet-stream' },
+    body: file,
+  });
+  if (uploadRes.status === 401) throw new Error('API Key 无效，请检查后重试');
+  if (uploadRes.status === 429) throw new Error('本月压缩次数已用完');
+  if (!uploadRes.ok) {
+    const err = await uploadRes.json().catch(() => ({}));
+    throw new Error(err.message || `上传失败 (${uploadRes.status})`);
+  }
+  const countHdr = uploadRes.headers.get('Compression-Count');
+  const prevCount = parseInt(localStorage.getItem('tinypng_count') || '0');
+  updateTinyPngCount(countHdr ? parseInt(countHdr) : prevCount + 1);
+  const outputUrl = uploadRes.headers.get('Location');
+  if (!outputUrl) throw new Error('无法获取结果地址（可能受 CORS 限制）');
+  const outputPath = new URL(outputUrl).pathname;
+  const dlRes = await fetch('https://long-credit-bed9.hjq766.workers.dev' + outputPath, { headers: { 'Authorization': auth } });
+  if (!dlRes.ok) throw new Error('下载压缩结果失败');
+  return dlRes.blob();
+}
+
 /* 压缩 */
 on(compBtn, 'click', async () => {
-  const quality = getMode();
+  const mode = getMode();
+  if (mode.type === 'tinypng' && !mode.key) {
+    showToast('请先输入 TinyPNG API Key', { type: 'warn' });
+    return;
+  }
   compBtn.disabled = true;
   progEl.hidden = false;
   barEl.style.width = '0%';
@@ -230,19 +330,60 @@ on(compBtn, 'click', async () => {
 
     try {
       let out;
-      if (quality >= 1) {
-        out = file;
+      let targetResult = null;
+
+      let localFallback = false;
+      if (mode.type === 'tinypng') {
+        if (file.size > 12 * 1024 * 1024) {
+          localFallback = true;
+          const enhanced = await compressJsquash(file, 0.8);
+          if (enhanced !== null) {
+            out = enhanced.size < file.size ? enhanced : file;
+          } else {
+            const opts = { maxSizeMB: Infinity, useWebWorker: true, libURL: new URL('../../public/vendor/browser-image-compression.js', location.href).href, initialQuality: 0.8, maxIteration: 20, alwaysKeepResolution: true, fileType: file.type };
+            out = await imageCompression(file, opts);
+            if (out.size >= file.size) out = file;
+          }
+        } else {
+          out = await compressWithTinyPng(file, mode.key);
+        }
+      } else if (mode.type === 'target') {
+        const targetBytes = mode.kb * 1024;
+        if (file.size <= targetBytes) {
+          out = file;
+          targetResult = 'already';
+        } else {
+          const opts = {
+            maxSizeMB: mode.kb / 1024,
+            useWebWorker: true,
+            libURL: new URL('../../public/vendor/browser-image-compression.js', location.href).href,
+            initialQuality: 0.85,
+            maxIteration: 25,
+            alwaysKeepResolution: !mode.allowResize,
+            fileType: file.type,
+          };
+          out = await imageCompression(file, opts);
+          targetResult = out.size <= targetBytes * 1.05 ? 'met' : 'missed';
+        }
       } else {
-        const opts = {
-          maxSizeMB: Infinity,
-          useWebWorker: true,
-          initialQuality: quality,
-          maxIteration: 20,
-          alwaysKeepResolution: false,
-          fileType: file.type,
-        };
-        out = await imageCompression(file, opts);
-        if (out.size >= file.size) out = file;
+        const enhanced = await compressJsquash(file, mode.quality);
+        if (enhanced !== null) {
+          out = enhanced.size < file.size ? enhanced : file;
+        } else if (mode.quality >= 1) {
+          out = file;
+        } else {
+          const opts = {
+            maxSizeMB: Infinity,
+            useWebWorker: true,
+            libURL: new URL('../../public/vendor/browser-image-compression.js', location.href).href,
+            initialQuality: mode.quality,
+            maxIteration: 20,
+            alwaysKeepResolution: true,
+            fileType: file.type,
+          };
+          out = await imageCompression(file, opts);
+          if (out.size >= file.size) out = file;
+        }
       }
 
       const saved = file.size - out.size;
@@ -251,19 +392,27 @@ on(compBtn, 'click', async () => {
       compressed[i] = { file: out, name: file.name };
 
       if (card) {
-        const sizeEl = card.querySelector('[data-compressed-size]');
+        const sizeEl  = card.querySelector('[data-compressed-size]');
         const ratioEl = card.querySelector('[data-ratio]');
         if (sizeEl) sizeEl.textContent = fmtSize(out.size);
-        if (ratioEl) {
-          ratioEl.textContent = ratio > 0 ? `-${ratio}%` : '无变化';
-          ratioEl.classList.add(ratio > 0 ? 'good' : 'same');
+        if (targetResult === 'already') {
+          if (ratioEl) { ratioEl.textContent = '已在目标内'; ratioEl.classList.add('same'); }
+          setCardStatus(card, 'done', '已在目标内');
+        } else if (targetResult === 'missed') {
+          if (ratioEl) { ratioEl.textContent = ratio > 0 ? `-${ratio}%` : '无变化'; ratioEl.classList.add('fail'); }
+          setCardStatus(card, 'fail', '未达目标');
+        } else {
+          if (ratioEl) {
+            ratioEl.textContent = ratio > 0 ? `-${ratio}%` : '无变化';
+            ratioEl.classList.add(ratio > 0 ? 'good' : 'same');
+          }
+          setCardStatus(card, 'done', ratio > 0 ? `-${ratio}%` : '无变化');
         }
-        setCardStatus(card, 'done', `-${ratio}%`);
         const dlSingleBtn = card.querySelector('[data-dl-single]');
         if (dlSingleBtn) dlSingleBtn.hidden = false;
       }
     } catch (err) {
-      compressed[i] = { file, name: file.name };
+      console.error(`[images_compress] ${file.name} 压缩失败:`, err);
       if (card) {
         const sizeEl = card.querySelector('[data-compressed-size]');
         if (sizeEl) { sizeEl.textContent = '失败'; sizeEl.classList.add('fail'); }
@@ -283,10 +432,7 @@ on(compBtn, 'click', async () => {
   const successCount = compressed.filter(Boolean).length;
   if (successCount) {
     dlBtn.hidden = false;
-    dlBtn.innerHTML = successCount > 1
-      ? '<i data-lucide="download"></i> 批量下载 ZIP'
-      : '<i data-lucide="download"></i> 下载图片';
-    if (window.refreshIcons) window.refreshIcons(dlBtn);
+    dlBtn.textContent = successCount > 1 ? '批量下载 ZIP' : '下载图片';
     updateSummary();
     showToast(`压缩完成，共 ${successCount} 张`, { type: 'success' });
   }

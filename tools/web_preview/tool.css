@@ -4,12 +4,12 @@
 .wp-hint {
   position: absolute; inset: 0;
   display: flex; flex-direction: column; justify-content: center; align-items: center;
-  gap: 6px; padding: var(--space-6); text-align: center;
+  gap: calc(var(--space-2) - 2px); padding: var(--space-6); text-align: center;
   pointer-events: none; color: var(--fg-muted);
 }
 .wp-hint p { margin: 0; max-width: 540px; }
 .wp-hint code {
-  background: var(--bg-surface); padding: 0 6px; border-radius: 4px;
+  background: var(--bg-surface); padding: 0 calc(var(--space-2) - 2px); border-radius: var(--radius-sm);
   font-family: var(--font-mono);
 }
 .preview-stage.has-url .wp-hint { display: none; }
